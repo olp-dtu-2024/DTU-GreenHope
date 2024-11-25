@@ -1,0 +1,23 @@
+{
+  "name": "dtu-greenhope",
+  "version": "1.0.0",
+  "description": "Nền tảng hỗ trợ sau thiên tai của chúng tôi là cầu nối giữa lòng nhân ái và những người cần giúp đỡ. Với tính năng nhận diện cứu trợ nhanh chóng và quyên góp minh bạch, chúng tôi giúp cộng đồng đoàn kết để xây dựng lại cuộc sống, mang lại hy vọng mới cho những vùng bị ảnh hưởng bởi thiên tai.",
+  "private": true,
+  "workspaces": [
+    "lcdp-app"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "git:soft": "git reset --soft HEAD~1",
+    "install:app": "cd lcdp-app && yarn install"
+  },
+  "author": "Lê Minh Tuấn",
+  "license": "ISC",
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+  "dependencies": {
+    "@commitlint/config-conventional": "^19.6.0"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}

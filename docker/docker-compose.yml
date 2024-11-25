@@ -1,0 +1,111 @@
+networks:
+  olp-dtu-2024-network:
+    name: "olp-dtu-2024-network"
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+          ip_range: 172.28.0.0/24
+          gateway: 172.28.0.1
+          aux_addresses:
+            kafka: 172.28.0.2
+            zookeeper: 172.28.0.3
+
+services:
+  postgres:
+    image: bitnami/postgresql:latest
+    container_name: postgres-5439
+    volumes:
+      - postgres-data-be:/bitnami/postgresql
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-olp-2024}
+    ports:
+      - '5439:5432'
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1'
+    networks:
+      - olp-dtu-2024-network
+
+  redis:
+    container_name: redis-6444
+    image: bitnami/redis:latest
+    ports:
+      - '6444:6379'
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-redis}
+    volumes:
+      - redis-data:/bitnami/redis
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+    networks:
+      - olp-dtu-2024-network
+
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    container_name: "zookeeper-olp-dtu-2024"
+    ports:
+      - 2181:2181
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper
+    networks:
+      - olp-dtu-2024-network
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: "kafka-olp-dtu-2024"
+    ports:
+      - 9092:9092
+      - 9093:9093
+    networks:
+      - olp-dtu-2024-network
+    volumes:
+      - kafka-data:/bitnami/kafka
+    depends_on:
+      - zookeeper
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:9093
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092,PLAINTEXT_HOST://localhost:9093
+      - KAFKA_RESTART_ATTEMPTS=10
+      - KAFKA_RESTART_DELAY=5
+      - ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL=0
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_DELETE_TOPIC_ENABLE=true
+      - KAFKA_METADATA_LOG_DIR=/bitnami/kafka/data
+      - KAFKA_CLUSTER_ID=VKX7L3OWS_CoP-3anYSxog
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1'
+
+volumes:
+  postgres-data-be:
+  redis-data:
+  zookeeper-data:
+  kafka-data:
