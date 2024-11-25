@@ -21,6 +21,15 @@
       ],
       "@olp-dtu-2024/landing-project": [
         "packages/plugins/@olp-dtu-2024/landing-project/src"
+      ],
+      "@olp-dtu-2024/qr-donate/client": [
+        "packages/plugins/@olp-dtu-2024/qr-donate/src/client"
+      ],
+      "@olp-dtu-2024/qr-donate/package.json": [
+        "packages/plugins/@olp-dtu-2024/qr-donate/package.json"
+      ],
+      "@olp-dtu-2024/qr-donate": [
+        "packages/plugins/@olp-dtu-2024/qr-donate/src"
       ]
     }
   }
