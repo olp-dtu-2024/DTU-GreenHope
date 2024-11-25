@@ -1,0 +1,14 @@
+{
+  "name": "@olp-dtu-2024/kafka-nocobase",
+  "version": "0.1.0",
+  "main": "dist/server/index.js",
+  "dependencies": {
+    "kafkajs": "^2.2.4",
+    "rollup": "^4.24.0"
+  },
+  "peerDependencies": {
+    "@nocobase/client": "1.x",
+    "@nocobase/server": "1.x",
+    "@nocobase/test": "1.x"
+  }
+}

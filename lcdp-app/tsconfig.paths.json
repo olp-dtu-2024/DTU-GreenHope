@@ -3,6 +3,42 @@
     "paths": {
       "@@/*": [
         ".dumi/tmp/*"
+      ],
+      "@olp-dtu-2024/landing-page/client": [
+        "packages/plugins/@olp-dtu-2024/landing-page/src/client"
+      ],
+      "@olp-dtu-2024/landing-page/package.json": [
+        "packages/plugins/@olp-dtu-2024/landing-page/package.json"
+      ],
+      "@olp-dtu-2024/landing-page": [
+        "packages/plugins/@olp-dtu-2024/landing-page/src"
+      ],
+      "@olp-dtu-2024/landing-project/client": [
+        "packages/plugins/@olp-dtu-2024/landing-project/src/client"
+      ],
+      "@olp-dtu-2024/landing-project/package.json": [
+        "packages/plugins/@olp-dtu-2024/landing-project/package.json"
+      ],
+      "@olp-dtu-2024/landing-project": [
+        "packages/plugins/@olp-dtu-2024/landing-project/src"
+      ],
+      "@olp-dtu-2024/qr-donate/client": [
+        "packages/plugins/@olp-dtu-2024/qr-donate/src/client"
+      ],
+      "@olp-dtu-2024/qr-donate/package.json": [
+        "packages/plugins/@olp-dtu-2024/qr-donate/package.json"
+      ],
+      "@olp-dtu-2024/qr-donate": [
+        "packages/plugins/@olp-dtu-2024/qr-donate/src"
+      ],
+      "@olp-dtu-2024/kafka-nocobase/client": [
+        "packages/plugins/@olp-dtu-2024/kafka-nocobase/src/client"
+      ],
+      "@olp-dtu-2024/kafka-nocobase/package.json": [
+        "packages/plugins/@olp-dtu-2024/kafka-nocobase/package.json"
+      ],
+      "@olp-dtu-2024/kafka-nocobase": [
+        "packages/plugins/@olp-dtu-2024/kafka-nocobase/src"
       ]
     }
   }
