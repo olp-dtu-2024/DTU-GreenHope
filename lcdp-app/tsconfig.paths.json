@@ -3,6 +3,15 @@
     "paths": {
       "@@/*": [
         ".dumi/tmp/*"
+      ],
+      "@olp-dtu-2024/landing-page/client": [
+        "packages/plugins/@olp-dtu-2024/landing-page/src/client"
+      ],
+      "@olp-dtu-2024/landing-page/package.json": [
+        "packages/plugins/@olp-dtu-2024/landing-page/package.json"
+      ],
+      "@olp-dtu-2024/landing-page": [
+        "packages/plugins/@olp-dtu-2024/landing-page/src"
       ]
     }
   }
