@@ -3,6 +3,15 @@
     "paths": {
       "@@/*": [
         ".dumi/tmp/*"
+      ],
+      "@olp-dtu-2024/kafka-nocobase/client": [
+        "packages/plugins/@olp-dtu-2024/kafka-nocobase/src/client"
+      ],
+      "@olp-dtu-2024/kafka-nocobase/package.json": [
+        "packages/plugins/@olp-dtu-2024/kafka-nocobase/package.json"
+      ],
+      "@olp-dtu-2024/kafka-nocobase": [
+        "packages/plugins/@olp-dtu-2024/kafka-nocobase/src"
       ]
     }
   }
