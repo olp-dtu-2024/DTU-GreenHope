@@ -20,7 +20,9 @@
     "e2e": "nocobase e2e",
     "tar": "nocobase tar",
     "postinstall": "nocobase postinstall",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "lcdp:dump": "node ./scripts/dump.mjs",
+    "lcdp:restore": "node ./scripts/restore.mjs"
   },
   "resolutions": {
     "cytoscape": "3.28.0",

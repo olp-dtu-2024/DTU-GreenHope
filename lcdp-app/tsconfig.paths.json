@@ -4,6 +4,15 @@
       "@@/*": [
         ".dumi/tmp/*"
       ],
+      "@olp-dtu-2024/kafka-nocobase/client": [
+        "packages/plugins/@olp-dtu-2024/kafka-nocobase/src/client"
+      ],
+      "@olp-dtu-2024/kafka-nocobase/package.json": [
+        "packages/plugins/@olp-dtu-2024/kafka-nocobase/package.json"
+      ],
+      "@olp-dtu-2024/kafka-nocobase": [
+        "packages/plugins/@olp-dtu-2024/kafka-nocobase/src"
+      ],
       "@olp-dtu-2024/landing-page/client": [
         "packages/plugins/@olp-dtu-2024/landing-page/src/client"
       ],
@@ -30,15 +39,6 @@
       ],
       "@olp-dtu-2024/qr-donate": [
         "packages/plugins/@olp-dtu-2024/qr-donate/src"
-      ],
-      "@olp-dtu-2024/kafka-nocobase/client": [
-        "packages/plugins/@olp-dtu-2024/kafka-nocobase/src/client"
-      ],
-      "@olp-dtu-2024/kafka-nocobase/package.json": [
-        "packages/plugins/@olp-dtu-2024/kafka-nocobase/package.json"
-      ],
-      "@olp-dtu-2024/kafka-nocobase": [
-        "packages/plugins/@olp-dtu-2024/kafka-nocobase/src"
       ]
     }
   }
