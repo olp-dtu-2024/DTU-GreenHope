@@ -12,5 +12,10 @@ export const kafkaConfig = {
     name: 'LCDP_SERVICE',
     clientId: 'lcdp-service',
     groupId: 'lcdp-consumers',
+  },
+  transactionService: {
+    name: 'TRANSACTION_SERVICE',
+    clientId: 'transaction-service',
+    groupId: 'transaction-consumers',
   }
 }
