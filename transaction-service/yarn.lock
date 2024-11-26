@@ -810,6 +810,14 @@
   dependencies:
     eventemitter2 "6.4.9"
 
+"@nestjs/microservices@^10.4.9":
+  version "10.4.9"
+  resolved "https://registry.yarnpkg.com/@nestjs/microservices/-/microservices-10.4.9.tgz#ea94be16f77c382c67b77bc861243477d73b76bc"
+  integrity sha512-7Gl0wcNuy0J+1CxA2w0qhHTrBY8W7U7hcMLetnyioUMInv1G2w07ElrIqa6sqFd1eMQMPlmLyIqYLvEx2UBv4Q==
+  dependencies:
+    iterare "1.2.1"
+    tslib "2.7.0"
+
 "@nestjs/platform-express@^10.0.0":
   version "10.4.9"
   resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-10.4.9.tgz#6d208004976dfbc609c9e023e3c018509dbe6606"
@@ -3570,6 +3578,11 @@ jsonfile@^6.0.1:
     universalify "^2.0.0"
   optionalDependencies:
     graceful-fs "^4.1.6"
+
+kafkajs@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/kafkajs/-/kafkajs-2.2.4.tgz#59e6e16459d87fdf8b64be73970ed5aa42370a5b"
+  integrity sha512-j/YeapB1vfPT2iOIUn/vxdyKEuhuY2PxMBvf5JWux6iSaukAccrMtXEY/Lb7OvavDhOWME589bpLrEdnVHjfjA==
 
 keyv@^4.5.3:
   version "4.5.4"
