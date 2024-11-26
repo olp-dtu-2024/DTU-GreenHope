@@ -1,0 +1,124 @@
+/* Header */
+.custom-header {
+  background: linear-gradient(90deg, #32a852, rgb(69, 210, 104));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  animation: slide-down 1s ease-in-out;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  margin-left: 20px;
+}
+
+.menu {
+  background: transparent;
+  border: none;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.menu-item {
+  color: #ffffff !important;
+  font-size: 16px;
+  transition:
+    transform 0.3s,
+    color 0.3s,
+    background-color 0.3s;
+  border-radius: 5px;
+}
+
+.menu-item:hover {
+  color: #d4f5d6 !important;
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+/* Content */
+.content {
+  height: calc(100vh - 64px);
+  background: linear-gradient(180deg, #eafaf1, #ffffff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+}
+
+.slogan-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  animation: fade-in 2s ease-in-out;
+}
+
+.slogan-title {
+  margin-top: 10px;
+  font-size: 2.8rem;
+  font-weight: bold;
+  color: #32a852;
+  margin-bottom: 20px;
+}
+
+.slogan-description {
+  font-size: 1.2rem;
+  color: #32a852;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.join-button {
+  background: #32a852;
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 6px 12px rgba(50, 168, 82, 0.3);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.join-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 20px rgba(50, 168, 82, 0.5);
+  background: #32a852 !important;
+}
+
+/* Animation */
+@keyframes slide-down {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Image Styling */
+.landing-image {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  margin: 10px auto;
+  display: block;
+}
