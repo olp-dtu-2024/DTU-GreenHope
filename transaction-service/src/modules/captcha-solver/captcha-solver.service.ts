@@ -7,7 +7,7 @@ export class CaptchaSolverService {
 
   async solveCaptcha(base64: string): Promise<string> {
     try {
-      const captchaApiBaseUrl = this.configService.get<string>('app.captchaSolverDomain')
+      const captchaApiBaseUrl = this.configService.get<string>('CAPTCHA_SERVICE_HOST')
       const captchaTextResolver = await _request.post(captchaApiBaseUrl + '/resolver', {
         form: {
           body: base64
