@@ -23,7 +23,7 @@ export class QueueProcessorRefetchTransaction extends WorkerHost {
     }
 
     try {
-      const refetch = await this.transactionService.executeTransaction()
+      const refetch = await this.transactionService.executeTransaction(job?.data?.fundId ?? null)
       // const totalTransactions = refetch.reduce((acc, item) => {
       //   return acc + item.transferTransaction.length + item.receiverTransaction.length
       // }, 0)
