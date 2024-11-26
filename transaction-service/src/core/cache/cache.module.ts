@@ -13,9 +13,9 @@ import { Redis } from 'ioredis'
       provide: 'REDIS_CLIENT',
       useFactory: (configService: ConfigService) => {
         return new Redis({
-          host: configService.get<string>('redis.host', 'localhost'),
-          port: configService.get<number>('redis.port', 6379),
-          password: configService.get<string>('redis.password', 'your_password_here'),
+          host: configService.get<string>('REDIS_HOST', 'localhost'),
+          port: configService.get<number>('REDIS_PORT', 6379),
+          password: configService.get<string>('REDIS_PASSWORD', 'your_password_here'),
           keepAlive: 3000,
           enableAutoPipelining: true
         })
@@ -25,4 +25,4 @@ import { Redis } from 'ioredis'
   ],
   exports: [CacheService]
 })
-export class CacheRedisModule {}
+export class CacheRedisModule { }
