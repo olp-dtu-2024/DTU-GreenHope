@@ -1,4 +1,4 @@
-import { kafkaTopics } from "@/common/constants/kafka.constants"
+import { kafkaServiceName, kafkaTopics } from "@/common/constants/kafka.constants"
 import { DynamicType } from "@/common/types/common.type"
 
 export interface IResponseMessagesFromKafka {
@@ -10,4 +10,4 @@ export interface IResponseMessagesFromKafka {
 
 export type IKafkaTopic = typeof kafkaTopics
 
-export type IKafkaServiceName = 'lcdp-service' | 'blockchain'
+export type IKafkaServiceName = keyof typeof kafkaServiceName

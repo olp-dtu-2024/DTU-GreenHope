@@ -5,13 +5,13 @@ import {
   OnModuleInit
 } from '@nestjs/common'
 import { ClientKafka } from '@nestjs/microservices'
-import { kafkaConfig } from '@/common/constants/kafka.constants'
 import { IKafkaServiceName, IResponseMessagesFromKafka } from '@/common/types/kafka.type'
+import { kafkaConfig, kafkaServiceName } from '@/common/constants/kafka.constants'
 
 @Injectable()
 export class KafkaService implements OnModuleInit, OnApplicationShutdown {
   constructor(
-    @Inject(kafkaConfig.name) private lcdpService: ClientKafka,
+    @Inject(kafkaConfig.lcdpService.name) private lcdpService: ClientKafka,
   ) { }
 
   async emitEventByKafka<T extends IKafkaServiceName>(
@@ -20,7 +20,7 @@ export class KafkaService implements OnModuleInit, OnApplicationShutdown {
     data: any
   ) {
     switch (serviceName) {
-      case 'lcdp-service':
+      case 'lcdpService':
         return await this.emitEvent(this.lcdpService, topicName, {
           data,
           topicName

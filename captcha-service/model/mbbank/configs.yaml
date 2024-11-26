@@ -1,0 +1,9 @@
+batch_size: 64
+height: 50
+learning_rate: 0.001
+max_text_length: 6
+model_path: /content/drive/MyDrive/train_captcha/mbbank/Models/mbbank/202312131945
+train_epochs: 2000
+train_workers: 100
+vocab: UASmPHL9pDRvfwIcFVh07q4bZEazYNx6ol1gGdkyMOCr5W8sKBXutJniTe3Q2
+width: 160

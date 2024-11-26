@@ -3,27 +3,32 @@ import { Global, Module } from '@nestjs/common'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 import { Partitioners } from 'kafkajs'
 import { KafkaService } from '@/core/kafka/kafka.service'
+import { ConfigService, ConfigModule } from '@nestjs/config';
 
 @Global()
 @Module({
   imports: [
-    ClientsModule.register([
+    ClientsModule.registerAsync([
       {
-        name: kafkaConfig.name,
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            brokers: [kafkaConfig.brokers]
-          },
-          consumer: {
-            groupId: kafkaConfig.groupId,
-            allowAutoTopicCreation: true
-          },
-          producer: {
-            createPartitioner: Partitioners.LegacyPartitioner,
-            allowAutoTopicCreation: true
+        name: kafkaConfig.lcdpService.name,
+        useFactory: async (configService: ConfigService) => ({
+          transport: Transport.KAFKA,
+          options: {
+            client: {
+              brokers: configService.get<string>('KAFKA_BROKERS').split(','),
+            },
+            consumer: {
+              groupId: kafkaConfig.lcdpService.groupId,
+              allowAutoTopicCreation: true
+            },
+            producer: {
+              createPartitioner: Partitioners.LegacyPartitioner,
+              allowAutoTopicCreation: true
+            }
           }
-        }
+        }),
+        imports: [ConfigModule],
+        inject: [ConfigService]
       },
     ])
   ],
@@ -31,3 +36,4 @@ import { KafkaService } from '@/core/kafka/kafka.service'
   exports: [ClientsModule, KafkaService]
 })
 export class KafkaModule { }
+

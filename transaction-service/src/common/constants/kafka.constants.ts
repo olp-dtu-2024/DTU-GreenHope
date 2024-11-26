@@ -1,10 +1,21 @@
-export const kafkaConfig = {
-  name: 'LCDP_MAIN',
-  clientId: 'lcdp-service',
-  brokers: 'localhost:9092',
-  groupId: 'lcdp-consumers'
-}
-
 export const kafkaTopics = {
   getTransactionByFundId: 'getTransactionByFundId'
+}
+
+export const kafkaServiceName = {
+  lcdpService: 'lcdpService',
+  blockchain: 'blockchain'
+}
+
+export const kafkaConfig = {
+  lcdpService: {
+    name: 'LCDP_SERVICE',
+    clientId: 'lcdp-service',
+    groupId: 'lcdp-consumers',
+  },
+  transactionService: {
+    name: 'TRANSACTION_SERVICE',
+    clientId: 'transaction-service',
+    groupId: 'transaction-consumers',
+  }
 }
