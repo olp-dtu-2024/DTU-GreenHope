@@ -45,7 +45,7 @@ export class KafkaService implements OnModuleInit, OnApplicationShutdown {
     data: any
   ): Promise<IResponseMessagesFromKafka> => {
     return new Promise<IResponseMessagesFromKafka>((resolve, reject) =>
-      clientKafka.send(topicName, data).subscribe({
+      clientKafka.emit(topicName, data).subscribe({
         next: (result: IResponseMessagesFromKafka) => {
           resolve(result)
         },
