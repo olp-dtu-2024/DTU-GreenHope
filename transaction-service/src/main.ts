@@ -1,9 +1,6 @@
-import { MicroserviceOptions } from './../node_modules/@nestjs/microservices/interfaces/microservice-configuration.interface.d';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { BullMQSetup } from '@/common/utils/bull-mq';
-import { Transport } from '@nestjs/microservices';
-import { Partitioners } from 'kafkajs';
 import { MicroserviceSetup } from '@/common/utils/microservice';
 
 async function bootstrap() {
