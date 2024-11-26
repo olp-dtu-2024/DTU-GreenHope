@@ -1,8 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { BullMQSetup } from '@/common/utils/bull-mq';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.APP_PORT ?? 3000);
+  BullMQSetup(app)
+  await app.listen(process.env.APP_PORT);
 }
 bootstrap();
