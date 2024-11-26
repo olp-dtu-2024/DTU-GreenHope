@@ -1,3 +1,4 @@
+import { ErrorService } from "@/core/errors/error.service";
 import { Global, Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 
@@ -9,7 +10,7 @@ import { ConfigModule } from "@nestjs/config";
       envFilePath: ['.env']
     }),
   ],
-  providers: [],
-  exports: []
+  providers: [ErrorService],
+  exports: [ErrorService]
 })
 export class CoreModule { }
