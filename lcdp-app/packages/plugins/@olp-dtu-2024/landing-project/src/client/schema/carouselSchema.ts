@@ -16,7 +16,7 @@ export const carouselSchema: ISchema = {
     [CarouselBlockLowerCase]: {},
   },
   properties: {
-    carousel: {
+    [CarouselBlockLowerCase]: {
       type: 'void',
       'x-component': CarouselBlock,
       'x-use-component-props': 'useCarouselBlockProps',

@@ -3,7 +3,7 @@ import {
   useSchemaInitializer,
 } from '@nocobase/client';
 
-import { carouselSchema } from '../schema';
+import { carouselSchema } from '../schema/carouselSchema';
 import { useT } from '../locale';
 import { CarouselBlockLowerCase, CarouselBlock } from '../constants';
 
