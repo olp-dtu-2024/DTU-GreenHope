@@ -8,16 +8,22 @@ datasource db {
 }
 
 model Transaction {
-  id                  String    @id @default(uuid())
+  id                  String      @id @default(uuid())
   transactionId       String?
   amount              Float
   description         String?
+  direction           ETransactionDirection
   createdAt           DateTime
   transactionDateTime DateTime?
   createdBy           String?
-  updatedAt           DateTime  @updatedAt
+  updatedAt           DateTime    @updatedAt
   updatedBy           String?
   deletedAt           DateTime?
   deletedBy           String?
   fundId              String?
+}
+
+enum ETransactionDirection {
+  INCOMING
+  OUTCOMING
 }
