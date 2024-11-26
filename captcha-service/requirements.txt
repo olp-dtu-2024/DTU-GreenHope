@@ -4,3 +4,4 @@ fastapi
 onnxruntime
 pyyaml
 uvicorn
+jinja2

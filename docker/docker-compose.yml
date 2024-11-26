@@ -104,6 +104,16 @@ services:
           memory: 1G
           cpus: '1'
 
+  captcha-service:
+    build:
+      context: ../captcha-service
+      dockerfile: Dockerfile
+    container_name: captcha-service
+    ports:
+      - '1234:1234'
+    networks:
+      - olp-dtu-2024-network
+
 volumes:
   postgres-data-be:
   redis-data:
