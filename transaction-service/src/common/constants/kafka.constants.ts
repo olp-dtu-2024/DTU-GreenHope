@@ -1,5 +1,5 @@
 export const kafkaTopics = {
-  getTransactionByFundId: 'getTransactionByFundId'
+  responseTransactionByFundId: 'responseTransactionByFundId'
 }
 
 export const kafkaServiceName = {

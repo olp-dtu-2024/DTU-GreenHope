@@ -10,12 +10,18 @@ export class QueueRedisService {
   ) { }
 
   async enqueueRefetchTransaction(job: any): Promise<void> {
-    await this.refetchTransactionQueue.add('refetchTransaction', job, {
-      attempts: 3,
-      backoff: {
-        type: 'fixed',
-        delay: 2000,
-      },
-    });
+    try {
+      console.log('Attempting to add job to queue:', job);
+      await this.refetchTransactionQueue.add('refetchTransaction', job, {
+        attempts: 3,
+        backoff: {
+          type: 'fixed',
+          delay: 2000,
+        },
+      });
+      console.log('Job successfully added to queue');
+    } catch (error) {
+      console.error('Failed to add job to queue:', error);
+    }
   }
 }

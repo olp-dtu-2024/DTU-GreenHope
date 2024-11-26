@@ -2,8 +2,8 @@
 import { WorkerHost, Processor, OnWorkerEvent } from '@nestjs/bullmq'
 import { Logger } from '@nestjs/common'
 import { Job } from 'bullmq'
-import { EventEmitter2 } from '@nestjs/event-emitter'
 import { EPaymentEvents } from '@/common/types/payment.events'
+import { TransactionService } from '@/modules/transactions/transaction.service'
 
 @Processor('refetchTransaction')
 export class QueueProcessorRefetchTransaction extends WorkerHost {
@@ -11,7 +11,8 @@ export class QueueProcessorRefetchTransaction extends WorkerHost {
 
   constructor(
     // private readonly paymentService: PaymentService,
-    private readonly eventEmitter: EventEmitter2,
+    // private readonly eventEmitter: EventEmitter2,
+    private readonly transactionService: TransactionService
   ) {
     super()
   }
@@ -22,31 +23,30 @@ export class QueueProcessorRefetchTransaction extends WorkerHost {
     }
 
     try {
-      // const refetch = await this.paymentService.executeRefetch(job.data.payload)
-      const refetch = []
-      const totalTransactions = refetch.reduce((acc, item) => {
-        return acc + item.transferTransaction.length + item.receiverTransaction.length
-      }, 0)
-      const statusRefetch = refetch.some(
-        (item) => item.transferTransaction.length > 0 || item.receiverTransaction.length > 0
-      )
-        ? 'NEW_TRANSACTION'
-        : 'NO_NEW_TRANSACTION'
-      this.eventEmitter.emit(EPaymentEvents.REFETCH_COMPLETE, {
-        clientId: job.data.clientId,
-        responsePayload: {
-          messages: statusRefetch === 'NEW_TRANSACTION' ? `You have ${totalTransactions} new transaction !` : 'No new transaction found !',
-          status: statusRefetch
-        }
-      })
+      const refetch = await this.transactionService.executeTransaction(job?.data?.fundId ?? null)
+      // const totalTransactions = refetch.reduce((acc, item) => {
+      //   return acc + item.transferTransaction.length + item.receiverTransaction.length
+      // }, 0)
+      // const statusRefetch = refetch.some(
+      //   (item) => item.transferTransaction.length > 0 || item.receiverTransaction.length > 0
+      // )
+      //   ? 'NEW_TRANSACTION'
+      //   : 'NO_NEW_TRANSACTION'
+      // this.eventEmitter.emit(EPaymentEvents.REFETCH_COMPLETE, {
+      //   clientId: job.data.clientId,
+      //   responsePayload: {
+      //     messages: statusRefetch === 'NEW_TRANSACTION' ? `You have ${totalTransactions} new transaction !` : 'No new transaction found !',
+      //     status: statusRefetch
+      //   }
+      // })
       return true
     } catch (error) {
       if (error.message.includes('Unauthorize')) {
         this.logger.error(`Failed due to authorization issue: ${error.message}`)
-        this.eventEmitter.emit(EPaymentEvents.REFETCH_FAILED, {
-          clientId: job.data.clientId,
-          message: 'Account Bank is not authorized !'
-        })
+        // this.eventEmitter.emit(EPaymentEvents.REFETCH_FAILED, {
+        //   clientId: job.data.clientId,
+        //   message: 'Account Bank is not authorized !'
+        // })
         return error
       }
       this.logger.error(`Failed to refetch transaction: ${error.message}`, error.stack)
