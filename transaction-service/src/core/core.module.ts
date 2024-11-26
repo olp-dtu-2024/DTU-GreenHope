@@ -1,4 +1,5 @@
 import { ErrorService } from "@/core/errors/error.service";
+import { KafkaModule } from "@/core/kafka/kafka.module";
 import { BullModule } from "@nestjs/bullmq";
 import { Global, Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
@@ -25,6 +26,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
     BullModule.registerQueue({
       name: 'refetchTransaction',
     }),
+    KafkaModule
   ],
   providers: [ErrorService],
   exports: [ErrorService]

@@ -1,0 +1,6 @@
+opencv-python
+numpy
+fastapi
+onnxruntime
+pyyaml
+uvicorn
