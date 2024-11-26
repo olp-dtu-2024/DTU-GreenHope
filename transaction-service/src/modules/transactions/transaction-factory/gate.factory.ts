@@ -10,13 +10,14 @@ export class GateFactory {
     private readonly cacheService: CacheService,
   ) { }
 
-  create(config: GateConfig, captchaSolver: CaptchaSolverService, transactionService: TransactionService) {
+  create(config: GateConfig, captchaSolver: CaptchaSolverService, transactionService: TransactionService, databaseService: DatabaseService) {
     const mbBank = new MBBankService(
       config,
       captchaSolver,
       transactionService,
       config.login_id,
       this.cacheService,
+      databaseService
     )
     return mbBank
   }

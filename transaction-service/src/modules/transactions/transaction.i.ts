@@ -36,6 +36,7 @@ export interface GateConfig {
   get_transaction_day_limit?: number
   get_transaction_count_limit?: number
   accountId?: string
+  fundId: string
 }
 
 export interface ITokenMBBank {
