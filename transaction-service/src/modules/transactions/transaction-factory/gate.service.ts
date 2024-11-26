@@ -4,6 +4,8 @@ import { GateConfig, IResponsePaymentTransaction, Transaction } from '../transac
 import moment from 'moment-timezone'
 import { CacheService } from '@/core/cache/cache.service'
 import { TransactionService } from '@/modules/transactions/transaction.service'
+import { DatabaseService } from '@/core/database/database.service'
+import { ETransactionDirection } from '@prisma/client';
 
 @Injectable()
 export abstract class Gate {
@@ -17,6 +19,7 @@ export abstract class Gate {
     protected readonly transactionService: TransactionService,
     protected readonly loginId: string,
     protected readonly cacheService: CacheService,
+    protected readonly databaseService: DatabaseService
   ) { }
 
   abstract getHistory(loginId: string): Promise<IResponsePaymentTransaction>
@@ -43,70 +46,68 @@ export abstract class Gate {
         type: payments
       })
     )
+    console.log('fundId', this.config.fundId);
 
-    // const exitsTransaction = await this.databaseService.client.transaction.findMany({
-    //   where: {
-    //     accountBankId: this.accountId,
-    //     ofAccountId: this.config.accountId
-    //   },
-    //   select: {
-    //     transactionId: true
-    //   }
-    // })
+    const exitsTransaction = await this.databaseService.client.transaction.findMany({
+      select: {
+        transactionId: true
+      }
+    })
 
-    // const newPayments = payments.filter((payment) => !this.isExists(payment, exitsTransaction))
-    // let replaceDateTimeNewPayments = newPayments.map((payment) => ({
-    //   ...payment,
-    //   date: this.replaceDateTodayAndNoTime(payment.date)
-    // }))
+    const newPayments = payments.filter((payment) => !this.isExists(payment, exitsTransaction))
+    let replaceDateTimeNewPayments = newPayments.map((payment) => ({
+      ...payment,
+      date: this.replaceDateTodayAndNoTime(payment.date)
+    }))
 
     const result = {
       transferTransaction: [],
       receiverTransaction: []
     }
 
-    // if (replaceDateTimeNewPayments.length == 0) return result
+    if (replaceDateTimeNewPayments.length == 0) return result
 
-    // replaceDateTimeNewPayments = replaceDateTimeNewPayments
-    //   .slice(-500)
-    //   .sort((a, b) => b.date.getTime() - a.date.getTime())
+    replaceDateTimeNewPayments = replaceDateTimeNewPayments
+      .slice(-500)
+      .sort((a, b) => b.date.getTime() - a.date.getTime())
 
-    // replaceDateTimeNewPayments.forEach((transaction) => {
-    //   if (Number(transaction.transferAmount) === 0 && Number(transaction.receiveAmount) > 0) {
-    //     result.receiverTransaction.push(transaction)
-    //   } else {
-    //     result.transferTransaction.push(transaction)
-    //   }
-    // })
+    replaceDateTimeNewPayments.forEach((transaction) => {
+      if (Number(transaction.transferAmount) === 0 && Number(transaction.receiveAmount) > 0) {
+        result.receiverTransaction.push(transaction)
+      } else {
+        result.transferTransaction.push(transaction)
+      }
+    })
 
-    // await Promise.all([
-    //   result.receiverTransaction.map(async (transaction) => {
-    //     return await this.transactionService.createTransactionInBank({
-    //       accountBankId: this.accountId,
-    //       amount: transaction.receiveAmount,
-    //       description: transaction.description,
-    //       date: transaction.date,
-    //       transactionId: transaction.transaction_id,
-    //       accountId: this.config.accountId,
-    //       direction: ETransactionDirection.INCOMING
-    //     })
-    //   }),
+    await Promise.all([
+      result.receiverTransaction.map(async (transaction) => {
+        return await this.databaseService.client.transaction.create({
+          data: {
+            amount: transaction.receiveAmount,
+            description: transaction.description,
+            transactionId: transaction.transaction_id,
+            direction: ETransactionDirection.INCOMING,
+            createdAt: transaction.date,
+            fundId: this.config.fundId,
+            transactionDateTime: transaction.date
+          }
+        })
+      }),
 
-    //   result.transferTransaction.map(async (transaction) => {
-    //     return await this.transactionService.createTransactionInBank({
-    //       accountBankId: this.accountId,
-    //       amount: transaction.transferAmount,
-    //       description: transaction.description,
-    //       date: transaction.date,
-    //       transactionId: transaction.transaction_id,
-    //       accountId: this.config.accountId,
-    //       direction: ETransactionDirection.EXPENSE,
-    //       toAccountName: transaction.benAccountName,
-    //       toAccountNo: transaction.benAccountNo,
-    //       toBankName: transaction.bankName
-    //     })
-    //   })
-    // ])
+      result.transferTransaction.map(async (transaction) => {
+        return await this.databaseService.client.transaction.create({
+          data: {
+            amount: transaction.transferAmount,
+            description: transaction.description,
+            transactionId: transaction.transaction_id,
+            direction: ETransactionDirection.OUTCOMING,
+            createdAt: transaction.date,
+            fundId: this.config.fundId,
+            transactionDateTime: transaction.date
+          }
+        })
+      })
+    ])
 
     return result
   }

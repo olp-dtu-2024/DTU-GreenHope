@@ -1,4 +1,5 @@
 import { CacheService } from '@/core/cache/cache.service';
+import { DatabaseService } from '@/core/database/database.service';
 import { QueueRedisService } from '@/core/queues/queue-redis.service';
 import { CaptchaSolverService } from '@/modules/captcha-solver/captcha-solver.service';
 import { GateFactory } from '@/modules/transactions/transaction-factory/gate.factory';
@@ -12,25 +13,25 @@ export class TransactionService {
     private readonly configService: ConfigService,
     private readonly cacheService: CacheService,
     private readonly captchaSolver: CaptchaSolverService,
+    private readonly databaseService: DatabaseService
   ) { }
-  getTransactions() {
+  getTransactions(fundId: string) {
     this.queueRedisService.enqueueRefetchTransaction({
-      hi: 'he'
+      fundId
     })
   }
 
-  async executeTransaction() {
+  async executeTransaction(fundId: string) {
     const gateFactory = new GateFactory(this.cacheService)
-    console.log('executing transaction');
     const config = {
       login_id: this.configService.get<string>('MB_LOGIN_ID'),
       password: this.configService.get<string>('MB_PASSWORD'),
       account: this.configService.get<string>('MB_ACCOUNT_ID'),
       name: 'mb_bank_1',
       repeat_interval_in_sec: 10,
+      fundId
     }
-    console.log('config', config);
-    const gateInstance = gateFactory.create(config, this.captchaSolver, this)
+    const gateInstance = gateFactory.create(config, this.captchaSolver, this, this.databaseService)
     return await gateInstance.execute()
   }
 }
