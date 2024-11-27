@@ -23,9 +23,6 @@ jobs:
       - name: Authenticate to GitHub Packages
         run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
 
-      - name: Install dependencies
-        run: npm install
-
       - name: Publish package
         run: |
           if [[ $(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '^package/') ]]; then
