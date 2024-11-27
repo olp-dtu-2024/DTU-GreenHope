@@ -26,12 +26,19 @@ export function getInfoSchema({ dataSource = 'main', collection }) {
     },
     'x-component': 'CardItem',
     'x-toolbar': 'BlockSchemaToolbar',
+    'x-settings': infoSettings.name,
     properties: {
       [InfoBlockLowerCase]: {
         type: 'void',
         'x-component': InfoBlock,
         'x-use-component-props': 'useInfoProps',
-        'x-settings': infoSettings.name,
+        properties: {
+          fields: {
+            type: 'void',
+            'x-component': 'Grid',
+            'x-initializer': 'info:configureFields',
+          },
+        },
       },
     },
   };

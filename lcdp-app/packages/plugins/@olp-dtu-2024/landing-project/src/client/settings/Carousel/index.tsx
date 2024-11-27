@@ -1,4 +1,8 @@
-import { SchemaSettings, SchemaSettingsBlockTitleItem } from '@nocobase/client';
+import {
+  SchemaSettings,
+  SchemaSettingsBlockTitleItem,
+  SchemaSettingsDataScope,
+} from '@nocobase/client';
 import { CarouselBlockLowerCase } from '../../constants';
 import { heightSchemaSettingsItem } from './items/height';
 import { imagesSchemaSettingsItem } from './items/images';
