@@ -29,9 +29,8 @@ yarn add @olp-dtu-2024/kafka-nocobase
 
 ## Yêu Cầu Tiên Quyết
 
-- NocoBase phiên bản 1.x
+- NocoBase phiên bản 18x
 - KafkaJS phiên bản 2.2.4 trở lên
-
 
 ## Tác Giả
 
