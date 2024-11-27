@@ -5,7 +5,6 @@ import {
 } from '@nocobase/client';
 import { CarouselBlockLowerCase } from '../../constants';
 import { heightSchemaSettingsItem } from './items/height';
-import { imagesSchemaSettingsItem } from './items/images';
 import { objectFitSchemaSettingsItem } from './items/objectFit';
 
 export const carouselSettings = new SchemaSettings({
@@ -25,7 +24,6 @@ export const carouselSettings = new SchemaSettings({
         },
       },
     },
-    imagesSchemaSettingsItem,
     heightSchemaSettingsItem,
     objectFitSchemaSettingsItem,
   ],

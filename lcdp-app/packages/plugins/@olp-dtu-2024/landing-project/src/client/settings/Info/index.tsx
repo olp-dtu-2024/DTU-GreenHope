@@ -1,10 +1,9 @@
 import {
-  SchemaSettingItemContext,
   SchemaSettings,
   SchemaSettingsDataScope,
+  useAPIClient,
 } from '@nocobase/client';
 import { InfoBlockLowerCase } from '../../constants';
-import { useCollection } from '@nocobase/client';
 
 export const infoSettings = new SchemaSettings({
   name: `blockSettings:${InfoBlockLowerCase}`,
@@ -12,6 +11,12 @@ export const infoSettings = new SchemaSettings({
     {
       name: SchemaSettingsDataScope.name,
       Component: SchemaSettingsDataScope,
+      componentProps: {
+        collectionName: 'projects',
+        onSubmit: async (data) => {
+          console.log('>>>', data);
+        },
+      },
     },
     {
       type: 'remove',

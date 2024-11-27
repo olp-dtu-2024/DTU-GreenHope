@@ -2,6 +2,8 @@ import React from 'react';
 import { ISchema, SchemaSettings, useCollection } from '@nocobase/client';
 import { useFieldSchema } from '@formily/react';
 import { uid } from '@formily/shared';
+import { CarouselBlock } from '../constants';
+import { Info } from '../component';
 
 export const infoItemSettings = new SchemaSettings({
   name: 'fieldSettings:info',
@@ -22,11 +24,12 @@ export const infoItemSettings = new SchemaSettings({
 export const InfoItem = () => {
   const fieldSchema = useFieldSchema();
   const collection = useCollection();
-  const collectionFieldName = fieldSchema.name;
+  const field = collection.getField(fieldSchema.name);
+
   return (
-    <pre>
-      {JSON.stringify(collection.getField(collectionFieldName), null, 2)}
-    </pre>
+    <Info fieldName={fieldSchema.name as string} value={field?.value}>
+      <pre>{JSON.stringify(field, null, 2)}</pre>
+    </Info>
   );
 };
 

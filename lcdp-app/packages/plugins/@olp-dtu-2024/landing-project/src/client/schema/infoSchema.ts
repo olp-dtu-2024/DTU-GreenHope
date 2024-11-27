@@ -1,19 +1,5 @@
-import { useCollection, useDataBlockRequest } from '@nocobase/client';
-
-import { InfoProps } from '../component';
 import { InfoBlock, InfoBlockLowerCase } from '../constants';
 import { infoSettings } from '../settings/Info';
-
-export function useInfoProps(): InfoProps {
-  const collection = useCollection();
-  const { data, loading } = useDataBlockRequest<any[]>();
-
-  return {
-    collectionName: collection.name,
-    data: data?.data,
-    loading: loading,
-  };
-}
 
 export function getInfoSchema({ dataSource = 'main', collection }) {
   return {

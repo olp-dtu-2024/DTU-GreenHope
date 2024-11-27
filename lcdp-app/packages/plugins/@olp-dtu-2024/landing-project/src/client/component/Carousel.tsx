@@ -4,14 +4,10 @@ import {
   Result,
   CarouselProps as AntdCarouselProps,
 } from 'antd';
-import { withDynamicSchemaProps } from '@nocobase/client';
+import { useAPIClient, withDynamicSchemaProps } from '@nocobase/client';
 import { CarouselBlock } from '../constants';
 
 export interface CarouselProps extends AntdCarouselProps {
-  images?: { url: string; title?: string }[];
-  /**
-   * @default 300
-   */
   height?: number;
   /**
    * @default 'cover'
@@ -21,12 +17,25 @@ export interface CarouselProps extends AntdCarouselProps {
 
 export const Carousel: FC<CarouselProps> = withDynamicSchemaProps(
   (props) => {
-    const {
-      images,
-      height = 300,
-      objectFit = 'cover',
-      ...carouselProps
-    } = props;
+    const { height = 300, objectFit = 'cover', ...carouselProps } = props;
+    const [images, setImages] = React.useState([]);
+    const apiClient = useAPIClient();
+    React.useEffect(() => {
+      const fetchImages = async () => {
+        const id = new URLSearchParams(window.location.search).get('id');
+        if (id) {
+          const response = await apiClient.resource('projects').get({
+            filterByTk: id,
+            appends: ['images'],
+          });
+          if (response.data?.data?.images) {
+            setImages(response.data.data.images);
+          }
+        }
+      };
+
+      fetchImages();
+    }, []); // Chạy một lần khi component mount
     return images && images.length ? (
       <AntdCarousel {...carouselProps}>
         {images.map((image) => (
