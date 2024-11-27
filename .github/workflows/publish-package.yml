@@ -25,9 +25,10 @@ jobs:
 
       - name: Publish package
         run: |
-          if [[ $(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '^package/') ]]; then
-            echo "Changes detected in 'package' directory, publishing package..."
+          # Kiểm tra nếu có thay đổi trong thư mục lcdp-app/packages/
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '^lcdp-app/packages/'; then
+            echo "Changes detected in 'lcdp-app/packages' directory, publishing package..."
             npm publish --registry=https://npm.pkg.github.com/
           else
-            echo "No changes detected in 'package' directory, skipping publish."
+            echo "No changes detected in 'lcdp-app/packages' directory, skipping publish."
           fi
