@@ -16,6 +16,8 @@ Hệ thống kết hợp các công nghệ hiện đại để đảm bảo minh
 
 ## 🏗️ Kiến trúc hệ thống
 
+![s](docs/resources/LCDP-Architecture.png)
+
 ### 💻 Công nghệ nền tảng
 
 | Công nghệ | Chức năng | Ưu điểm |
@@ -61,6 +63,15 @@ Hệ thống kết hợp các công nghệ hiện đại để đảm bảo minh
 ## 🌿 Kỳ vọng tương lai
 
 Chúng tôi hướng đến việc kết hợp thêm các công nghệ bền vững, hỗ trợ AI để tối ưu cứu trợ và giúp đỡ cộng đồng trong thời gian thực. Cùng nhau, chúng ta xây dựng một thế giới tốt đẹp hơn!
+
+
+
+## 👩‍🏫 Giảng viên hướng dẫn
+
+- 📝 **Name**: Nguyễn Quốc Long
+- 📧 **Email**: quoclongdng@gmail.com
+
+---
 
 ## 📞 Liên hệ & Kết nối
 
