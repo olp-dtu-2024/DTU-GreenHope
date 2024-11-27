@@ -1,6 +1,6 @@
 import { Plugin } from '@nocobase/server';
 
-export class LandingProjectServer extends Plugin {
+export class CarouselServer extends Plugin {
   async afterAdd() {}
 
   async beforeLoad() {}
@@ -16,4 +16,4 @@ export class LandingProjectServer extends Plugin {
   async remove() {}
 }
 
-export default LandingProjectServer;
+export default CarouselServer;

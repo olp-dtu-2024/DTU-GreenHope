@@ -5,7 +5,7 @@
 -- Dumped from database version 16.4
 -- Dumped by pg_dump version 16.4
 
--- Started on 2024-11-27 10:24:40 UTC
+-- Started on 2024-11-27 15:53:33 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1194,8 +1194,8 @@ CREATE TABLE public.projects (
     name character varying(255),
     total_amount double precision DEFAULT '0'::double precision,
     construction_site character varying(255) DEFAULT ''::character varying,
-    actual_expenditures jsonb,
-    is_deleted bigint DEFAULT 0
+    is_deleted bigint DEFAULT 0,
+    sub_title character varying(255)
 );
 
 
@@ -2527,7 +2527,7 @@ COPY public."applicationPlugins" (id, "createdAt", "updatedAt", name, "packageNa
 50	2024-11-22 08:42:36.455+00	2024-11-24 13:49:14.928+00	field-markdown-vditor	@nocobase/plugin-field-markdown-vditor	1.3.52	f	t	\N	\N
 61	2024-11-24 03:34:37.804+00	2024-11-24 03:35:12.479+00	@olp-dtu-2024/ui	@olp-dtu-2024/ui	0.1.0	t	t	\N	\N
 59	2024-11-23 15:30:20.12+00	2024-11-25 05:45:43.086+00	@olp-dtu-2024/landing-page	@olp-dtu-2024/landing-page	0.1.0	t	t	\N	\N
-63	2024-11-26 23:01:46.078+00	2024-11-26 23:03:34.162+00	@olp-dtu-2024/landing-project	@olp-dtu-2024/landing-project	0.1.0	t	t	\N	\N
+64	2024-11-27 15:25:59.045+00	2024-11-27 15:26:53.128+00	@olp-dtu-2024/carousel	@olp-dtu-2024/carousel	0.1.0	t	t	\N	\N
 \.
 
 
@@ -6184,7 +6184,6 @@ q9o748vg4ve	createdAt	date	createdAt	\N	projects	\N	\N	{"field":"createdAt","uiS
 6t9rflv76yl	createdBy	belongsTo	createdBy	\N	projects	\N	\N	{"target":"users","foreignKey":"createdById","uiSchema":{"type":"object","title":"{{t(\\"Created by\\")}}","x-component":"AssociationField","x-component-props":{"fieldNames":{"value":"id","label":"nickname"}},"x-read-pretty":true},"targetKey":"id"}	3
 h1hhea0z4wp	updatedAt	date	updatedAt	\N	projects	\N	\N	{"field":"updatedAt","uiSchema":{"type":"string","title":"{{t(\\"Last updated at\\")}}","x-component":"DatePicker","x-component-props":{},"x-read-pretty":true}}	4
 bh0xstx09p0	updatedBy	belongsTo	updatedBy	\N	projects	\N	\N	{"target":"users","foreignKey":"updatedById","uiSchema":{"type":"object","title":"{{t(\\"Last updated by\\")}}","x-component":"AssociationField","x-component-props":{"fieldNames":{"value":"id","label":"nickname"}},"x-read-pretty":true},"targetKey":"id"}	5
-3knot8stqiq	actual_expenditures	json	json	Danh sách cac khoản chi thực tế dự kiến { reason: string, amount: number }	projects	\N	\N	{"defaultValue":null,"uiSchema":{"type":"object","x-component":"Input.JSON","x-component-props":{"autoSize":{"minRows":5}},"default":null,"title":"Actual Expenditures"},"jsonb":true}	9
 pm3gc0fxe88	target_amount	double	number	\N	funds	\N	\N	{"uiSchema":{"x-component-props":{"step":"0.0001","stringMode":true},"type":"number","x-component":"InputNumber","title":"Target Amount"}}	7
 7t4prqwojgq	current_amount	double	number	\N	funds	\N	\N	{"uiSchema":{"x-component-props":{"step":"0.0001","stringMode":true},"type":"number","x-component":"InputNumber","title":"Current Amount"}}	8
 crmmbnj9ia7	description	text	textarea	\N	funds	\N	\N	{"uiSchema":{"type":"string","x-component":"Input.TextArea","title":"Description"}}	10
@@ -6211,6 +6210,7 @@ r0faff22n1u	is_deleted	bigInt	integer	\N	funds	\N	\N	{"uiSchema":{"type":"number
 py2pvrrxk3n	is_deleted	bigInt	integer	\N	transactions	\N	\N	{"uiSchema":{"type":"number","x-component":"InputNumber","x-component-props":{"stringMode":true,"step":"1"},"x-validator":"integer","title":"Is Deleted"},"defaultValue":0}	16
 k2m3hzx00cm	qr_code_url	text	url	\N	funds	\N	\N	{"uiSchema":{"type":"string","x-component":"Input.URL","title":"QR Code Url"}}	12
 htj0x3vc2hp	images	belongsToMany	attachment	\N	projects	\N	\N	{"uiSchema":{"x-component-props":{"multiple":true,"accept":"image/*"},"type":"array","x-component":"Upload.Attachment","x-use-component-props":"useAttachmentFieldProps","title":"Hình ảnh"},"target":"attachments","storage":"local","through":"t_bzkvdw2a767","foreignKey":"f_s8php2rxxwe","otherKey":"f_qxu5av3g0sx","targetKey":"id","sourceKey":"id"}	12
+q5ty0c42q5t	sub_title	string	input	\N	projects	\N	\N	{"uiSchema":{"type":"string","x-component":"Input","title":"Mô tả ngắn"}}	13
 \.
 
 
@@ -6406,9 +6406,9 @@ COPY public.migrations (name) FROM stdin;
 -- Data for Name: projects; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.projects ("createdAt", "updatedAt", id, "createdById", "updatedById", name, total_amount, construction_site, actual_expenditures, is_deleted) FROM stdin;
-2024-11-27 05:12:46.906+00	2024-11-27 05:12:46.906+00	26	1	1	Dự án 2	20000000	HCM	\N	0
-2024-11-25 06:57:02.948+00	2024-11-25 07:08:32.343+00	25	1	1	Dự án 1	1000000	Đà Nẵng	\N	0
+COPY public.projects ("createdAt", "updatedAt", id, "createdById", "updatedById", name, total_amount, construction_site, is_deleted, sub_title) FROM stdin;
+2024-11-27 05:12:46.906+00	2024-11-27 05:12:46.906+00	26	1	1	Dự án 2	20000000	HCM	0	\N
+2024-11-25 06:57:02.948+00	2024-11-25 07:08:32.343+00	25	1	1	Dự án 1	1000000	Đà Nẵng	0	\N
 \.
 
 
@@ -11584,6 +11584,9 @@ nocobase-admin-menu	mexjj7b1g93	11	\N	\N	\N
 nocobase-admin-menu	qkanxqd13dl	12	\N	\N	\N
 u62y9zt7gwu	u62y9zt7gwu	0	f	properties	\N
 yc5x6qvg4mh	u62y9zt7gwu	1	\N	\N	1
+lc1jm6dpsrp	lc1jm6dpsrp	0	f	properties	\N
+luu86la6tb1	lc1jm6dpsrp	1	\N	\N	1
+wrrgz9e3y2l	wrrgz9e3y2l	0	f	properties	\N
 v4rijabnpgp	v4rijabnpgp	0	f	properties	\N
 r6v5yp99nbl	v4rijabnpgp	1	\N	\N	1
 zwlt9p2m4v5	zwlt9p2m4v5	0	f	properties	\N
@@ -11649,6 +11652,8 @@ r6v5yp99nbl	r6v5yp99nbl	0	f	properties	\N
 n596xt7b4gz	r6v5yp99nbl	1	\N	\N	8
 ilc9ma1uakv	ilc9ma1uakv	0	f	properties	\N
 xw2eyjxkao7	xw2eyjxkao7	0	f	properties	\N
+lc1jm6dpsrp	wrrgz9e3y2l	1	\N	\N	1
+luu86la6tb1	wrrgz9e3y2l	2	\N	\N	1
 xw2eyjxkao7	ilc9ma1uakv	1	\N	\N	1
 xhaimvl6v3t	xhaimvl6v3t	0	f	properties	\N
 ilc9ma1uakv	xhaimvl6v3t	1	\N	\N	1
@@ -11680,6 +11685,7 @@ ypqs0x71ybe	xw2eyjxkao7	9	\N	\N	\N
 ypqs0x71ybe	ilc9ma1uakv	10	\N	\N	\N
 ypqs0x71ybe	xhaimvl6v3t	11	\N	\N	\N
 u62y9zt7gwu	xw2eyjxkao7	10	\N	\N	\N
+luu86la6tb1	luu86la6tb1	0	f	properties	\N
 u62y9zt7gwu	ilc9ma1uakv	11	\N	\N	\N
 u62y9zt7gwu	xhaimvl6v3t	12	\N	\N	\N
 yc5x6qvg4mh	xw2eyjxkao7	11	\N	\N	\N
@@ -11746,6 +11752,12 @@ i0lnhtci4u6	darepap4yo5	17	\N	\N	\N
 swxvjglsevf	darepap4yo5	18	\N	\N	\N
 nocobase-admin-menu	darepap4yo5	19	\N	\N	\N
 4gnesuyiq9w	darepap4yo5	1	\N	\N	1
+xaiv6bxfonx	xaiv6bxfonx	0	f	properties	\N
+lc1jm6dpsrp	xaiv6bxfonx	1	\N	\N	2
+luu86la6tb1	xaiv6bxfonx	2	\N	\N	2
+u5xpd0w3jh3	u5xpd0w3jh3	0	f	properties	\N
+lc1jm6dpsrp	u5xpd0w3jh3	1	\N	\N	3
+luu86la6tb1	u5xpd0w3jh3	2	\N	\N	3
 wtu8v3wspnv	wtu8v3wspnv	0	f	properties	\N
 dv1xjwdmvcg	wtu8v3wspnv	1	\N	\N	1
 oi4cs4tbslz	oi4cs4tbslz	0	f	properties	\N
@@ -11847,6 +11859,7 @@ llvsctq28hp	mn6suiqsq19	18	\N	\N	\N
 8xvbgh18zfk	mn6suiqsq19	19	\N	\N	\N
 2pij3wiepc4	ajm7jf8wbgk	19	\N	\N	\N
 2pij3wiepc4	mn6suiqsq19	20	\N	\N	\N
+fe7kgdo55ax	cbhgjqiskk5	2	\N	\N	\N
 we414l1saan	ajm7jf8wbgk	20	\N	\N	\N
 we414l1saan	mn6suiqsq19	21	\N	\N	\N
 t4v2kcudvg5	ajm7jf8wbgk	11	\N	\N	\N
@@ -11937,6 +11950,29 @@ nocobase-admin-menu	04h4z2y4t0n	10	\N	\N	\N
 17dq5190uui	17dq5190uui	0	f	properties	\N
 nc92u2m878d	q9zjnv8mc9j	1	\N	\N	9
 nc92u2m878d	17dq5190uui	1	\N	\N	8
+hmft2ujv1uf	cbhgjqiskk5	3	\N	\N	\N
+nocobase-admin-menu	cbhgjqiskk5	4	\N	\N	\N
+cbhgjqiskk5	cbhgjqiskk5	0	f	properties	\N
+7poa6levyva	cbhgjqiskk5	1	\N	\N	7
+a6osakgoyy3	lc1jm6dpsrp	2	\N	\N	\N
+a6osakgoyy3	wrrgz9e3y2l	3	\N	\N	\N
+a6osakgoyy3	xaiv6bxfonx	3	\N	\N	\N
+a6osakgoyy3	u5xpd0w3jh3	3	\N	\N	\N
+a6osakgoyy3	luu86la6tb1	1	\N	\N	1
+natitkej0fr	luu86la6tb1	2	\N	\N	\N
+natitkej0fr	lc1jm6dpsrp	3	\N	\N	\N
+natitkej0fr	wrrgz9e3y2l	4	\N	\N	\N
+natitkej0fr	xaiv6bxfonx	4	\N	\N	\N
+natitkej0fr	u5xpd0w3jh3	4	\N	\N	\N
+7poa6levyva	a6osakgoyy3	2	\N	\N	\N
+7poa6levyva	luu86la6tb1	3	\N	\N	\N
+7poa6levyva	lc1jm6dpsrp	4	\N	\N	\N
+7poa6levyva	wrrgz9e3y2l	5	\N	\N	\N
+7poa6levyva	xaiv6bxfonx	5	\N	\N	\N
+7poa6levyva	u5xpd0w3jh3	5	\N	\N	\N
+fe7kgdo55ax	a6osakgoyy3	3	\N	\N	\N
+fe7kgdo55ax	luu86la6tb1	4	\N	\N	\N
+fe7kgdo55ax	oq5d1lxpmfu	2	\N	\N	\N
 wsafpwbqr88	wsafpwbqr88	0	f	properties	\N
 ifzzkj7loaj	ifzzkj7loaj	0	f	properties	\N
 k99w3v09n98	ifzzkj7loaj	1	\N	\N	1
@@ -11997,6 +12033,10 @@ k99w3v09n98	wsafpwbqr88	2	\N	\N	\N
 k99w3v09n98	jfqsx79zobd	3	\N	\N	\N
 k99w3v09n98	66lgu9id6bj	4	\N	\N	\N
 k99w3v09n98	8t2c5f2jjl9	5	\N	\N	\N
+hmft2ujv1uf	oq5d1lxpmfu	3	\N	\N	\N
+nocobase-admin-menu	oq5d1lxpmfu	4	\N	\N	\N
+oq5d1lxpmfu	oq5d1lxpmfu	0	f	properties	\N
+7poa6levyva	oq5d1lxpmfu	1	\N	\N	6
 k99w3v09n98	odogwwfdotc	6	\N	\N	\N
 k99w3v09n98	oj491oo69he	6	\N	\N	\N
 48d58aj2z3f	wsafpwbqr88	3	\N	\N	\N
@@ -12411,6 +12451,24 @@ llvsctq28hp	lo3cfi2mnr8	5	\N	\N	\N
 we414l1saan	lo3cfi2mnr8	8	\N	\N	\N
 nocobase-admin-menu	lo3cfi2mnr8	9	\N	\N	\N
 c6mpmcq8sh2	lo3cfi2mnr8	1	\N	\N	2
+fe7kgdo55ax	lc1jm6dpsrp	5	\N	\N	\N
+fe7kgdo55ax	wrrgz9e3y2l	6	\N	\N	\N
+fe7kgdo55ax	xaiv6bxfonx	6	\N	\N	\N
+fe7kgdo55ax	u5xpd0w3jh3	6	\N	\N	\N
+hmft2ujv1uf	a6osakgoyy3	4	\N	\N	\N
+hmft2ujv1uf	luu86la6tb1	5	\N	\N	\N
+hmft2ujv1uf	lc1jm6dpsrp	6	\N	\N	\N
+hmft2ujv1uf	wrrgz9e3y2l	7	\N	\N	\N
+hmft2ujv1uf	xaiv6bxfonx	7	\N	\N	\N
+hmft2ujv1uf	u5xpd0w3jh3	7	\N	\N	\N
+nocobase-admin-menu	a6osakgoyy3	5	\N	\N	\N
+nocobase-admin-menu	luu86la6tb1	6	\N	\N	\N
+nocobase-admin-menu	lc1jm6dpsrp	7	\N	\N	\N
+nocobase-admin-menu	wrrgz9e3y2l	8	\N	\N	\N
+nocobase-admin-menu	xaiv6bxfonx	8	\N	\N	\N
+nocobase-admin-menu	u5xpd0w3jh3	8	\N	\N	\N
+a6osakgoyy3	a6osakgoyy3	0	f	properties	\N
+natitkej0fr	a6osakgoyy3	1	\N	\N	2
 xt3d9e6vpx3	xt3d9e6vpx3	0	t	properties	\N
 8k1zlpvo9rl	xt3d9e6vpx3	1	\N	\N	1
 hfflouqm5vf	hfflouqm5vf	0	f	properties	\N
@@ -12623,6 +12681,13 @@ nocobase-admin-menu	vsj0dfm9bdq	6	\N	\N	\N
 nocobase-admin-menu	55y05lnguuw	7	\N	\N	\N
 natitkej0fr	natitkej0fr	0	f	properties	\N
 7poa6levyva	natitkej0fr	1	\N	\N	3
+fe7kgdo55ax	5po28o9th2g	2	\N	\N	\N
+hmft2ujv1uf	5po28o9th2g	3	\N	\N	\N
+nocobase-admin-menu	5po28o9th2g	4	\N	\N	\N
+5po28o9th2g	5po28o9th2g	0	f	properties	\N
+7poa6levyva	5po28o9th2g	1	\N	\N	4
+tavzpgzflnv	tavzpgzflnv	0	f	properties	\N
+s41jwc7ushc	tavzpgzflnv	1	\N	\N	1
 fe7kgdo55ax	fe7kgdo55ax	0	t	properties	\N
 hmft2ujv1uf	fe7kgdo55ax	1	\N	\N	1
 7poa6levyva	7poa6levyva	0	f	properties	\N
@@ -12632,6 +12697,15 @@ nocobase-admin-menu	fe7kgdo55ax	2	\N	\N	\N
 nocobase-admin-menu	7poa6levyva	3	\N	\N	\N
 hmft2ujv1uf	hmft2ujv1uf	0	f	properties	\N
 nocobase-admin-menu	hmft2ujv1uf	1	\N	\N	11
+7poa6levyva	tavzpgzflnv	2	\N	\N	\N
+fe7kgdo55ax	s41jwc7ushc	2	\N	\N	\N
+fe7kgdo55ax	tavzpgzflnv	3	\N	\N	\N
+hmft2ujv1uf	s41jwc7ushc	3	\N	\N	\N
+hmft2ujv1uf	tavzpgzflnv	4	\N	\N	\N
+nocobase-admin-menu	s41jwc7ushc	4	\N	\N	\N
+nocobase-admin-menu	tavzpgzflnv	5	\N	\N	\N
+s41jwc7ushc	s41jwc7ushc	0	f	properties	\N
+7poa6levyva	s41jwc7ushc	1	\N	\N	5
 6qulve4ybk4	6qulve4ybk4	0	f	properties	\N
 y05re45hs3a	6qulve4ybk4	1	\N	\N	5
 4ryyxzuq87v	4ryyxzuq87v	0	f	properties	\N
@@ -13094,7 +13168,6 @@ pih9m66uox0	1q06k9gio15	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 g1zqulbaq33	lohgfrxkrn8	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
 svu377s09m8	createdAt	{"x-uid":"svu377s09m8","name":"createdAt","_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"projects.createdAt","x-component":"CollectionField","x-component-props":{"dateFormat":"MMMM Do YYYY","showTime":false},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
 natitkej0fr	feq3s45vdjj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
-c0fmoqtflrf	vpbzvgn9cwd	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 fu4hqwdhjna	ua1vwt915j0	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 rgikecs0vb3	9r1dp9d3rlk	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"CardItem","x-settings":"blockSettings:image","x-app-version":"1.3.52"}
 0p09a8u5xr9	landing	{"_isJSONSchemaObject":true,"version":"2.0","x-component":"Landing","x-app-version":"1.3.52"}
@@ -13102,7 +13175,9 @@ rgikecs0vb3	9r1dp9d3rlk	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 ycph2iwspsy	op533frw76t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 z8sfah8xqx2	awu0ue4yidj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 dtwqv1j8ahg	images_attach	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.images_attach","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.52"}
-vsj0dfm9bdq	y1robtrtpag	{"x-uid":"vsj0dfm9bdq","name":"y1robtrtpag","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"CardItem","x-settings":"blockSettings:carousel","x-decorator-props":{"carousel":{"height":400}},"x-app-version":"1.3.52"}
+vsj0dfm9bdq	y1robtrtpag	{"x-uid":"vsj0dfm9bdq","name":"y1robtrtpag","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"CardItem","x-settings":"blockSettings:carousel","x-decorator-props":{"carousel":{"height":350,"objectFit":"cover"}},"x-app-version":"1.3.52"}
+c0fmoqtflrf	vpbzvgn9cwd	{"x-uid":"c0fmoqtflrf","name":"vpbzvgn9cwd","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-component-props":{"width":50}}
+5po28o9th2g	9fviq2pm5md	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 4xrh6k2pmoo	f9eqtqefd3t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 xzo61aenrhv	p7v5lm31wcf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 gpuc5o56mm3	images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.images","x-component-props":{},"x-app-version":"1.3.52"}
@@ -13110,12 +13185,22 @@ gpuc5o56mm3	images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","
 hfflouqm5vf	eu4zsxgngjy	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"page:addBlock","x-app-version":"1.3.52"}
 xt3d9e6vpx3	page	{"x-uid":"xt3d9e6vpx3","name":"page","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page","x-app-version":"1.3.52","x-component-props":{"disablePageHeader":true}}
 6gy09u6gkvr	b1mae2da89r	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Filter\\") }}","x-action":"filter","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:filter","x-component":"Filter.Action","x-use-component-props":"useFilterActionProps","x-component-props":{"icon":"FilterOutlined"},"x-align":"left","x-app-version":"1.3.52"}
+s41jwc7ushc	gqlhz16n5je	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+tavzpgzflnv	xjp2f8pugvx	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 fe7kgdo55ax	page	{"x-uid":"fe7kgdo55ax","name":"page","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page","x-app-version":"1.3.52","x-component-props":{"disablePageHeader":true}}
-hmft2ujv1uf	5ddwiuc4980	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết dự án","x-component":"Menu.Item","x-decorator":"ACLMenuItemProvider","x-component-props":{},"x-server-hooks":[{"type":"onSelfCreate","method":"bindMenuToRole"},{"type":"onSelfSave","method":"extractTextToLocale"}],"x-app-version":"1.3.52"}
+hmft2ujv1uf	5ddwiuc4980	{"x-uid":"hmft2ujv1uf","name":"5ddwiuc4980","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết dự án","x-component":"Menu.Item","x-decorator":"ACLMenuItemProvider","x-component-props":{"hidden":true},"x-server-hooks":[{"type":"onSelfCreate","method":"bindMenuToRole"},{"type":"onSelfSave","method":"extractTextToLocale"}],"x-app-version":"1.3.52"}
 7poa6levyva	ml05bw54cfa	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"page:addBlock","x-app-version":"1.3.52"}
 6qulve4ybk4	28ipw0hnn0f	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 4ryyxzuq87v	k0fmx8fwpy6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 zrm37tg78ob	images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.images","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.52"}
+cbhgjqiskk5	3hw8ivc03z8	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+luu86la6tb1	qxcfk8yu3bp	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"projects:view","x-decorator":"DetailsBlockProvider","x-use-decorator-props":"useDetailsWithPaginationDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"projects","readPretty":true,"action":"list","params":{"pageSize":1}},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:detailsWithPagination","x-component":"CardItem","x-app-version":"1.3.52"}
+lc1jm6dpsrp	gk9liex2luk	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Details","x-read-pretty":true,"x-use-component-props":"useDetailsWithPaginationProps","x-app-version":"1.3.52"}
+wrrgz9e3y2l	mgl4dyf2wv7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"details:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":24}},"x-app-version":"1.3.52"}
+xaiv6bxfonx	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"details:configureFields","x-app-version":"1.3.52"}
+u5xpd0w3jh3	pagination	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Pagination","x-use-component-props":"useDetailsPaginationProps","x-app-version":"1.3.52"}
+a6osakgoyy3	col_8s9uh5v6rci	{"x-uid":"a6osakgoyy3","name":"col_8s9uh5v6rci","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
+oq5d1lxpmfu	gl4xiqu0c66	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 qos4gy0bday	ujrjmya3bl2	{"x-uid":"qos4gy0bday","name":"ujrjmya3bl2","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Detail","x-action":"customize:link","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:link","x-component":"Action.Link","x-use-component-props":"useLinkActionProps","x-designer-props":{"linkageAction":true},"x-component-props":{"iconColor":"#1677FF","danger":false,"url":"admin/hmft2ujv1uf","params":[{"name":"id","value":"{{$nRecord.id}}"}]}}
 \.
 
@@ -13199,7 +13284,7 @@ SELECT pg_catalog.setval('public."apiKeys_id_seq"', 1, false);
 -- Name: applicationPlugins_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."applicationPlugins_id_seq"', 63, true);
+SELECT pg_catalog.setval('public."applicationPlugins_id_seq"', 64, true);
 
 
 --
@@ -14553,7 +14638,7 @@ CREATE INDEX verifications_provider_id ON public.verifications USING btree ("pro
 CREATE UNIQUE INDEX workflows_key_current ON public.workflows USING btree (key, current);
 
 
--- Completed on 2024-11-27 10:24:40 UTC
+-- Completed on 2024-11-27 15:53:33 UTC
 
 --
 -- PostgreSQL database dump complete
