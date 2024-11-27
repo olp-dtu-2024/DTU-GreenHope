@@ -5,7 +5,7 @@
 -- Dumped from database version 16.4
 -- Dumped by pg_dump version 16.4
 
--- Started on 2024-11-27 15:53:33 UTC
+-- Started on 2024-11-27 16:13:48 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -2528,6 +2528,7 @@ COPY public."applicationPlugins" (id, "createdAt", "updatedAt", name, "packageNa
 61	2024-11-24 03:34:37.804+00	2024-11-24 03:35:12.479+00	@olp-dtu-2024/ui	@olp-dtu-2024/ui	0.1.0	t	t	\N	\N
 59	2024-11-23 15:30:20.12+00	2024-11-25 05:45:43.086+00	@olp-dtu-2024/landing-page	@olp-dtu-2024/landing-page	0.1.0	t	t	\N	\N
 64	2024-11-27 15:25:59.045+00	2024-11-27 15:26:53.128+00	@olp-dtu-2024/carousel	@olp-dtu-2024/carousel	0.1.0	t	t	\N	\N
+65	2024-11-27 16:08:39.398+00	2024-11-27 16:10:09.543+00	@olp-dtu-2024/header-picker	@olp-dtu-2024/header-picker	0.1.0	t	t	\N	\N
 \.
 
 
@@ -13284,7 +13285,7 @@ SELECT pg_catalog.setval('public."apiKeys_id_seq"', 1, false);
 -- Name: applicationPlugins_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."applicationPlugins_id_seq"', 64, true);
+SELECT pg_catalog.setval('public."applicationPlugins_id_seq"', 65, true);
 
 
 --
@@ -14638,7 +14639,7 @@ CREATE INDEX verifications_provider_id ON public.verifications USING btree ("pro
 CREATE UNIQUE INDEX workflows_key_current ON public.workflows USING btree (key, current);
 
 
--- Completed on 2024-11-27 15:53:33 UTC
+-- Completed on 2024-11-27 16:13:48 UTC
 
 --
 -- PostgreSQL database dump complete

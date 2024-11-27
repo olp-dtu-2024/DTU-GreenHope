@@ -1,14 +1,27 @@
 {
   "compilerOptions": {
     "paths": {
-      "@@/*": [".dumi/tmp/*"],
+      "@@/*": [
+        ".dumi/tmp/*"
+      ],
       "@olp-dtu-2024/carousel/client": [
         "packages/plugins/@olp-dtu-2024/carousel/src/client"
       ],
       "@olp-dtu-2024/carousel/package.json": [
         "packages/plugins/@olp-dtu-2024/carousel/package.json"
       ],
-      "@olp-dtu-2024/carousel": ["packages/plugins/@olp-dtu-2024/carousel/src"],
+      "@olp-dtu-2024/carousel": [
+        "packages/plugins/@olp-dtu-2024/carousel/src"
+      ],
+      "@olp-dtu-2024/header-picker/client": [
+        "packages/plugins/@olp-dtu-2024/header-picker/src/client"
+      ],
+      "@olp-dtu-2024/header-picker/package.json": [
+        "packages/plugins/@olp-dtu-2024/header-picker/package.json"
+      ],
+      "@olp-dtu-2024/header-picker": [
+        "packages/plugins/@olp-dtu-2024/header-picker/src"
+      ],
       "@olp-dtu-2024/kafka-nocobase/client": [
         "packages/plugins/@olp-dtu-2024/kafka-nocobase/src/client"
       ],
