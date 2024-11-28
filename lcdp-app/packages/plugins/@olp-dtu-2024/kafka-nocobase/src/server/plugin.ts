@@ -10,7 +10,7 @@ export class KafkaNocobaseServer extends Plugin {
 
   async afterAdd() {
     try {
-      const brokers = process.env.KAFKA_BROKERS?.split(',') || ['localhost:9092'];
+      const brokers = process.env.KAFKA_BROKERS?.split(',');
       this.kafka = new Kafka({
         clientId: 'nocobase-kafka',
         brokers: brokers,
@@ -53,6 +53,44 @@ export class KafkaNocobaseServer extends Plugin {
   }
 
   async load() {
+    const db = this.db
+    console.error('db', db)
+    const tableName = 'kafka-topics';
+    const tableExists = await db.sequelize.getQueryInterface().showAllTables()
+      .then(tables => tables.includes(tableName));
+
+    if (tableExists) {
+      console.log(`Table ${tableName} exists.`);
+    } else {
+      console.log(`Table ${tableName} does not exist.`);
+      this.db.collection({
+        name: 'kafka-topics',
+        title: 'Kafka Topics',
+        fields: [{
+          type: 'uuid',
+          name: 'id',
+          primaryKey: true
+        }, {
+          type: 'string',
+          name: 'broker_host',
+          required: true
+        }, {
+          type: 'string',
+          name: 'topic_name',
+          required: true
+        },
+        {
+          type: 'string',
+          name: 'type',
+          required: true
+        }]
+      }
+      )
+      await this.db.sync();
+      console.warn(`Table ${tableName} created.`);
+    }
+
+
     this.eventListener = new KafkaEventListener(this.producer, this.consumer);
 
     // Initialize all topic listeners
