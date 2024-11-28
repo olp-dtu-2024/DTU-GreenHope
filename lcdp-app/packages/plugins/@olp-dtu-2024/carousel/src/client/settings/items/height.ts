@@ -1,8 +1,7 @@
 import { SchemaSettingsItemType, useDesignable } from '@nocobase/client';
 import { useFieldSchema } from '@formily/react';
-
-import { CarouselBlockLowerCase } from '../../../constants';
-import { useT } from '../../../locale';
+import { BlockNameLowerCase } from '../../constants';
+import { useT } from '../../locale';
 
 export const heightSchemaSettingsItem: SchemaSettingsItemType = {
   name: 'height',
@@ -22,8 +21,7 @@ export const heightSchemaSettingsItem: SchemaSettingsItemType = {
             title: t('Height'),
             type: 'number',
             default:
-              filedSchema['x-decorator-props']?.[CarouselBlockLowerCase]
-                ?.height,
+              filedSchema['x-decorator-props']?.[BlockNameLowerCase]?.height,
             'x-decorator': 'FormItem',
             'x-component': 'InputNumber',
           },
@@ -34,8 +32,8 @@ export const heightSchemaSettingsItem: SchemaSettingsItemType = {
           'x-uid': filedSchema['x-uid'],
           'x-decorator-props': {
             ...filedSchema['x-decorator-props'],
-            [CarouselBlockLowerCase]: {
-              ...filedSchema['x-decorator-props']?.[CarouselBlockLowerCase],
+            [BlockNameLowerCase]: {
+              ...filedSchema['x-decorator-props']?.[BlockNameLowerCase],
               height,
             },
           },

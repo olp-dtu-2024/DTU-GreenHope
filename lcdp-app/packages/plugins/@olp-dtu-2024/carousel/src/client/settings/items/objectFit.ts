@@ -1,7 +1,7 @@
 import { SchemaSettingsItemType, useDesignable } from '@nocobase/client';
 import { useFieldSchema } from '@formily/react';
-import { CarouselBlockLowerCase } from '../../../constants';
-import { useT } from '../../../locale';
+import { BlockNameLowerCase } from '../../constants';
+import { useT } from '../../locale';
 
 export const objectFitSchemaSettingsItem: SchemaSettingsItemType = {
   name: 'objectFit',
@@ -21,15 +21,15 @@ export const objectFitSchemaSettingsItem: SchemaSettingsItemType = {
         { label: 'Scale Down', value: 'scale-down' },
       ],
       value:
-        filedSchema['x-decorator-props']?.[CarouselBlockLowerCase]?.objectFit ||
+        filedSchema['x-decorator-props']?.[BlockNameLowerCase]?.objectFit ||
         'cover',
       onChange(v) {
         deepMerge({
           'x-uid': filedSchema['x-uid'],
           'x-decorator-props': {
             ...filedSchema['x-decorator-props'],
-            [CarouselBlockLowerCase]: {
-              ...filedSchema['x-decorator-props']?.[CarouselBlockLowerCase],
+            [BlockNameLowerCase]: {
+              ...filedSchema['x-decorator-props']?.[BlockNameLowerCase],
               objectFit: v,
             },
           },

@@ -5,7 +5,7 @@ import {
   CarouselProps as AntdCarouselProps,
 } from 'antd';
 import { useAPIClient, withDynamicSchemaProps } from '@nocobase/client';
-import { CarouselBlock } from '../constants';
+import { BlockName } from '../constants';
 
 export interface CarouselProps extends AntdCarouselProps {
   height?: number;
@@ -53,5 +53,5 @@ export const Carousel: FC<CarouselProps> = withDynamicSchemaProps(
       <Result status='404' />
     );
   },
-  { displayName: CarouselBlock }
+  { displayName: BlockName }
 );
