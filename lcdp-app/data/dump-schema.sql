@@ -5,7 +5,7 @@
 -- Dumped from database version 16.4
 -- Dumped by pg_dump version 16.4
 
--- Started on 2024-11-29 16:39:13 UTC
+-- Started on 2024-11-29 18:29:14 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -117,6 +117,8 @@ ALTER TABLE IF EXISTS ONLY public."rolesResourcesActions" DROP CONSTRAINT IF EXI
 ALTER TABLE IF EXISTS ONLY public.proposes DROP CONSTRAINT IF EXISTS proposes_pkey;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.migrations DROP CONSTRAINT IF EXISTS migrations_pkey;
+ALTER TABLE IF EXISTS ONLY public.kafka_topics DROP CONSTRAINT IF EXISTS kafka_topics_pkey;
+ALTER TABLE IF EXISTS ONLY public.kafka_configs DROP CONSTRAINT IF EXISTS kafka_configs_pkey;
 ALTER TABLE IF EXISTS ONLY public.jobs DROP CONSTRAINT IF EXISTS jobs_pkey;
 ALTER TABLE IF EXISTS ONLY public."iframeHtml" DROP CONSTRAINT IF EXISTS "iframeHtml_pkey";
 ALTER TABLE IF EXISTS ONLY public.hello DROP CONSTRAINT IF EXISTS hello_pkey;
@@ -225,6 +227,8 @@ DROP TABLE IF EXISTS public.proposes;
 DROP SEQUENCE IF EXISTS public.projects_id_seq;
 DROP TABLE IF EXISTS public.projects;
 DROP TABLE IF EXISTS public.migrations;
+DROP TABLE IF EXISTS public.kafka_topics;
+DROP TABLE IF EXISTS public.kafka_configs;
 DROP SEQUENCE IF EXISTS public.jobs_id_seq;
 DROP TABLE IF EXISTS public.jobs;
 DROP SEQUENCE IF EXISTS public.images_id_seq;
@@ -305,7 +309,7 @@ CREATE SEQUENCE public."apiKeys_id_seq"
 ALTER SEQUENCE public."apiKeys_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3972 (class 0 OID 0)
+-- TOC entry 3986 (class 0 OID 0)
 -- Dependencies: 216
 -- Name: apiKeys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -350,7 +354,7 @@ CREATE SEQUENCE public."applicationPlugins_id_seq"
 ALTER SEQUENCE public."applicationPlugins_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3973 (class 0 OID 0)
+-- TOC entry 3987 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: applicationPlugins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -387,7 +391,7 @@ CREATE SEQUENCE public."applicationVersion_id_seq"
 ALTER SEQUENCE public."applicationVersion_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3974 (class 0 OID 0)
+-- TOC entry 3988 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: applicationVersion_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -421,7 +425,7 @@ CREATE TABLE public.attachments (
 ALTER TABLE public.attachments OWNER TO postgres;
 
 --
--- TOC entry 3975 (class 0 OID 0)
+-- TOC entry 3989 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: COLUMN attachments.title; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -430,7 +434,7 @@ COMMENT ON COLUMN public.attachments.title IS '用户文件名（不含扩展名
 
 
 --
--- TOC entry 3976 (class 0 OID 0)
+-- TOC entry 3990 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: COLUMN attachments.filename; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -439,7 +443,7 @@ COMMENT ON COLUMN public.attachments.filename IS '系统文件名（含扩展名
 
 
 --
--- TOC entry 3977 (class 0 OID 0)
+-- TOC entry 3991 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: COLUMN attachments.extname; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -448,7 +452,7 @@ COMMENT ON COLUMN public.attachments.extname IS '扩展名（含“.”）';
 
 
 --
--- TOC entry 3978 (class 0 OID 0)
+-- TOC entry 3992 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: COLUMN attachments.size; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -457,7 +461,7 @@ COMMENT ON COLUMN public.attachments.size IS '文件体积（字节）';
 
 
 --
--- TOC entry 3979 (class 0 OID 0)
+-- TOC entry 3993 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: COLUMN attachments.path; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -466,7 +470,7 @@ COMMENT ON COLUMN public.attachments.path IS '相对路径（含“/”前缀）
 
 
 --
--- TOC entry 3980 (class 0 OID 0)
+-- TOC entry 3994 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: COLUMN attachments.meta; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -475,7 +479,7 @@ COMMENT ON COLUMN public.attachments.meta IS '其他文件信息（如图片的�
 
 
 --
--- TOC entry 3981 (class 0 OID 0)
+-- TOC entry 3995 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: COLUMN attachments.url; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -499,7 +503,7 @@ CREATE SEQUENCE public.attachments_id_seq
 ALTER SEQUENCE public.attachments_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3982 (class 0 OID 0)
+-- TOC entry 3996 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: attachments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -546,7 +550,7 @@ CREATE SEQUENCE public.authenticators_id_seq
 ALTER SEQUENCE public.authenticators_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3983 (class 0 OID 0)
+-- TOC entry 3997 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: authenticators_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -604,7 +608,7 @@ CREATE SEQUENCE public."collectionCategories_id_seq"
 ALTER SEQUENCE public."collectionCategories_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3984 (class 0 OID 0)
+-- TOC entry 3998 (class 0 OID 0)
 -- Dependencies: 227
 -- Name: collectionCategories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -797,7 +801,7 @@ CREATE SEQUENCE public."dataSourcesRolesResourcesActions_id_seq"
 ALTER SEQUENCE public."dataSourcesRolesResourcesActions_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3985 (class 0 OID 0)
+-- TOC entry 3999 (class 0 OID 0)
 -- Dependencies: 238
 -- Name: dataSourcesRolesResourcesActions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -840,7 +844,7 @@ CREATE SEQUENCE public."dataSourcesRolesResourcesScopes_id_seq"
 ALTER SEQUENCE public."dataSourcesRolesResourcesScopes_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3986 (class 0 OID 0)
+-- TOC entry 4000 (class 0 OID 0)
 -- Dependencies: 240
 -- Name: dataSourcesRolesResourcesScopes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -864,7 +868,7 @@ CREATE SEQUENCE public."dataSourcesRolesResources_id_seq"
 ALTER SEQUENCE public."dataSourcesRolesResources_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3987 (class 0 OID 0)
+-- TOC entry 4001 (class 0 OID 0)
 -- Dependencies: 241
 -- Name: dataSourcesRolesResources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -907,7 +911,7 @@ CREATE SEQUENCE public.executions_id_seq
 ALTER SEQUENCE public.executions_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3988 (class 0 OID 0)
+-- TOC entry 4002 (class 0 OID 0)
 -- Dependencies: 243
 -- Name: executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -974,7 +978,7 @@ CREATE SEQUENCE public.flow_nodes_id_seq
 ALTER SEQUENCE public.flow_nodes_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3989 (class 0 OID 0)
+-- TOC entry 4003 (class 0 OID 0)
 -- Dependencies: 246
 -- Name: flow_nodes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1021,7 +1025,7 @@ CREATE SEQUENCE public.funds_id_seq
 ALTER SEQUENCE public.funds_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3990 (class 0 OID 0)
+-- TOC entry 4004 (class 0 OID 0)
 -- Dependencies: 248
 -- Name: funds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1060,7 +1064,7 @@ CREATE SEQUENCE public.hello_id_seq
 ALTER SEQUENCE public.hello_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3991 (class 0 OID 0)
+-- TOC entry 4005 (class 0 OID 0)
 -- Dependencies: 250
 -- Name: hello_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1119,7 +1123,7 @@ CREATE SEQUENCE public.images_id_seq
 ALTER SEQUENCE public.images_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3992 (class 0 OID 0)
+-- TOC entry 4006 (class 0 OID 0)
 -- Dependencies: 253
 -- Name: images_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1163,13 +1167,46 @@ CREATE SEQUENCE public.jobs_id_seq
 ALTER SEQUENCE public.jobs_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3993 (class 0 OID 0)
+-- TOC entry 4007 (class 0 OID 0)
 -- Dependencies: 255
 -- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE public.jobs_id_seq OWNED BY public.jobs.id;
 
+
+--
+-- TOC entry 304 (class 1259 OID 365362)
+-- Name: kafka_configs; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.kafka_configs (
+    id uuid NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    group_id character varying(255),
+    client_id character varying(255)
+);
+
+
+ALTER TABLE public.kafka_configs OWNER TO postgres;
+
+--
+-- TOC entry 303 (class 1259 OID 365351)
+-- Name: kafka_topics; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.kafka_topics (
+    id uuid NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    broker_host character varying(255),
+    topic_name character varying(255),
+    type character varying(255)
+);
+
+
+ALTER TABLE public.kafka_topics OWNER TO postgres;
 
 --
 -- TOC entry 256 (class 1259 OID 316323)
@@ -1220,7 +1257,7 @@ CREATE SEQUENCE public.projects_id_seq
 ALTER SEQUENCE public.projects_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3994 (class 0 OID 0)
+-- TOC entry 4008 (class 0 OID 0)
 -- Dependencies: 258
 -- Name: projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1265,7 +1302,7 @@ CREATE SEQUENCE public.proposes_id_seq
 ALTER SEQUENCE public.proposes_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3995 (class 0 OID 0)
+-- TOC entry 4009 (class 0 OID 0)
 -- Dependencies: 260
 -- Name: proposes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1347,7 +1384,7 @@ CREATE SEQUENCE public."rolesResourcesActions_id_seq"
 ALTER SEQUENCE public."rolesResourcesActions_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3996 (class 0 OID 0)
+-- TOC entry 4010 (class 0 OID 0)
 -- Dependencies: 264
 -- Name: rolesResourcesActions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1389,7 +1426,7 @@ CREATE SEQUENCE public."rolesResourcesScopes_id_seq"
 ALTER SEQUENCE public."rolesResourcesScopes_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3997 (class 0 OID 0)
+-- TOC entry 4011 (class 0 OID 0)
 -- Dependencies: 266
 -- Name: rolesResourcesScopes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1413,7 +1450,7 @@ CREATE SEQUENCE public."rolesResources_id_seq"
 ALTER SEQUENCE public."rolesResources_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3998 (class 0 OID 0)
+-- TOC entry 4012 (class 0 OID 0)
 -- Dependencies: 267
 -- Name: rolesResources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1487,7 +1524,7 @@ CREATE SEQUENCE public.sequences_id_seq
 ALTER SEQUENCE public.sequences_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3999 (class 0 OID 0)
+-- TOC entry 4013 (class 0 OID 0)
 -- Dependencies: 271
 -- Name: sequences_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1519,7 +1556,7 @@ CREATE TABLE public.storages (
 ALTER TABLE public.storages OWNER TO postgres;
 
 --
--- TOC entry 4000 (class 0 OID 0)
+-- TOC entry 4014 (class 0 OID 0)
 -- Dependencies: 272
 -- Name: COLUMN storages.title; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -1528,7 +1565,7 @@ COMMENT ON COLUMN public.storages.title IS '存储引擎名称';
 
 
 --
--- TOC entry 4001 (class 0 OID 0)
+-- TOC entry 4015 (class 0 OID 0)
 -- Dependencies: 272
 -- Name: COLUMN storages.type; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -1537,7 +1574,7 @@ COMMENT ON COLUMN public.storages.type IS '类型标识，如 local/ali-oss 等'
 
 
 --
--- TOC entry 4002 (class 0 OID 0)
+-- TOC entry 4016 (class 0 OID 0)
 -- Dependencies: 272
 -- Name: COLUMN storages.options; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -1546,7 +1583,7 @@ COMMENT ON COLUMN public.storages.options IS '配置项';
 
 
 --
--- TOC entry 4003 (class 0 OID 0)
+-- TOC entry 4017 (class 0 OID 0)
 -- Dependencies: 272
 -- Name: COLUMN storages.rules; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -1555,7 +1592,7 @@ COMMENT ON COLUMN public.storages.rules IS '文件规则';
 
 
 --
--- TOC entry 4004 (class 0 OID 0)
+-- TOC entry 4018 (class 0 OID 0)
 -- Dependencies: 272
 -- Name: COLUMN storages.path; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -1564,7 +1601,7 @@ COMMENT ON COLUMN public.storages.path IS '存储相对路径模板';
 
 
 --
--- TOC entry 4005 (class 0 OID 0)
+-- TOC entry 4019 (class 0 OID 0)
 -- Dependencies: 272
 -- Name: COLUMN storages."baseUrl"; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -1573,7 +1610,7 @@ COMMENT ON COLUMN public.storages."baseUrl" IS '访问地址前缀';
 
 
 --
--- TOC entry 4006 (class 0 OID 0)
+-- TOC entry 4020 (class 0 OID 0)
 -- Dependencies: 272
 -- Name: COLUMN storages."default"; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -1597,7 +1634,7 @@ CREATE SEQUENCE public.storages_id_seq
 ALTER SEQUENCE public.storages_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4007 (class 0 OID 0)
+-- TOC entry 4021 (class 0 OID 0)
 -- Dependencies: 273
 -- Name: storages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1658,7 +1695,7 @@ CREATE SEQUENCE public."systemSettings_id_seq"
 ALTER SEQUENCE public."systemSettings_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4008 (class 0 OID 0)
+-- TOC entry 4022 (class 0 OID 0)
 -- Dependencies: 276
 -- Name: systemSettings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1703,7 +1740,7 @@ CREATE SEQUENCE public.t_587vrvz0gcb_id_seq
 ALTER SEQUENCE public.t_587vrvz0gcb_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4009 (class 0 OID 0)
+-- TOC entry 4023 (class 0 OID 0)
 -- Dependencies: 278
 -- Name: t_587vrvz0gcb_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1806,7 +1843,7 @@ CREATE SEQUENCE public."themeConfig_id_seq"
 ALTER SEQUENCE public."themeConfig_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4010 (class 0 OID 0)
+-- TOC entry 4024 (class 0 OID 0)
 -- Dependencies: 283
 -- Name: themeConfig_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1846,7 +1883,7 @@ CREATE SEQUENCE public."tokenBlacklist_id_seq"
 ALTER SEQUENCE public."tokenBlacklist_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4011 (class 0 OID 0)
+-- TOC entry 4025 (class 0 OID 0)
 -- Dependencies: 285
 -- Name: tokenBlacklist_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1896,7 +1933,7 @@ CREATE SEQUENCE public.transactions_id_seq
 ALTER SEQUENCE public.transactions_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4012 (class 0 OID 0)
+-- TOC entry 4026 (class 0 OID 0)
 -- Dependencies: 287
 -- Name: transactions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1938,7 +1975,7 @@ CREATE SEQUENCE public."uiSchemaServerHooks_id_seq"
 ALTER SEQUENCE public."uiSchemaServerHooks_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4013 (class 0 OID 0)
+-- TOC entry 4027 (class 0 OID 0)
 -- Dependencies: 289
 -- Name: uiSchemaServerHooks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1985,7 +2022,7 @@ CREATE TABLE public."uiSchemaTreePath" (
 ALTER TABLE public."uiSchemaTreePath" OWNER TO postgres;
 
 --
--- TOC entry 4014 (class 0 OID 0)
+-- TOC entry 4028 (class 0 OID 0)
 -- Dependencies: 291
 -- Name: COLUMN "uiSchemaTreePath".type; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -1994,7 +2031,7 @@ COMMENT ON COLUMN public."uiSchemaTreePath".type IS 'type of node';
 
 
 --
--- TOC entry 4015 (class 0 OID 0)
+-- TOC entry 4029 (class 0 OID 0)
 -- Dependencies: 291
 -- Name: COLUMN "uiSchemaTreePath".sort; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -2078,7 +2115,7 @@ CREATE SEQUENCE public.users_id_seq
 ALTER SEQUENCE public.users_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4016 (class 0 OID 0)
+-- TOC entry 4030 (class 0 OID 0)
 -- Dependencies: 295
 -- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -2123,7 +2160,7 @@ CREATE SEQUENCE public.users_jobs_id_seq
 ALTER SEQUENCE public.users_jobs_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4017 (class 0 OID 0)
+-- TOC entry 4031 (class 0 OID 0)
 -- Dependencies: 297
 -- Name: users_jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -2211,7 +2248,7 @@ CREATE SEQUENCE public.workflows_id_seq
 ALTER SEQUENCE public.workflows_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4018 (class 0 OID 0)
+-- TOC entry 4032 (class 0 OID 0)
 -- Dependencies: 301
 -- Name: workflows_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -2220,7 +2257,7 @@ ALTER SEQUENCE public.workflows_id_seq OWNED BY public.workflows.id;
 
 
 --
--- TOC entry 3454 (class 2604 OID 316512)
+-- TOC entry 3462 (class 2604 OID 316512)
 -- Name: apiKeys id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2228,7 +2265,7 @@ ALTER TABLE ONLY public."apiKeys" ALTER COLUMN id SET DEFAULT nextval('public."a
 
 
 --
--- TOC entry 3455 (class 2604 OID 316513)
+-- TOC entry 3463 (class 2604 OID 316513)
 -- Name: applicationPlugins id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2236,7 +2273,7 @@ ALTER TABLE ONLY public."applicationPlugins" ALTER COLUMN id SET DEFAULT nextval
 
 
 --
--- TOC entry 3456 (class 2604 OID 316514)
+-- TOC entry 3464 (class 2604 OID 316514)
 -- Name: applicationVersion id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2244,7 +2281,7 @@ ALTER TABLE ONLY public."applicationVersion" ALTER COLUMN id SET DEFAULT nextval
 
 
 --
--- TOC entry 3457 (class 2604 OID 316515)
+-- TOC entry 3465 (class 2604 OID 316515)
 -- Name: attachments id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2252,7 +2289,7 @@ ALTER TABLE ONLY public.attachments ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 3459 (class 2604 OID 316516)
+-- TOC entry 3467 (class 2604 OID 316516)
 -- Name: authenticators id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2260,7 +2297,7 @@ ALTER TABLE ONLY public.authenticators ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
--- TOC entry 3463 (class 2604 OID 316517)
+-- TOC entry 3471 (class 2604 OID 316517)
 -- Name: collectionCategories id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2268,7 +2305,7 @@ ALTER TABLE ONLY public."collectionCategories" ALTER COLUMN id SET DEFAULT nextv
 
 
 --
--- TOC entry 3471 (class 2604 OID 316518)
+-- TOC entry 3479 (class 2604 OID 316518)
 -- Name: dataSourcesRolesResources id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2276,7 +2313,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResources" ALTER COLUMN id SET DEFAULT 
 
 
 --
--- TOC entry 3473 (class 2604 OID 316519)
+-- TOC entry 3481 (class 2604 OID 316519)
 -- Name: dataSourcesRolesResourcesActions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2284,7 +2321,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResourcesActions" ALTER COLUMN id SET D
 
 
 --
--- TOC entry 3475 (class 2604 OID 316520)
+-- TOC entry 3483 (class 2604 OID 316520)
 -- Name: dataSourcesRolesResourcesScopes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2292,7 +2329,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResourcesScopes" ALTER COLUMN id SET DE
 
 
 --
--- TOC entry 3477 (class 2604 OID 316521)
+-- TOC entry 3485 (class 2604 OID 316521)
 -- Name: executions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2300,7 +2337,7 @@ ALTER TABLE ONLY public.executions ALTER COLUMN id SET DEFAULT nextval('public.e
 
 
 --
--- TOC entry 3479 (class 2604 OID 316522)
+-- TOC entry 3487 (class 2604 OID 316522)
 -- Name: flow_nodes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2308,7 +2345,7 @@ ALTER TABLE ONLY public.flow_nodes ALTER COLUMN id SET DEFAULT nextval('public.f
 
 
 --
--- TOC entry 3481 (class 2604 OID 316523)
+-- TOC entry 3489 (class 2604 OID 316523)
 -- Name: funds id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2316,7 +2353,7 @@ ALTER TABLE ONLY public.funds ALTER COLUMN id SET DEFAULT nextval('public.funds_
 
 
 --
--- TOC entry 3483 (class 2604 OID 316524)
+-- TOC entry 3491 (class 2604 OID 316524)
 -- Name: hello id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2324,7 +2361,7 @@ ALTER TABLE ONLY public.hello ALTER COLUMN id SET DEFAULT nextval('public.hello_
 
 
 --
--- TOC entry 3484 (class 2604 OID 316525)
+-- TOC entry 3492 (class 2604 OID 316525)
 -- Name: images id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2332,7 +2369,7 @@ ALTER TABLE ONLY public.images ALTER COLUMN id SET DEFAULT nextval('public.image
 
 
 --
--- TOC entry 3485 (class 2604 OID 316526)
+-- TOC entry 3493 (class 2604 OID 316526)
 -- Name: jobs id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2340,7 +2377,7 @@ ALTER TABLE ONLY public.jobs ALTER COLUMN id SET DEFAULT nextval('public.jobs_id
 
 
 --
--- TOC entry 3486 (class 2604 OID 316527)
+-- TOC entry 3494 (class 2604 OID 316527)
 -- Name: projects id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2348,7 +2385,7 @@ ALTER TABLE ONLY public.projects ALTER COLUMN id SET DEFAULT nextval('public.pro
 
 
 --
--- TOC entry 3490 (class 2604 OID 316528)
+-- TOC entry 3498 (class 2604 OID 316528)
 -- Name: proposes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2356,7 +2393,7 @@ ALTER TABLE ONLY public.proposes ALTER COLUMN id SET DEFAULT nextval('public.pro
 
 
 --
--- TOC entry 3496 (class 2604 OID 316529)
+-- TOC entry 3504 (class 2604 OID 316529)
 -- Name: rolesResources id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2364,7 +2401,7 @@ ALTER TABLE ONLY public."rolesResources" ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- TOC entry 3497 (class 2604 OID 316530)
+-- TOC entry 3505 (class 2604 OID 316530)
 -- Name: rolesResourcesActions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2372,7 +2409,7 @@ ALTER TABLE ONLY public."rolesResourcesActions" ALTER COLUMN id SET DEFAULT next
 
 
 --
--- TOC entry 3499 (class 2604 OID 316531)
+-- TOC entry 3507 (class 2604 OID 316531)
 -- Name: rolesResourcesScopes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2380,7 +2417,7 @@ ALTER TABLE ONLY public."rolesResourcesScopes" ALTER COLUMN id SET DEFAULT nextv
 
 
 --
--- TOC entry 3500 (class 2604 OID 316532)
+-- TOC entry 3508 (class 2604 OID 316532)
 -- Name: sequences id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2388,7 +2425,7 @@ ALTER TABLE ONLY public.sequences ALTER COLUMN id SET DEFAULT nextval('public.se
 
 
 --
--- TOC entry 3501 (class 2604 OID 316533)
+-- TOC entry 3509 (class 2604 OID 316533)
 -- Name: storages id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2396,7 +2433,7 @@ ALTER TABLE ONLY public.storages ALTER COLUMN id SET DEFAULT nextval('public.sto
 
 
 --
--- TOC entry 3508 (class 2604 OID 316534)
+-- TOC entry 3516 (class 2604 OID 316534)
 -- Name: systemSettings id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2404,7 +2441,7 @@ ALTER TABLE ONLY public."systemSettings" ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- TOC entry 3513 (class 2604 OID 316535)
+-- TOC entry 3521 (class 2604 OID 316535)
 -- Name: t_587vrvz0gcb id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2412,7 +2449,7 @@ ALTER TABLE ONLY public.t_587vrvz0gcb ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 3517 (class 2604 OID 316536)
+-- TOC entry 3525 (class 2604 OID 316536)
 -- Name: themeConfig id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2420,7 +2457,7 @@ ALTER TABLE ONLY public."themeConfig" ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 3519 (class 2604 OID 316537)
+-- TOC entry 3527 (class 2604 OID 316537)
 -- Name: tokenBlacklist id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2428,7 +2465,7 @@ ALTER TABLE ONLY public."tokenBlacklist" ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- TOC entry 3520 (class 2604 OID 316538)
+-- TOC entry 3528 (class 2604 OID 316538)
 -- Name: transactions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2436,7 +2473,7 @@ ALTER TABLE ONLY public.transactions ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- TOC entry 3524 (class 2604 OID 316539)
+-- TOC entry 3532 (class 2604 OID 316539)
 -- Name: uiSchemaServerHooks id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2444,7 +2481,7 @@ ALTER TABLE ONLY public."uiSchemaServerHooks" ALTER COLUMN id SET DEFAULT nextva
 
 
 --
--- TOC entry 3526 (class 2604 OID 316540)
+-- TOC entry 3534 (class 2604 OID 316540)
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2452,7 +2489,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
--- TOC entry 3531 (class 2604 OID 316541)
+-- TOC entry 3539 (class 2604 OID 316541)
 -- Name: users_jobs id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2460,7 +2497,7 @@ ALTER TABLE ONLY public.users_jobs ALTER COLUMN id SET DEFAULT nextval('public.u
 
 
 --
--- TOC entry 3533 (class 2604 OID 316542)
+-- TOC entry 3541 (class 2604 OID 316542)
 -- Name: workflows id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2468,7 +2505,7 @@ ALTER TABLE ONLY public.workflows ALTER COLUMN id SET DEFAULT nextval('public.wo
 
 
 --
--- TOC entry 3879 (class 0 OID 316167)
+-- TOC entry 3891 (class 0 OID 316167)
 -- Dependencies: 215
 -- Data for Name: apiKeys; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2478,7 +2515,7 @@ COPY public."apiKeys" (id, "createdAt", name, "roleName", "expiresIn", token, so
 
 
 --
--- TOC entry 3881 (class 0 OID 316173)
+-- TOC entry 3893 (class 0 OID 316173)
 -- Dependencies: 217
 -- Data for Name: applicationPlugins; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2544,14 +2581,14 @@ COPY public."applicationPlugins" (id, "createdAt", "updatedAt", name, "packageNa
 50	2024-11-22 08:42:36.455+00	2024-11-24 13:49:14.928+00	field-markdown-vditor	@nocobase/plugin-field-markdown-vditor	1.3.52	f	t	\N	\N
 61	2024-11-24 03:34:37.804+00	2024-11-24 03:35:12.479+00	@olp-dtu-2024/ui	@olp-dtu-2024/ui	0.1.0	t	t	\N	\N
 59	2024-11-23 15:30:20.12+00	2024-11-25 05:45:43.086+00	@olp-dtu-2024/landing-page	@olp-dtu-2024/landing-page	0.1.0	t	t	\N	\N
-64	2024-11-27 15:25:59.045+00	2024-11-27 15:26:53.128+00	@olp-dtu-2024/carousel	@olp-dtu-2024/carousel	0.1.0	t	t	\N	\N
 54	2024-11-22 08:43:33.991+00	2024-11-28 01:46:15.614+00	@olp-dtu-2024/kafka-nocobase	@olp-dtu-2024/kafka-nocobase	1.0.1	t	t	\N	\N
 66	2024-11-28 01:50:36.157+00	2024-11-28 01:53:11.611+00	@olp-dtu-2024/header-picker	@olp-dtu-2024/header-picker	0.1.0	t	t	\N	\N
+67	2024-11-29 18:21:11.386+00	2024-11-29 18:23:11.444+00	@olp-dtu-2024/carousel-nocobase	@olp-dtu-2024/carousel-nocobase	0.1.0	t	t	\N	\N
 \.
 
 
 --
--- TOC entry 3883 (class 0 OID 316179)
+-- TOC entry 3895 (class 0 OID 316179)
 -- Dependencies: 219
 -- Data for Name: applicationVersion; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2562,7 +2599,7 @@ COPY public."applicationVersion" (id, value) FROM stdin;
 
 
 --
--- TOC entry 3885 (class 0 OID 316183)
+-- TOC entry 3897 (class 0 OID 316183)
 -- Dependencies: 221
 -- Data for Name: attachments; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2593,7 +2630,7 @@ COPY public.attachments (id, "createdAt", "updatedAt", title, filename, extname,
 
 
 --
--- TOC entry 3887 (class 0 OID 316190)
+-- TOC entry 3899 (class 0 OID 316190)
 -- Dependencies: 223
 -- Data for Name: authenticators; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2604,7 +2641,7 @@ COPY public.authenticators (id, "createdAt", "updatedAt", name, "authType", titl
 
 
 --
--- TOC entry 3889 (class 0 OID 316199)
+-- TOC entry 3901 (class 0 OID 316199)
 -- Dependencies: 225
 -- Data for Name: chinaRegions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5965,7 +6002,7 @@ COPY public."chinaRegions" ("createdAt", "updatedAt", code, name, "parentCode", 
 
 
 --
--- TOC entry 3890 (class 0 OID 316204)
+-- TOC entry 3902 (class 0 OID 316204)
 -- Dependencies: 226
 -- Data for Name: collectionCategories; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5975,7 +6012,7 @@ COPY public."collectionCategories" (id, "createdAt", "updatedAt", name, color, s
 
 
 --
--- TOC entry 3892 (class 0 OID 316211)
+-- TOC entry 3904 (class 0 OID 316211)
 -- Dependencies: 228
 -- Data for Name: collectionCategory; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5985,7 +6022,7 @@ COPY public."collectionCategory" ("createdAt", "updatedAt", "collectionName", "c
 
 
 --
--- TOC entry 3893 (class 0 OID 316214)
+-- TOC entry 3905 (class 0 OID 316214)
 -- Dependencies: 229
 -- Data for Name: collections; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5997,11 +6034,13 @@ b4qy9da9jew	transactions	Transactions	f	f	{"logging":true,"autoGenId":false,"cre
 s8tqzphff7e	funds	Funds	f	f	{"logging":true,"autoGenId":false,"createdAt":true,"createdBy":true,"updatedAt":true,"updatedBy":true,"template":"general","view":false,"inherits":[],"simplePaginate":true,"schema":"public"}	\N	5
 p2kkcq3rhn8	proposes	Proposes	f	f	{"logging":true,"autoGenId":false,"createdAt":true,"createdBy":true,"updatedAt":true,"updatedBy":true,"template":"general","view":false,"schema":"public"}	Các đề xuất xây dựng từ người dùng	6
 zoq5dq360w9	projects	Dự án	f	f	{"logging":true,"autoGenId":false,"createdAt":true,"createdBy":true,"updatedAt":true,"updatedBy":true,"template":"general","view":false,"simplePaginate":true,"schema":"public","filterTargetKey":"id","unavailableActions":[]}	\N	4
+z7a2ikzf0c6	kafka_topics	Kafka Topics	f	f	{"actions":[{"name":"create","type":"create","title":"Create Kafka Topic","viewName":"form"},{"name":"view","type":"view","title":"View","viewName":"form"},{"name":"edit","type":"edit","title":"Edit","viewName":"form"},{"name":"destroy","type":"destroy","title":"Delete"}],"schema":"public"}	\N	7
+wnpw5lzo0se	kafka_configs	Kafka Configs	f	f	{"actions":[{"name":"create","type":"create","title":"Create Kafka Config","viewName":"form"},{"name":"view","type":"view","title":"View","viewName":"form"},{"name":"edit","type":"edit","title":"Edit","viewName":"form"},{"name":"destroy","type":"destroy","title":"Delete"}],"schema":"public"}	\N	8
 \.
 
 
 --
--- TOC entry 3894 (class 0 OID 316222)
+-- TOC entry 3906 (class 0 OID 316222)
 -- Dependencies: 230
 -- Data for Name: customRequests; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6015,7 +6054,7 @@ COPY public."customRequests" ("createdAt", "updatedAt", key, options) FROM stdin
 
 
 --
--- TOC entry 3895 (class 0 OID 316227)
+-- TOC entry 3907 (class 0 OID 316227)
 -- Dependencies: 231
 -- Data for Name: customRequestsRoles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6025,7 +6064,7 @@ COPY public."customRequestsRoles" ("createdAt", "updatedAt", "customRequestKey",
 
 
 --
--- TOC entry 3896 (class 0 OID 316232)
+-- TOC entry 3908 (class 0 OID 316232)
 -- Dependencies: 232
 -- Data for Name: dataSources; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6036,7 +6075,7 @@ COPY public."dataSources" ("createdAt", "updatedAt", key, "displayName", type, o
 
 
 --
--- TOC entry 3897 (class 0 OID 316239)
+-- TOC entry 3909 (class 0 OID 316239)
 -- Dependencies: 233
 -- Data for Name: dataSourcesCollections; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6046,7 +6085,7 @@ COPY public."dataSourcesCollections" (key, name, options, "dataSourceKey") FROM 
 
 
 --
--- TOC entry 3898 (class 0 OID 316244)
+-- TOC entry 3910 (class 0 OID 316244)
 -- Dependencies: 234
 -- Data for Name: dataSourcesFields; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6056,7 +6095,7 @@ COPY public."dataSourcesFields" (key, name, "collectionName", interface, descrip
 
 
 --
--- TOC entry 3899 (class 0 OID 316250)
+-- TOC entry 3911 (class 0 OID 316250)
 -- Dependencies: 235
 -- Data for Name: dataSourcesRoles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6070,7 +6109,7 @@ nlk3ipx1f9e	\N	main	guest
 
 
 --
--- TOC entry 3900 (class 0 OID 316255)
+-- TOC entry 3912 (class 0 OID 316255)
 -- Dependencies: 236
 -- Data for Name: dataSourcesRolesResources; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6080,7 +6119,7 @@ COPY public."dataSourcesRolesResources" (id, "createdAt", "updatedAt", "dataSour
 
 
 --
--- TOC entry 3901 (class 0 OID 316261)
+-- TOC entry 3913 (class 0 OID 316261)
 -- Dependencies: 237
 -- Data for Name: dataSourcesRolesResourcesActions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6090,7 +6129,7 @@ COPY public."dataSourcesRolesResourcesActions" (id, "createdAt", "updatedAt", na
 
 
 --
--- TOC entry 3903 (class 0 OID 316268)
+-- TOC entry 3915 (class 0 OID 316268)
 -- Dependencies: 239
 -- Data for Name: dataSourcesRolesResourcesScopes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6102,7 +6141,7 @@ COPY public."dataSourcesRolesResourcesScopes" (id, "createdAt", "updatedAt", key
 
 
 --
--- TOC entry 3906 (class 0 OID 316276)
+-- TOC entry 3918 (class 0 OID 316276)
 -- Dependencies: 242
 -- Data for Name: executions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6144,7 +6183,7 @@ COPY public.executions (id, "createdAt", "updatedAt", key, "eventKey", context, 
 
 
 --
--- TOC entry 3908 (class 0 OID 316282)
+-- TOC entry 3920 (class 0 OID 316282)
 -- Dependencies: 244
 -- Data for Name: fields; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6232,11 +6271,18 @@ py2pvrrxk3n	is_deleted	bigInt	integer	\N	transactions	\N	\N	{"uiSchema":{"type":
 k2m3hzx00cm	qr_code_url	text	url	\N	funds	\N	\N	{"uiSchema":{"type":"string","x-component":"Input.URL","title":"QR Code Url"}}	12
 htj0x3vc2hp	images	belongsToMany	attachment	\N	projects	\N	\N	{"uiSchema":{"x-component-props":{"multiple":true,"accept":"image/*"},"type":"array","x-component":"Upload.Attachment","x-use-component-props":"useAttachmentFieldProps","title":"Hình ảnh"},"target":"attachments","storage":"local","through":"t_bzkvdw2a767","foreignKey":"f_s8php2rxxwe","otherKey":"f_qxu5av3g0sx","targetKey":"id","sourceKey":"id"}	12
 q5ty0c42q5t	sub_title	string	input	\N	projects	\N	\N	{"uiSchema":{"type":"string","x-component":"Input","title":"Mô tả ngắn"}}	13
+saiotft86cb	id	uuid	input	\N	kafka_topics	\N	\N	{"primaryKey":true,"autoIncrement":false,"uiSchema":{"type":"string","title":"ID","x-component":"Input","required":true}}	1
+969zz3odpcx	broker_host	string	input	\N	kafka_topics	\N	\N	{"uiSchema":{"type":"string","title":"Broker Host","x-component":"Input","required":true}}	2
+3el51vwparp	topic_name	string	input	\N	kafka_topics	\N	\N	{"uiSchema":{"type":"string","title":"Topic Name","x-component":"Input","required":true}}	3
+0jgap03o46r	type	string	select	\N	kafka_topics	\N	\N	{"uiSchema":{"type":"string","title":"Type","x-component":"Select","x-component-props":{"options":[{"label":"Producer","value":"producer"},{"label":"Consumer","value":"consumer"}]},"required":true}}	4
+wneudei1j9h	id	uuid	input	\N	kafka_configs	\N	\N	{"primaryKey":true,"autoIncrement":false,"uiSchema":{"type":"string","title":"ID","x-component":"Input","required":true}}	1
+hion733k0k3	group_id	string	input	\N	kafka_configs	\N	\N	{"uiSchema":{"type":"string","title":"Group Id","x-component":"Input","required":true}}	2
+unjp623888f	client_id	string	input	\N	kafka_configs	\N	\N	{"uiSchema":{"type":"string","title":"Client Id","x-component":"Input","required":true}}	3
 \.
 
 
 --
--- TOC entry 3909 (class 0 OID 316288)
+-- TOC entry 3921 (class 0 OID 316288)
 -- Dependencies: 245
 -- Data for Name: flow_nodes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6254,7 +6300,7 @@ COPY public.flow_nodes (id, "createdAt", "updatedAt", key, title, "upstreamId", 
 
 
 --
--- TOC entry 3911 (class 0 OID 316295)
+-- TOC entry 3923 (class 0 OID 316295)
 -- Dependencies: 247
 -- Data for Name: funds; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6268,7 +6314,7 @@ COPY public.funds ("createdAt", "updatedAt", id, "createdById", "updatedById", n
 
 
 --
--- TOC entry 3913 (class 0 OID 316302)
+-- TOC entry 3925 (class 0 OID 316302)
 -- Dependencies: 249
 -- Data for Name: hello; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6278,7 +6324,7 @@ COPY public.hello (id, "createdAt", "updatedAt", name) FROM stdin;
 
 
 --
--- TOC entry 3915 (class 0 OID 316306)
+-- TOC entry 3927 (class 0 OID 316306)
 -- Dependencies: 251
 -- Data for Name: iframeHtml; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6289,7 +6335,7 @@ COPY public."iframeHtml" (id, "createdAt", "updatedAt", html, "createdById", "up
 
 
 --
--- TOC entry 3916 (class 0 OID 316311)
+-- TOC entry 3928 (class 0 OID 316311)
 -- Dependencies: 252
 -- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6301,7 +6347,7 @@ COPY public.images ("createdAt", "updatedAt", id, "createdById", "updatedById", 
 
 
 --
--- TOC entry 3918 (class 0 OID 316317)
+-- TOC entry 3930 (class 0 OID 316317)
 -- Dependencies: 254
 -- Data for Name: jobs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6410,7 +6456,27 @@ COPY public.jobs (id, "createdAt", "updatedAt", "executionId", "nodeId", "nodeKe
 
 
 --
--- TOC entry 3920 (class 0 OID 316323)
+-- TOC entry 3980 (class 0 OID 365362)
+-- Dependencies: 304
+-- Data for Name: kafka_configs; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.kafka_configs (id, "createdAt", "updatedAt", group_id, client_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3979 (class 0 OID 365351)
+-- Dependencies: 303
+-- Data for Name: kafka_topics; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.kafka_topics (id, "createdAt", "updatedAt", broker_host, topic_name, type) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3932 (class 0 OID 316323)
 -- Dependencies: 256
 -- Data for Name: migrations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6422,7 +6488,7 @@ COPY public.migrations (name) FROM stdin;
 
 
 --
--- TOC entry 3921 (class 0 OID 316326)
+-- TOC entry 3933 (class 0 OID 316326)
 -- Dependencies: 257
 -- Data for Name: projects; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6434,7 +6500,7 @@ COPY public.projects ("createdAt", "updatedAt", id, "createdById", "updatedById"
 
 
 --
--- TOC entry 3923 (class 0 OID 316335)
+-- TOC entry 3935 (class 0 OID 316335)
 -- Dependencies: 259
 -- Data for Name: proposes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6448,7 +6514,7 @@ COPY public.proposes ("createdAt", "updatedAt", id, "createdById", "updatedById"
 
 
 --
--- TOC entry 3925 (class 0 OID 316343)
+-- TOC entry 3937 (class 0 OID 316343)
 -- Dependencies: 261
 -- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6462,7 +6528,7 @@ COPY public.roles ("createdAt", "updatedAt", name, title, description, strategy,
 
 
 --
--- TOC entry 3926 (class 0 OID 316351)
+-- TOC entry 3938 (class 0 OID 316351)
 -- Dependencies: 262
 -- Data for Name: rolesResources; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6472,7 +6538,7 @@ COPY public."rolesResources" (id, "createdAt", "updatedAt", "roleName", name, "u
 
 
 --
--- TOC entry 3927 (class 0 OID 316356)
+-- TOC entry 3939 (class 0 OID 316356)
 -- Dependencies: 263
 -- Data for Name: rolesResourcesActions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6482,7 +6548,7 @@ COPY public."rolesResourcesActions" (id, "createdAt", "updatedAt", "rolesResourc
 
 
 --
--- TOC entry 3929 (class 0 OID 316363)
+-- TOC entry 3941 (class 0 OID 316363)
 -- Dependencies: 265
 -- Data for Name: rolesResourcesScopes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6492,7 +6558,7 @@ COPY public."rolesResourcesScopes" (id, "createdAt", "updatedAt", key, name, "re
 
 
 --
--- TOC entry 3932 (class 0 OID 316370)
+-- TOC entry 3944 (class 0 OID 316370)
 -- Dependencies: 268
 -- Data for Name: rolesUischemas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6527,7 +6593,7 @@ COPY public."rolesUischemas" ("createdAt", "updatedAt", "roleName", "uiSchemaXUi
 
 
 --
--- TOC entry 3933 (class 0 OID 316375)
+-- TOC entry 3945 (class 0 OID 316375)
 -- Dependencies: 269
 -- Data for Name: rolesUsers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6540,7 +6606,7 @@ COPY public."rolesUsers" ("createdAt", "updatedAt", "default", "roleName", "user
 
 
 --
--- TOC entry 3934 (class 0 OID 316378)
+-- TOC entry 3946 (class 0 OID 316378)
 -- Dependencies: 270
 -- Data for Name: sequences; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6550,7 +6616,7 @@ COPY public.sequences (id, "createdAt", "updatedAt", collection, field, key, cur
 
 
 --
--- TOC entry 3936 (class 0 OID 316384)
+-- TOC entry 3948 (class 0 OID 316384)
 -- Dependencies: 272
 -- Data for Name: storages; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6561,7 +6627,7 @@ COPY public.storages (id, "createdAt", "updatedAt", title, name, type, options, 
 
 
 --
--- TOC entry 3939 (class 0 OID 316397)
+-- TOC entry 3951 (class 0 OID 316397)
 -- Dependencies: 275
 -- Data for Name: systemSettings; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6572,7 +6638,7 @@ COPY public."systemSettings" (id, "createdAt", "updatedAt", title, "showLogoOnly
 
 
 --
--- TOC entry 3941 (class 0 OID 316407)
+-- TOC entry 3953 (class 0 OID 316407)
 -- Dependencies: 277
 -- Data for Name: t_587vrvz0gcb; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6583,7 +6649,7 @@ COPY public.t_587vrvz0gcb ("createdAt", "updatedAt", id, "createdById", "updated
 
 
 --
--- TOC entry 3943 (class 0 OID 316416)
+-- TOC entry 3955 (class 0 OID 316416)
 -- Dependencies: 279
 -- Data for Name: t_b3tiaxzyeu3; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6601,7 +6667,7 @@ COPY public.t_b3tiaxzyeu3 ("createdAt", "updatedAt", f_6v6rqo2fmi1, f_h8ptb1wlp6
 
 
 --
--- TOC entry 3944 (class 0 OID 316419)
+-- TOC entry 3956 (class 0 OID 316419)
 -- Dependencies: 280
 -- Data for Name: t_bzkvdw2a767; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6618,7 +6684,7 @@ COPY public.t_bzkvdw2a767 ("createdAt", "updatedAt", f_s8php2rxxwe, f_qxu5av3g0s
 
 
 --
--- TOC entry 3966 (class 0 OID 365319)
+-- TOC entry 3978 (class 0 OID 365319)
 -- Dependencies: 302
 -- Data for Name: t_ncaek4uddrw; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6630,7 +6696,7 @@ COPY public.t_ncaek4uddrw ("createdAt", "updatedAt", f_j72jrq1b0nw, f_9k9506pi4r
 
 
 --
--- TOC entry 3945 (class 0 OID 316422)
+-- TOC entry 3957 (class 0 OID 316422)
 -- Dependencies: 281
 -- Data for Name: t_s9b2jhcxq9q; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6641,7 +6707,7 @@ COPY public.t_s9b2jhcxq9q ("createdAt", "updatedAt", f_b37rybuw15a, f_8o3qqdvq8b
 
 
 --
--- TOC entry 3946 (class 0 OID 316425)
+-- TOC entry 3958 (class 0 OID 316425)
 -- Dependencies: 282
 -- Data for Name: themeConfig; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6656,7 +6722,7 @@ COPY public."themeConfig" (id, "createdAt", "updatedAt", config, optional, "isBu
 
 
 --
--- TOC entry 3948 (class 0 OID 316432)
+-- TOC entry 3960 (class 0 OID 316432)
 -- Dependencies: 284
 -- Data for Name: tokenBlacklist; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6666,7 +6732,7 @@ COPY public."tokenBlacklist" (id, "createdAt", "updatedAt", token, expiration) F
 
 
 --
--- TOC entry 3950 (class 0 OID 316436)
+-- TOC entry 3962 (class 0 OID 316436)
 -- Dependencies: 286
 -- Data for Name: transactions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6676,7 +6742,7 @@ COPY public.transactions ("createdAt", "updatedAt", id, "createdById", "updatedB
 
 
 --
--- TOC entry 3952 (class 0 OID 316445)
+-- TOC entry 3964 (class 0 OID 316445)
 -- Dependencies: 288
 -- Data for Name: uiSchemaServerHooks; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6686,7 +6752,7 @@ COPY public."uiSchemaServerHooks" (id, uid, type, collection, field, method, par
 
 
 --
--- TOC entry 3954 (class 0 OID 316451)
+-- TOC entry 3966 (class 0 OID 316451)
 -- Dependencies: 290
 -- Data for Name: uiSchemaTemplates; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6698,7 +6764,7 @@ COPY public."uiSchemaTemplates" ("createdAt", "updatedAt", key, name, "component
 
 
 --
--- TOC entry 3955 (class 0 OID 316456)
+-- TOC entry 3967 (class 0 OID 316456)
 -- Dependencies: 291
 -- Data for Name: uiSchemaTreePath; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -12774,8 +12840,6 @@ nocobase-admin-menu	q1pb5sukxkw	7	\N	\N	\N
 tf3bh58lv6q	h4dm0c8wmu4	1	\N	\N	2
 swbgm59qce3	swbgm59qce3	0	f	properties	\N
 7poa6levyva	swbgm59qce3	1	\N	\N	8
-o3yp0r1x6b5	o3yp0r1x6b5	0	f	properties	\N
-kruvjz2m4mr	o3yp0r1x6b5	1	\N	\N	1
 fe7kgdo55ax	swbgm59qce3	2	\N	\N	\N
 fe7kgdo55ax	gwkooqabv4x	2	\N	\N	\N
 hmft2ujv1uf	swbgm59qce3	3	\N	\N	\N
@@ -12784,25 +12848,6 @@ nocobase-admin-menu	swbgm59qce3	4	\N	\N	\N
 nocobase-admin-menu	gwkooqabv4x	4	\N	\N	\N
 gwkooqabv4x	gwkooqabv4x	0	f	properties	\N
 7poa6levyva	gwkooqabv4x	1	\N	\N	15
-5uvwe2xxh6u	o3yp0r1x6b5	2	\N	\N	\N
-kruvjz2m4mr	kruvjz2m4mr	0	f	properties	\N
-5uvwe2xxh6u	kruvjz2m4mr	1	\N	\N	1
-yivjshzifwl	kruvjz2m4mr	2	\N	\N	\N
-yivjshzifwl	o3yp0r1x6b5	3	\N	\N	\N
-7poa6levyva	5uvwe2xxh6u	2	\N	\N	\N
-7poa6levyva	kruvjz2m4mr	3	\N	\N	\N
-7poa6levyva	o3yp0r1x6b5	4	\N	\N	\N
-fe7kgdo55ax	5uvwe2xxh6u	3	\N	\N	\N
-fe7kgdo55ax	kruvjz2m4mr	4	\N	\N	\N
-fe7kgdo55ax	o3yp0r1x6b5	5	\N	\N	\N
-hmft2ujv1uf	5uvwe2xxh6u	4	\N	\N	\N
-hmft2ujv1uf	kruvjz2m4mr	5	\N	\N	\N
-hmft2ujv1uf	o3yp0r1x6b5	6	\N	\N	\N
-nocobase-admin-menu	5uvwe2xxh6u	5	\N	\N	\N
-nocobase-admin-menu	kruvjz2m4mr	6	\N	\N	\N
-nocobase-admin-menu	o3yp0r1x6b5	7	\N	\N	\N
-5uvwe2xxh6u	5uvwe2xxh6u	0	f	properties	\N
-yivjshzifwl	5uvwe2xxh6u	1	\N	\N	1
 fe7kgdo55ax	ris4kebta55	2	\N	\N	\N
 hmft2ujv1uf	ris4kebta55	3	\N	\N	\N
 nocobase-admin-menu	ris4kebta55	4	\N	\N	\N
@@ -12979,18 +13024,24 @@ nc92u2m878d	krq5msd3dso	15	\N	\N	\N
 jiq42lrek0j	p352d38u95n	14	\N	\N	\N
 jiq42lrek0j	vww45l1kt1c	15	\N	\N	\N
 jiq42lrek0j	krq5msd3dso	16	\N	\N	\N
-yivjshzifwl	tf3bh58lv6q	1	\N	\N	5
+8q3azqm4nul	8q3azqm4nul	0	f	properties	\N
+hs1jo8fohcn	8q3azqm4nul	1	\N	\N	1
+fe7kgdo55ax	4jc43siezjp	2	\N	\N	\N
+hmft2ujv1uf	4jc43siezjp	3	\N	\N	\N
 vbof97c5249	vbof97c5249	0	f	properties	\N
 h4dm0c8wmu4	vbof97c5249	1	\N	\N	1
+nocobase-admin-menu	4jc43siezjp	4	\N	\N	\N
 q1pb5sukxkw	q1pb5sukxkw	0	f	properties	\N
 h4dm0c8wmu4	q1pb5sukxkw	1	\N	\N	2
+4jc43siezjp	4jc43siezjp	0	f	properties	\N
+7poa6levyva	4jc43siezjp	1	\N	\N	16
+hs1jo8fohcn	hs1jo8fohcn	0	f	properties	\N
+yivjshzifwl	tf3bh58lv6q	1	\N	\N	6
 fe7kgdo55ax	yivjshzifwl	2	\N	\N	\N
 hmft2ujv1uf	yivjshzifwl	3	\N	\N	\N
 nocobase-admin-menu	yivjshzifwl	4	\N	\N	\N
 yivjshzifwl	yivjshzifwl	0	f	properties	\N
 7poa6levyva	yivjshzifwl	1	\N	\N	9
-0n0v5raqbv2	0n0v5raqbv2	0	f	properties	\N
-ubh5zu3p8ko	0n0v5raqbv2	1	\N	\N	1
 v0hdkdeyzrd	v0hdkdeyzrd	0	f	properties	\N
 fg366x2n25f	fg366x2n25f	0	f	properties	\N
 v0hdkdeyzrd	fg366x2n25f	1	\N	\N	1
@@ -13003,17 +13054,6 @@ v0hdkdeyzrd	2yh8xonuy9p	2	\N	\N	2
 d7ss6dyrft2	d7ss6dyrft2	0	f	properties	\N
 fg366x2n25f	d7ss6dyrft2	1	\N	\N	3
 v0hdkdeyzrd	d7ss6dyrft2	2	\N	\N	3
-13qbrfhlbny	0n0v5raqbv2	2	\N	\N	\N
-oqsecaif6am	ubh5zu3p8ko	2	\N	\N	\N
-oqsecaif6am	0n0v5raqbv2	3	\N	\N	\N
-63aby9t5qmb	ubh5zu3p8ko	3	\N	\N	\N
-63aby9t5qmb	0n0v5raqbv2	4	\N	\N	\N
-mwrnryoju9y	ubh5zu3p8ko	4	\N	\N	\N
-mwrnryoju9y	0n0v5raqbv2	5	\N	\N	\N
-nocobase-admin-menu	ubh5zu3p8ko	5	\N	\N	\N
-nocobase-admin-menu	0n0v5raqbv2	6	\N	\N	\N
-ubh5zu3p8ko	ubh5zu3p8ko	0	f	properties	\N
-13qbrfhlbny	ubh5zu3p8ko	1	\N	\N	2
 lrpe7x7uska	lrpe7x7uska	0	f	properties	\N
 5ra7uzzi0b0	lrpe7x7uska	1	\N	\N	1
 cnt5l2vyvus	cnt5l2vyvus	0	f	properties	\N
@@ -13074,6 +13114,7 @@ v0hdkdeyzrd	ksp2jvw2zju	4	\N	\N	\N
 v0hdkdeyzrd	qlix4l9q49g	5	\N	\N	\N
 lt4x5i1gin9	lt4x5i1gin9	0	f	properties	\N
 2yh8xonuy9p	lt4x5i1gin9	1	\N	\N	4
+bo30ugxn7d2	bo30ugxn7d2	0	f	properties	\N
 lzuobjmh9nr	lzuobjmh9nr	0	f	properties	\N
 2yh8xonuy9p	lzuobjmh9nr	1	\N	\N	6
 p62fqqqtc8f	p62fqqqtc8f	0	f	properties	\N
@@ -13104,6 +13145,10 @@ fg366x2n25f	pai6scdjeqt	4	\N	\N	\N
 v0hdkdeyzrd	lzuobjmh9nr	3	\N	\N	\N
 v0hdkdeyzrd	nk5b4nu4r4m	4	\N	\N	\N
 v0hdkdeyzrd	pai6scdjeqt	5	\N	\N	\N
+bo30ugxn7d2	8q3azqm4nul	2	\N	\N	\N
+bo30ugxn7d2	hs1jo8fohcn	1	\N	\N	1
+yivjshzifwl	hs1jo8fohcn	2	\N	\N	\N
+yivjshzifwl	8q3azqm4nul	3	\N	\N	\N
 2h7gnmez0eb	2h7gnmez0eb	0	f	properties	\N
 eoz95qtwix6	2h7gnmez0eb	1	\N	\N	1
 kye7kplejx4	kye7kplejx4	0	f	properties	\N
@@ -13140,6 +13185,19 @@ u1nyxe00lc6	u1nyxe00lc6	0	f	properties	\N
 hwi0frrc1o1	u1nyxe00lc6	1	\N	\N	1
 8avia19u880	u1nyxe00lc6	2	\N	\N	1
 eoz95qtwix6	eoz95qtwix6	0	f	properties	\N
+7poa6levyva	bo30ugxn7d2	2	\N	\N	\N
+7poa6levyva	hs1jo8fohcn	3	\N	\N	\N
+7poa6levyva	8q3azqm4nul	4	\N	\N	\N
+fe7kgdo55ax	bo30ugxn7d2	3	\N	\N	\N
+fe7kgdo55ax	hs1jo8fohcn	4	\N	\N	\N
+fe7kgdo55ax	8q3azqm4nul	5	\N	\N	\N
+hmft2ujv1uf	bo30ugxn7d2	4	\N	\N	\N
+hmft2ujv1uf	hs1jo8fohcn	5	\N	\N	\N
+hmft2ujv1uf	8q3azqm4nul	6	\N	\N	\N
+nocobase-admin-menu	bo30ugxn7d2	5	\N	\N	\N
+nocobase-admin-menu	hs1jo8fohcn	6	\N	\N	\N
+nocobase-admin-menu	8q3azqm4nul	7	\N	\N	\N
+yivjshzifwl	bo30ugxn7d2	1	\N	\N	1
 pv8ilcp4ez0	u1nyxe00lc6	3	\N	\N	1
 2h7gnmez0eb	u1nyxe00lc6	4	\N	\N	1
 eoz95qtwix6	u1nyxe00lc6	5	\N	\N	1
@@ -13206,19 +13264,11 @@ eoz95qtwix6	b6910vi3jym	5	\N	\N	1
 quxuyp8dl2x	quxuyp8dl2x	0	f	properties	\N
 2h7gnmez0eb	quxuyp8dl2x	1	\N	\N	3
 eoz95qtwix6	quxuyp8dl2x	2	\N	\N	3
-qkqqasamsxy	qkqqasamsxy	0	f	properties	\N
-ubh5zu3p8ko	qkqqasamsxy	2	\N	\N	\N
-13qbrfhlbny	qkqqasamsxy	3	\N	\N	\N
-oqsecaif6am	qkqqasamsxy	4	\N	\N	\N
-63aby9t5qmb	qkqqasamsxy	5	\N	\N	\N
-mwrnryoju9y	qkqqasamsxy	6	\N	\N	\N
-nocobase-admin-menu	qkqqasamsxy	7	\N	\N	\N
-0n0v5raqbv2	qkqqasamsxy	1	\N	\N	1
 \.
 
 
 --
--- TOC entry 3956 (class 0 OID 316461)
+-- TOC entry 3968 (class 0 OID 316461)
 -- Dependencies: 292
 -- Data for Name: uiSchemas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -13629,15 +13679,15 @@ hmft2ujv1uf	5ddwiuc4980	{"x-uid":"hmft2ujv1uf","name":"5ddwiuc4980","_isJSONSche
 4ryyxzuq87v	k0fmx8fwpy6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 zrm37tg78ob	images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.images","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.52"}
 cbhgjqiskk5	3hw8ivc03z8	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+hs1jo8fohcn	c9q4f2wcso3	{"x-uid":"hs1jo8fohcn","name":"c9q4f2wcso3","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-component":"FormItem","x-settings":"blockSettings:carousel","x-toolbar":"BlockSchemaToolbar","x-decorator-props":{"rowKey":"id","runWhenParamsChanged":true,"readPretty":true,"dataSource":"main","collection":"projects","action":"list","request":{"params":{"appends":["images"]}},"params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]}}},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
+4jc43siezjp	10piaxniyaf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+8q3azqm4nul	carousel	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Carousel","x-use-component-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
 oq5d1lxpmfu	gl4xiqu0c66	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 qos4gy0bday	ujrjmya3bl2	{"x-uid":"qos4gy0bday","name":"ujrjmya3bl2","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Detail","x-action":"customize:link","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:link","x-component":"Action.Link","x-use-component-props":"useLinkActionProps","x-designer-props":{"linkageAction":true},"x-component-props":{"iconColor":"#1677FF","danger":false,"url":"admin/hmft2ujv1uf","params":[{"name":"id","value":"{{$nRecord.id}}"}]}}
 unis1bj47de	grgfquq7p3t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 gwkooqabv4x	lq1p6lf0d2p	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
-o3yp0r1x6b5	carousel	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Carousel","x-use-component-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
 jibscsx0dfw	qendcaq0u1t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 jmayzuhpdzl	prnc93evei0	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
-ubh5zu3p8ko	w4ymgvf63co	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
-0n0v5raqbv2	qfy8xqkzsqj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 v0hdkdeyzrd	jaen61nqaow	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"projects:view","x-decorator":"DetailsBlockProvider","x-use-decorator-props":"useDetailsWithPaginationDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"projects","readPretty":true,"action":"list","params":{"pageSize":1}},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:detailsWithPagination","x-component":"CardItem","x-app-version":"1.3.52"}
 fg366x2n25f	j86wvwfhduz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Details","x-read-pretty":true,"x-use-component-props":"useDetailsWithPaginationProps","x-app-version":"1.3.52"}
 g3wb17ry7i2	oq6rze1evpb	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"details:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":24}},"x-app-version":"1.3.52"}
@@ -13664,12 +13714,12 @@ p62fqqqtc8f	1kldb9are0i	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 lzuobjmh9nr	lrxdgyheuht	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 nk5b4nu4r4m	03zr42jo35m	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 pai6scdjeqt	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.sub_title","x-component-props":{},"x-app-version":"1.3.52"}
-kruvjz2m4mr	zvt373fqfah	{"x-uid":"kruvjz2m4mr","name":"zvt373fqfah","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-component":"FormItem","x-settings":"blockSettings:carousel","x-toolbar":"BlockSchemaToolbar","x-decorator-props":{"rowKey":"id","runWhenParamsChanged":true,"readPretty":true,"dataSource":"main","collection":"projects","action":"list","request":{"params":{"pageSize":20,"filter":{},"appends":["images"]}},"params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]}}},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
 vww45l1kt1c	38aixf9l925	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 krq5msd3dso	images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"proposes.images","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.52"}
 n99da59sh6u	jvq8j0j298n	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-collection-field":"id","x-collection-field-key":{"uiSchema":{"type":"number","title":"{{t(\\"ID\\")}}","x-component":"InputNumber","x-read-pretty":true,"rawTitle":"{{t(\\"ID\\")}}"},"key":"fmtgbzqzs72","name":"id","type":"bigInt","interface":"integer","description":null,"collectionName":"projects","parentKey":null,"reverseKey":null,"autoIncrement":true,"primaryKey":true,"allowNull":false},"x-component":"Grid.Row","x-app-version":"1.3.52"}
 3ytk1megoa9	vull79qwrau	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 vqdryqum2t3	id	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-settings":"fieldSettings:info","x-decorator":"FormItem","x-app-version":"1.3.52"}
+bo30ugxn7d2	col_m8n37dqso3c	{"x-uid":"bo30ugxn7d2","name":"col_m8n37dqso3c","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":0,"x-component-props":{"width":"44.92"}}
 eoz95qtwix6	eoz95qtwix6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"projects:view","x-decorator":"DetailsBlockProvider","x-use-decorator-props":"useDetailsWithPaginationDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"projects","readPretty":true,"action":"list","params":{"pageSize":1}},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:detailsWithPagination","x-component":"CardItem","x-app-version":"1.3.52","x-index":0}
 2h7gnmez0eb	j86wvwfhduz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Details","x-read-pretty":true,"x-use-component-props":"useDetailsWithPaginationProps","x-app-version":"1.3.52","x-index":1}
 kye7kplejx4	oq6rze1evpb	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"details:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":24}},"x-app-version":"1.3.52","x-index":1}
@@ -13695,19 +13745,17 @@ ll2so9vdgu3	lrxdgyheuht	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 0jqiruu9vf6	03zr42jo35m	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-index":1}
 b6910vi3jym	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.sub_title","x-component-props":{},"x-app-version":"1.3.52","x-index":1}
 quxuyp8dl2x	pagination	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Pagination","x-use-component-props":"useDetailsPaginationProps","x-app-version":"1.3.52","x-index":3}
-tf3bh58lv6q	col_l88u0g0xu87	{"x-uid":"tf3bh58lv6q","name":"col_l88u0g0xu87","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":"52.86"}}
-qkqqasamsxy	5djv35wgza6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"BlockTemplate","x-component-props":{"templateId":"x4aatqdb9qp"}}
+tf3bh58lv6q	col_l88u0g0xu87	{"x-uid":"tf3bh58lv6q","name":"col_l88u0g0xu87","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":"55.08"}}
 vbof97c5249	header picker	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-use-component-props":"useHeaderPickerProps","x-app-version":"1.3.52"}
 q1pb5sukxkw	fields	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"info:configureFields","x-app-version":"1.3.52"}
 qxskufg0hv4	jgngp3286ie	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
-5uvwe2xxh6u	col_41y706p756o	{"x-uid":"5uvwe2xxh6u","name":"col_41y706p756o","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":0,"x-component-props":{"width":"47.14"}}
 swbgm59qce3	ufrasmewkf9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 pkcprxz6rfy	lzsv1w75i9y	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 \.
 
 
 --
--- TOC entry 3957 (class 0 OID 316467)
+-- TOC entry 3969 (class 0 OID 316467)
 -- Dependencies: 293
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -13718,7 +13766,7 @@ COPY public.users (id, "createdAt", "updatedAt", nickname, username, email, phon
 
 
 --
--- TOC entry 3958 (class 0 OID 316473)
+-- TOC entry 3970 (class 0 OID 316473)
 -- Dependencies: 294
 -- Data for Name: usersAuthenticators; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -13728,7 +13776,7 @@ COPY public."usersAuthenticators" ("createdAt", "updatedAt", authenticator, "use
 
 
 --
--- TOC entry 3960 (class 0 OID 316482)
+-- TOC entry 3972 (class 0 OID 316482)
 -- Dependencies: 296
 -- Data for Name: users_jobs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -13738,7 +13786,7 @@ COPY public.users_jobs (id, "createdAt", "updatedAt", "jobId", "userId", "execut
 
 
 --
--- TOC entry 3962 (class 0 OID 316488)
+-- TOC entry 3974 (class 0 OID 316488)
 -- Dependencies: 298
 -- Data for Name: verifications; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -13748,7 +13796,7 @@ COPY public.verifications (id, "createdAt", "updatedAt", type, receiver, status,
 
 
 --
--- TOC entry 3963 (class 0 OID 316494)
+-- TOC entry 3975 (class 0 OID 316494)
 -- Dependencies: 299
 -- Data for Name: verifications_providers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -13758,7 +13806,7 @@ COPY public.verifications_providers (id, "createdAt", "updatedAt", title, type, 
 
 
 --
--- TOC entry 3964 (class 0 OID 316499)
+-- TOC entry 3976 (class 0 OID 316499)
 -- Dependencies: 300
 -- Data for Name: workflows; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -13771,7 +13819,7 @@ COPY public.workflows (id, "createdAt", "updatedAt", key, title, enabled, descri
 
 
 --
--- TOC entry 4019 (class 0 OID 0)
+-- TOC entry 4033 (class 0 OID 0)
 -- Dependencies: 216
 -- Name: apiKeys_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13780,16 +13828,16 @@ SELECT pg_catalog.setval('public."apiKeys_id_seq"', 1, false);
 
 
 --
--- TOC entry 4020 (class 0 OID 0)
+-- TOC entry 4034 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: applicationPlugins_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."applicationPlugins_id_seq"', 66, true);
+SELECT pg_catalog.setval('public."applicationPlugins_id_seq"', 67, true);
 
 
 --
--- TOC entry 4021 (class 0 OID 0)
+-- TOC entry 4035 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: applicationVersion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13798,7 +13846,7 @@ SELECT pg_catalog.setval('public."applicationVersion_id_seq"', 1, true);
 
 
 --
--- TOC entry 4022 (class 0 OID 0)
+-- TOC entry 4036 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: attachments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13807,7 +13855,7 @@ SELECT pg_catalog.setval('public.attachments_id_seq', 21, true);
 
 
 --
--- TOC entry 4023 (class 0 OID 0)
+-- TOC entry 4037 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: authenticators_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13816,7 +13864,7 @@ SELECT pg_catalog.setval('public.authenticators_id_seq', 1, true);
 
 
 --
--- TOC entry 4024 (class 0 OID 0)
+-- TOC entry 4038 (class 0 OID 0)
 -- Dependencies: 227
 -- Name: collectionCategories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13825,7 +13873,7 @@ SELECT pg_catalog.setval('public."collectionCategories_id_seq"', 1, false);
 
 
 --
--- TOC entry 4025 (class 0 OID 0)
+-- TOC entry 4039 (class 0 OID 0)
 -- Dependencies: 238
 -- Name: dataSourcesRolesResourcesActions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13834,7 +13882,7 @@ SELECT pg_catalog.setval('public."dataSourcesRolesResourcesActions_id_seq"', 1, 
 
 
 --
--- TOC entry 4026 (class 0 OID 0)
+-- TOC entry 4040 (class 0 OID 0)
 -- Dependencies: 240
 -- Name: dataSourcesRolesResourcesScopes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13843,7 +13891,7 @@ SELECT pg_catalog.setval('public."dataSourcesRolesResourcesScopes_id_seq"', 2, t
 
 
 --
--- TOC entry 4027 (class 0 OID 0)
+-- TOC entry 4041 (class 0 OID 0)
 -- Dependencies: 241
 -- Name: dataSourcesRolesResources_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13852,7 +13900,7 @@ SELECT pg_catalog.setval('public."dataSourcesRolesResources_id_seq"', 1, false);
 
 
 --
--- TOC entry 4028 (class 0 OID 0)
+-- TOC entry 4042 (class 0 OID 0)
 -- Dependencies: 243
 -- Name: executions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13861,7 +13909,7 @@ SELECT pg_catalog.setval('public.executions_id_seq', 32, true);
 
 
 --
--- TOC entry 4029 (class 0 OID 0)
+-- TOC entry 4043 (class 0 OID 0)
 -- Dependencies: 246
 -- Name: flow_nodes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13870,7 +13918,7 @@ SELECT pg_catalog.setval('public.flow_nodes_id_seq', 71, true);
 
 
 --
--- TOC entry 4030 (class 0 OID 0)
+-- TOC entry 4044 (class 0 OID 0)
 -- Dependencies: 248
 -- Name: funds_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13879,7 +13927,7 @@ SELECT pg_catalog.setval('public.funds_id_seq', 24, true);
 
 
 --
--- TOC entry 4031 (class 0 OID 0)
+-- TOC entry 4045 (class 0 OID 0)
 -- Dependencies: 250
 -- Name: hello_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13888,7 +13936,7 @@ SELECT pg_catalog.setval('public.hello_id_seq', 1, false);
 
 
 --
--- TOC entry 4032 (class 0 OID 0)
+-- TOC entry 4046 (class 0 OID 0)
 -- Dependencies: 253
 -- Name: images_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13897,7 +13945,7 @@ SELECT pg_catalog.setval('public.images_id_seq', 1, false);
 
 
 --
--- TOC entry 4033 (class 0 OID 0)
+-- TOC entry 4047 (class 0 OID 0)
 -- Dependencies: 255
 -- Name: jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13906,7 +13954,7 @@ SELECT pg_catalog.setval('public.jobs_id_seq', 99, true);
 
 
 --
--- TOC entry 4034 (class 0 OID 0)
+-- TOC entry 4048 (class 0 OID 0)
 -- Dependencies: 258
 -- Name: projects_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13915,7 +13963,7 @@ SELECT pg_catalog.setval('public.projects_id_seq', 26, true);
 
 
 --
--- TOC entry 4035 (class 0 OID 0)
+-- TOC entry 4049 (class 0 OID 0)
 -- Dependencies: 260
 -- Name: proposes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13924,7 +13972,7 @@ SELECT pg_catalog.setval('public.proposes_id_seq', 22, true);
 
 
 --
--- TOC entry 4036 (class 0 OID 0)
+-- TOC entry 4050 (class 0 OID 0)
 -- Dependencies: 264
 -- Name: rolesResourcesActions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13933,7 +13981,7 @@ SELECT pg_catalog.setval('public."rolesResourcesActions_id_seq"', 1, false);
 
 
 --
--- TOC entry 4037 (class 0 OID 0)
+-- TOC entry 4051 (class 0 OID 0)
 -- Dependencies: 266
 -- Name: rolesResourcesScopes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13942,7 +13990,7 @@ SELECT pg_catalog.setval('public."rolesResourcesScopes_id_seq"', 1, false);
 
 
 --
--- TOC entry 4038 (class 0 OID 0)
+-- TOC entry 4052 (class 0 OID 0)
 -- Dependencies: 267
 -- Name: rolesResources_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13951,7 +13999,7 @@ SELECT pg_catalog.setval('public."rolesResources_id_seq"', 1, false);
 
 
 --
--- TOC entry 4039 (class 0 OID 0)
+-- TOC entry 4053 (class 0 OID 0)
 -- Dependencies: 271
 -- Name: sequences_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13960,7 +14008,7 @@ SELECT pg_catalog.setval('public.sequences_id_seq', 1, false);
 
 
 --
--- TOC entry 4040 (class 0 OID 0)
+-- TOC entry 4054 (class 0 OID 0)
 -- Dependencies: 273
 -- Name: storages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13969,7 +14017,7 @@ SELECT pg_catalog.setval('public.storages_id_seq', 1, true);
 
 
 --
--- TOC entry 4041 (class 0 OID 0)
+-- TOC entry 4055 (class 0 OID 0)
 -- Dependencies: 274
 -- Name: student_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13978,7 +14026,7 @@ SELECT pg_catalog.setval('public.student_id_seq', 1, false);
 
 
 --
--- TOC entry 4042 (class 0 OID 0)
+-- TOC entry 4056 (class 0 OID 0)
 -- Dependencies: 276
 -- Name: systemSettings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13987,7 +14035,7 @@ SELECT pg_catalog.setval('public."systemSettings_id_seq"', 1, true);
 
 
 --
--- TOC entry 4043 (class 0 OID 0)
+-- TOC entry 4057 (class 0 OID 0)
 -- Dependencies: 278
 -- Name: t_587vrvz0gcb_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -13996,7 +14044,7 @@ SELECT pg_catalog.setval('public.t_587vrvz0gcb_id_seq', 2, true);
 
 
 --
--- TOC entry 4044 (class 0 OID 0)
+-- TOC entry 4058 (class 0 OID 0)
 -- Dependencies: 283
 -- Name: themeConfig_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -14005,7 +14053,7 @@ SELECT pg_catalog.setval('public."themeConfig_id_seq"', 5, true);
 
 
 --
--- TOC entry 4045 (class 0 OID 0)
+-- TOC entry 4059 (class 0 OID 0)
 -- Dependencies: 285
 -- Name: tokenBlacklist_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -14014,7 +14062,7 @@ SELECT pg_catalog.setval('public."tokenBlacklist_id_seq"', 1, false);
 
 
 --
--- TOC entry 4046 (class 0 OID 0)
+-- TOC entry 4060 (class 0 OID 0)
 -- Dependencies: 287
 -- Name: transactions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -14023,7 +14071,7 @@ SELECT pg_catalog.setval('public.transactions_id_seq', 1, true);
 
 
 --
--- TOC entry 4047 (class 0 OID 0)
+-- TOC entry 4061 (class 0 OID 0)
 -- Dependencies: 289
 -- Name: uiSchemaServerHooks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -14032,7 +14080,7 @@ SELECT pg_catalog.setval('public."uiSchemaServerHooks_id_seq"', 1, false);
 
 
 --
--- TOC entry 4048 (class 0 OID 0)
+-- TOC entry 4062 (class 0 OID 0)
 -- Dependencies: 295
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -14041,7 +14089,7 @@ SELECT pg_catalog.setval('public.users_id_seq', 1, true);
 
 
 --
--- TOC entry 4049 (class 0 OID 0)
+-- TOC entry 4063 (class 0 OID 0)
 -- Dependencies: 297
 -- Name: users_jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -14050,7 +14098,7 @@ SELECT pg_catalog.setval('public.users_jobs_id_seq', 1, false);
 
 
 --
--- TOC entry 4050 (class 0 OID 0)
+-- TOC entry 4064 (class 0 OID 0)
 -- Dependencies: 301
 -- Name: workflows_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -14059,7 +14107,7 @@ SELECT pg_catalog.setval('public.workflows_id_seq', 22, true);
 
 
 --
--- TOC entry 3542 (class 2606 OID 316544)
+-- TOC entry 3550 (class 2606 OID 316544)
 -- Name: apiKeys apiKeys_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14068,7 +14116,7 @@ ALTER TABLE ONLY public."apiKeys"
 
 
 --
--- TOC entry 3545 (class 2606 OID 316546)
+-- TOC entry 3553 (class 2606 OID 316546)
 -- Name: applicationPlugins applicationPlugins_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14077,7 +14125,7 @@ ALTER TABLE ONLY public."applicationPlugins"
 
 
 --
--- TOC entry 3547 (class 2606 OID 316548)
+-- TOC entry 3555 (class 2606 OID 316548)
 -- Name: applicationPlugins applicationPlugins_packageName_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14086,7 +14134,7 @@ ALTER TABLE ONLY public."applicationPlugins"
 
 
 --
--- TOC entry 3549 (class 2606 OID 316550)
+-- TOC entry 3557 (class 2606 OID 316550)
 -- Name: applicationPlugins applicationPlugins_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14095,7 +14143,7 @@ ALTER TABLE ONLY public."applicationPlugins"
 
 
 --
--- TOC entry 3551 (class 2606 OID 316552)
+-- TOC entry 3559 (class 2606 OID 316552)
 -- Name: applicationVersion applicationVersion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14104,7 +14152,7 @@ ALTER TABLE ONLY public."applicationVersion"
 
 
 --
--- TOC entry 3554 (class 2606 OID 316554)
+-- TOC entry 3562 (class 2606 OID 316554)
 -- Name: attachments attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14113,7 +14161,7 @@ ALTER TABLE ONLY public.attachments
 
 
 --
--- TOC entry 3558 (class 2606 OID 316556)
+-- TOC entry 3566 (class 2606 OID 316556)
 -- Name: authenticators authenticators_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14122,7 +14170,7 @@ ALTER TABLE ONLY public.authenticators
 
 
 --
--- TOC entry 3560 (class 2606 OID 316558)
+-- TOC entry 3568 (class 2606 OID 316558)
 -- Name: authenticators authenticators_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14131,7 +14179,7 @@ ALTER TABLE ONLY public.authenticators
 
 
 --
--- TOC entry 3562 (class 2606 OID 316560)
+-- TOC entry 3570 (class 2606 OID 316560)
 -- Name: chinaRegions chinaRegions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14140,7 +14188,7 @@ ALTER TABLE ONLY public."chinaRegions"
 
 
 --
--- TOC entry 3565 (class 2606 OID 316562)
+-- TOC entry 3573 (class 2606 OID 316562)
 -- Name: collectionCategories collectionCategories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14149,7 +14197,7 @@ ALTER TABLE ONLY public."collectionCategories"
 
 
 --
--- TOC entry 3567 (class 2606 OID 316564)
+-- TOC entry 3575 (class 2606 OID 316564)
 -- Name: collectionCategory collectionCategory_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14158,7 +14206,7 @@ ALTER TABLE ONLY public."collectionCategory"
 
 
 --
--- TOC entry 3570 (class 2606 OID 316566)
+-- TOC entry 3578 (class 2606 OID 316566)
 -- Name: collections collections_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14167,7 +14215,7 @@ ALTER TABLE ONLY public.collections
 
 
 --
--- TOC entry 3572 (class 2606 OID 316568)
+-- TOC entry 3580 (class 2606 OID 316568)
 -- Name: collections collections_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14176,7 +14224,7 @@ ALTER TABLE ONLY public.collections
 
 
 --
--- TOC entry 3576 (class 2606 OID 316570)
+-- TOC entry 3584 (class 2606 OID 316570)
 -- Name: customRequestsRoles customRequestsRoles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14185,7 +14233,7 @@ ALTER TABLE ONLY public."customRequestsRoles"
 
 
 --
--- TOC entry 3574 (class 2606 OID 316572)
+-- TOC entry 3582 (class 2606 OID 316572)
 -- Name: customRequests customRequests_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14194,7 +14242,7 @@ ALTER TABLE ONLY public."customRequests"
 
 
 --
--- TOC entry 3581 (class 2606 OID 316574)
+-- TOC entry 3589 (class 2606 OID 316574)
 -- Name: dataSourcesCollections dataSourcesCollections_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14203,7 +14251,7 @@ ALTER TABLE ONLY public."dataSourcesCollections"
 
 
 --
--- TOC entry 3585 (class 2606 OID 316576)
+-- TOC entry 3593 (class 2606 OID 316576)
 -- Name: dataSourcesFields dataSourcesFields_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14212,7 +14260,7 @@ ALTER TABLE ONLY public."dataSourcesFields"
 
 
 --
--- TOC entry 3598 (class 2606 OID 316578)
+-- TOC entry 3606 (class 2606 OID 316578)
 -- Name: dataSourcesRolesResourcesActions dataSourcesRolesResourcesActions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14221,7 +14269,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResourcesActions"
 
 
 --
--- TOC entry 3602 (class 2606 OID 316580)
+-- TOC entry 3610 (class 2606 OID 316580)
 -- Name: dataSourcesRolesResourcesScopes dataSourcesRolesResourcesScopes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14230,7 +14278,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResourcesScopes"
 
 
 --
--- TOC entry 3594 (class 2606 OID 316582)
+-- TOC entry 3602 (class 2606 OID 316582)
 -- Name: dataSourcesRolesResources dataSourcesRolesResources_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14239,7 +14287,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResources"
 
 
 --
--- TOC entry 3590 (class 2606 OID 316584)
+-- TOC entry 3598 (class 2606 OID 316584)
 -- Name: dataSourcesRoles dataSourcesRoles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14248,7 +14296,7 @@ ALTER TABLE ONLY public."dataSourcesRoles"
 
 
 --
--- TOC entry 3579 (class 2606 OID 316586)
+-- TOC entry 3587 (class 2606 OID 316586)
 -- Name: dataSources dataSources_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14257,7 +14305,7 @@ ALTER TABLE ONLY public."dataSources"
 
 
 --
--- TOC entry 3605 (class 2606 OID 316588)
+-- TOC entry 3613 (class 2606 OID 316588)
 -- Name: executions executions_eventKey_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14266,7 +14314,7 @@ ALTER TABLE ONLY public.executions
 
 
 --
--- TOC entry 3607 (class 2606 OID 316590)
+-- TOC entry 3615 (class 2606 OID 316590)
 -- Name: executions executions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14275,7 +14323,7 @@ ALTER TABLE ONLY public.executions
 
 
 --
--- TOC entry 3612 (class 2606 OID 316592)
+-- TOC entry 3620 (class 2606 OID 316592)
 -- Name: fields fields_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14284,7 +14332,7 @@ ALTER TABLE ONLY public.fields
 
 
 --
--- TOC entry 3616 (class 2606 OID 316594)
+-- TOC entry 3624 (class 2606 OID 316594)
 -- Name: flow_nodes flow_nodes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14293,7 +14341,7 @@ ALTER TABLE ONLY public.flow_nodes
 
 
 --
--- TOC entry 3621 (class 2606 OID 316596)
+-- TOC entry 3629 (class 2606 OID 316596)
 -- Name: funds funds_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14302,7 +14350,7 @@ ALTER TABLE ONLY public.funds
 
 
 --
--- TOC entry 3625 (class 2606 OID 316598)
+-- TOC entry 3633 (class 2606 OID 316598)
 -- Name: hello hello_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14311,7 +14359,7 @@ ALTER TABLE ONLY public.hello
 
 
 --
--- TOC entry 3627 (class 2606 OID 316600)
+-- TOC entry 3635 (class 2606 OID 316600)
 -- Name: iframeHtml iframeHtml_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14320,7 +14368,7 @@ ALTER TABLE ONLY public."iframeHtml"
 
 
 --
--- TOC entry 3632 (class 2606 OID 316602)
+-- TOC entry 3640 (class 2606 OID 316602)
 -- Name: jobs jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14329,7 +14377,25 @@ ALTER TABLE ONLY public.jobs
 
 
 --
--- TOC entry 3635 (class 2606 OID 316604)
+-- TOC entry 3747 (class 2606 OID 365368)
+-- Name: kafka_configs kafka_configs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.kafka_configs
+    ADD CONSTRAINT kafka_configs_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3745 (class 2606 OID 365357)
+-- Name: kafka_topics kafka_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.kafka_topics
+    ADD CONSTRAINT kafka_topics_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3643 (class 2606 OID 316604)
 -- Name: migrations migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14338,7 +14404,7 @@ ALTER TABLE ONLY public.migrations
 
 
 --
--- TOC entry 3637 (class 2606 OID 316606)
+-- TOC entry 3645 (class 2606 OID 316606)
 -- Name: projects projects_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14347,7 +14413,7 @@ ALTER TABLE ONLY public.projects
 
 
 --
--- TOC entry 3640 (class 2606 OID 316608)
+-- TOC entry 3648 (class 2606 OID 316608)
 -- Name: proposes proposes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14356,7 +14422,7 @@ ALTER TABLE ONLY public.proposes
 
 
 --
--- TOC entry 3650 (class 2606 OID 316610)
+-- TOC entry 3658 (class 2606 OID 316610)
 -- Name: rolesResourcesActions rolesResourcesActions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14365,7 +14431,7 @@ ALTER TABLE ONLY public."rolesResourcesActions"
 
 
 --
--- TOC entry 3654 (class 2606 OID 316612)
+-- TOC entry 3662 (class 2606 OID 316612)
 -- Name: rolesResourcesScopes rolesResourcesScopes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14374,7 +14440,7 @@ ALTER TABLE ONLY public."rolesResourcesScopes"
 
 
 --
--- TOC entry 3647 (class 2606 OID 316614)
+-- TOC entry 3655 (class 2606 OID 316614)
 -- Name: rolesResources rolesResources_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14383,7 +14449,7 @@ ALTER TABLE ONLY public."rolesResources"
 
 
 --
--- TOC entry 3656 (class 2606 OID 316616)
+-- TOC entry 3664 (class 2606 OID 316616)
 -- Name: rolesUischemas rolesUischemas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14392,7 +14458,7 @@ ALTER TABLE ONLY public."rolesUischemas"
 
 
 --
--- TOC entry 3659 (class 2606 OID 316618)
+-- TOC entry 3667 (class 2606 OID 316618)
 -- Name: rolesUsers rolesUsers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14401,7 +14467,7 @@ ALTER TABLE ONLY public."rolesUsers"
 
 
 --
--- TOC entry 3643 (class 2606 OID 316620)
+-- TOC entry 3651 (class 2606 OID 316620)
 -- Name: roles roles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14410,7 +14476,7 @@ ALTER TABLE ONLY public.roles
 
 
 --
--- TOC entry 3645 (class 2606 OID 316622)
+-- TOC entry 3653 (class 2606 OID 316622)
 -- Name: roles roles_title_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14419,7 +14485,7 @@ ALTER TABLE ONLY public.roles
 
 
 --
--- TOC entry 3662 (class 2606 OID 316624)
+-- TOC entry 3670 (class 2606 OID 316624)
 -- Name: sequences sequences_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14428,7 +14494,7 @@ ALTER TABLE ONLY public.sequences
 
 
 --
--- TOC entry 3664 (class 2606 OID 316626)
+-- TOC entry 3672 (class 2606 OID 316626)
 -- Name: storages storages_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14437,7 +14503,7 @@ ALTER TABLE ONLY public.storages
 
 
 --
--- TOC entry 3666 (class 2606 OID 316628)
+-- TOC entry 3674 (class 2606 OID 316628)
 -- Name: storages storages_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14446,7 +14512,7 @@ ALTER TABLE ONLY public.storages
 
 
 --
--- TOC entry 3668 (class 2606 OID 316630)
+-- TOC entry 3676 (class 2606 OID 316630)
 -- Name: systemSettings systemSettings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14455,7 +14521,7 @@ ALTER TABLE ONLY public."systemSettings"
 
 
 --
--- TOC entry 3671 (class 2606 OID 316632)
+-- TOC entry 3679 (class 2606 OID 316632)
 -- Name: t_587vrvz0gcb t_587vrvz0gcb_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14464,7 +14530,7 @@ ALTER TABLE ONLY public.t_587vrvz0gcb
 
 
 --
--- TOC entry 3674 (class 2606 OID 316634)
+-- TOC entry 3682 (class 2606 OID 316634)
 -- Name: t_bzkvdw2a767 t_bzkvdw2a767_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14473,7 +14539,7 @@ ALTER TABLE ONLY public.t_bzkvdw2a767
 
 
 --
--- TOC entry 3735 (class 2606 OID 365323)
+-- TOC entry 3743 (class 2606 OID 365323)
 -- Name: t_ncaek4uddrw t_ncaek4uddrw_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14482,7 +14548,7 @@ ALTER TABLE ONLY public.t_ncaek4uddrw
 
 
 --
--- TOC entry 3677 (class 2606 OID 316636)
+-- TOC entry 3685 (class 2606 OID 316636)
 -- Name: t_s9b2jhcxq9q t_s9b2jhcxq9q_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14491,7 +14557,7 @@ ALTER TABLE ONLY public.t_s9b2jhcxq9q
 
 
 --
--- TOC entry 3679 (class 2606 OID 316638)
+-- TOC entry 3687 (class 2606 OID 316638)
 -- Name: themeConfig themeConfig_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14500,7 +14566,7 @@ ALTER TABLE ONLY public."themeConfig"
 
 
 --
--- TOC entry 3681 (class 2606 OID 316640)
+-- TOC entry 3689 (class 2606 OID 316640)
 -- Name: tokenBlacklist tokenBlacklist_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14509,7 +14575,7 @@ ALTER TABLE ONLY public."tokenBlacklist"
 
 
 --
--- TOC entry 3687 (class 2606 OID 316642)
+-- TOC entry 3695 (class 2606 OID 316642)
 -- Name: transactions transactions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14518,7 +14584,7 @@ ALTER TABLE ONLY public.transactions
 
 
 --
--- TOC entry 3691 (class 2606 OID 316644)
+-- TOC entry 3699 (class 2606 OID 316644)
 -- Name: uiSchemaServerHooks uiSchemaServerHooks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14527,7 +14593,7 @@ ALTER TABLE ONLY public."uiSchemaServerHooks"
 
 
 --
--- TOC entry 3694 (class 2606 OID 316646)
+-- TOC entry 3702 (class 2606 OID 316646)
 -- Name: uiSchemaTemplates uiSchemaTemplates_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14536,7 +14602,7 @@ ALTER TABLE ONLY public."uiSchemaTemplates"
 
 
 --
--- TOC entry 3697 (class 2606 OID 316648)
+-- TOC entry 3705 (class 2606 OID 316648)
 -- Name: uiSchemaTreePath uiSchemaTreePath_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14545,7 +14611,7 @@ ALTER TABLE ONLY public."uiSchemaTreePath"
 
 
 --
--- TOC entry 3700 (class 2606 OID 316650)
+-- TOC entry 3708 (class 2606 OID 316650)
 -- Name: uiSchemas uiSchemas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14554,7 +14620,7 @@ ALTER TABLE ONLY public."uiSchemas"
 
 
 --
--- TOC entry 3713 (class 2606 OID 316652)
+-- TOC entry 3721 (class 2606 OID 316652)
 -- Name: usersAuthenticators usersAuthenticators_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14563,7 +14629,7 @@ ALTER TABLE ONLY public."usersAuthenticators"
 
 
 --
--- TOC entry 3703 (class 2606 OID 316654)
+-- TOC entry 3711 (class 2606 OID 316654)
 -- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14572,7 +14638,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3718 (class 2606 OID 316656)
+-- TOC entry 3726 (class 2606 OID 316656)
 -- Name: users_jobs users_jobs_jobId_userId_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14581,7 +14647,7 @@ ALTER TABLE ONLY public.users_jobs
 
 
 --
--- TOC entry 3722 (class 2606 OID 316658)
+-- TOC entry 3730 (class 2606 OID 316658)
 -- Name: users_jobs users_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14590,7 +14656,7 @@ ALTER TABLE ONLY public.users_jobs
 
 
 --
--- TOC entry 3705 (class 2606 OID 316660)
+-- TOC entry 3713 (class 2606 OID 316660)
 -- Name: users users_phone_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14599,7 +14665,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3707 (class 2606 OID 316662)
+-- TOC entry 3715 (class 2606 OID 316662)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14608,7 +14674,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3709 (class 2606 OID 316664)
+-- TOC entry 3717 (class 2606 OID 316664)
 -- Name: users users_resetToken_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14617,7 +14683,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3711 (class 2606 OID 316666)
+-- TOC entry 3719 (class 2606 OID 316666)
 -- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14626,7 +14692,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3726 (class 2606 OID 316668)
+-- TOC entry 3734 (class 2606 OID 316668)
 -- Name: verifications verifications_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14635,7 +14701,7 @@ ALTER TABLE ONLY public.verifications
 
 
 --
--- TOC entry 3729 (class 2606 OID 316670)
+-- TOC entry 3737 (class 2606 OID 316670)
 -- Name: verifications_providers verifications_providers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14644,7 +14710,7 @@ ALTER TABLE ONLY public.verifications_providers
 
 
 --
--- TOC entry 3732 (class 2606 OID 316672)
+-- TOC entry 3740 (class 2606 OID 316672)
 -- Name: workflows workflows_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14653,7 +14719,7 @@ ALTER TABLE ONLY public.workflows
 
 
 --
--- TOC entry 3543 (class 1259 OID 316673)
+-- TOC entry 3551 (class 1259 OID 316673)
 -- Name: api_keys_role_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14661,7 +14727,7 @@ CREATE INDEX api_keys_role_name ON public."apiKeys" USING btree ("roleName");
 
 
 --
--- TOC entry 3552 (class 1259 OID 316674)
+-- TOC entry 3560 (class 1259 OID 316674)
 -- Name: attachments_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14669,7 +14735,7 @@ CREATE INDEX attachments_created_by_id ON public.attachments USING btree ("creat
 
 
 --
--- TOC entry 3555 (class 1259 OID 316675)
+-- TOC entry 3563 (class 1259 OID 316675)
 -- Name: attachments_storage_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14677,7 +14743,7 @@ CREATE INDEX attachments_storage_id ON public.attachments USING btree ("storageI
 
 
 --
--- TOC entry 3556 (class 1259 OID 316676)
+-- TOC entry 3564 (class 1259 OID 316676)
 -- Name: authenticators_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14685,7 +14751,7 @@ CREATE INDEX authenticators_created_by_id ON public.authenticators USING btree (
 
 
 --
--- TOC entry 3563 (class 1259 OID 316677)
+-- TOC entry 3571 (class 1259 OID 316677)
 -- Name: china_regions_parent_code; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14693,7 +14759,7 @@ CREATE INDEX china_regions_parent_code ON public."chinaRegions" USING btree ("pa
 
 
 --
--- TOC entry 3568 (class 1259 OID 316678)
+-- TOC entry 3576 (class 1259 OID 316678)
 -- Name: collection_category_category_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14701,7 +14767,7 @@ CREATE INDEX collection_category_category_id ON public."collectionCategory" USIN
 
 
 --
--- TOC entry 3577 (class 1259 OID 316679)
+-- TOC entry 3585 (class 1259 OID 316679)
 -- Name: custom_requests_roles_role_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14709,7 +14775,7 @@ CREATE INDEX custom_requests_roles_role_name ON public."customRequestsRoles" USI
 
 
 --
--- TOC entry 3582 (class 1259 OID 316680)
+-- TOC entry 3590 (class 1259 OID 316680)
 -- Name: data_sources_collections_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14717,7 +14783,7 @@ CREATE INDEX data_sources_collections_data_source_key ON public."dataSourcesColl
 
 
 --
--- TOC entry 3583 (class 1259 OID 316681)
+-- TOC entry 3591 (class 1259 OID 316681)
 -- Name: data_sources_collections_name_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14725,7 +14791,7 @@ CREATE UNIQUE INDEX data_sources_collections_name_data_source_key ON public."dat
 
 
 --
--- TOC entry 3586 (class 1259 OID 316682)
+-- TOC entry 3594 (class 1259 OID 316682)
 -- Name: data_sources_fields_collection_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14733,7 +14799,7 @@ CREATE INDEX data_sources_fields_collection_key ON public."dataSourcesFields" US
 
 
 --
--- TOC entry 3587 (class 1259 OID 316683)
+-- TOC entry 3595 (class 1259 OID 316683)
 -- Name: data_sources_fields_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14741,7 +14807,7 @@ CREATE INDEX data_sources_fields_data_source_key ON public."dataSourcesFields" U
 
 
 --
--- TOC entry 3588 (class 1259 OID 316684)
+-- TOC entry 3596 (class 1259 OID 316684)
 -- Name: data_sources_fields_name_collection_name_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14749,7 +14815,7 @@ CREATE UNIQUE INDEX data_sources_fields_name_collection_name_data_source_key ON 
 
 
 --
--- TOC entry 3591 (class 1259 OID 316685)
+-- TOC entry 3599 (class 1259 OID 316685)
 -- Name: data_sources_roles_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14757,7 +14823,7 @@ CREATE INDEX data_sources_roles_data_source_key ON public."dataSourcesRoles" USI
 
 
 --
--- TOC entry 3599 (class 1259 OID 316686)
+-- TOC entry 3607 (class 1259 OID 316686)
 -- Name: data_sources_roles_resources_actions_roles_resource_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14765,7 +14831,7 @@ CREATE INDEX data_sources_roles_resources_actions_roles_resource_id ON public."d
 
 
 --
--- TOC entry 3600 (class 1259 OID 316687)
+-- TOC entry 3608 (class 1259 OID 316687)
 -- Name: data_sources_roles_resources_actions_scope_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14773,7 +14839,7 @@ CREATE INDEX data_sources_roles_resources_actions_scope_id ON public."dataSource
 
 
 --
--- TOC entry 3595 (class 1259 OID 316688)
+-- TOC entry 3603 (class 1259 OID 316688)
 -- Name: data_sources_roles_resources_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14781,7 +14847,7 @@ CREATE INDEX data_sources_roles_resources_data_source_key ON public."dataSources
 
 
 --
--- TOC entry 3596 (class 1259 OID 316689)
+-- TOC entry 3604 (class 1259 OID 316689)
 -- Name: data_sources_roles_resources_role_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14789,7 +14855,7 @@ CREATE INDEX data_sources_roles_resources_role_name ON public."dataSourcesRolesR
 
 
 --
--- TOC entry 3603 (class 1259 OID 316690)
+-- TOC entry 3611 (class 1259 OID 316690)
 -- Name: data_sources_roles_resources_scopes_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14797,7 +14863,7 @@ CREATE INDEX data_sources_roles_resources_scopes_data_source_key ON public."data
 
 
 --
--- TOC entry 3592 (class 1259 OID 316691)
+-- TOC entry 3600 (class 1259 OID 316691)
 -- Name: data_sources_roles_role_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14805,7 +14871,7 @@ CREATE INDEX data_sources_roles_role_name ON public."dataSourcesRoles" USING btr
 
 
 --
--- TOC entry 3608 (class 1259 OID 316692)
+-- TOC entry 3616 (class 1259 OID 316692)
 -- Name: executions_workflow_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14813,7 +14879,7 @@ CREATE INDEX executions_workflow_id ON public.executions USING btree ("workflowI
 
 
 --
--- TOC entry 3609 (class 1259 OID 316693)
+-- TOC entry 3617 (class 1259 OID 316693)
 -- Name: fields_collection_name_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14821,7 +14887,7 @@ CREATE UNIQUE INDEX fields_collection_name_name ON public.fields USING btree ("c
 
 
 --
--- TOC entry 3610 (class 1259 OID 316694)
+-- TOC entry 3618 (class 1259 OID 316694)
 -- Name: fields_parent_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14829,7 +14895,7 @@ CREATE INDEX fields_parent_key ON public.fields USING btree ("parentKey");
 
 
 --
--- TOC entry 3613 (class 1259 OID 316695)
+-- TOC entry 3621 (class 1259 OID 316695)
 -- Name: fields_reverse_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14837,7 +14903,7 @@ CREATE INDEX fields_reverse_key ON public.fields USING btree ("reverseKey");
 
 
 --
--- TOC entry 3614 (class 1259 OID 316696)
+-- TOC entry 3622 (class 1259 OID 316696)
 -- Name: flow_nodes_downstream_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14845,7 +14911,7 @@ CREATE INDEX flow_nodes_downstream_id ON public.flow_nodes USING btree ("downstr
 
 
 --
--- TOC entry 3617 (class 1259 OID 316697)
+-- TOC entry 3625 (class 1259 OID 316697)
 -- Name: flow_nodes_upstream_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14853,7 +14919,7 @@ CREATE INDEX flow_nodes_upstream_id ON public.flow_nodes USING btree ("upstreamI
 
 
 --
--- TOC entry 3618 (class 1259 OID 316698)
+-- TOC entry 3626 (class 1259 OID 316698)
 -- Name: flow_nodes_workflow_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14861,7 +14927,7 @@ CREATE INDEX flow_nodes_workflow_id ON public.flow_nodes USING btree ("workflowI
 
 
 --
--- TOC entry 3619 (class 1259 OID 316699)
+-- TOC entry 3627 (class 1259 OID 316699)
 -- Name: funds_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14869,7 +14935,7 @@ CREATE INDEX funds_created_by_id ON public.funds USING btree ("createdById");
 
 
 --
--- TOC entry 3622 (class 1259 OID 316700)
+-- TOC entry 3630 (class 1259 OID 316700)
 -- Name: funds_project_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14877,7 +14943,7 @@ CREATE INDEX funds_project_id ON public.funds USING btree (project_id);
 
 
 --
--- TOC entry 3623 (class 1259 OID 316701)
+-- TOC entry 3631 (class 1259 OID 316701)
 -- Name: funds_updated_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14885,7 +14951,7 @@ CREATE INDEX funds_updated_by_id ON public.funds USING btree ("updatedById");
 
 
 --
--- TOC entry 3628 (class 1259 OID 316702)
+-- TOC entry 3636 (class 1259 OID 316702)
 -- Name: iframe_html_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14893,7 +14959,7 @@ CREATE INDEX iframe_html_created_by_id ON public."iframeHtml" USING btree ("crea
 
 
 --
--- TOC entry 3629 (class 1259 OID 316703)
+-- TOC entry 3637 (class 1259 OID 316703)
 -- Name: jobs_execution_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14901,7 +14967,7 @@ CREATE INDEX jobs_execution_id ON public.jobs USING btree ("executionId");
 
 
 --
--- TOC entry 3630 (class 1259 OID 316704)
+-- TOC entry 3638 (class 1259 OID 316704)
 -- Name: jobs_node_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14909,7 +14975,7 @@ CREATE INDEX jobs_node_id ON public.jobs USING btree ("nodeId");
 
 
 --
--- TOC entry 3633 (class 1259 OID 316705)
+-- TOC entry 3641 (class 1259 OID 316705)
 -- Name: jobs_upstream_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14917,7 +14983,7 @@ CREATE INDEX jobs_upstream_id ON public.jobs USING btree ("upstreamId");
 
 
 --
--- TOC entry 3638 (class 1259 OID 316706)
+-- TOC entry 3646 (class 1259 OID 316706)
 -- Name: proposes_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14925,7 +14991,7 @@ CREATE INDEX proposes_created_by_id ON public.proposes USING btree ("createdById
 
 
 --
--- TOC entry 3641 (class 1259 OID 316707)
+-- TOC entry 3649 (class 1259 OID 316707)
 -- Name: proposes_updated_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14933,7 +14999,7 @@ CREATE INDEX proposes_updated_by_id ON public.proposes USING btree ("updatedById
 
 
 --
--- TOC entry 3651 (class 1259 OID 316708)
+-- TOC entry 3659 (class 1259 OID 316708)
 -- Name: roles_resources_actions_roles_resource_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14941,7 +15007,7 @@ CREATE INDEX roles_resources_actions_roles_resource_id ON public."rolesResources
 
 
 --
--- TOC entry 3652 (class 1259 OID 316709)
+-- TOC entry 3660 (class 1259 OID 316709)
 -- Name: roles_resources_actions_scope_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14949,7 +15015,7 @@ CREATE INDEX roles_resources_actions_scope_id ON public."rolesResourcesActions" 
 
 
 --
--- TOC entry 3648 (class 1259 OID 316710)
+-- TOC entry 3656 (class 1259 OID 316710)
 -- Name: roles_resources_role_name_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14957,7 +15023,7 @@ CREATE UNIQUE INDEX roles_resources_role_name_name ON public."rolesResources" US
 
 
 --
--- TOC entry 3657 (class 1259 OID 316711)
+-- TOC entry 3665 (class 1259 OID 316711)
 -- Name: roles_uischemas_ui_schema_x_uid; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14965,7 +15031,7 @@ CREATE INDEX roles_uischemas_ui_schema_x_uid ON public."rolesUischemas" USING bt
 
 
 --
--- TOC entry 3660 (class 1259 OID 316712)
+-- TOC entry 3668 (class 1259 OID 316712)
 -- Name: roles_users_user_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14973,7 +15039,7 @@ CREATE INDEX roles_users_user_id ON public."rolesUsers" USING btree ("userId");
 
 
 --
--- TOC entry 3669 (class 1259 OID 316713)
+-- TOC entry 3677 (class 1259 OID 316713)
 -- Name: system_settings_logo_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14981,7 +15047,7 @@ CREATE INDEX system_settings_logo_id ON public."systemSettings" USING btree ("lo
 
 
 --
--- TOC entry 3672 (class 1259 OID 316714)
+-- TOC entry 3680 (class 1259 OID 316714)
 -- Name: t_bzkvdw2a767_f_qxu5av3g0sx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14989,7 +15055,7 @@ CREATE INDEX t_bzkvdw2a767_f_qxu5av3g0sx ON public.t_bzkvdw2a767 USING btree (f_
 
 
 --
--- TOC entry 3733 (class 1259 OID 365324)
+-- TOC entry 3741 (class 1259 OID 365324)
 -- Name: t_ncaek4uddrw_f_9k9506pi4rq; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14997,7 +15063,7 @@ CREATE INDEX t_ncaek4uddrw_f_9k9506pi4rq ON public.t_ncaek4uddrw USING btree (f_
 
 
 --
--- TOC entry 3675 (class 1259 OID 316715)
+-- TOC entry 3683 (class 1259 OID 316715)
 -- Name: t_s9b2jhcxq9q_f_8o3qqdvq8bk; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15005,7 +15071,7 @@ CREATE INDEX t_s9b2jhcxq9q_f_8o3qqdvq8bk ON public.t_s9b2jhcxq9q USING btree (f_
 
 
 --
--- TOC entry 3682 (class 1259 OID 316716)
+-- TOC entry 3690 (class 1259 OID 316716)
 -- Name: token_blacklist_token; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15013,7 +15079,7 @@ CREATE INDEX token_blacklist_token ON public."tokenBlacklist" USING btree (token
 
 
 --
--- TOC entry 3683 (class 1259 OID 316717)
+-- TOC entry 3691 (class 1259 OID 316717)
 -- Name: transactions_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15021,7 +15087,7 @@ CREATE INDEX transactions_created_by_id ON public.transactions USING btree ("cre
 
 
 --
--- TOC entry 3684 (class 1259 OID 316718)
+-- TOC entry 3692 (class 1259 OID 316718)
 -- Name: transactions_f_e47my4oktv2; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15029,7 +15095,7 @@ CREATE INDEX transactions_f_e47my4oktv2 ON public.transactions USING btree (f_e4
 
 
 --
--- TOC entry 3685 (class 1259 OID 316719)
+-- TOC entry 3693 (class 1259 OID 316719)
 -- Name: transactions_fund_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15037,7 +15103,7 @@ CREATE INDEX transactions_fund_id ON public.transactions USING btree (fund_id);
 
 
 --
--- TOC entry 3688 (class 1259 OID 316720)
+-- TOC entry 3696 (class 1259 OID 316720)
 -- Name: transactions_updated_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15045,7 +15111,7 @@ CREATE INDEX transactions_updated_by_id ON public.transactions USING btree ("upd
 
 
 --
--- TOC entry 3689 (class 1259 OID 316721)
+-- TOC entry 3697 (class 1259 OID 316721)
 -- Name: transactions_user_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15053,7 +15119,7 @@ CREATE INDEX transactions_user_id ON public.transactions USING btree (user_id);
 
 
 --
--- TOC entry 3692 (class 1259 OID 316722)
+-- TOC entry 3700 (class 1259 OID 316722)
 -- Name: ui_schema_server_hooks_uid; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15061,7 +15127,7 @@ CREATE INDEX ui_schema_server_hooks_uid ON public."uiSchemaServerHooks" USING bt
 
 
 --
--- TOC entry 3695 (class 1259 OID 316723)
+-- TOC entry 3703 (class 1259 OID 316723)
 -- Name: ui_schema_templates_uid; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15069,7 +15135,7 @@ CREATE INDEX ui_schema_templates_uid ON public."uiSchemaTemplates" USING btree (
 
 
 --
--- TOC entry 3698 (class 1259 OID 316724)
+-- TOC entry 3706 (class 1259 OID 316724)
 -- Name: ui_schema_tree_path_descendant; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15077,7 +15143,7 @@ CREATE INDEX ui_schema_tree_path_descendant ON public."uiSchemaTreePath" USING b
 
 
 --
--- TOC entry 3714 (class 1259 OID 316725)
+-- TOC entry 3722 (class 1259 OID 316725)
 -- Name: users_authenticators_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15085,7 +15151,7 @@ CREATE INDEX users_authenticators_created_by_id ON public."usersAuthenticators" 
 
 
 --
--- TOC entry 3715 (class 1259 OID 316726)
+-- TOC entry 3723 (class 1259 OID 316726)
 -- Name: users_authenticators_user_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15093,7 +15159,7 @@ CREATE INDEX users_authenticators_user_id ON public."usersAuthenticators" USING 
 
 
 --
--- TOC entry 3701 (class 1259 OID 316727)
+-- TOC entry 3709 (class 1259 OID 316727)
 -- Name: users_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15101,7 +15167,7 @@ CREATE INDEX users_created_by_id ON public.users USING btree ("createdById");
 
 
 --
--- TOC entry 3716 (class 1259 OID 316728)
+-- TOC entry 3724 (class 1259 OID 316728)
 -- Name: users_jobs_execution_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15109,7 +15175,7 @@ CREATE INDEX users_jobs_execution_id ON public.users_jobs USING btree ("executio
 
 
 --
--- TOC entry 3719 (class 1259 OID 316729)
+-- TOC entry 3727 (class 1259 OID 316729)
 -- Name: users_jobs_job_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15117,7 +15183,7 @@ CREATE INDEX users_jobs_job_id ON public.users_jobs USING btree ("jobId");
 
 
 --
--- TOC entry 3720 (class 1259 OID 316730)
+-- TOC entry 3728 (class 1259 OID 316730)
 -- Name: users_jobs_node_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15125,7 +15191,7 @@ CREATE INDEX users_jobs_node_id ON public.users_jobs USING btree ("nodeId");
 
 
 --
--- TOC entry 3723 (class 1259 OID 316731)
+-- TOC entry 3731 (class 1259 OID 316731)
 -- Name: users_jobs_user_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15133,7 +15199,7 @@ CREATE INDEX users_jobs_user_id ON public.users_jobs USING btree ("userId");
 
 
 --
--- TOC entry 3724 (class 1259 OID 316732)
+-- TOC entry 3732 (class 1259 OID 316732)
 -- Name: users_jobs_workflow_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15141,7 +15207,7 @@ CREATE INDEX users_jobs_workflow_id ON public.users_jobs USING btree ("workflowI
 
 
 --
--- TOC entry 3727 (class 1259 OID 316733)
+-- TOC entry 3735 (class 1259 OID 316733)
 -- Name: verifications_provider_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -15149,14 +15215,14 @@ CREATE INDEX verifications_provider_id ON public.verifications USING btree ("pro
 
 
 --
--- TOC entry 3730 (class 1259 OID 316734)
+-- TOC entry 3738 (class 1259 OID 316734)
 -- Name: workflows_key_current; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX workflows_key_current ON public.workflows USING btree (key, current);
 
 
--- Completed on 2024-11-29 16:39:13 UTC
+-- Completed on 2024-11-29 18:29:14 UTC
 
 --
 -- PostgreSQL database dump complete

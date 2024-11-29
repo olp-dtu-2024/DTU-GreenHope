@@ -6,7 +6,7 @@ import {
 import { CodeOutlined } from '@ant-design/icons';
 
 import { carouselSchema } from '../schema';
-import { useT } from '../locale';
+import { useT } from '../../../../carousel/src/client/locale';
 import { BlockName, BlockNameLowerCase } from '../constants';
 
 export const infoInitializerItem: SchemaInitializerItemType = {

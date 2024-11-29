@@ -1,7 +1,7 @@
 import { SchemaSettingsItemType, useDesignable } from '@nocobase/client';
 import { useFieldSchema } from '@formily/react';
 import { BlockNameLowerCase } from '../../constants';
-import { useT } from '../../locale';
+import { useT } from '../../../../../carousel/src/client/locale';
 
 export const heightSchemaSettingsItem: SchemaSettingsItemType = {
   name: 'height',

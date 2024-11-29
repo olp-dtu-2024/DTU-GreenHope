@@ -6,7 +6,7 @@ import {
 } from '@nocobase/client';
 import { carouselSchema } from '../schema';
 import { BlockNameLowerCase, BlockName } from '../constants';
-import { useT } from '../locale';
+import { useT } from '../../../../carousel/src/client/locale';
 import { CodeOutlined } from '@ant-design/icons';
 
 export const carouselInitializerItem: SchemaInitializerItemType = {

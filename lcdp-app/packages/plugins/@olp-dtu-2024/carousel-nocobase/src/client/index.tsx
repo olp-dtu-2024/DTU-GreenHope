@@ -1,10 +1,10 @@
 import { Plugin } from '@nocobase/client';
-import { Carousel } from '../../../carousel-nocobase/src/client/component';
-import { carouselInitializerItem } from '../../../carousel-nocobase/src/client/initializer';
-import { carouselSettings } from '../../../carousel-nocobase/src/client/settings';
-import { useBlockScopeDecoratorProps } from '../../../carousel-nocobase/src/client/schema';
+import { useBlockScopeDecoratorProps } from './schema';
+import { Carousel } from './component';
+import { carouselSettings } from './settings';
+import { carouselInitializerItem } from './initializer';
 
-export class CarouselClient extends Plugin {
+export class CarouselNocobaseClient extends Plugin {
   /**
    * Loads and registers various components, scopes, and settings
    * into the application. This method does the following:
@@ -35,4 +35,4 @@ export class CarouselClient extends Plugin {
   }
 }
 
-export default CarouselClient;
+export default CarouselNocobaseClient;

@@ -13,6 +13,15 @@
       "@olp-dtu-2024/carousel": [
         "packages/plugins/@olp-dtu-2024/carousel/src"
       ],
+      "@olp-dtu-2024/carousel-nocobase/client": [
+        "packages/plugins/@olp-dtu-2024/carousel-nocobase/src/client"
+      ],
+      "@olp-dtu-2024/carousel-nocobase/package.json": [
+        "packages/plugins/@olp-dtu-2024/carousel-nocobase/package.json"
+      ],
+      "@olp-dtu-2024/carousel-nocobase": [
+        "packages/plugins/@olp-dtu-2024/carousel-nocobase/src"
+      ],
       "@olp-dtu-2024/header-picker/client": [
         "packages/plugins/@olp-dtu-2024/header-picker/src/client"
       ],
