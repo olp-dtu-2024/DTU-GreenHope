@@ -12,8 +12,6 @@ export class KafkaEventListener {
 
   async initializeTopics(topics: string[]) {
     try {
-      console.log('>>>>>>>>', topics);
-
       await this.consumer.subscribe({ topics: topics });
 
       await this.consumer.run({

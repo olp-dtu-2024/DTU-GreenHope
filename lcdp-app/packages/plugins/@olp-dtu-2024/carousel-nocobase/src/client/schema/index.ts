@@ -7,8 +7,6 @@ function useBlockScopeParams(props) {
   const { filter, parseVariableLoading } = useParsedFilter({
     filterOption: props.params?.filter,
   });
-  console.log('props222', props.params);
-
   const appends = useMemo(() => {
     const arr: string[] = [];
     const start = props.fieldNames?.start;
@@ -27,8 +25,7 @@ function useBlockScopeParams(props) {
   const params = useMemo(() => {
     return {
       ...props.params,
-      // appends: [...appends, ...(props.params?.appends || [])],
-      appends: ['images'], //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      appends: [...appends, ...(props.params?.appends || []), 'images'],
       filter,
     };
   }, [appends, JSON.stringify(filter), props.params]);
@@ -37,8 +34,6 @@ function useBlockScopeParams(props) {
 }
 
 export function useBlockScopeDecoratorProps(props) {
-  console.log('useBlockScopeDecoratorProps', props.params);
-
   const { params, parseVariableLoading } = useBlockScopeParams(props);
   let parentRecord;
 

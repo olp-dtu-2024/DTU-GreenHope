@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   SelectProps,
   useCollection,
   useCompile,
   useDataBlockRequest,
+  useParentRecordCommon,
+  useParsedFilter,
 } from '@nocobase/client';
 import { BlockNameLowercase } from '../constants';
 import { headerPickerSettings } from '../settings';
@@ -15,8 +17,53 @@ export interface HeaderPickerProps {
   loading?: boolean;
 }
 
+function useBlockScopeParams(props) {
+  const { filter, parseVariableLoading } = useParsedFilter({
+    filterOption: props.params?.filter,
+  });
+
+  const appends = useMemo(() => {
+    const arr: string[] = [];
+    const start = props.fieldNames?.start;
+    const end = props.fieldNames?.end;
+
+    if (Array.isArray(start) && start.length >= 2) {
+      arr.push(start[0]);
+    }
+    if (Array.isArray(end) && end.length >= 2) {
+      arr.push(end[0]);
+    }
+
+    return arr;
+  }, [props.fieldNames]);
+
+  const params = useMemo(() => {
+    return {
+      ...props.params,
+      appends: [...appends, ...(props.params?.appends || [])],
+      filter,
+    };
+  }, [appends, JSON.stringify(filter), props.params]);
+
+  return { params, parseVariableLoading };
+}
+
+export function useBlockScopeDecoratorProps(props) {
+  const { params, parseVariableLoading } = useBlockScopeParams(props);
+  let parentRecord;
+
+  if (props.association) {
+    parentRecord = useParentRecordCommon(props.association);
+  }
+
+  return {
+    params,
+    parentRecord,
+    parseVariableLoading,
+  };
+}
+
 export function useHeaderPickerProps(): HeaderPickerProps {
-  console.log('Hook useHeaderPickerProps được gọi');
   const collection = useCollection();
   const { data, loading } = useDataBlockRequest<any[]>();
 
@@ -52,11 +99,13 @@ export function getHeaderPickerSchema({ dataSource = 'main', collection }) {
     'x-component-props': {
       useConfigureFields: true,
     },
+    'x-use-decorator-props': 'useBlockScopeDecoratorProps',
     properties: {
       [BlockNameLowercase]: {
         type: 'void',
         'x-component': HeaderPickerComponent,
         'x-use-component-props': 'useHeaderPickerProps',
+        'x-use-decorator-props': 'useBlockScopeDecoratorProps',
         properties: {}, // This will be populated dynamically
       },
       fields: {

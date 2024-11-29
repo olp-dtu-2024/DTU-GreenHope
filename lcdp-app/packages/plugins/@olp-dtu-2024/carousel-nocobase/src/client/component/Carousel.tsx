@@ -15,7 +15,6 @@ import { BlockName } from '../constants';
 const useCarouselData = () => {
   // Get data from DataBlockProvider
   const { data } = useDataBlockRequest();
-  console.log('data', data);
   return {
     images: data ? (data?.data as any)[0].images : [],
   };
@@ -33,8 +32,6 @@ export interface CarouselProps extends AntdCarouselProps {
 export const Carousel: FC<CarouselProps> = withDynamicSchemaProps(
   (props) => {
     const { images } = useCarouselData();
-    console.log('images', images);
-
     const { data, height = 300, objectFit = 'cover', ...carouselProps } = props;
     return images && images.length ? (
       <AntdCarousel {...carouselProps}>

@@ -38,13 +38,8 @@ export function getInfoItemSchema({ name, key }: { name: string; key: any }) {
     const { data } = useHeaderPickerProps();
     const schema = useFieldSchema();
     const headerType = schema['x-header-type'] || 'h1';
-    console.log(headerType);
-    console.log('Có lấy Item', name);
-
     const fieldData = data?.find((item) => item[name]);
     const value = fieldData?.[name];
-    console.log('Có lấy value', value);
-
     const Component = headerType;
     return <Component>{value}</Component>;
   };
