@@ -1,6 +1,5 @@
 import { Producer, Consumer } from 'kafkajs';
 import { ALL_TOPICS } from './constants';
-import { topicHandlers } from 'packages/plugins/@olp-dtu-2024/kafka-nocobase/src/server/handler';
 
 export class KafkaEventListener {
   private producer: Producer;
@@ -11,24 +10,33 @@ export class KafkaEventListener {
     this.consumer = consumer;
   }
 
-  async initializeTopics() {
+  async initializeTopics(topics: string[]) {
     try {
-      await this.consumer.subscribe({ topics: ALL_TOPICS });
+      console.log('>>>>>>>>', topics);
+
+      await this.consumer.subscribe({ topics: topics });
 
       await this.consumer.run({
         eachMessage: async ({ topic, partition, message }) => {
           try {
-            const handler = topicHandlers[topic];
-            if (handler) {
-              const messageValue = message.value ? Buffer.from(message.value).toString('utf8') : null;
-              console.log(messageValue)
-              const parsedMessage = messageValue ? JSON.parse(messageValue) : null;
-              await handler(parsedMessage);
+            // const handler = topicHandlers[topic];
+            if (true) {
+              const messageValue = message.value
+                ? Buffer.from(message.value).toString('utf8')
+                : null;
+              console.log(messageValue);
+              const parsedMessage = messageValue
+                ? JSON.parse(messageValue)
+                : null;
+              // await handler(parsedMessage);
             } else {
               console.warn(`No handler found for topic: ${topic}`);
             }
           } catch (error) {
-            console.error(`Error processing message from topic ${topic}:`, error);
+            console.error(
+              `Error processing message from topic ${topic}:`,
+              error
+            );
           }
         },
       });
@@ -44,7 +52,7 @@ export class KafkaEventListener {
         topic,
         messages: [
           {
-            value: JSON.stringify(message)
+            value: JSON.stringify(message),
           },
         ],
       });

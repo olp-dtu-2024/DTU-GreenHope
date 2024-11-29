@@ -7,6 +7,20 @@ import {
 import { useAPIClient, withDynamicSchemaProps } from '@nocobase/client';
 import { BlockName } from '../constants';
 
+/**
+ * Carousel component that fetches images based on the query parameter 'id'
+ * from a specified resource ('projects') using an API client. The fetched images
+ * are displayed in a carousel layout using Ant Design's Carousel component.
+ *
+ * Props:
+ * - height: number (optional) - Sets the height of the carousel images. Default is 300.
+ * - objectFit: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down' (optional) - Sets the object-fit CSS property
+ *   for carousel images. Default is 'cover'.
+ *
+ * The component internally makes use of the `withDynamicSchemaProps` higher-order component to manage schema properties dynamically.
+ *
+ * Returns a React component displaying a collection of images in a carousel or a 404 result if no images are available.
+ */
 export interface CarouselProps extends AntdCarouselProps {
   height?: number;
   /**
@@ -35,10 +49,10 @@ export const Carousel: FC<CarouselProps> = withDynamicSchemaProps(
       };
 
       fetchImages();
-    }, []); // Chạy một lần khi component mount
+    }, []);
     return images && images.length ? (
       <AntdCarousel {...carouselProps}>
-        {images.map((image) => (
+        {images.map((image: any) => (
           <div key={image.url}>
             <img
               key={image.title}

@@ -1,11 +1,18 @@
 {
   "name": "@olp-dtu-2024/carousel",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "main": "dist/server/index.js",
   "dependencies": {},
   "peerDependencies": {
     "@nocobase/client": "1.x",
     "@nocobase/server": "1.x",
     "@nocobase/test": "1.x"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olp-dtu-2024/DTU-GreenHope"
   }
 }
