@@ -2257,7 +2257,7 @@
   resolved "https://registry.yarnpkg.com/@formily/path/-/path-2.3.2.tgz#9385d9ba1eabd5e3ed916f2b1953be6257bb192e"
   integrity sha512-KK8h/CupHOs4HIgu9JucqwWvIr8Nbmof++Kby0NdNFHdTN5nAyVzStS8VEPFPGRkQaXV3AH+FVGAxgucmEy4ZA==
 
-"@formily/react@^2.2.0", "@formily/react@^2.2.27":
+"@formily/react@^2.2.0", "@formily/react@^2.2.27", "@formily/react@^2.3.2":
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/@formily/react/-/react-2.3.2.tgz#0804d67dda8cb0b2fa9948453e0f28c1d5c69381"
   integrity sha512-p0jCtX2K9b2/OUdXcDGJhRX4gU4zGFXg1uOYd49iqV1EP+XhRa/4OGAz7QMnUP0K/3FVLboqbQS2nMOKY1rrPg==

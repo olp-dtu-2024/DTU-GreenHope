@@ -1,6 +1,6 @@
 import { Plugin } from '@nocobase/server';
 
-export class CarouselServer extends Plugin {
+export class HeaderPickerNocobaseServer extends Plugin {
   async afterAdd() {}
 
   async beforeLoad() {}
@@ -16,4 +16,4 @@ export class CarouselServer extends Plugin {
   async remove() {}
 }
 
-export default CarouselServer;
+export default HeaderPickerNocobaseServer;

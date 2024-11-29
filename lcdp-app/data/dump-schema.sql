@@ -5,7 +5,7 @@
 -- Dumped from database version 16.4
 -- Dumped by pg_dump version 16.4
 
--- Started on 2024-11-29 18:29:14 UTC
+-- Started on 2024-11-29 18:51:39 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -2582,8 +2582,8 @@ COPY public."applicationPlugins" (id, "createdAt", "updatedAt", name, "packageNa
 61	2024-11-24 03:34:37.804+00	2024-11-24 03:35:12.479+00	@olp-dtu-2024/ui	@olp-dtu-2024/ui	0.1.0	t	t	\N	\N
 59	2024-11-23 15:30:20.12+00	2024-11-25 05:45:43.086+00	@olp-dtu-2024/landing-page	@olp-dtu-2024/landing-page	0.1.0	t	t	\N	\N
 54	2024-11-22 08:43:33.991+00	2024-11-28 01:46:15.614+00	@olp-dtu-2024/kafka-nocobase	@olp-dtu-2024/kafka-nocobase	1.0.1	t	t	\N	\N
-66	2024-11-28 01:50:36.157+00	2024-11-28 01:53:11.611+00	@olp-dtu-2024/header-picker	@olp-dtu-2024/header-picker	0.1.0	t	t	\N	\N
 67	2024-11-29 18:21:11.386+00	2024-11-29 18:23:11.444+00	@olp-dtu-2024/carousel-nocobase	@olp-dtu-2024/carousel-nocobase	0.1.0	t	t	\N	\N
+68	2024-11-29 18:40:03.216+00	2024-11-29 18:42:18.26+00	@olp-dtu-2024/header-picker-nocobase	@olp-dtu-2024/header-picker-nocobase	0.1.0	t	t	\N	\N
 \.
 
 
@@ -12802,38 +12802,20 @@ mwrnryoju9y	zrm37tg78ob	22	\N	\N	\N
 nocobase-admin-menu	6qulve4ybk4	21	\N	\N	\N
 nocobase-admin-menu	4ryyxzuq87v	22	\N	\N	\N
 nocobase-admin-menu	zrm37tg78ob	23	\N	\N	\N
-tf3bh58lv6q	n99da59sh6u	3	\N	\N	\N
-tf3bh58lv6q	3ytk1megoa9	4	\N	\N	\N
-tf3bh58lv6q	vqdryqum2t3	5	\N	\N	\N
 tf3bh58lv6q	vbof97c5249	2	\N	\N	\N
 tf3bh58lv6q	q1pb5sukxkw	2	\N	\N	\N
-yivjshzifwl	n99da59sh6u	4	\N	\N	\N
-yivjshzifwl	3ytk1megoa9	5	\N	\N	\N
-yivjshzifwl	vqdryqum2t3	6	\N	\N	\N
 yivjshzifwl	h4dm0c8wmu4	2	\N	\N	\N
 yivjshzifwl	vbof97c5249	3	\N	\N	\N
 yivjshzifwl	q1pb5sukxkw	3	\N	\N	\N
-7poa6levyva	n99da59sh6u	5	\N	\N	\N
-7poa6levyva	3ytk1megoa9	6	\N	\N	\N
-7poa6levyva	vqdryqum2t3	7	\N	\N	\N
 7poa6levyva	h4dm0c8wmu4	3	\N	\N	\N
 7poa6levyva	vbof97c5249	4	\N	\N	\N
 7poa6levyva	q1pb5sukxkw	4	\N	\N	\N
-fe7kgdo55ax	n99da59sh6u	6	\N	\N	\N
-fe7kgdo55ax	3ytk1megoa9	7	\N	\N	\N
-fe7kgdo55ax	vqdryqum2t3	8	\N	\N	\N
 fe7kgdo55ax	h4dm0c8wmu4	4	\N	\N	\N
 fe7kgdo55ax	vbof97c5249	5	\N	\N	\N
 fe7kgdo55ax	q1pb5sukxkw	5	\N	\N	\N
-hmft2ujv1uf	n99da59sh6u	7	\N	\N	\N
-hmft2ujv1uf	3ytk1megoa9	8	\N	\N	\N
-hmft2ujv1uf	vqdryqum2t3	9	\N	\N	\N
 hmft2ujv1uf	h4dm0c8wmu4	5	\N	\N	\N
 hmft2ujv1uf	vbof97c5249	6	\N	\N	\N
 hmft2ujv1uf	q1pb5sukxkw	6	\N	\N	\N
-nocobase-admin-menu	n99da59sh6u	8	\N	\N	\N
-nocobase-admin-menu	3ytk1megoa9	9	\N	\N	\N
-nocobase-admin-menu	vqdryqum2t3	10	\N	\N	\N
 nocobase-admin-menu	h4dm0c8wmu4	6	\N	\N	\N
 nocobase-admin-menu	vbof97c5249	7	\N	\N	\N
 nocobase-admin-menu	q1pb5sukxkw	7	\N	\N	\N
@@ -12892,19 +12874,7 @@ hmft2ujv1uf	pkcprxz6rfy	3	\N	\N	\N
 nocobase-admin-menu	pkcprxz6rfy	4	\N	\N	\N
 p352d38u95n	p352d38u95n	0	f	properties	\N
 7x6oyetmotw	p352d38u95n	1	\N	\N	7
-3ytk1megoa9	3ytk1megoa9	0	f	properties	\N
-n99da59sh6u	3ytk1megoa9	1	\N	\N	1
-vqdryqum2t3	vqdryqum2t3	0	f	properties	\N
-3ytk1megoa9	vqdryqum2t3	1	\N	\N	1
-n99da59sh6u	vqdryqum2t3	2	\N	\N	1
-q1pb5sukxkw	3ytk1megoa9	2	\N	\N	\N
-q1pb5sukxkw	vqdryqum2t3	3	\N	\N	\N
-h4dm0c8wmu4	n99da59sh6u	2	\N	\N	\N
-h4dm0c8wmu4	3ytk1megoa9	3	\N	\N	\N
-h4dm0c8wmu4	vqdryqum2t3	4	\N	\N	\N
 ifzzkj7loaj	5n3prf95enu	7	\N	\N	\N
-n99da59sh6u	n99da59sh6u	0	f	properties	\N
-q1pb5sukxkw	n99da59sh6u	1	\N	\N	1
 ifzzkj7loaj	77znodag4w0	8	\N	\N	\N
 k99w3v09n98	jmayzuhpdzl	7	\N	\N	\N
 k99w3v09n98	5n3prf95enu	8	\N	\N	\N
@@ -13716,9 +13686,6 @@ nk5b4nu4r4m	03zr42jo35m	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 pai6scdjeqt	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.sub_title","x-component-props":{},"x-app-version":"1.3.52"}
 vww45l1kt1c	38aixf9l925	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 krq5msd3dso	images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"proposes.images","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.52"}
-n99da59sh6u	jvq8j0j298n	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-collection-field":"id","x-collection-field-key":{"uiSchema":{"type":"number","title":"{{t(\\"ID\\")}}","x-component":"InputNumber","x-read-pretty":true,"rawTitle":"{{t(\\"ID\\")}}"},"key":"fmtgbzqzs72","name":"id","type":"bigInt","interface":"integer","description":null,"collectionName":"projects","parentKey":null,"reverseKey":null,"autoIncrement":true,"primaryKey":true,"allowNull":false},"x-component":"Grid.Row","x-app-version":"1.3.52"}
-3ytk1megoa9	vull79qwrau	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
-vqdryqum2t3	id	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-settings":"fieldSettings:info","x-decorator":"FormItem","x-app-version":"1.3.52"}
 bo30ugxn7d2	col_m8n37dqso3c	{"x-uid":"bo30ugxn7d2","name":"col_m8n37dqso3c","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":0,"x-component-props":{"width":"44.92"}}
 eoz95qtwix6	eoz95qtwix6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"projects:view","x-decorator":"DetailsBlockProvider","x-use-decorator-props":"useDetailsWithPaginationDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"projects","readPretty":true,"action":"list","params":{"pageSize":1}},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:detailsWithPagination","x-component":"CardItem","x-app-version":"1.3.52","x-index":0}
 2h7gnmez0eb	j86wvwfhduz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Details","x-read-pretty":true,"x-use-component-props":"useDetailsWithPaginationProps","x-app-version":"1.3.52","x-index":1}
@@ -13833,7 +13800,7 @@ SELECT pg_catalog.setval('public."apiKeys_id_seq"', 1, false);
 -- Name: applicationPlugins_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."applicationPlugins_id_seq"', 67, true);
+SELECT pg_catalog.setval('public."applicationPlugins_id_seq"', 68, true);
 
 
 --
@@ -15222,7 +15189,7 @@ CREATE INDEX verifications_provider_id ON public.verifications USING btree ("pro
 CREATE UNIQUE INDEX workflows_key_current ON public.workflows USING btree (key, current);
 
 
--- Completed on 2024-11-29 18:29:14 UTC
+-- Completed on 2024-11-29 18:51:39 UTC
 
 --
 -- PostgreSQL database dump complete
