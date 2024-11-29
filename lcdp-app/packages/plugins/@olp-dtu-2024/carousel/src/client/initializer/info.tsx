@@ -1,23 +1,20 @@
 import React from 'react';
 import {
   SchemaInitializerItemType,
-  useDesignable,
   useSchemaInitializer,
 } from '@nocobase/client';
-import { carouselSchema } from '../schema';
-import { BlockNameLowerCase, BlockName } from '../constants';
-import { useT } from '../locale';
 import { CodeOutlined } from '@ant-design/icons';
 
-export const carouselInitializerItem: SchemaInitializerItemType = {
-  type: 'item',
+import { carouselSchema } from '../schema';
+import { useT } from '../locale';
+import { BlockName, BlockNameLowerCase } from '../constants';
+
+export const infoInitializerItem: SchemaInitializerItemType = {
   name: BlockNameLowerCase,
   Component: 'DataBlockInitializer',
-  icon: 'PlayCircleOutlined',
   useComponentProps() {
     const { insert } = useSchemaInitializer();
     const t = useT();
-
     return {
       title: t(BlockName),
       icon: <CodeOutlined />,

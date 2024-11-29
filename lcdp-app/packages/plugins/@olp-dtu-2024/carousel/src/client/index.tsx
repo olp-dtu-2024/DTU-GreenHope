@@ -1,8 +1,8 @@
 import { Plugin } from '@nocobase/client';
-import { useBlockNameProps } from './schema';
 import { Carousel } from './component';
 import { carouselInitializerItem } from './initializer';
 import { carouselSettings } from './settings';
+import { useBlockScopeDecoratorProps } from './schema';
 
 export class CarouselClient extends Plugin {
   /**
@@ -20,7 +20,8 @@ export class CarouselClient extends Plugin {
    */
   async load() {
     this.app.addScopes({
-      useBlockNameProps,
+      // useInfoProps,
+      useBlockScopeDecoratorProps,
     });
     this.app.addComponents({
       Carousel,
@@ -28,7 +29,7 @@ export class CarouselClient extends Plugin {
     this.app.schemaSettingsManager.add(carouselSettings);
     this.app.schemaInitializerManager.addItem(
       'page:addBlock',
-      `otherBlocks.${carouselInitializerItem.name}`,
+      `dataBlocks.${carouselInitializerItem.name}`,
       carouselInitializerItem
     );
   }
