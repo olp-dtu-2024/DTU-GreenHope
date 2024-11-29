@@ -4,7 +4,10 @@
   "main": "dist/server/index.js",
   "dependencies": {
     "kafkajs": "^2.2.4",
-    "rollup": "^4.24.0"
+    "rollup": "^4.24.0",
+    "@nocobase/client": "^0.x",
+    "@nocobase/server": "^0.x",
+    "@nocobase/database": "^0.x"
   },
   "repository": {
     "type": "git",
