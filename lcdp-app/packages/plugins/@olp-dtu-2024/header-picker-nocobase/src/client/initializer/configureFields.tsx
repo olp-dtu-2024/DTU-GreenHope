@@ -7,9 +7,7 @@ import {
   useSchemaInitializer,
 } from '@nocobase/client';
 import { ISchema, useFieldSchema } from '@formily/react';
-import { Schema } from '@formily/json-schema';
 import { getInfoItemSchema } from '../schema/infoItem';
-import { BlockNameLowercase } from '../constants';
 
 interface GetFieldInitializerItemOptions {
   collectionField: CollectionFieldOptions;
@@ -22,7 +20,6 @@ function getFieldInitializerItem(options: GetFieldInitializerItemOptions) {
   const { collectionField, schema, remove, insert } = options;
   const title = collectionField.uiSchema?.title || collectionField.name;
   const name = collectionField.name;
-  const key = collectionField;
 
   const collectionFieldSchema = Object.values(schema.properties || {}).find(
     (item) => item['x-collection-field'] === name
@@ -39,7 +36,7 @@ function getFieldInitializerItem(options: GetFieldInitializerItemOptions) {
         return;
       }
 
-      insert(getInfoItemSchema({ name, key }));
+      insert(getInfoItemSchema({ name }));
     },
   } as SchemaInitializerItemType;
 }

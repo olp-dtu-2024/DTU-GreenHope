@@ -9,6 +9,7 @@ import {
 } from '@nocobase/client';
 import { BlockName, BlockNameLowercase } from '../constants';
 import { headerPickerSettings } from '../settings';
+import { InfoField } from './infoItem';
 
 export interface HeaderPickerProps {
   collectionName: string;
@@ -66,6 +67,12 @@ export function useHeaderPickerProps(): HeaderPickerProps {
   const collection = useCollection();
   const { data, loading } = useDataBlockRequest<any[]>();
 
+  console.log('HeaderPickerProps:', {
+    collectionName: collection.name,
+    data: data?.data,
+    loading,
+  });
+
   return {
     collectionName: collection.name,
     data: data?.data,
@@ -102,14 +109,14 @@ export function getHeaderPickerSchema({ dataSource = 'main', collection }) {
     properties: {
       [BlockNameLowercase]: {
         type: 'void',
-        'x-use-component-props': 'useHeaderPickerProps',
-        'x-use-decorator-props': 'useBlockScopeDecoratorProps',
-        properties: {}, // This will be populated dynamically
-      },
-      fields: {
-        type: 'void',
-        'x-component': 'Grid',
-        'x-initializer': 'info:configureFields',
+        'x-component': 'HeaderPickerBlock',
+        properties: {
+          fields: {
+            type: 'void',
+            'x-component': 'Grid',
+            'x-initializer': 'info:configureFields',
+          },
+        },
       },
     },
   };

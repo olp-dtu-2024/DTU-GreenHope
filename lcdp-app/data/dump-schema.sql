@@ -5,7 +5,7 @@
 -- Dumped from database version 16.4
 -- Dumped by pg_dump version 16.4
 
--- Started on 2024-11-30 03:55:01 UTC
+-- Started on 2024-11-30 10:07:11 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -6509,7 +6509,7 @@ COPY public.migrations (name) FROM stdin;
 COPY public.projects ("createdAt", "updatedAt", id, "createdById", "updatedById", name, total_amount, construction_site, is_deleted, sub_title, description) FROM stdin;
 2024-11-27 05:12:46.906+00	2024-11-27 05:12:46.906+00	26	1	1	Dự án 2	20000000	HCM	0	\N	\N
 2024-11-25 06:57:02.948+00	2024-11-25 07:08:32.343+00	25	1	1	Dự án 1	1000000	Đà Nẵng	0	\N	\N
-2024-11-29 20:13:20.591+00	2024-11-29 20:50:18.87+00	27	\N	1	fdfggdfg	0	gfdsdfg	0	\N	<p><strong>Thông tin chi tiết</strong></p><p>Theo lãnh đạo xã Trà Tập, đợt mưa trước đó đã gây sạt lở ta-luy dương sau trường. Do đó, chính quyền địa phương đã cho đóng cửa điểm trường trên, dời lớp học về điểm trường cũ (bằng gỗ), chờ phương án xây dựng kè phía sau. Tuy nhiên, đợt mưa này tiếp tục gây sạt lở khiến điểm trường bị sập.</p><p><br></p><p>Được biết, điểm trường Răng Chuối mới khánh thành hồi tháng 9 với tổng kinh phí xây dựng hơn 1,4 tỉ đồng, do một nhà tài trợ tại TP HCM hỗ trợ toàn bộ chi phí.</p><p><br></p><p>Công trình có tổng diện tích gần 200m², tường xây kiên cố, 2 phòng học, 1 phòng ở tập thể, bếp ăn, khu vệ sinh, sân chơi, tường rào.</p><p><br></p><p>Điểm trường có 35 học sinh mầm non và tiểu học. Ngôi trường mới đưa vào sử dụng thay thế điểm trường tạm vốn đã xuống cấp.</p><p><br></p><p>Ngoài điểm trường Răng Chuối bị thiệt hại, tại huyện Nam Trà My những ngày qua trời mưa lớn kéo dài khiến nhiều điểm sạt lở tuyến đường bị đứt gãy, hư hỏng nặng.</p><p><br></p><p>Huyện Nam Trà My đã chỉ đạo các địa phương cắm biển báo nguy hiểm và cắm biển cấm xe tải trọng lớn, chỉ đạo đơn vị duy tu bảo vệ kè tạm để đảm bảo giao thông xe tải nhỏ và xe ô tô con lưu thông.</p><p><br></p>
+2024-11-29 20:13:20.591+00	2024-11-30 07:51:05.245+00	27	\N	1	Xây dựng cầu treo	0	gfdsdfg	0	Theo lãnh đạo xã Trà Tập, đợt mưa trước đó đã gây sạt lở ta-luy dương sau trường. Do đó, chính quyền địa phương đã cho đóng cửa điểm trường trên, dời lớp học ...	<p><strong>Thông tin chi tiết</strong></p><p>Theo lãnh đạo xã Trà Tập, đợt mưa trước đó đã gây sạt lở ta-luy dương sau trường. Do đó, chính quyền địa phương đã cho đóng cửa điểm trường trên, dời lớp học về điểm trường cũ (bằng gỗ), chờ phương án xây dựng kè phía sau. Tuy nhiên, đợt mưa này tiếp tục gây sạt lở khiến điểm trường bị sập.</p><p><br></p><p>Được biết, điểm trường Răng Chuối mới khánh thành hồi tháng 9 với tổng kinh phí xây dựng hơn 1,4 tỉ đồng, do một nhà tài trợ tại TP HCM hỗ trợ toàn bộ chi phí.</p><p><br></p><p>Công trình có tổng diện tích gần 200m², tường xây kiên cố, 2 phòng học, 1 phòng ở tập thể, bếp ăn, khu vệ sinh, sân chơi, tường rào.</p><p><br></p><p>Điểm trường có 35 học sinh mầm non và tiểu học. Ngôi trường mới đưa vào sử dụng thay thế điểm trường tạm vốn đã xuống cấp.</p><p><br></p><p>Ngoài điểm trường Răng Chuối bị thiệt hại, tại huyện Nam Trà My những ngày qua trời mưa lớn kéo dài khiến nhiều điểm sạt lở tuyến đường bị đứt gãy, hư hỏng nặng.</p><p><br></p><p>Huyện Nam Trà My đã chỉ đạo các địa phương cắm biển báo nguy hiểm và cắm biển cấm xe tải trọng lớn, chỉ đạo đơn vị duy tu bảo vệ kè tạm để đảm bảo giao thông xe tải nhỏ và xe ô tô con lưu thông.</p>
 \.
 
 
@@ -12087,8 +12087,8 @@ nocobase-admin-menu	n65uanub9sx	7	\N	\N	\N
 nocobase-admin-menu	fvz3km1i6ms	7	\N	\N	\N
 nocobase-admin-menu	b410c64osaf	6	\N	\N	\N
 pde5ayqzqo1	pde5ayqzqo1	0	f	properties	\N
-yivjshzifwl	pde5ayqzqo1	1	\N	\N	2
 rnko20ymzdm	pbpsju21w1y	1	\N	\N	1
+yivjshzifwl	pde5ayqzqo1	1	\N	\N	3
 fe7kgdo55ax	oq5d1lxpmfu	2	\N	\N	\N
 wsafpwbqr88	wsafpwbqr88	0	f	properties	\N
 ifzzkj7loaj	ifzzkj7loaj	0	f	properties	\N
@@ -12852,14 +12852,8 @@ nocobase-admin-menu	zrm37tg78ob	23	\N	\N	\N
 hmft2ujv1uf	r1jfuy0x2g2	3	\N	\N	\N
 nocobase-admin-menu	r1jfuy0x2g2	4	\N	\N	\N
 r1jfuy0x2g2	r1jfuy0x2g2	0	f	properties	\N
-7poa6levyva	r1jfuy0x2g2	1	\N	\N	22
 ypdn0dkn4wx	ypdn0dkn4wx	0	f	properties	\N
-7poa6levyva	ypdn0dkn4wx	3	\N	\N	\N
-fe7kgdo55ax	ypdn0dkn4wx	4	\N	\N	\N
-hmft2ujv1uf	ypdn0dkn4wx	5	\N	\N	\N
-nocobase-admin-menu	ypdn0dkn4wx	6	\N	\N	\N
-yivjshzifwl	ypdn0dkn4wx	2	\N	\N	\N
-pde5ayqzqo1	ypdn0dkn4wx	1	\N	\N	2
+7poa6levyva	r1jfuy0x2g2	1	\N	\N	23
 0ddzjfp9gg6	0ddzjfp9gg6	0	f	properties	\N
 3p9f7asal9h	0ddzjfp9gg6	1	\N	\N	1
 387jrys6pj9	387jrys6pj9	0	f	properties	\N
@@ -12939,11 +12933,11 @@ nocobase-admin-menu	swbgm59qce3	4	\N	\N	\N
 nocobase-admin-menu	gwkooqabv4x	4	\N	\N	\N
 gwkooqabv4x	gwkooqabv4x	0	f	properties	\N
 7poa6levyva	gwkooqabv4x	1	\N	\N	15
+7poa6levyva	9cnsplg5f8i	1	\N	\N	20
 fe7kgdo55ax	9cnsplg5f8i	2	\N	\N	\N
 hmft2ujv1uf	9cnsplg5f8i	3	\N	\N	\N
 nocobase-admin-menu	9cnsplg5f8i	4	\N	\N	\N
 9cnsplg5f8i	9cnsplg5f8i	0	f	properties	\N
-7poa6levyva	9cnsplg5f8i	1	\N	\N	19
 fe7kgdo55ax	ris4kebta55	2	\N	\N	\N
 hmft2ujv1uf	ris4kebta55	3	\N	\N	\N
 nocobase-admin-menu	ris4kebta55	4	\N	\N	\N
@@ -13067,7 +13061,7 @@ nocobase-admin-menu	hupe35j3waf	5	\N	\N	\N
 p352d38u95n	p352d38u95n	0	f	properties	\N
 7x6oyetmotw	p352d38u95n	1	\N	\N	7
 j0x0k0rv3yw	j0x0k0rv3yw	0	f	properties	\N
-7poa6levyva	j0x0k0rv3yw	1	\N	\N	23
+7poa6levyva	j0x0k0rv3yw	1	\N	\N	24
 ifzzkj7loaj	5n3prf95enu	7	\N	\N	\N
 ifzzkj7loaj	77znodag4w0	8	\N	\N	\N
 k99w3v09n98	jmayzuhpdzl	7	\N	\N	\N
@@ -13182,19 +13176,44 @@ nc92u2m878d	krq5msd3dso	15	\N	\N	\N
 jiq42lrek0j	p352d38u95n	14	\N	\N	\N
 jiq42lrek0j	vww45l1kt1c	15	\N	\N	\N
 jiq42lrek0j	krq5msd3dso	16	\N	\N	\N
-8q3azqm4nul	8q3azqm4nul	0	f	properties	\N
-hs1jo8fohcn	8q3azqm4nul	1	\N	\N	1
 fe7kgdo55ax	4jc43siezjp	2	\N	\N	\N
 hmft2ujv1uf	4jc43siezjp	3	\N	\N	\N
 nocobase-admin-menu	4jc43siezjp	4	\N	\N	\N
 4jc43siezjp	4jc43siezjp	0	f	properties	\N
 7poa6levyva	4jc43siezjp	1	\N	\N	16
-hs1jo8fohcn	hs1jo8fohcn	0	f	properties	\N
 fe7kgdo55ax	yivjshzifwl	2	\N	\N	\N
 hmft2ujv1uf	yivjshzifwl	3	\N	\N	\N
 nocobase-admin-menu	yivjshzifwl	4	\N	\N	\N
 yivjshzifwl	yivjshzifwl	0	f	properties	\N
 7poa6levyva	yivjshzifwl	1	\N	\N	9
+f1naeic0v01	f1naeic0v01	0	f	properties	\N
+8syckvf383p	f1naeic0v01	1	\N	\N	1
+7poa6levyva	p2fd2nllyzz	3	\N	\N	\N
+fe7kgdo55ax	p2fd2nllyzz	4	\N	\N	\N
+hmft2ujv1uf	p2fd2nllyzz	5	\N	\N	\N
+nocobase-admin-menu	p2fd2nllyzz	6	\N	\N	\N
+yivjshzifwl	p2fd2nllyzz	2	\N	\N	\N
+p2fd2nllyzz	p2fd2nllyzz	0	f	properties	\N
+pde5ayqzqo1	p2fd2nllyzz	1	\N	\N	2
+5lsetx6q4um	f1naeic0v01	2	\N	\N	\N
+8syckvf383p	8syckvf383p	0	f	properties	\N
+5lsetx6q4um	8syckvf383p	1	\N	\N	1
+yivjshzifwl	8syckvf383p	2	\N	\N	\N
+yivjshzifwl	f1naeic0v01	3	\N	\N	\N
+7poa6levyva	5lsetx6q4um	2	\N	\N	\N
+7poa6levyva	8syckvf383p	3	\N	\N	\N
+7poa6levyva	f1naeic0v01	4	\N	\N	\N
+fe7kgdo55ax	5lsetx6q4um	3	\N	\N	\N
+fe7kgdo55ax	8syckvf383p	4	\N	\N	\N
+fe7kgdo55ax	f1naeic0v01	5	\N	\N	\N
+hmft2ujv1uf	5lsetx6q4um	4	\N	\N	\N
+hmft2ujv1uf	8syckvf383p	5	\N	\N	\N
+hmft2ujv1uf	f1naeic0v01	6	\N	\N	\N
+nocobase-admin-menu	5lsetx6q4um	5	\N	\N	\N
+nocobase-admin-menu	8syckvf383p	6	\N	\N	\N
+nocobase-admin-menu	f1naeic0v01	7	\N	\N	\N
+5lsetx6q4um	5lsetx6q4um	0	f	properties	\N
+yivjshzifwl	5lsetx6q4um	1	\N	\N	1
 v0hdkdeyzrd	v0hdkdeyzrd	0	f	properties	\N
 fg366x2n25f	fg366x2n25f	0	f	properties	\N
 v0hdkdeyzrd	fg366x2n25f	1	\N	\N	1
@@ -13323,33 +13342,7 @@ ugc9ztt4hb4	7qdtw3aqf8f	3	\N	\N	\N
 ugc9ztt4hb4	9znhwv6jh2d	4	\N	\N	\N
 ugc9ztt4hb4	dohzvch4noi	5	\N	\N	\N
 b410c64osaf	b410c64osaf	0	f	properties	\N
-f45gj2efafk	f45gj2efafk	0	f	properties	\N
-zll47lo8fgt	f45gj2efafk	1	\N	\N	1
-xse8ehk8dl3	xse8ehk8dl3	0	f	properties	\N
-f45gj2efafk	xse8ehk8dl3	1	\N	\N	1
-zll47lo8fgt	xse8ehk8dl3	2	\N	\N	1
-pde5ayqzqo1	zll47lo8fgt	3	\N	\N	\N
-pde5ayqzqo1	f45gj2efafk	4	\N	\N	\N
-pde5ayqzqo1	xse8ehk8dl3	5	\N	\N	\N
-yivjshzifwl	zll47lo8fgt	4	\N	\N	\N
-yivjshzifwl	f45gj2efafk	5	\N	\N	\N
-yivjshzifwl	xse8ehk8dl3	6	\N	\N	\N
-7poa6levyva	zll47lo8fgt	5	\N	\N	\N
-7poa6levyva	f45gj2efafk	6	\N	\N	\N
-7poa6levyva	xse8ehk8dl3	7	\N	\N	\N
-fe7kgdo55ax	zll47lo8fgt	6	\N	\N	\N
-fe7kgdo55ax	f45gj2efafk	7	\N	\N	\N
-fe7kgdo55ax	xse8ehk8dl3	8	\N	\N	\N
-hmft2ujv1uf	zll47lo8fgt	7	\N	\N	\N
-hmft2ujv1uf	f45gj2efafk	8	\N	\N	\N
-hmft2ujv1uf	xse8ehk8dl3	9	\N	\N	\N
-nocobase-admin-menu	zll47lo8fgt	8	\N	\N	\N
-nocobase-admin-menu	f45gj2efafk	9	\N	\N	\N
-nocobase-admin-menu	xse8ehk8dl3	10	\N	\N	\N
-bo30ugxn7d2	bo30ugxn7d2	0	f	properties	\N
 mupdgh8dhyb	mupdgh8dhyb	0	f	properties	\N
-zll47lo8fgt	zll47lo8fgt	0	f	properties	\N
-fvz3km1i6ms	zll47lo8fgt	1	\N	\N	1
 lzuobjmh9nr	lzuobjmh9nr	0	f	properties	\N
 2yh8xonuy9p	lzuobjmh9nr	1	\N	\N	6
 p62fqqqtc8f	p62fqqqtc8f	0	f	properties	\N
@@ -13380,11 +13373,7 @@ fg366x2n25f	pai6scdjeqt	4	\N	\N	\N
 v0hdkdeyzrd	lzuobjmh9nr	3	\N	\N	\N
 v0hdkdeyzrd	nk5b4nu4r4m	4	\N	\N	\N
 v0hdkdeyzrd	pai6scdjeqt	5	\N	\N	\N
-bo30ugxn7d2	8q3azqm4nul	2	\N	\N	\N
 7poa6levyva	mupdgh8dhyb	1	\N	\N	17
-bo30ugxn7d2	hs1jo8fohcn	1	\N	\N	1
-yivjshzifwl	hs1jo8fohcn	2	\N	\N	\N
-yivjshzifwl	8q3azqm4nul	3	\N	\N	\N
 2h7gnmez0eb	2h7gnmez0eb	0	f	properties	\N
 eoz95qtwix6	2h7gnmez0eb	1	\N	\N	1
 kye7kplejx4	kye7kplejx4	0	f	properties	\N
@@ -13421,19 +13410,6 @@ u1nyxe00lc6	u1nyxe00lc6	0	f	properties	\N
 hwi0frrc1o1	u1nyxe00lc6	1	\N	\N	1
 8avia19u880	u1nyxe00lc6	2	\N	\N	1
 eoz95qtwix6	eoz95qtwix6	0	f	properties	\N
-7poa6levyva	bo30ugxn7d2	2	\N	\N	\N
-7poa6levyva	hs1jo8fohcn	3	\N	\N	\N
-7poa6levyva	8q3azqm4nul	4	\N	\N	\N
-fe7kgdo55ax	bo30ugxn7d2	3	\N	\N	\N
-fe7kgdo55ax	hs1jo8fohcn	4	\N	\N	\N
-fe7kgdo55ax	8q3azqm4nul	5	\N	\N	\N
-hmft2ujv1uf	bo30ugxn7d2	4	\N	\N	\N
-hmft2ujv1uf	hs1jo8fohcn	5	\N	\N	\N
-hmft2ujv1uf	8q3azqm4nul	6	\N	\N	\N
-nocobase-admin-menu	bo30ugxn7d2	5	\N	\N	\N
-nocobase-admin-menu	hs1jo8fohcn	6	\N	\N	\N
-nocobase-admin-menu	8q3azqm4nul	7	\N	\N	\N
-yivjshzifwl	bo30ugxn7d2	1	\N	\N	1
 n65uanub9sx	n65uanub9sx	0	f	properties	\N
 b410c64osaf	n65uanub9sx	1	\N	\N	1
 fvz3km1i6ms	fvz3km1i6ms	0	f	properties	\N
@@ -13507,11 +13483,6 @@ eoz95qtwix6	b6910vi3jym	5	\N	\N	1
 quxuyp8dl2x	quxuyp8dl2x	0	f	properties	\N
 2h7gnmez0eb	quxuyp8dl2x	1	\N	\N	3
 eoz95qtwix6	quxuyp8dl2x	2	\N	\N	3
-fvz3km1i6ms	f45gj2efafk	2	\N	\N	\N
-fvz3km1i6ms	xse8ehk8dl3	3	\N	\N	\N
-b410c64osaf	zll47lo8fgt	2	\N	\N	\N
-b410c64osaf	f45gj2efafk	3	\N	\N	\N
-b410c64osaf	xse8ehk8dl3	4	\N	\N	\N
 swpktoj72vi	swpktoj72vi	0	f	properties	\N
 9bxpugcgkui	swpktoj72vi	1	\N	\N	1
 83dc85bfozz	83dc85bfozz	0	f	properties	\N
@@ -13578,6 +13549,9 @@ vs0l89adzhc	oekbnvx2n7m	8	\N	\N	\N
 493pimn830r	oekbnvx2n7m	9	\N	\N	\N
 nocobase-admin-menu	oekbnvx2n7m	10	\N	\N	\N
 x74knwfm0hx	oekbnvx2n7m	1	\N	\N	2
+c5d9aolt3oi	c5d9aolt3oi	0	f	properties	\N
+2p6lbnuww8r	c5d9aolt3oi	1	\N	\N	1
+2p6lbnuww8r	ypdn0dkn4wx	2	\N	\N	\N
 2lzmasj4pju	2lzmasj4pju	0	f	properties	\N
 abxv8689kv3	2lzmasj4pju	1	\N	\N	1
 44890jxlzup	2lzmasj4pju	2	\N	\N	\N
@@ -13674,6 +13648,20 @@ bwbd6lebhkb	zy4jidwmnvw	11	\N	\N	\N
 bwbd6lebhkb	q5no45c40c6	12	\N	\N	\N
 0kxudizv0xf	0kxudizv0xf	0	f	properties	\N
 bztjip2msxq	0kxudizv0xf	1	\N	\N	1
+c5d9aolt3oi	ypdn0dkn4wx	1	\N	\N	1
+7poa6levyva	c5d9aolt3oi	2	\N	\N	\N
+7poa6levyva	ypdn0dkn4wx	3	\N	\N	\N
+fe7kgdo55ax	2p6lbnuww8r	2	\N	\N	\N
+fe7kgdo55ax	c5d9aolt3oi	3	\N	\N	\N
+fe7kgdo55ax	ypdn0dkn4wx	4	\N	\N	\N
+hmft2ujv1uf	2p6lbnuww8r	3	\N	\N	\N
+hmft2ujv1uf	c5d9aolt3oi	4	\N	\N	\N
+hmft2ujv1uf	ypdn0dkn4wx	5	\N	\N	\N
+nocobase-admin-menu	2p6lbnuww8r	4	\N	\N	\N
+nocobase-admin-menu	c5d9aolt3oi	5	\N	\N	\N
+nocobase-admin-menu	ypdn0dkn4wx	6	\N	\N	\N
+2p6lbnuww8r	2p6lbnuww8r	0	f	properties	\N
+7poa6levyva	2p6lbnuww8r	1	\N	\N	19
 bwbd6lebhkb	imo18or3xxo	13	\N	\N	\N
 bwbd6lebhkb	mr7dvvk94ts	14	\N	\N	\N
 bwbd6lebhkb	9xqwn851uzs	14	\N	\N	\N
@@ -14391,11 +14379,70 @@ nocobase-admin-menu	ioq8ld31vte	22	\N	\N	\N
 nocobase-admin-menu	ojgs7eoz5hg	23	\N	\N	\N
 cm22blbci2c	cm22blbci2c	0	f	properties	\N
 y05re45hs3a	cm22blbci2c	1	\N	\N	6
+x3ls6jq4ldm	x3ls6jq4ldm	0	f	properties	\N
+fvz3km1i6ms	x3ls6jq4ldm	1	\N	\N	2
+7poa6levyva	ssd1y8mk1mx	1	\N	\N	21
 fe7kgdo55ax	ssd1y8mk1mx	2	\N	\N	\N
 hmft2ujv1uf	ssd1y8mk1mx	3	\N	\N	\N
 nocobase-admin-menu	ssd1y8mk1mx	4	\N	\N	\N
 ssd1y8mk1mx	ssd1y8mk1mx	0	f	properties	\N
-7poa6levyva	ssd1y8mk1mx	1	\N	\N	20
+cm46dlsp65t	cm46dlsp65t	0	f	properties	\N
+xkyavrac3i1	cm46dlsp65t	1	\N	\N	1
+jdpnao7e4yj	jdpnao7e4yj	0	f	properties	\N
+cm46dlsp65t	jdpnao7e4yj	1	\N	\N	1
+xkyavrac3i1	jdpnao7e4yj	2	\N	\N	1
+pde5ayqzqo1	xkyavrac3i1	3	\N	\N	\N
+pde5ayqzqo1	cm46dlsp65t	4	\N	\N	\N
+pde5ayqzqo1	jdpnao7e4yj	5	\N	\N	\N
+yivjshzifwl	xkyavrac3i1	4	\N	\N	\N
+yivjshzifwl	cm46dlsp65t	5	\N	\N	\N
+yivjshzifwl	jdpnao7e4yj	6	\N	\N	\N
+7poa6levyva	xkyavrac3i1	5	\N	\N	\N
+7poa6levyva	cm46dlsp65t	6	\N	\N	\N
+7poa6levyva	jdpnao7e4yj	7	\N	\N	\N
+fe7kgdo55ax	xkyavrac3i1	6	\N	\N	\N
+fe7kgdo55ax	cm46dlsp65t	7	\N	\N	\N
+fe7kgdo55ax	jdpnao7e4yj	8	\N	\N	\N
+hmft2ujv1uf	xkyavrac3i1	7	\N	\N	\N
+hmft2ujv1uf	cm46dlsp65t	8	\N	\N	\N
+hmft2ujv1uf	jdpnao7e4yj	9	\N	\N	\N
+nocobase-admin-menu	xkyavrac3i1	8	\N	\N	\N
+nocobase-admin-menu	cm46dlsp65t	9	\N	\N	\N
+nocobase-admin-menu	jdpnao7e4yj	10	\N	\N	\N
+fvz3km1i6ms	cm46dlsp65t	2	\N	\N	\N
+fvz3km1i6ms	jdpnao7e4yj	3	\N	\N	\N
+b410c64osaf	xkyavrac3i1	2	\N	\N	\N
+b410c64osaf	cm46dlsp65t	3	\N	\N	\N
+b410c64osaf	jdpnao7e4yj	4	\N	\N	\N
+xkyavrac3i1	xkyavrac3i1	0	f	properties	\N
+fvz3km1i6ms	xkyavrac3i1	1	\N	\N	1
+6fy9l9kloul	6fy9l9kloul	0	f	properties	\N
+x3ls6jq4ldm	6fy9l9kloul	1	\N	\N	1
+mxutorz6z5i	mxutorz6z5i	0	f	properties	\N
+6fy9l9kloul	mxutorz6z5i	1	\N	\N	1
+x3ls6jq4ldm	mxutorz6z5i	2	\N	\N	1
+pde5ayqzqo1	x3ls6jq4ldm	3	\N	\N	\N
+pde5ayqzqo1	6fy9l9kloul	4	\N	\N	\N
+pde5ayqzqo1	mxutorz6z5i	5	\N	\N	\N
+yivjshzifwl	x3ls6jq4ldm	4	\N	\N	\N
+yivjshzifwl	6fy9l9kloul	5	\N	\N	\N
+yivjshzifwl	mxutorz6z5i	6	\N	\N	\N
+7poa6levyva	x3ls6jq4ldm	5	\N	\N	\N
+7poa6levyva	6fy9l9kloul	6	\N	\N	\N
+7poa6levyva	mxutorz6z5i	7	\N	\N	\N
+fe7kgdo55ax	x3ls6jq4ldm	6	\N	\N	\N
+fe7kgdo55ax	6fy9l9kloul	7	\N	\N	\N
+fe7kgdo55ax	mxutorz6z5i	8	\N	\N	\N
+hmft2ujv1uf	x3ls6jq4ldm	7	\N	\N	\N
+hmft2ujv1uf	6fy9l9kloul	8	\N	\N	\N
+hmft2ujv1uf	mxutorz6z5i	9	\N	\N	\N
+nocobase-admin-menu	x3ls6jq4ldm	8	\N	\N	\N
+nocobase-admin-menu	6fy9l9kloul	9	\N	\N	\N
+nocobase-admin-menu	mxutorz6z5i	10	\N	\N	\N
+fvz3km1i6ms	6fy9l9kloul	2	\N	\N	\N
+fvz3km1i6ms	mxutorz6z5i	3	\N	\N	\N
+b410c64osaf	x3ls6jq4ldm	2	\N	\N	\N
+b410c64osaf	6fy9l9kloul	3	\N	\N	\N
 rnko20ymzdm	rnko20ymzdm	0	f	properties	\N
 52h8j6knyh0	rnko20ymzdm	1	\N	\N	1
 f70h0f0jiha	f70h0f0jiha	0	f	properties	\N
@@ -14411,11 +14458,11 @@ a61oc4tl7m1	a61oc4tl7m1	0	f	properties	\N
 0f0yp3ro5dp	a61oc4tl7m1	1	\N	\N	2
 f70h0f0jiha	a61oc4tl7m1	2	\N	\N	2
 52h8j6knyh0	a61oc4tl7m1	3	\N	\N	2
+7poa6levyva	f8feuhfiywv	1	\N	\N	22
 fe7kgdo55ax	f8feuhfiywv	2	\N	\N	\N
 hmft2ujv1uf	f8feuhfiywv	3	\N	\N	\N
 nocobase-admin-menu	f8feuhfiywv	4	\N	\N	\N
 f8feuhfiywv	f8feuhfiywv	0	f	properties	\N
-7poa6levyva	f8feuhfiywv	1	\N	\N	21
 5v81x55p2nk	rnko20ymzdm	2	\N	\N	\N
 5v81x55p2nk	f70h0f0jiha	2	\N	\N	\N
 5v81x55p2nk	0f0yp3ro5dp	3	\N	\N	\N
@@ -14509,6 +14556,7 @@ hmft2ujv1uf	l8by3cc8sei	9	\N	\N	\N
 nocobase-admin-menu	l8by3cc8sei	10	\N	\N	\N
 q3szmzf1eqa	q3szmzf1eqa	0	f	properties	\N
 ugkql0r3ggt	q3szmzf1eqa	1	\N	\N	4
+b410c64osaf	mxutorz6z5i	4	\N	\N	\N
 0f0yp3ro5dp	7guv5eckse5	2	\N	\N	\N
 f70h0f0jiha	7guv5eckse5	3	\N	\N	\N
 52h8j6knyh0	7guv5eckse5	4	\N	\N	\N
@@ -15022,13 +15070,14 @@ cbhgjqiskk5	3hw8ivc03z8	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 f70h0f0jiha	list	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-component":"List","x-use-component-props":"useListBlockProps","x-app-version":"1.3.52"}
 4jc43siezjp	10piaxniyaf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 0f0yp3ro5dp	item	{"_isJSONSchemaObject":true,"version":"2.0","type":"object","x-component":"List.Item","x-read-pretty":true,"x-use-component-props":"useListItemProps","x-app-version":"1.3.52"}
-8q3azqm4nul	carousel	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Carousel","x-use-component-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
 oq5d1lxpmfu	gl4xiqu0c66	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 3p9f7asal9h	lv5n4euwvqr	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 fe7kgdo55ax	page	{"x-uid":"fe7kgdo55ax","name":"page","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page","x-app-version":"1.3.52","x-component-props":{"disablePageHeader":true}}
-hs1jo8fohcn	c9q4f2wcso3	{"x-uid":"hs1jo8fohcn","name":"c9q4f2wcso3","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-component":"FormItem","x-settings":"blockSettings:carousel","x-toolbar":"BlockSchemaToolbar","x-decorator-props":{"rowKey":"id","runWhenParamsChanged":true,"readPretty":true,"dataSource":"main","collection":"projects","action":"list","request":{"params":{"appends":["images"]}},"params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]}}},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
+p2fd2nllyzz	s0fp6p9ut2y	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":1,"x-app-version":"1.3.52"}
 0ddzjfp9gg6	gs0mbkzv0y7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 387jrys6pj9	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.sub_title","x-component-props":{},"x-app-version":"1.3.52"}
+2p6lbnuww8r	row_4c7vf74o0m4	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":14}
+c5d9aolt3oi	kk9zw2con2a	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col"}
 unis1bj47de	grgfquq7p3t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 gwkooqabv4x	lq1p6lf0d2p	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 ugkql0r3ggt	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"details:configureFields","x-app-version":"1.3.52"}
@@ -15067,11 +15116,9 @@ krq5msd3dso	images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","
 x4src7kopyo	w1f7gliwtyn	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 l8by3cc8sei	km2jizghjxq	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 9cnsplg5f8i	72v0eueipj3	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
-52h8j6knyh0	bkswmhrdrp3	{"x-uid":"52h8j6knyh0","name":"bkswmhrdrp3","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"transactions:view","x-decorator":"List.Decorator","x-use-decorator-props":"useListBlockDecoratorProps","x-decorator-props":{"collection":"transactions","dataSource":"main","readPretty":true,"action":"list","params":{"pageSize":10,"filter":{"$and":[{"fund_id":{"$eq":"{{$nURLSearchParams.fundId}}"}}]},"sort":["-createdAt"]},"runWhenParamsChanged":true,"rowKey":"id"},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:list","x-app-version":"1.3.52","x-component-props":{"heightMode":"specifyValue","height":500}}
+5v81x55p2nk	col_uoqwlaeflf6	{"x-uid":"5v81x55p2nk","name":"col_uoqwlaeflf6","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":"49.87"}}
 am9f5xsj7ms	ijylqzp134z	{"x-uid":"am9f5xsj7ms","name":"ijylqzp134z","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-component-props":{"width":25}}
-bo30ugxn7d2	col_m8n37dqso3c	{"x-uid":"bo30ugxn7d2","name":"col_m8n37dqso3c","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":0,"x-component-props":{"width":"45.58"}}
 ge2jd4uyinh	amount	{"x-uid":"ge2jd4uyinh","name":"amount","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.amount","x-component-props":{},"x-app-version":"1.3.52","x-decorator-props":{"showTitle":false}}
-5v81x55p2nk	col_uoqwlaeflf6	{"x-uid":"5v81x55p2nk","name":"col_uoqwlaeflf6","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":"54.28"}}
 w55w350cfun	3vsdfowi9jd	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 xzjgh6n1pxo	wo541gsgl4h	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 q25ez0sddx0	description	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.description","x-component-props":{},"x-app-version":"1.3.52"}
@@ -15092,6 +15139,7 @@ bj7d5uc6lnd	5o2kdgwdq98	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 tdkqbjvhskr	j8g2cmfwto7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 0u09lqdoyvt	fund	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.fund","x-component-props":{"fieldNames":{"value":"id","label":"id"}},"x-app-version":"1.3.52"}
 3o26e8k5cba	bganen032st	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Submit\\") }}","x-action":"submit","x-component":"Action","x-use-component-props":"useUpdateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:updateSubmit","x-component-props":{"type":"primary","htmlType":"submit"},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.52"}
+xkyavrac3i1	b5wirmu6r55	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-collection-field":"name","x-component":"Grid.Row","x-app-version":"1.3.52"}
 eoz95qtwix6	eoz95qtwix6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"projects:view","x-decorator":"DetailsBlockProvider","x-use-decorator-props":"useDetailsWithPaginationDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"projects","readPretty":true,"action":"list","params":{"pageSize":1}},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:detailsWithPagination","x-component":"CardItem","x-app-version":"1.3.52","x-index":0}
 2h7gnmez0eb	j86wvwfhduz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Details","x-read-pretty":true,"x-use-component-props":"useDetailsWithPaginationProps","x-app-version":"1.3.52","x-index":1}
 kye7kplejx4	oq6rze1evpb	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"details:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":24}},"x-app-version":"1.3.52","x-index":1}
@@ -15117,17 +15165,22 @@ ll2so9vdgu3	lrxdgyheuht	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 0jqiruu9vf6	03zr42jo35m	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-index":1}
 b6910vi3jym	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.sub_title","x-component-props":{},"x-app-version":"1.3.52","x-index":1}
 quxuyp8dl2x	pagination	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Pagination","x-use-component-props":"useDetailsPaginationProps","x-app-version":"1.3.52","x-index":3}
+cm46dlsp65t	xm2n4k0v72h	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 q3szmzf1eqa	cmft0hwzk3f	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 68fxhhuy71v	from_account_name	{"x-uid":"68fxhhuy71v","name":"from_account_name","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_account_name","x-component-props":{},"x-app-version":"1.3.52","x-decorator-props":{"showTitle":false}}
 iipcd9rycsd	from_bank_name	{"x-uid":"iipcd9rycsd","name":"from_bank_name","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_bank_name","x-component-props":{},"x-app-version":"1.3.52","x-decorator-props":{"showTitle":false},"description":""}
-pde5ayqzqo1	col_odcegh5w9pb	{"x-uid":"pde5ayqzqo1","name":"col_odcegh5w9pb","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":"54.42"}}
+pde5ayqzqo1	col_odcegh5w9pb	{"x-uid":"pde5ayqzqo1","name":"col_odcegh5w9pb","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
 pxsyhrbz249	col_7rm6cpurb8p	{"x-uid":"pxsyhrbz249","name":"col_7rm6cpurb8p","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":25}}
 w75rqpzvfdq	col_tee1znazv4f	{"x-uid":"w75rqpzvfdq","name":"col_tee1znazv4f","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":2,"x-component-props":{"width":25}}
 1w4nstqxr2n	col_5qtmgj1qg1n	{"x-uid":"1w4nstqxr2n","name":"col_5qtmgj1qg1n","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":3,"x-component-props":{"width":25}}
 pbpsju21w1y	fromxe1ognk	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Refresh\\") }}","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined"},"x-align":"right","type":"void","x-app-version":"1.3.52"}
 j0x0k0rv3yw	z0rr8522rdf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 hupe35j3waf	wdcjw5oonnf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+x3ls6jq4ldm	7m04sefds5p	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-collection-field":"sub_title","x-component":"Grid.Row","x-app-version":"1.3.52"}
+6fy9l9kloul	dqb2nempowo	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 ypdn0dkn4wx	qltijl6t53w	{"x-uid":"ypdn0dkn4wx","name":"qltijl6t53w","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-settings":"blockSettings:iframe","x-decorator":"BlockItem","x-decorator-props":{"name":"iframe"},"x-component":"Iframe","x-component-props":{"mode":"html","height":200,"engine":"string","params":[],"htmlId":"kfrlwu4mh96","heightMode":"specifyValue"},"x-app-version":"1.3.52"}
+mxutorz6z5i	sub_title	{"x-uid":"mxutorz6z5i","name":"sub_title","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"InfoField","x-component-props":{"name":"sub_title","headerType":"p"},"x-settings":"fieldSettings:component:header picker","x-decorator":"FormItem","x-app-version":"1.3.52"}
+jdpnao7e4yj	name	{"x-uid":"jdpnao7e4yj","name":"name","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"InfoField","x-component-props":{"name":"name","headerType":"h2"},"x-settings":"fieldSettings:component:header picker","x-decorator":"FormItem","x-app-version":"1.3.52","x-async":false,"x-index":1}
 i5ep94ei4hn	74v0up0r5vs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Actions\\") }}","x-decorator":"TableV2.Column.ActionBar","x-component":"TableV2.Column","x-toolbar":"TableColumnSchemaToolbar","x-initializer":"table:configureItemActions","x-settings":"fieldSettings:TableColumn","x-toolbar-props":{"initializer":"table:configureItemActions"},"x-action-column":"actions","x-app-version":"1.3.52"}
 x74knwfm0hx	luf7vtkqq1b	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DndContext","x-component":"Space","x-component-props":{"split":"|"},"x-app-version":"1.3.52"}
 7qdtw3aqf8f	3um9q5ispqm	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Edit\\") }}","x-action":"update","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:edit","x-component":"Action.Link","x-component-props":{"openMode":"drawer","icon":"EditOutlined"},"x-action-context":{"dataSource":"main","collection":"transactions"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
@@ -15140,8 +15193,8 @@ cm22blbci2c	3n6konsxrcv	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 ioq8ld31vte	ujdem34nq3l	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 ojgs7eoz5hg	fund_id	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.fund_id","x-component-props":{"fieldNames":{"value":"id","label":"id"}},"x-app-version":"1.3.52"}
 qxskufg0hv4	jgngp3286ie	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+swpktoj72vi	gf7pul5epv8	{"x-uid":"swpktoj72vi","name":"gf7pul5epv8","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-component-props":{"width":"50.13"}}
 j9dtajdmaoa	createdAt	{"x-uid":"j9dtajdmaoa","name":"createdAt","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.createdAt","x-component-props":{"dateFormat":"DD/MM/YYYY","showTime":true,"timeFormat":"h:mm a"},"x-read-pretty":true,"x-app-version":"1.3.52","x-decorator-props":{"showTitle":false}}
-swpktoj72vi	gf7pul5epv8	{"x-uid":"swpktoj72vi","name":"gf7pul5epv8","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-component-props":{"width":"45.72"}}
 abxv8689kv3	ho0c7mbjda1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
 2lzmasj4pju	project_id	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"funds.project_id","x-component":"CollectionField","x-component-props":{},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
 ssd1y8mk1mx	9879c23cj0s	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
@@ -15154,9 +15207,6 @@ pkcprxz6rfy	lzsv1w75i9y	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 b410c64osaf	t7cx7ml1ss1	{"x-uid":"b410c64osaf","name":"t7cx7ml1ss1","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-decorator-props":{"dataSource":"main","collection":"projects","action":"list","params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]}}},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:header picker","x-designer":"FormV2.Designer","x-component-props":{"useConfigureFields":true},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
 9bxpugcgkui	s13ehtexjiz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 lhbk1av87n1	zc7kwh6kagc	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
-zll47lo8fgt	jxin3bi7pq9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-collection-field":"id","x-collection-field-key":{"uiSchema":{"type":"number","title":"{{t(\\"ID\\")}}","x-component":"InputNumber","x-read-pretty":true,"rawTitle":"{{t(\\"ID\\")}}"},"key":"fmtgbzqzs72","name":"id","type":"bigInt","interface":"integer","description":null,"collectionName":"projects","parentKey":null,"reverseKey":null,"autoIncrement":true,"primaryKey":true,"allowNull":false},"x-component":"Grid.Row","x-component-props":{"getInfoItemSchema":true},"x-app-version":"1.3.52"}
-f45gj2efafk	jswh7wechcg	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
-xse8ehk8dl3	id	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-settings":"fieldSettings:info","x-decorator":"FormItem","x-app-version":"1.3.52"}
 0kxudizv0xf	klwlhf63eyz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 zy4jidwmnvw	cea73ch8trk	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 q5no45c40c6	g42m4asqz7s	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action-props":{"skipScopeCheck":false},"x-acl-action":"transactions:update","x-decorator":"FormBlockProvider","x-use-decorator-props":"useEditFormBlockDecoratorProps","x-decorator-props":{"action":"get","dataSource":"main","collection":"transactions"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:editForm","x-component":"CardItem","x-app-version":"1.3.52"}
@@ -15173,7 +15223,11 @@ vkwm4wpz1us	7b3laozce26	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 ktueizjrxpb	description	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.description","x-component-props":{},"x-app-version":"1.3.52"}
 r4wwu0h2xhc	nhia9ko11ng	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 h2owc9efe7d	q9ogag58p1b	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
-83dc85bfozz	159taitaspr	{"x-uid":"83dc85bfozz","name":"159taitaspr","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-settings":"blockSettings:markdown","x-decorator":"CardItem","x-decorator-props":{"name":"markdown","engine":"string"},"x-component":"Markdown.Void","x-editable":false,"x-component-props":{"content":"### Thông tin chi tiết\\n\\nTheo lãnh đạo xã Trà Tập, đợt mưa trước đó đã gây sạt lở ta-luy dương sau trường. Do đó, chính quyền địa phương đã cho đóng cửa điểm trường trên, dời lớp học về điểm trường cũ (bằng gỗ), chờ phương án xây dựng kè phía sau. Tuy nhiên, đợt mưa này tiếp tục gây sạt lở khiến điểm trường bị sập.\\n\\nĐược biết, điểm trường Răng Chuối mới khánh thành hồi tháng 9 với tổng kinh phí xây dựng hơn 1,4 tỉ đồng, do một nhà tài trợ tại TP HCM hỗ trợ toàn bộ chi phí.\\n\\nCông trình có tổng diện tích gần 200m², tường xây kiên cố, 2 phòng học, 1 phòng ở tập thể, bếp ăn, khu vệ sinh, sân chơi, tường rào.\\n\\nĐiểm trường có 35 học sinh mầm non và tiểu học. Ngôi trường mới đưa vào sử dụng thay thế điểm trường tạm vốn đã xuống cấp.\\n\\nNgoài điểm trường Răng Chuối bị thiệt hại, tại huyện Nam Trà My những ngày qua trời mưa lớn kéo dài khiến nhiều điểm sạt lở tuyến đường bị đứt gãy, hư hỏng nặng.\\n\\nHuyện Nam Trà My đã chỉ đạo các địa phương cắm biển báo nguy hiểm và cắm biển cấm xe tải trọng lớn, chỉ đạo đơn vị duy tu bảo vệ kè tạm để đảm bảo giao thông xe tải nhỏ và xe ô tô con lưu thông.\\n"},"x-app-version":"1.3.52"}
+52h8j6knyh0	bkswmhrdrp3	{"x-uid":"52h8j6knyh0","name":"bkswmhrdrp3","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"transactions:view","x-decorator":"List.Decorator","x-use-decorator-props":"useListBlockDecoratorProps","x-decorator-props":{"collection":"transactions","dataSource":"main","readPretty":true,"action":"list","params":{"pageSize":10,"filter":{"$and":[{"fund_id":{"$eq":"{{$nURLSearchParams.fundId}}"}}]},"sort":["-createdAt"]},"runWhenParamsChanged":true,"rowKey":"id"},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:list","x-app-version":"1.3.52","x-component-props":{"heightMode":"specifyValue","height":500}}
+5lsetx6q4um	col_6njh32yy0yn	{"x-uid":"5lsetx6q4um","name":"col_6njh32yy0yn","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":0,"x-component-props":{"width":50}}
+8syckvf383p	hhlzz16lp9n	{"x-uid":"8syckvf383p","name":"hhlzz16lp9n","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-component":"FormItem","x-settings":"blockSettings:carousel","x-toolbar":"BlockSchemaToolbar","x-decorator-props":{"rowKey":"id","runWhenParamsChanged":true,"readPretty":true,"dataSource":"main","collection":"projects","action":"list","request":{"params":{"appends":["images"]}},"params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]}},"carousel":{"objectFit":"contain","height":500}},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
+f1naeic0v01	carousel	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Carousel","x-use-component-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
+83dc85bfozz	159taitaspr	{"x-uid":"83dc85bfozz","name":"159taitaspr","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-settings":"blockSettings:markdown","x-decorator":"CardItem","x-decorator-props":{"name":"markdown","engine":"string"},"x-component":"Markdown.Void","x-editable":false,"x-component-props":{"content":"### Thông tin chi tiết\\n\\nTheo lãnh đạo xã Trà Tập, đợt mưa trước đó đã gây sạt lở ta-luy dương sau trường. Do đó, chính quyền địa phương đã cho đóng cửa điểm trường trên, dời lớp học về điểm trường cũ (bằng gỗ), chờ phương án xây dựng kè phía sau. Tuy nhiên, đợt mưa này tiếp tục gây sạt lở khiến điểm trường bị sập.\\n\\nĐược biết, điểm trường Răng Chuối mới khánh thành hồi tháng 9 với tổng kinh phí xây dựng hơn 1,4 tỉ đồng, do một nhà tài trợ tại TP HCM hỗ trợ toàn bộ chi phí.\\n\\nCông trình có tổng diện tích gần 200m², tường xây kiên cố, 2 phòng học, 1 phòng ở tập thể, bếp ăn, khu vệ sinh, sân chơi, tường rào.\\n\\nĐiểm trường có 35 học sinh mầm non và tiểu học. Ngôi trường mới đưa vào sử dụng thay thế điểm trường tạm vốn đã xuống cấp.\\n\\nNgoài điểm trường Răng Chuối bị thiệt hại, tại huyện Nam Trà My những ngày qua trời mưa lớn kéo dài khiến nhiều điểm sạt lở tuyến đường bị đứt gãy, hư hỏng nặng.\\n\\nHuyện Nam Trà My đã chỉ đạo các địa phương cắm biển báo nguy hiểm và cắm biển cấm xe tải trọng lớn, chỉ đạo đơn vị duy tu bảo vệ kè tạm để đảm bảo giao thông xe tải nhỏ và xe ô tô con lưu thông.\\n","heightMode":"specifyValue","height":500},"x-app-version":"1.3.52"}
 \.
 
 
@@ -16645,7 +16699,7 @@ CREATE INDEX verifications_provider_id ON public.verifications USING btree ("pro
 CREATE UNIQUE INDEX workflows_key_current ON public.workflows USING btree (key, current);
 
 
--- Completed on 2024-11-30 03:55:01 UTC
+-- Completed on 2024-11-30 10:07:12 UTC
 
 --
 -- PostgreSQL database dump complete
