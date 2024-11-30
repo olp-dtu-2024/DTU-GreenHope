@@ -13,7 +13,7 @@ export const InfoField: React.FC<{ name: string }> = ({ name }) => {
   const displayValue = React.useMemo(() => {
     if (!data) return '';
     if (Array.isArray(data)) {
-      const fieldData = data.find((item) => item[name] !== undefined);
+      const fieldData = data.find((item) => item[name]);
       return fieldData?.[name];
     }
     return data[name];
@@ -22,10 +22,7 @@ export const InfoField: React.FC<{ name: string }> = ({ name }) => {
   const Component = headerType as keyof JSX.IntrinsicElements;
 
   if (loading) return <Component>Loading...</Component>;
-  if (!displayValue && displayValue !== 0)
-    return <Component>No data</Component>;
-
-  return <Component>{displayValue}</Component>;
+  return <Component>{displayValue || 'N/A'}</Component>;
 };
 
 // infoItem.tsx

@@ -67,12 +67,6 @@ export function useHeaderPickerProps(): HeaderPickerProps {
   const collection = useCollection();
   const { data, loading } = useDataBlockRequest<any[]>();
 
-  console.log('HeaderPickerProps:', {
-    collectionName: collection.name,
-    data: data?.data,
-    loading,
-  });
-
   return {
     collectionName: collection.name,
     data: data?.data,
@@ -94,6 +88,7 @@ export function getHeaderPickerSchema({ dataSource = 'main', collection }) {
     type: 'void',
     'x-decorator': 'DataBlockProvider',
     'x-decorator-props': {
+      ['myHeaderPicker']: {},
       dataSource,
       collection,
       action: 'list',

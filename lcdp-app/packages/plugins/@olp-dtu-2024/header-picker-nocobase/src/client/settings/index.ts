@@ -1,6 +1,5 @@
 import {
   SchemaSettings,
-  SchemaSettingsBlockTitleItem,
   SchemaSettingsDataScope,
   useAPIClient,
   useCollection,
@@ -8,6 +7,7 @@ import {
 } from '@nocobase/client';
 import { useFieldSchema } from '@formily/react';
 import { BlockNameLowercase } from '../constants';
+import { heightSchemaSettingsItem } from './items/height';
 
 export const headerPickerSettings = new SchemaSettings({
   name: `blockSettings:${BlockNameLowercase}`,
@@ -74,5 +74,6 @@ export const headerPickerSettings = new SchemaSettings({
         },
       },
     },
+    heightSchemaSettingsItem,
   ],
 });
