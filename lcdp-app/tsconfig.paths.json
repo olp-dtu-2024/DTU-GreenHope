@@ -40,6 +40,15 @@
       "@olp-dtu-2024/landing-page": [
         "packages/plugins/@olp-dtu-2024/landing-page/src"
       ],
+      "@olp-dtu-2024/progress-nocobase/client": [
+        "packages/plugins/@olp-dtu-2024/progress-nocobase/src/client"
+      ],
+      "@olp-dtu-2024/progress-nocobase/package.json": [
+        "packages/plugins/@olp-dtu-2024/progress-nocobase/package.json"
+      ],
+      "@olp-dtu-2024/progress-nocobase": [
+        "packages/plugins/@olp-dtu-2024/progress-nocobase/src"
+      ],
       "@olp-dtu-2024/qr-donate/client": [
         "packages/plugins/@olp-dtu-2024/qr-donate/src/client"
       ],
