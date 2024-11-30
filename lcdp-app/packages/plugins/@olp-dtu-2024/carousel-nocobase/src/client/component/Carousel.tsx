@@ -1,15 +1,10 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import {
   Carousel as AntdCarousel,
   Result,
   CarouselProps as AntdCarouselProps,
 } from 'antd';
-import {
-  useAPIClient,
-  useCollection,
-  useDataBlockRequest,
-  withDynamicSchemaProps,
-} from '@nocobase/client';
+import { useDataBlockRequest, withDynamicSchemaProps } from '@nocobase/client';
 import { BlockName } from '../constants';
 
 const useCarouselData = () => {

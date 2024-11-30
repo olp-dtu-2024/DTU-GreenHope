@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFieldSchema } from '@formily/react';
 import { ISchema, SchemaSettings, useCollection } from '@nocobase/client';
 import { uid } from '@formily/shared';
@@ -36,12 +36,19 @@ export const infoItemSettings = new SchemaSettings({
 export function getInfoItemSchema({ name, key }: { name: string; key: any }) {
   const InfoComponent = () => {
     const { data } = useHeaderPickerProps();
+    const [displayValue, setDisplayValue] = useState<any>(null);
     const schema = useFieldSchema();
     const headerType = schema['x-header-type'] || 'h1';
-    const fieldData = data?.find((item) => item[name]);
-    const value = fieldData?.[name];
-    const Component = headerType;
-    return <Component>{value}</Component>;
+
+    useEffect(() => {
+      if (data && Array.isArray(data)) {
+        const fieldData = data.find((item) => item[name] !== undefined);
+        setDisplayValue(fieldData?.[name]);
+      }
+    }, [data, name]);
+
+    const Component = headerType as keyof JSX.IntrinsicElements;
+    return <Component>{displayValue}</Component>;
   };
 
   return {
@@ -49,6 +56,9 @@ export function getInfoItemSchema({ name, key }: { name: string; key: any }) {
     'x-collection-field': name,
     'x-collection-field-key': key,
     'x-component': 'Grid.Row',
+    'x-decorator-props': {
+      refreshOnParamsChanged: true,
+    },
     properties: {
       [uid()]: {
         type: 'void',

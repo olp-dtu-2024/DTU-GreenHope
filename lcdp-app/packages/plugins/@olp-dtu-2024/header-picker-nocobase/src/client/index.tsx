@@ -4,7 +4,6 @@ import { useHeaderPickerProps } from './schema';
 import { headerPickerSettings } from './settings';
 import { infoItemSettings } from './schema/infoItem';
 import { headerPickerInitializerItem } from './initializer';
-import { HeaderPickerComponent } from './component/headerPicker';
 
 export class HeaderPickerNocobaseClient extends Plugin {
   async afterAdd() {
@@ -15,7 +14,6 @@ export class HeaderPickerNocobaseClient extends Plugin {
 
   // You can get and modify the app instance here
   async load() {
-    this.app.addComponents({ HeaderPickerComponent });
     this.app.schemaInitializerManager.add(configureFields);
     this.app.addScopes({
       useHeaderPickerProps,

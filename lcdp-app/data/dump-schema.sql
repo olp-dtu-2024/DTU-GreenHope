@@ -5,7 +5,7 @@
 -- Dumped from database version 16.4
 -- Dumped by pg_dump version 16.4
 
--- Started on 2024-11-29 18:51:39 UTC
+-- Started on 2024-11-30 03:55:01 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1235,7 +1235,8 @@ CREATE TABLE public.projects (
     total_amount double precision DEFAULT '0'::double precision,
     construction_site character varying(255) DEFAULT ''::character varying,
     is_deleted bigint DEFAULT 0,
-    sub_title character varying(255)
+    sub_title character varying(255),
+    description text
 );
 
 
@@ -2626,6 +2627,9 @@ COPY public.attachments (id, "createdAt", "updatedAt", title, filename, extname,
 19	2024-11-27 09:55:44.649+00	2024-11-27 09:55:44.649+00	pexels-stywo-1261728	b1529ff8db3038f27aa8b9563803e1d5.jpg	.jpg	1433451	image/jpeg	1		{}	/storage/uploads/b1529ff8db3038f27aa8b9563803e1d5.jpg	1	1
 20	2024-11-29 16:15:58.451+00	2024-11-29 16:15:58.451+00	hinh-nen-desktop-cute_004670-1280x720	a35707a7f73abf1fb7c85ec2cb23f120.jpg	.jpg	109242	image/jpeg	1		{}	/storage/uploads/a35707a7f73abf1fb7c85ec2cb23f120.jpg	1	1
 21	2024-11-29 16:15:58.457+00	2024-11-29 16:15:58.457+00	pexels-yaroslav-shuraev-1553962	fed82265811b91ac20b0be253113244a.jpg	.jpg	571806	image/jpeg	1		{}	/storage/uploads/fed82265811b91ac20b0be253113244a.jpg	1	1
+22	2024-11-29 20:13:56.017+00	2024-11-29 20:13:56.017+00	hinh-nen-may-tinh-chill-4k28	46a194489a72225527567e65c84572d5.jpg	.jpg	190990	image/jpeg	1		{}	/storage/uploads/46a194489a72225527567e65c84572d5.jpg	1	1
+23	2024-11-29 20:13:56.031+00	2024-11-29 20:13:56.031+00	hinh-nen-desktop-phong-canh-full-hd	d6ee4a229399d8a7c2172838e3ca3937.jpg	.jpg	686638	image/jpeg	1		{}	/storage/uploads/d6ee4a229399d8a7c2172838e3ca3937.jpg	1	1
+24	2024-11-29 20:13:56.037+00	2024-11-29 20:13:56.037+00	pexels-8moments-1323550	9f1ed8f8c46de09614de4103ad02c65f.jpg	.jpg	1247723	image/jpeg	1		{}	/storage/uploads/9f1ed8f8c46de09614de4103ad02c65f.jpg	1	1
 \.
 
 
@@ -6179,6 +6183,7 @@ COPY public.executions (id, "createdAt", "updatedAt", key, "eventKey", context, 
 17	2024-11-23 10:24:00.423+00	2024-11-23 10:24:00.978+00	tbhf0n5k4ba	ab79f6e1-ac48-462d-8b05-36dcec598ad3	{"data":{"createdAt":"2024-11-23T10:22:50.823Z","updatedAt":"2024-11-23T10:24:00.357Z","name":"aaaaa","description":"dfdfdsfdsfsdf","construction_site":"Cao Bằng","id":8,"status":"APPROVED","is_deleted":0,"createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"cb9f202d91599a21382c42be46ee032487d7ad26dd17d17f3b827a8cb07174f8","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-11-22T08:42:38.679Z","updatedAt":"2024-11-22T08:42:38.679Z","sort":1,"createdById":null,"updatedById":null}}}	-1	16
 18	2024-11-23 10:44:46.637+00	2024-11-23 10:44:47.756+00	tbhf0n5k4ba	6f57b07a-a6b3-4f6f-8e8e-f6477b04971f	{"data":{"createdAt":"2024-11-23T10:44:05.704Z","updatedAt":"2024-11-23T10:44:46.561Z","name":"dseww","description":"sdgdsfgwvsfgs","construction_site":"fwef","id":9,"status":"APPROVED","is_deleted":0,"createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"cb9f202d91599a21382c42be46ee032487d7ad26dd17d17f3b827a8cb07174f8","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-11-22T08:42:38.679Z","updatedAt":"2024-11-22T08:42:38.679Z","sort":1,"createdById":null,"updatedById":null}}}	-1	16
 20	2024-11-23 10:53:47.76+00	2024-11-23 10:53:48.421+00	gyc7yynd5w0	aa670944-d977-428f-9c7b-00884090fb80	{"data":{"createdAt":"2024-11-23T10:53:32.680Z","updatedAt":"2024-11-23T10:53:47.700Z","name":"dfsf3qwrqwe","description":"dsfdsgđsfa","construction_site":"3e3qfsdfasdvas","id":10,"status":"APPROVED","is_deleted":0,"createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"cb9f202d91599a21382c42be46ee032487d7ad26dd17d17f3b827a8cb07174f8","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-11-22T08:42:38.679Z","updatedAt":"2024-11-22T08:42:38.679Z","sort":1,"createdById":null,"updatedById":null}}}	1	18
+33	2024-11-29 20:13:20.368+00	2024-11-29 20:13:20.994+00	07lrf76z5ab	af22db29-536f-461a-91c0-79d18ec8c9c0	{"data":{"createdAt":"2024-11-29T20:13:03.294Z","updatedAt":"2024-11-29T20:13:20.272Z","name":"fdfggdfg","description":null,"construction_site":"gfdsdfg","id":23,"status":"APPROVED","is_deleted":0,"createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"cb9f202d91599a21382c42be46ee032487d7ad26dd17d17f3b827a8cb07174f8","appLang":null,"resetToken":null,"systemSettings":{"themeId":5},"createdAt":"2024-11-22T08:42:38.679Z","updatedAt":"2024-11-25T06:09:25.389Z","sort":1,"createdById":null,"updatedById":null}}}	1	22
 \.
 
 
@@ -6278,6 +6283,7 @@ saiotft86cb	id	uuid	input	\N	kafka_topics	\N	\N	{"primaryKey":true,"autoIncremen
 wneudei1j9h	id	uuid	input	\N	kafka_configs	\N	\N	{"primaryKey":true,"autoIncrement":false,"uiSchema":{"type":"string","title":"ID","x-component":"Input","required":true}}	1
 hion733k0k3	group_id	string	input	\N	kafka_configs	\N	\N	{"uiSchema":{"type":"string","title":"Group Id","x-component":"Input","required":true}}	2
 unjp623888f	client_id	string	input	\N	kafka_configs	\N	\N	{"uiSchema":{"type":"string","title":"Client Id","x-component":"Input","required":true}}	3
+ataartdxovv	description	text	richText	\N	projects	\N	\N	{"uiSchema":{"type":"string","x-component":"RichText","title":"Mô tả"}}	14
 \.
 
 
@@ -6310,6 +6316,7 @@ COPY public.funds ("createdAt", "updatedAt", id, "createdById", "updatedById", n
 2024-11-23 14:32:55.113+00	2024-11-25 06:56:35.053+00	22	\N	\N	Xây cầu	0	0	\N	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quyX%C3%A2y%20c%E1%BA%A7u
 2024-11-24 02:36:51.286+00	2024-11-25 06:56:35.055+00	23	\N	\N	AAAA	0	0	\N	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quyAAAA
 2024-11-24 02:43:58.661+00	2024-11-25 06:56:35.056+00	24	\N	\N	bbbbdf	0	0	\N	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20bbbbdf
+2024-11-29 20:13:20.707+00	2024-11-29 20:13:20.886+00	25	\N	\N	fdfggdfg	0	0	27	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20fdfggdfg
 \.
 
 
@@ -6331,6 +6338,8 @@ COPY public.hello (id, "createdAt", "updatedAt", name) FROM stdin;
 
 COPY public."iframeHtml" (id, "createdAt", "updatedAt", html, "createdById", "updatedById") FROM stdin;
 8411zu1034t	2024-11-23 03:18:27.009+00	2024-11-23 12:08:00.692+00	<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>QR Code with Padding</title>\n  <style>\n    body {\n      margin: 0;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n      height: 100vh; /* Chiều cao toàn màn hình */\n      background: linear-gradient(135deg, #e0eafc, #cfdef3); /* Nền gradient */\n    }\n    .container {\n      display: flex;\n      flex-direction: column;\n      align-items: center;\n      justify-content: center;\n      background: #fff; /* Nền trắng */\n      padding: 40px; /* Khoảng cách viền tổng thể */\n      border-radius: 30px; /* Bo góc nền tổng */\n      box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.2); /* Bóng đổ để nổi bật */\n    }\n    img {\n      width: 90%; /* Chiếm 80% chiều rộng của khung nền */\n      max-width: 230px; /* Giới hạn kích thước lớn nhất */\n      height: auto; /* Tự động điều chỉnh chiều cao theo tỷ lệ */\n      object-fit: contain; /* Đảm bảo hình ảnh giữ đúng tỷ lệ */\n      margin-bottom: 20px; /* Khoảng cách giữa hình ảnh và nền nhỏ */\n    }\n    .text-background {\n      background-color: #f1f5f9; /* Nền nhỏ bên dưới */\n      padding: 10px 20px; /* Khoảng cách bên trong */\n      border-radius: 10px; /* Bo góc nền nhỏ */\n      font-size: 16px; /* Kích thước chữ */\n      color: #333; /* Màu chữ */\n      user-select: none;\n      text-align: center; /* Canh giữa nội dung */\n    }\n  </style>\n</head>\n<body>\n  <div class="container">\n    <!-- Hình ảnh QR Code -->\n    <img src="{{$nPopupRecord.qr_code_url}}" alt="QR Code">\n    <!-- Nền nhỏ bên dưới -->\n    <div class="text-background">Quét mã để đóng góp</div>\n  </div>\n</body>\n</html>	1	1
+j4k0yp6pcp0	2024-11-29 20:30:44.581+00	2024-11-29 20:30:44.581+00	<!DOCTYPE html>\n<html lang="vi">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>Nút Progress</title>\n  <style>\n    * {\n      box-sizing: border-box;\n      margin: 0;\n      padding: 0;\n    }\n\n    body {\n      font-family: Arial, sans-serif;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n      height: 100vh;\n      background-color: #f4f4f4;\n    }\n\n    .button-container {\n      position: relative;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n    }\n\n    .progress-button {\n      position: relative;\n      padding: 15px 30px;\n      font-size: 16px;\n      font-weight: bold;\n      color: white;\n      background-color: #4caf50;\n      border: none;\n      border-radius: 30px;\n      cursor: pointer;\n      outline: none;\n      overflow: hidden;\n      text-align: center;\n    }\n\n    .progress-button .button-text {\n      position: relative;\n      z-index: 1;\n    }\n\n    .progress-bar {\n      position: absolute;\n      bottom: 0;\n      left: 0;\n      width: 100%;\n      height: 5px;\n      background-color: #ddd;\n    }\n\n    .progress {\n      width: 0;\n      height: 100%;\n      background-color: #76c7c0;\n      transition: width 0.25s ease;\n    }\n  </style>\n</head>\n<body>\n\n  <div class="button-container">\n    <button id="progress-button" class="progress-button">\n      <span class="button-text">Tải về</span>\n      <div class="progress-bar">\n        <div class="progress" id="progress"></div>\n      </div>\n    </button>\n  </div>\n\n  <script>\n    document.getElementById('progress-button').addEventListener('click', function() {\n      var progress = document.getElementById('progress');\n      var width = 0;\n      \n      // Set interval để cập nhật tiến trình\n      var interval = setInterval(function() {\n        if (width >= 100) {\n          clearInterval(interval);  // Dừng tiến trình khi đạt 100%\n        } else {\n          width++;  // Tăng giá trị width\n          progress.style.width = width + '%';  // Cập nhật thanh tiến trình\n        }\n      }, 50);  // Thời gian để hoàn thành 100% (50ms mỗi lần)\n    });\n  </script>\n\n</body>\n</html>\n	1	1
+kfrlwu4mh96	2024-11-29 20:33:49.455+00	2024-11-29 20:40:51.633+00	<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>Fundraising Progress Bar</title>\n    <style>\n        .progress-container {\n            width: 765px;\n            background-color: #f3f3f3;\n            border-radius: 10px;\n            padding: 10px;\n            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);\n        }\n        .progress-bar {\n            width: 13%;\n            height: 20px;\n            background-color: #4caf50;\n            border-radius: 15px;\n        }\n        .progress-info {\n            display: flex;\n            justify-content: space-between;\n            align-items: center;\n            margin-top: 10px;\n        }\n        .progress-info div {\n            font-size: 14px;\n        }\n        .progress-info .amount {\n            font-weight: bold;\n        }\n        .progress-info .countdown {\n            font-weight: bold;\n        }\n    </style>\n</head>\n<body>\n    <div class="progress-container">\n        <div class="progress-bar"></div>\n        <div class="progress-info">\n            <div class="amount">12,500,000 VND</div>\n            <div>18% của 100,000,000 VND</div>\n        </div>\n    </div>\n</body>\n</html>\n	1	1
 \.
 
 
@@ -6452,6 +6461,10 @@ COPY public.jobs (id, "createdAt", "updatedAt", "executionId", "nodeId", "nodeKe
 97	2024-11-24 02:43:58.608+00	2024-11-24 02:43:58.608+00	32	67	mf435tyq0zj	96	1	{"createdAt":"2024-11-24T02:43:58.543Z","updatedAt":"2024-11-24T02:43:58.543Z","id":23,"name":"bbbbdf","construction_site":"fd","actual_expenditures":null,"total_amount":0,"is_deleted":0,"createdById":null,"updatedById":null,"createdBy":null,"fund_id":null}
 98	2024-11-24 02:43:58.72+00	2024-11-24 02:43:58.72+00	32	68	purpjsbvaog	97	1	{"is_deleted":0,"id":24,"name":"bbbbdf","project_id":23,"target_amount":0,"current_amount":0,"updatedAt":"2024-11-24T02:43:58.661Z","createdAt":"2024-11-24T02:43:58.661Z","createdById":null,"updatedById":null,"description":null,"qr_code_url":null}
 99	2024-11-24 02:43:58.769+00	2024-11-24 02:43:58.891+00	32	71	dryirmt6df0	98	1	{"status":200,"statusText":"OK","headers":{"x-powered-by":"Express","vary":"Origin, Accept-Encoding","access-control-allow-credentials":"true","x-request-id":"cc8d49dd-3947-4e01-a20c-d6b473e28e39","content-type":"application/json; charset=utf-8","content-length":"230","date":"Sun, 24 Nov 2024 02:43:58 GMT","connection":"close","x-real-url":"http://127.0.0.1:13001/api/qr-donate"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":48},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":24,\\"fund_name\\":\\"bbbbdf\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20bbbbdf","meta":{"fund_id":24,"fund_name":"bbbbdf","user_id":null}}}
+100	2024-11-29 20:13:20.537+00	2024-11-29 20:13:20.537+00	33	66	dl3c184o658	\N	1	true
+101	2024-11-29 20:13:20.652+00	2024-11-29 20:13:20.652+00	33	67	mf435tyq0zj	100	1	{"createdAt":"2024-11-29T20:13:20.591Z","updatedAt":"2024-11-29T20:13:20.591Z","id":27,"name":"fdfggdfg","total_amount":0,"construction_site":"gfdsdfg","is_deleted":0,"sub_title":null,"createdById":null,"updatedById":null,"createdBy":null,"fund_id":null}
+102	2024-11-29 20:13:20.756+00	2024-11-29 20:13:20.756+00	33	68	purpjsbvaog	101	1	{"is_deleted":0,"id":25,"name":"fdfggdfg","project_id":27,"target_amount":0,"current_amount":0,"updatedAt":"2024-11-29T20:13:20.707Z","createdAt":"2024-11-29T20:13:20.707Z","createdById":null,"updatedById":null,"description":null,"qr_code_url":null}
+103	2024-11-29 20:13:20.806+00	2024-11-29 20:13:20.949+00	33	71	dryirmt6df0	102	1	{"status":200,"statusText":"OK","headers":{"x-powered-by":"Express","vary":"Origin, Accept-Encoding","access-control-allow-credentials":"true","x-request-id":"c19149e9-891d-4215-8494-86eff649b0f9","content-type":"application/json; charset=utf-8","content-length":"234","date":"Fri, 29 Nov 2024 20:13:20 GMT","connection":"close","x-real-url":"http://127.0.0.1:13001/api/qr-donate"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":50},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":25,\\"fund_name\\":\\"fdfggdfg\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20fdfggdfg","meta":{"fund_id":25,"fund_name":"fdfggdfg","user_id":null}}}
 \.
 
 
@@ -6493,9 +6506,10 @@ COPY public.migrations (name) FROM stdin;
 -- Data for Name: projects; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.projects ("createdAt", "updatedAt", id, "createdById", "updatedById", name, total_amount, construction_site, is_deleted, sub_title) FROM stdin;
-2024-11-27 05:12:46.906+00	2024-11-27 05:12:46.906+00	26	1	1	Dự án 2	20000000	HCM	0	\N
-2024-11-25 06:57:02.948+00	2024-11-25 07:08:32.343+00	25	1	1	Dự án 1	1000000	Đà Nẵng	0	\N
+COPY public.projects ("createdAt", "updatedAt", id, "createdById", "updatedById", name, total_amount, construction_site, is_deleted, sub_title, description) FROM stdin;
+2024-11-27 05:12:46.906+00	2024-11-27 05:12:46.906+00	26	1	1	Dự án 2	20000000	HCM	0	\N	\N
+2024-11-25 06:57:02.948+00	2024-11-25 07:08:32.343+00	25	1	1	Dự án 1	1000000	Đà Nẵng	0	\N	\N
+2024-11-29 20:13:20.591+00	2024-11-29 20:50:18.87+00	27	\N	1	fdfggdfg	0	gfdsdfg	0	\N	<p><strong>Thông tin chi tiết</strong></p><p>Theo lãnh đạo xã Trà Tập, đợt mưa trước đó đã gây sạt lở ta-luy dương sau trường. Do đó, chính quyền địa phương đã cho đóng cửa điểm trường trên, dời lớp học về điểm trường cũ (bằng gỗ), chờ phương án xây dựng kè phía sau. Tuy nhiên, đợt mưa này tiếp tục gây sạt lở khiến điểm trường bị sập.</p><p><br></p><p>Được biết, điểm trường Răng Chuối mới khánh thành hồi tháng 9 với tổng kinh phí xây dựng hơn 1,4 tỉ đồng, do một nhà tài trợ tại TP HCM hỗ trợ toàn bộ chi phí.</p><p><br></p><p>Công trình có tổng diện tích gần 200m², tường xây kiên cố, 2 phòng học, 1 phòng ở tập thể, bếp ăn, khu vệ sinh, sân chơi, tường rào.</p><p><br></p><p>Điểm trường có 35 học sinh mầm non và tiểu học. Ngôi trường mới đưa vào sử dụng thay thế điểm trường tạm vốn đã xuống cấp.</p><p><br></p><p>Ngoài điểm trường Răng Chuối bị thiệt hại, tại huyện Nam Trà My những ngày qua trời mưa lớn kéo dài khiến nhiều điểm sạt lở tuyến đường bị đứt gãy, hư hỏng nặng.</p><p><br></p><p>Huyện Nam Trà My đã chỉ đạo các địa phương cắm biển báo nguy hiểm và cắm biển cấm xe tải trọng lớn, chỉ đạo đơn vị duy tu bảo vệ kè tạm để đảm bảo giao thông xe tải nhỏ và xe ô tô con lưu thông.</p><p><br></p>
 \.
 
 
@@ -6510,6 +6524,7 @@ COPY public.proposes ("createdAt", "updatedAt", id, "createdById", "updatedById"
 2024-11-23 14:32:40.645+00	2024-11-23 14:32:54.689+00	20	1	1	Xây cầu	\N	Sơn La	APPROVED	0
 2024-11-24 02:36:39.231+00	2024-11-24 02:36:50.863+00	21	1	1	AAAA	fdfd	Hà Nội	APPROVED	0
 2024-11-24 02:43:51.285+00	2024-11-24 02:43:58.247+00	22	1	1	bbbbdf	fdf	fd	APPROVED	0
+2024-11-29 20:13:03.294+00	2024-11-29 20:13:20.272+00	23	1	1	fdfggdfg	\N	gfdsdfg	APPROVED	0
 \.
 
 
@@ -6680,6 +6695,9 @@ COPY public.t_bzkvdw2a767 ("createdAt", "updatedAt", f_s8php2rxxwe, f_qxu5av3g0s
 2024-11-27 09:55:46.611+00	2024-11-27 09:55:46.611+00	25	17
 2024-11-27 09:55:46.611+00	2024-11-27 09:55:46.611+00	25	18
 2024-11-27 09:55:46.611+00	2024-11-27 09:55:46.611+00	25	19
+2024-11-29 20:13:57.157+00	2024-11-29 20:13:57.157+00	27	23
+2024-11-29 20:13:57.158+00	2024-11-29 20:13:57.158+00	27	22
+2024-11-29 20:13:57.158+00	2024-11-29 20:13:57.158+00	27	24
 \.
 
 
@@ -6738,6 +6756,9 @@ COPY public."tokenBlacklist" (id, "createdAt", "updatedAt", token, expiration) F
 --
 
 COPY public.transactions ("createdAt", "updatedAt", id, "createdById", "updatedById", transaction_code, amount, description, from_account_no, from_account_name, from_bank_name, f_e47my4oktv2, user_id, fund_id, is_deleted) FROM stdin;
+2024-11-29 20:11:28.381+00	2024-11-29 20:18:31.562+00	3	1	1	2	2	2	2	2	2	\N	\N	25	0
+2024-11-29 20:11:17.505+00	2024-11-29 20:18:36.783+00	2	1	1	1	1	1	1	1	1	\N	\N	25	0
+2024-11-29 20:26:28.741+00	2024-11-29 20:26:39.241+00	4	1	1	45342546456673	400000	\N	1017142420	TRAN NGUYEN DUY KHANH	VCB - Ngân hàng ngoại thương Việt Nam	\N	1	25	0
 \.
 
 
@@ -7290,7 +7311,6 @@ vs0l89adzhc	h0dmilgg31n	7	\N	\N	\N
 nocobase-admin-menu	bzk49nzivdu	8	\N	\N	\N
 nocobase-admin-menu	h0dmilgg31n	9	\N	\N	\N
 bzk49nzivdu	bzk49nzivdu	0	f	properties	\N
-ugc9ztt4hb4	bzk49nzivdu	1	\N	\N	2
 8kgds5aufmv	8kgds5aufmv	0	f	properties	\N
 pfhb8ncb652	8kgds5aufmv	1	\N	\N	1
 ugc9ztt4hb4	8kgds5aufmv	2	\N	\N	\N
@@ -7309,7 +7329,7 @@ vs0l89adzhc	pfhb8ncb652	6	\N	\N	\N
 nocobase-admin-menu	8kgds5aufmv	9	\N	\N	\N
 nocobase-admin-menu	pfhb8ncb652	8	\N	\N	\N
 pfhb8ncb652	pfhb8ncb652	0	f	properties	\N
-ugc9ztt4hb4	pfhb8ncb652	1	\N	\N	3
+pbpsju21w1y	pbpsju21w1y	0	f	properties	\N
 4l7u09ydsdg	4l7u09ydsdg	0	f	properties	\N
 ainrki9f600	4l7u09ydsdg	1	\N	\N	1
 ugc9ztt4hb4	4l7u09ydsdg	2	\N	\N	\N
@@ -7328,7 +7348,6 @@ vs0l89adzhc	ainrki9f600	6	\N	\N	\N
 nocobase-admin-menu	4l7u09ydsdg	9	\N	\N	\N
 nocobase-admin-menu	ainrki9f600	8	\N	\N	\N
 ainrki9f600	ainrki9f600	0	f	properties	\N
-ugc9ztt4hb4	ainrki9f600	1	\N	\N	4
 hvx8jvtqk6e	hvx8jvtqk6e	0	f	properties	\N
 oae1g24te1h	hvx8jvtqk6e	1	\N	\N	1
 ugc9ztt4hb4	hvx8jvtqk6e	2	\N	\N	\N
@@ -7347,7 +7366,7 @@ vs0l89adzhc	oae1g24te1h	6	\N	\N	\N
 nocobase-admin-menu	hvx8jvtqk6e	9	\N	\N	\N
 nocobase-admin-menu	oae1g24te1h	8	\N	\N	\N
 oae1g24te1h	oae1g24te1h	0	f	properties	\N
-ugc9ztt4hb4	oae1g24te1h	1	\N	\N	5
+52h8j6knyh0	pbpsju21w1y	2	\N	\N	\N
 ct41p5st7f6	ct41p5st7f6	0	f	properties	\N
 z4nqlth7kk8	ct41p5st7f6	1	\N	\N	1
 ugc9ztt4hb4	ct41p5st7f6	2	\N	\N	\N
@@ -7366,7 +7385,7 @@ vs0l89adzhc	z4nqlth7kk8	6	\N	\N	\N
 nocobase-admin-menu	ct41p5st7f6	9	\N	\N	\N
 nocobase-admin-menu	z4nqlth7kk8	8	\N	\N	\N
 z4nqlth7kk8	z4nqlth7kk8	0	f	properties	\N
-ugc9ztt4hb4	z4nqlth7kk8	1	\N	\N	6
+5v81x55p2nk	pbpsju21w1y	3	\N	\N	\N
 zwjfadzxpj5	zwjfadzxpj5	0	f	properties	\N
 hswwx0lxpac	zwjfadzxpj5	1	\N	\N	1
 ugc9ztt4hb4	zwjfadzxpj5	2	\N	\N	\N
@@ -7385,7 +7404,7 @@ vs0l89adzhc	zwjfadzxpj5	7	\N	\N	\N
 nocobase-admin-menu	hswwx0lxpac	8	\N	\N	\N
 nocobase-admin-menu	zwjfadzxpj5	9	\N	\N	\N
 hswwx0lxpac	hswwx0lxpac	0	f	properties	\N
-ugc9ztt4hb4	hswwx0lxpac	1	\N	\N	7
+9bxpugcgkui	pbpsju21w1y	4	\N	\N	\N
 hxeqe8wc2b5	hxeqe8wc2b5	0	f	properties	\N
 s2txozhh9f0	hxeqe8wc2b5	1	\N	\N	1
 ugc9ztt4hb4	hxeqe8wc2b5	2	\N	\N	\N
@@ -7404,7 +7423,7 @@ vs0l89adzhc	s2txozhh9f0	6	\N	\N	\N
 nocobase-admin-menu	hxeqe8wc2b5	9	\N	\N	\N
 nocobase-admin-menu	s2txozhh9f0	8	\N	\N	\N
 s2txozhh9f0	s2txozhh9f0	0	f	properties	\N
-ugc9ztt4hb4	s2txozhh9f0	1	\N	\N	8
+7poa6levyva	pbpsju21w1y	5	\N	\N	\N
 se2q3viuytu	se2q3viuytu	0	f	properties	\N
 fb0lajxibgu	se2q3viuytu	1	\N	\N	1
 ugc9ztt4hb4	se2q3viuytu	2	\N	\N	\N
@@ -7423,7 +7442,7 @@ vs0l89adzhc	se2q3viuytu	7	\N	\N	\N
 nocobase-admin-menu	fb0lajxibgu	8	\N	\N	\N
 nocobase-admin-menu	se2q3viuytu	9	\N	\N	\N
 fb0lajxibgu	fb0lajxibgu	0	f	properties	\N
-ugc9ztt4hb4	fb0lajxibgu	1	\N	\N	9
+fe7kgdo55ax	pbpsju21w1y	6	\N	\N	\N
 quxu2mc9wp8	quxu2mc9wp8	0	f	properties	\N
 xa635tbvi5c	quxu2mc9wp8	2	\N	\N	\N
 4dgysxrfq7o	quxu2mc9wp8	3	\N	\N	\N
@@ -11685,6 +11704,8 @@ nocobase-admin-menu	mexjj7b1g93	11	\N	\N	\N
 nocobase-admin-menu	qkanxqd13dl	12	\N	\N	\N
 u62y9zt7gwu	u62y9zt7gwu	0	f	properties	\N
 yc5x6qvg4mh	u62y9zt7gwu	1	\N	\N	1
+hmft2ujv1uf	pbpsju21w1y	7	\N	\N	\N
+pde5ayqzqo1	n65uanub9sx	2	\N	\N	\N
 v4rijabnpgp	v4rijabnpgp	0	f	properties	\N
 r6v5yp99nbl	v4rijabnpgp	1	\N	\N	1
 zwlt9p2m4v5	zwlt9p2m4v5	0	f	properties	\N
@@ -11701,6 +11722,7 @@ i99shgxsfzv	zwlt9p2m4v5	5	\N	\N	\N
 6e6up9qf6jw	r6v5yp99nbl	4	\N	\N	\N
 6e6up9qf6jw	v4rijabnpgp	5	\N	\N	\N
 6e6up9qf6jw	zwlt9p2m4v5	6	\N	\N	\N
+pde5ayqzqo1	fvz3km1i6ms	2	\N	\N	\N
 q5sp3fyrz47	r6v5yp99nbl	5	\N	\N	\N
 q5sp3fyrz47	v4rijabnpgp	6	\N	\N	\N
 q5sp3fyrz47	zwlt9p2m4v5	7	\N	\N	\N
@@ -11750,6 +11772,7 @@ r6v5yp99nbl	r6v5yp99nbl	0	f	properties	\N
 n596xt7b4gz	r6v5yp99nbl	1	\N	\N	8
 ilc9ma1uakv	ilc9ma1uakv	0	f	properties	\N
 xw2eyjxkao7	xw2eyjxkao7	0	f	properties	\N
+pde5ayqzqo1	b410c64osaf	1	\N	\N	1
 xw2eyjxkao7	ilc9ma1uakv	1	\N	\N	1
 xhaimvl6v3t	xhaimvl6v3t	0	f	properties	\N
 ilc9ma1uakv	xhaimvl6v3t	1	\N	\N	1
@@ -11781,6 +11804,7 @@ ypqs0x71ybe	xw2eyjxkao7	9	\N	\N	\N
 ypqs0x71ybe	ilc9ma1uakv	10	\N	\N	\N
 ypqs0x71ybe	xhaimvl6v3t	11	\N	\N	\N
 u62y9zt7gwu	xw2eyjxkao7	10	\N	\N	\N
+nocobase-admin-menu	pbpsju21w1y	8	\N	\N	\N
 u62y9zt7gwu	ilc9ma1uakv	11	\N	\N	\N
 u62y9zt7gwu	xhaimvl6v3t	12	\N	\N	\N
 yc5x6qvg4mh	xw2eyjxkao7	11	\N	\N	\N
@@ -11847,6 +11871,12 @@ i0lnhtci4u6	darepap4yo5	17	\N	\N	\N
 swxvjglsevf	darepap4yo5	18	\N	\N	\N
 nocobase-admin-menu	darepap4yo5	19	\N	\N	\N
 4gnesuyiq9w	darepap4yo5	1	\N	\N	1
+yivjshzifwl	n65uanub9sx	3	\N	\N	\N
+yivjshzifwl	fvz3km1i6ms	3	\N	\N	\N
+yivjshzifwl	b410c64osaf	2	\N	\N	\N
+7poa6levyva	pde5ayqzqo1	2	\N	\N	\N
+7poa6levyva	n65uanub9sx	4	\N	\N	\N
+7poa6levyva	fvz3km1i6ms	4	\N	\N	\N
 wtu8v3wspnv	wtu8v3wspnv	0	f	properties	\N
 dv1xjwdmvcg	wtu8v3wspnv	1	\N	\N	1
 oi4cs4tbslz	oi4cs4tbslz	0	f	properties	\N
@@ -12043,6 +12073,22 @@ hmft2ujv1uf	cbhgjqiskk5	3	\N	\N	\N
 nocobase-admin-menu	cbhgjqiskk5	4	\N	\N	\N
 cbhgjqiskk5	cbhgjqiskk5	0	f	properties	\N
 7poa6levyva	cbhgjqiskk5	1	\N	\N	7
+7poa6levyva	b410c64osaf	3	\N	\N	\N
+fe7kgdo55ax	pde5ayqzqo1	3	\N	\N	\N
+fe7kgdo55ax	n65uanub9sx	5	\N	\N	\N
+fe7kgdo55ax	fvz3km1i6ms	5	\N	\N	\N
+fe7kgdo55ax	b410c64osaf	4	\N	\N	\N
+hmft2ujv1uf	pde5ayqzqo1	4	\N	\N	\N
+hmft2ujv1uf	n65uanub9sx	6	\N	\N	\N
+hmft2ujv1uf	fvz3km1i6ms	6	\N	\N	\N
+hmft2ujv1uf	b410c64osaf	5	\N	\N	\N
+nocobase-admin-menu	pde5ayqzqo1	5	\N	\N	\N
+nocobase-admin-menu	n65uanub9sx	7	\N	\N	\N
+nocobase-admin-menu	fvz3km1i6ms	7	\N	\N	\N
+nocobase-admin-menu	b410c64osaf	6	\N	\N	\N
+pde5ayqzqo1	pde5ayqzqo1	0	f	properties	\N
+yivjshzifwl	pde5ayqzqo1	1	\N	\N	2
+rnko20ymzdm	pbpsju21w1y	1	\N	\N	1
 fe7kgdo55ax	oq5d1lxpmfu	2	\N	\N	\N
 wsafpwbqr88	wsafpwbqr88	0	f	properties	\N
 ifzzkj7loaj	ifzzkj7loaj	0	f	properties	\N
@@ -12708,6 +12754,7 @@ oqsecaif6am	qos4gy0bday	8	\N	\N	\N
 mwrnryoju9y	qos4gy0bday	10	\N	\N	\N
 nocobase-admin-menu	qos4gy0bday	11	\N	\N	\N
 8kxzcotfeb3	qos4gy0bday	1	\N	\N	4
+fe7kgdo55ax	r1jfuy0x2g2	2	\N	\N	\N
 fe7kgdo55ax	5po28o9th2g	2	\N	\N	\N
 hmft2ujv1uf	5po28o9th2g	3	\N	\N	\N
 nocobase-admin-menu	5po28o9th2g	4	\N	\N	\N
@@ -12802,24 +12849,86 @@ mwrnryoju9y	zrm37tg78ob	22	\N	\N	\N
 nocobase-admin-menu	6qulve4ybk4	21	\N	\N	\N
 nocobase-admin-menu	4ryyxzuq87v	22	\N	\N	\N
 nocobase-admin-menu	zrm37tg78ob	23	\N	\N	\N
-tf3bh58lv6q	vbof97c5249	2	\N	\N	\N
-tf3bh58lv6q	q1pb5sukxkw	2	\N	\N	\N
-yivjshzifwl	h4dm0c8wmu4	2	\N	\N	\N
-yivjshzifwl	vbof97c5249	3	\N	\N	\N
-yivjshzifwl	q1pb5sukxkw	3	\N	\N	\N
-7poa6levyva	h4dm0c8wmu4	3	\N	\N	\N
-7poa6levyva	vbof97c5249	4	\N	\N	\N
-7poa6levyva	q1pb5sukxkw	4	\N	\N	\N
-fe7kgdo55ax	h4dm0c8wmu4	4	\N	\N	\N
-fe7kgdo55ax	vbof97c5249	5	\N	\N	\N
-fe7kgdo55ax	q1pb5sukxkw	5	\N	\N	\N
-hmft2ujv1uf	h4dm0c8wmu4	5	\N	\N	\N
-hmft2ujv1uf	vbof97c5249	6	\N	\N	\N
-hmft2ujv1uf	q1pb5sukxkw	6	\N	\N	\N
-nocobase-admin-menu	h4dm0c8wmu4	6	\N	\N	\N
-nocobase-admin-menu	vbof97c5249	7	\N	\N	\N
-nocobase-admin-menu	q1pb5sukxkw	7	\N	\N	\N
-tf3bh58lv6q	h4dm0c8wmu4	1	\N	\N	2
+hmft2ujv1uf	r1jfuy0x2g2	3	\N	\N	\N
+nocobase-admin-menu	r1jfuy0x2g2	4	\N	\N	\N
+r1jfuy0x2g2	r1jfuy0x2g2	0	f	properties	\N
+7poa6levyva	r1jfuy0x2g2	1	\N	\N	22
+ypdn0dkn4wx	ypdn0dkn4wx	0	f	properties	\N
+7poa6levyva	ypdn0dkn4wx	3	\N	\N	\N
+fe7kgdo55ax	ypdn0dkn4wx	4	\N	\N	\N
+hmft2ujv1uf	ypdn0dkn4wx	5	\N	\N	\N
+nocobase-admin-menu	ypdn0dkn4wx	6	\N	\N	\N
+yivjshzifwl	ypdn0dkn4wx	2	\N	\N	\N
+pde5ayqzqo1	ypdn0dkn4wx	1	\N	\N	2
+0ddzjfp9gg6	0ddzjfp9gg6	0	f	properties	\N
+3p9f7asal9h	0ddzjfp9gg6	1	\N	\N	1
+387jrys6pj9	387jrys6pj9	0	f	properties	\N
+0ddzjfp9gg6	387jrys6pj9	1	\N	\N	1
+3p9f7asal9h	387jrys6pj9	2	\N	\N	1
+y05re45hs3a	0ddzjfp9gg6	2	\N	\N	\N
+y05re45hs3a	387jrys6pj9	3	\N	\N	\N
+dsptk8t0mbr	3p9f7asal9h	2	\N	\N	\N
+dsptk8t0mbr	0ddzjfp9gg6	3	\N	\N	\N
+dsptk8t0mbr	387jrys6pj9	4	\N	\N	\N
+7qih7hq26ge	3p9f7asal9h	3	\N	\N	\N
+7qih7hq26ge	0ddzjfp9gg6	4	\N	\N	\N
+7qih7hq26ge	387jrys6pj9	5	\N	\N	\N
+m9ru2u1mst5	3p9f7asal9h	4	\N	\N	\N
+m9ru2u1mst5	0ddzjfp9gg6	5	\N	\N	\N
+m9ru2u1mst5	387jrys6pj9	6	\N	\N	\N
+t5a2xk7thpn	3p9f7asal9h	5	\N	\N	\N
+t5a2xk7thpn	0ddzjfp9gg6	6	\N	\N	\N
+t5a2xk7thpn	387jrys6pj9	7	\N	\N	\N
+ra6axo18rlo	3p9f7asal9h	6	\N	\N	\N
+ra6axo18rlo	0ddzjfp9gg6	7	\N	\N	\N
+ra6axo18rlo	387jrys6pj9	8	\N	\N	\N
+7peksipcht7	3p9f7asal9h	7	\N	\N	\N
+7peksipcht7	0ddzjfp9gg6	8	\N	\N	\N
+7peksipcht7	387jrys6pj9	9	\N	\N	\N
+vxyfqljr7j6	3p9f7asal9h	8	\N	\N	\N
+vxyfqljr7j6	0ddzjfp9gg6	9	\N	\N	\N
+vxyfqljr7j6	387jrys6pj9	10	\N	\N	\N
+v0xzwwlb3u7	3p9f7asal9h	9	\N	\N	\N
+v0xzwwlb3u7	0ddzjfp9gg6	10	\N	\N	\N
+v0xzwwlb3u7	387jrys6pj9	11	\N	\N	\N
+eajx55rxxy3	3p9f7asal9h	10	\N	\N	\N
+eajx55rxxy3	0ddzjfp9gg6	11	\N	\N	\N
+eajx55rxxy3	387jrys6pj9	12	\N	\N	\N
+8kxzcotfeb3	3p9f7asal9h	11	\N	\N	\N
+8kxzcotfeb3	0ddzjfp9gg6	12	\N	\N	\N
+8kxzcotfeb3	387jrys6pj9	13	\N	\N	\N
+5z0xpoxz87w	3p9f7asal9h	12	\N	\N	\N
+5z0xpoxz87w	0ddzjfp9gg6	13	\N	\N	\N
+5z0xpoxz87w	387jrys6pj9	14	\N	\N	\N
+o9klwv4nzei	3p9f7asal9h	13	\N	\N	\N
+o9klwv4nzei	0ddzjfp9gg6	14	\N	\N	\N
+o9klwv4nzei	387jrys6pj9	15	\N	\N	\N
+ozzmhtdpth4	3p9f7asal9h	14	\N	\N	\N
+ozzmhtdpth4	0ddzjfp9gg6	15	\N	\N	\N
+ozzmhtdpth4	387jrys6pj9	16	\N	\N	\N
+b8mogqkr3um	3p9f7asal9h	15	\N	\N	\N
+b8mogqkr3um	0ddzjfp9gg6	16	\N	\N	\N
+b8mogqkr3um	387jrys6pj9	17	\N	\N	\N
+b56io1plq44	3p9f7asal9h	16	\N	\N	\N
+b56io1plq44	0ddzjfp9gg6	17	\N	\N	\N
+b56io1plq44	387jrys6pj9	18	\N	\N	\N
+13qbrfhlbny	3p9f7asal9h	17	\N	\N	\N
+13qbrfhlbny	0ddzjfp9gg6	18	\N	\N	\N
+13qbrfhlbny	387jrys6pj9	19	\N	\N	\N
+oqsecaif6am	3p9f7asal9h	18	\N	\N	\N
+oqsecaif6am	0ddzjfp9gg6	19	\N	\N	\N
+oqsecaif6am	387jrys6pj9	20	\N	\N	\N
+63aby9t5qmb	3p9f7asal9h	19	\N	\N	\N
+63aby9t5qmb	0ddzjfp9gg6	20	\N	\N	\N
+63aby9t5qmb	387jrys6pj9	21	\N	\N	\N
+mwrnryoju9y	3p9f7asal9h	20	\N	\N	\N
+mwrnryoju9y	0ddzjfp9gg6	21	\N	\N	\N
+mwrnryoju9y	387jrys6pj9	22	\N	\N	\N
+nocobase-admin-menu	3p9f7asal9h	21	\N	\N	\N
+nocobase-admin-menu	0ddzjfp9gg6	22	\N	\N	\N
+nocobase-admin-menu	387jrys6pj9	23	\N	\N	\N
+3p9f7asal9h	3p9f7asal9h	0	f	properties	\N
+y05re45hs3a	3p9f7asal9h	1	\N	\N	7
 swbgm59qce3	swbgm59qce3	0	f	properties	\N
 7poa6levyva	swbgm59qce3	1	\N	\N	8
 fe7kgdo55ax	swbgm59qce3	2	\N	\N	\N
@@ -12830,17 +12939,91 @@ nocobase-admin-menu	swbgm59qce3	4	\N	\N	\N
 nocobase-admin-menu	gwkooqabv4x	4	\N	\N	\N
 gwkooqabv4x	gwkooqabv4x	0	f	properties	\N
 7poa6levyva	gwkooqabv4x	1	\N	\N	15
+fe7kgdo55ax	9cnsplg5f8i	2	\N	\N	\N
+hmft2ujv1uf	9cnsplg5f8i	3	\N	\N	\N
+nocobase-admin-menu	9cnsplg5f8i	4	\N	\N	\N
+9cnsplg5f8i	9cnsplg5f8i	0	f	properties	\N
+7poa6levyva	9cnsplg5f8i	1	\N	\N	19
 fe7kgdo55ax	ris4kebta55	2	\N	\N	\N
 hmft2ujv1uf	ris4kebta55	3	\N	\N	\N
 nocobase-admin-menu	ris4kebta55	4	\N	\N	\N
 ris4kebta55	ris4kebta55	0	f	properties	\N
 7poa6levyva	ris4kebta55	1	\N	\N	14
+xzjgh6n1pxo	xzjgh6n1pxo	0	f	properties	\N
+w55w350cfun	xzjgh6n1pxo	1	\N	\N	1
+q25ez0sddx0	q25ez0sddx0	0	f	properties	\N
+xzjgh6n1pxo	q25ez0sddx0	1	\N	\N	1
+w55w350cfun	q25ez0sddx0	2	\N	\N	1
+y05re45hs3a	xzjgh6n1pxo	2	\N	\N	\N
+y05re45hs3a	q25ez0sddx0	3	\N	\N	\N
+dsptk8t0mbr	w55w350cfun	2	\N	\N	\N
+dsptk8t0mbr	xzjgh6n1pxo	3	\N	\N	\N
+dsptk8t0mbr	q25ez0sddx0	4	\N	\N	\N
+7qih7hq26ge	w55w350cfun	3	\N	\N	\N
+7qih7hq26ge	xzjgh6n1pxo	4	\N	\N	\N
+7qih7hq26ge	q25ez0sddx0	5	\N	\N	\N
+m9ru2u1mst5	w55w350cfun	4	\N	\N	\N
+m9ru2u1mst5	xzjgh6n1pxo	5	\N	\N	\N
+m9ru2u1mst5	q25ez0sddx0	6	\N	\N	\N
+t5a2xk7thpn	w55w350cfun	5	\N	\N	\N
+t5a2xk7thpn	xzjgh6n1pxo	6	\N	\N	\N
+t5a2xk7thpn	q25ez0sddx0	7	\N	\N	\N
+ra6axo18rlo	w55w350cfun	6	\N	\N	\N
+ra6axo18rlo	xzjgh6n1pxo	7	\N	\N	\N
+ra6axo18rlo	q25ez0sddx0	8	\N	\N	\N
+7peksipcht7	w55w350cfun	7	\N	\N	\N
+7peksipcht7	xzjgh6n1pxo	8	\N	\N	\N
 jmayzuhpdzl	jmayzuhpdzl	0	f	properties	\N
 oj491oo69he	jmayzuhpdzl	1	\N	\N	5
+7peksipcht7	q25ez0sddx0	9	\N	\N	\N
+vxyfqljr7j6	w55w350cfun	8	\N	\N	\N
 fe7kgdo55ax	unis1bj47de	2	\N	\N	\N
+vxyfqljr7j6	xzjgh6n1pxo	9	\N	\N	\N
+vxyfqljr7j6	q25ez0sddx0	10	\N	\N	\N
+v0xzwwlb3u7	w55w350cfun	9	\N	\N	\N
+v0xzwwlb3u7	xzjgh6n1pxo	10	\N	\N	\N
+v0xzwwlb3u7	q25ez0sddx0	11	\N	\N	\N
+eajx55rxxy3	w55w350cfun	10	\N	\N	\N
 hmft2ujv1uf	unis1bj47de	3	\N	\N	\N
+eajx55rxxy3	xzjgh6n1pxo	11	\N	\N	\N
+eajx55rxxy3	q25ez0sddx0	12	\N	\N	\N
+8kxzcotfeb3	w55w350cfun	11	\N	\N	\N
+8kxzcotfeb3	xzjgh6n1pxo	12	\N	\N	\N
+8kxzcotfeb3	q25ez0sddx0	13	\N	\N	\N
+5z0xpoxz87w	w55w350cfun	12	\N	\N	\N
 nocobase-admin-menu	unis1bj47de	4	\N	\N	\N
+5z0xpoxz87w	xzjgh6n1pxo	13	\N	\N	\N
+5z0xpoxz87w	q25ez0sddx0	14	\N	\N	\N
+o9klwv4nzei	w55w350cfun	13	\N	\N	\N
+o9klwv4nzei	xzjgh6n1pxo	14	\N	\N	\N
+o9klwv4nzei	q25ez0sddx0	15	\N	\N	\N
+ozzmhtdpth4	w55w350cfun	14	\N	\N	\N
 unis1bj47de	unis1bj47de	0	f	properties	\N
+ozzmhtdpth4	xzjgh6n1pxo	15	\N	\N	\N
+ozzmhtdpth4	q25ez0sddx0	16	\N	\N	\N
+b8mogqkr3um	w55w350cfun	15	\N	\N	\N
+b8mogqkr3um	xzjgh6n1pxo	16	\N	\N	\N
+b8mogqkr3um	q25ez0sddx0	17	\N	\N	\N
+b56io1plq44	w55w350cfun	16	\N	\N	\N
+b56io1plq44	xzjgh6n1pxo	17	\N	\N	\N
+b56io1plq44	q25ez0sddx0	18	\N	\N	\N
+13qbrfhlbny	w55w350cfun	17	\N	\N	\N
+13qbrfhlbny	xzjgh6n1pxo	18	\N	\N	\N
+13qbrfhlbny	q25ez0sddx0	19	\N	\N	\N
+oqsecaif6am	w55w350cfun	18	\N	\N	\N
+oqsecaif6am	xzjgh6n1pxo	19	\N	\N	\N
+oqsecaif6am	q25ez0sddx0	20	\N	\N	\N
+63aby9t5qmb	w55w350cfun	19	\N	\N	\N
+63aby9t5qmb	xzjgh6n1pxo	20	\N	\N	\N
+63aby9t5qmb	q25ez0sddx0	21	\N	\N	\N
+mwrnryoju9y	w55w350cfun	20	\N	\N	\N
+mwrnryoju9y	xzjgh6n1pxo	21	\N	\N	\N
+mwrnryoju9y	q25ez0sddx0	22	\N	\N	\N
+nocobase-admin-menu	w55w350cfun	21	\N	\N	\N
+nocobase-admin-menu	xzjgh6n1pxo	22	\N	\N	\N
+nocobase-admin-menu	q25ez0sddx0	23	\N	\N	\N
+w55w350cfun	w55w350cfun	0	f	properties	\N
+y05re45hs3a	w55w350cfun	1	\N	\N	8
 5n3prf95enu	5n3prf95enu	0	f	properties	\N
 jmayzuhpdzl	5n3prf95enu	1	\N	\N	1
 77znodag4w0	77znodag4w0	0	f	properties	\N
@@ -12872,8 +13055,19 @@ pkcprxz6rfy	pkcprxz6rfy	0	f	properties	\N
 fe7kgdo55ax	pkcprxz6rfy	2	\N	\N	\N
 hmft2ujv1uf	pkcprxz6rfy	3	\N	\N	\N
 nocobase-admin-menu	pkcprxz6rfy	4	\N	\N	\N
+hupe35j3waf	hupe35j3waf	0	f	properties	\N
+j0x0k0rv3yw	hupe35j3waf	1	\N	\N	1
+7poa6levyva	hupe35j3waf	2	\N	\N	\N
+fe7kgdo55ax	j0x0k0rv3yw	2	\N	\N	\N
+fe7kgdo55ax	hupe35j3waf	3	\N	\N	\N
+hmft2ujv1uf	j0x0k0rv3yw	3	\N	\N	\N
+hmft2ujv1uf	hupe35j3waf	4	\N	\N	\N
+nocobase-admin-menu	j0x0k0rv3yw	4	\N	\N	\N
+nocobase-admin-menu	hupe35j3waf	5	\N	\N	\N
 p352d38u95n	p352d38u95n	0	f	properties	\N
 7x6oyetmotw	p352d38u95n	1	\N	\N	7
+j0x0k0rv3yw	j0x0k0rv3yw	0	f	properties	\N
+7poa6levyva	j0x0k0rv3yw	1	\N	\N	23
 ifzzkj7loaj	5n3prf95enu	7	\N	\N	\N
 ifzzkj7loaj	77znodag4w0	8	\N	\N	\N
 k99w3v09n98	jmayzuhpdzl	7	\N	\N	\N
@@ -12960,12 +13154,6 @@ lmp1irsvgom	vww45l1kt1c	3	\N	\N	\N
 lmp1irsvgom	krq5msd3dso	4	\N	\N	\N
 3nhe9kyydb1	p352d38u95n	3	\N	\N	\N
 3nhe9kyydb1	vww45l1kt1c	4	\N	\N	\N
-7poa6levyva	tf3bh58lv6q	2	\N	\N	\N
-fe7kgdo55ax	tf3bh58lv6q	3	\N	\N	\N
-hmft2ujv1uf	tf3bh58lv6q	4	\N	\N	\N
-nocobase-admin-menu	tf3bh58lv6q	5	\N	\N	\N
-tf3bh58lv6q	tf3bh58lv6q	0	f	properties	\N
-h4dm0c8wmu4	h4dm0c8wmu4	0	f	properties	\N
 3nhe9kyydb1	krq5msd3dso	5	\N	\N	\N
 1t1bel9ufqz	p352d38u95n	4	\N	\N	\N
 1t1bel9ufqz	vww45l1kt1c	5	\N	\N	\N
@@ -12998,15 +13186,10 @@ jiq42lrek0j	krq5msd3dso	16	\N	\N	\N
 hs1jo8fohcn	8q3azqm4nul	1	\N	\N	1
 fe7kgdo55ax	4jc43siezjp	2	\N	\N	\N
 hmft2ujv1uf	4jc43siezjp	3	\N	\N	\N
-vbof97c5249	vbof97c5249	0	f	properties	\N
-h4dm0c8wmu4	vbof97c5249	1	\N	\N	1
 nocobase-admin-menu	4jc43siezjp	4	\N	\N	\N
-q1pb5sukxkw	q1pb5sukxkw	0	f	properties	\N
-h4dm0c8wmu4	q1pb5sukxkw	1	\N	\N	2
 4jc43siezjp	4jc43siezjp	0	f	properties	\N
 7poa6levyva	4jc43siezjp	1	\N	\N	16
 hs1jo8fohcn	hs1jo8fohcn	0	f	properties	\N
-yivjshzifwl	tf3bh58lv6q	1	\N	\N	6
 fe7kgdo55ax	yivjshzifwl	2	\N	\N	\N
 hmft2ujv1uf	yivjshzifwl	3	\N	\N	\N
 nocobase-admin-menu	yivjshzifwl	4	\N	\N	\N
@@ -13052,6 +13235,7 @@ fg366x2n25f	9ha55op1k8z	4	\N	\N	\N
 v0hdkdeyzrd	4rfztuqwvcn	3	\N	\N	\N
 v0hdkdeyzrd	em6cpoit5dn	4	\N	\N	\N
 v0hdkdeyzrd	9ha55op1k8z	5	\N	\N	\N
+x74knwfm0hx	x74knwfm0hx	0	f	properties	\N
 4rfztuqwvcn	4rfztuqwvcn	0	f	properties	\N
 2yh8xonuy9p	4rfztuqwvcn	1	\N	\N	2
 wtx7vw7yz0x	wtx7vw7yz0x	0	f	properties	\N
@@ -13082,9 +13266,90 @@ fg366x2n25f	qlix4l9q49g	4	\N	\N	\N
 v0hdkdeyzrd	lt4x5i1gin9	3	\N	\N	\N
 v0hdkdeyzrd	ksp2jvw2zju	4	\N	\N	\N
 v0hdkdeyzrd	qlix4l9q49g	5	\N	\N	\N
+i5ep94ei4hn	i5ep94ei4hn	0	f	properties	\N
+i5ep94ei4hn	x74knwfm0hx	1	\N	\N	1
 lt4x5i1gin9	lt4x5i1gin9	0	f	properties	\N
 2yh8xonuy9p	lt4x5i1gin9	1	\N	\N	4
+7qdtw3aqf8f	7qdtw3aqf8f	0	f	properties	\N
+x74knwfm0hx	7qdtw3aqf8f	1	\N	\N	1
+ugc9ztt4hb4	x74knwfm0hx	2	\N	\N	\N
+ao2a67rjlld	i5ep94ei4hn	2	\N	\N	\N
+ao2a67rjlld	x74knwfm0hx	3	\N	\N	\N
+bwbd6lebhkb	i5ep94ei4hn	3	\N	\N	\N
+bwbd6lebhkb	x74knwfm0hx	4	\N	\N	\N
+m8tbcrs4z9t	i5ep94ei4hn	4	\N	\N	\N
+m8tbcrs4z9t	x74knwfm0hx	5	\N	\N	\N
+q4dinm52meb	i5ep94ei4hn	5	\N	\N	\N
+q4dinm52meb	x74knwfm0hx	6	\N	\N	\N
+vs0l89adzhc	i5ep94ei4hn	6	\N	\N	\N
+vs0l89adzhc	x74knwfm0hx	7	\N	\N	\N
+493pimn830r	i5ep94ei4hn	7	\N	\N	\N
+493pimn830r	x74knwfm0hx	8	\N	\N	\N
+nocobase-admin-menu	i5ep94ei4hn	8	\N	\N	\N
+nocobase-admin-menu	x74knwfm0hx	9	\N	\N	\N
+ugc9ztt4hb4	bzk49nzivdu	1	\N	\N	3
+ugc9ztt4hb4	pfhb8ncb652	1	\N	\N	4
+ugc9ztt4hb4	ainrki9f600	1	\N	\N	5
+ugc9ztt4hb4	oae1g24te1h	1	\N	\N	6
+ugc9ztt4hb4	z4nqlth7kk8	1	\N	\N	7
+ugc9ztt4hb4	hswwx0lxpac	1	\N	\N	8
+ugc9ztt4hb4	s2txozhh9f0	1	\N	\N	9
+ugc9ztt4hb4	fb0lajxibgu	1	\N	\N	10
+ugc9ztt4hb4	i5ep94ei4hn	1	\N	\N	2
+9znhwv6jh2d	9znhwv6jh2d	0	f	properties	\N
+7qdtw3aqf8f	9znhwv6jh2d	1	\N	\N	1
+dohzvch4noi	dohzvch4noi	0	f	properties	\N
+9znhwv6jh2d	dohzvch4noi	1	\N	\N	1
+7qdtw3aqf8f	dohzvch4noi	2	\N	\N	1
+oyw4y44yqgd	oyw4y44yqgd	0	f	properties	\N
+dohzvch4noi	oyw4y44yqgd	1	\N	\N	1
+9znhwv6jh2d	oyw4y44yqgd	2	\N	\N	1
+7qdtw3aqf8f	oyw4y44yqgd	3	\N	\N	1
+bztjip2msxq	bztjip2msxq	0	f	properties	\N
+oyw4y44yqgd	bztjip2msxq	1	\N	\N	1
+dohzvch4noi	bztjip2msxq	2	\N	\N	1
+9znhwv6jh2d	bztjip2msxq	3	\N	\N	1
+7qdtw3aqf8f	bztjip2msxq	4	\N	\N	1
+x74knwfm0hx	9znhwv6jh2d	2	\N	\N	\N
+x74knwfm0hx	dohzvch4noi	3	\N	\N	\N
+x74knwfm0hx	oyw4y44yqgd	4	\N	\N	\N
+x74knwfm0hx	bztjip2msxq	5	\N	\N	\N
+i5ep94ei4hn	7qdtw3aqf8f	2	\N	\N	\N
+i5ep94ei4hn	9znhwv6jh2d	3	\N	\N	\N
+i5ep94ei4hn	dohzvch4noi	4	\N	\N	\N
+i5ep94ei4hn	oyw4y44yqgd	5	\N	\N	\N
+i5ep94ei4hn	bztjip2msxq	6	\N	\N	\N
+ugc9ztt4hb4	7qdtw3aqf8f	3	\N	\N	\N
+ugc9ztt4hb4	9znhwv6jh2d	4	\N	\N	\N
+ugc9ztt4hb4	dohzvch4noi	5	\N	\N	\N
+b410c64osaf	b410c64osaf	0	f	properties	\N
+f45gj2efafk	f45gj2efafk	0	f	properties	\N
+zll47lo8fgt	f45gj2efafk	1	\N	\N	1
+xse8ehk8dl3	xse8ehk8dl3	0	f	properties	\N
+f45gj2efafk	xse8ehk8dl3	1	\N	\N	1
+zll47lo8fgt	xse8ehk8dl3	2	\N	\N	1
+pde5ayqzqo1	zll47lo8fgt	3	\N	\N	\N
+pde5ayqzqo1	f45gj2efafk	4	\N	\N	\N
+pde5ayqzqo1	xse8ehk8dl3	5	\N	\N	\N
+yivjshzifwl	zll47lo8fgt	4	\N	\N	\N
+yivjshzifwl	f45gj2efafk	5	\N	\N	\N
+yivjshzifwl	xse8ehk8dl3	6	\N	\N	\N
+7poa6levyva	zll47lo8fgt	5	\N	\N	\N
+7poa6levyva	f45gj2efafk	6	\N	\N	\N
+7poa6levyva	xse8ehk8dl3	7	\N	\N	\N
+fe7kgdo55ax	zll47lo8fgt	6	\N	\N	\N
+fe7kgdo55ax	f45gj2efafk	7	\N	\N	\N
+fe7kgdo55ax	xse8ehk8dl3	8	\N	\N	\N
+hmft2ujv1uf	zll47lo8fgt	7	\N	\N	\N
+hmft2ujv1uf	f45gj2efafk	8	\N	\N	\N
+hmft2ujv1uf	xse8ehk8dl3	9	\N	\N	\N
+nocobase-admin-menu	zll47lo8fgt	8	\N	\N	\N
+nocobase-admin-menu	f45gj2efafk	9	\N	\N	\N
+nocobase-admin-menu	xse8ehk8dl3	10	\N	\N	\N
 bo30ugxn7d2	bo30ugxn7d2	0	f	properties	\N
+mupdgh8dhyb	mupdgh8dhyb	0	f	properties	\N
+zll47lo8fgt	zll47lo8fgt	0	f	properties	\N
+fvz3km1i6ms	zll47lo8fgt	1	\N	\N	1
 lzuobjmh9nr	lzuobjmh9nr	0	f	properties	\N
 2yh8xonuy9p	lzuobjmh9nr	1	\N	\N	6
 p62fqqqtc8f	p62fqqqtc8f	0	f	properties	\N
@@ -13116,6 +13381,7 @@ v0hdkdeyzrd	lzuobjmh9nr	3	\N	\N	\N
 v0hdkdeyzrd	nk5b4nu4r4m	4	\N	\N	\N
 v0hdkdeyzrd	pai6scdjeqt	5	\N	\N	\N
 bo30ugxn7d2	8q3azqm4nul	2	\N	\N	\N
+7poa6levyva	mupdgh8dhyb	1	\N	\N	17
 bo30ugxn7d2	hs1jo8fohcn	1	\N	\N	1
 yivjshzifwl	hs1jo8fohcn	2	\N	\N	\N
 yivjshzifwl	8q3azqm4nul	3	\N	\N	\N
@@ -13168,6 +13434,13 @@ nocobase-admin-menu	bo30ugxn7d2	5	\N	\N	\N
 nocobase-admin-menu	hs1jo8fohcn	6	\N	\N	\N
 nocobase-admin-menu	8q3azqm4nul	7	\N	\N	\N
 yivjshzifwl	bo30ugxn7d2	1	\N	\N	1
+n65uanub9sx	n65uanub9sx	0	f	properties	\N
+b410c64osaf	n65uanub9sx	1	\N	\N	1
+fvz3km1i6ms	fvz3km1i6ms	0	f	properties	\N
+b410c64osaf	fvz3km1i6ms	1	\N	\N	2
+fe7kgdo55ax	mupdgh8dhyb	2	\N	\N	\N
+hmft2ujv1uf	mupdgh8dhyb	3	\N	\N	\N
+nocobase-admin-menu	mupdgh8dhyb	4	\N	\N	\N
 pv8ilcp4ez0	u1nyxe00lc6	3	\N	\N	1
 2h7gnmez0eb	u1nyxe00lc6	4	\N	\N	1
 eoz95qtwix6	u1nyxe00lc6	5	\N	\N	1
@@ -13234,6 +13507,1102 @@ eoz95qtwix6	b6910vi3jym	5	\N	\N	1
 quxuyp8dl2x	quxuyp8dl2x	0	f	properties	\N
 2h7gnmez0eb	quxuyp8dl2x	1	\N	\N	3
 eoz95qtwix6	quxuyp8dl2x	2	\N	\N	3
+fvz3km1i6ms	f45gj2efafk	2	\N	\N	\N
+fvz3km1i6ms	xse8ehk8dl3	3	\N	\N	\N
+b410c64osaf	zll47lo8fgt	2	\N	\N	\N
+b410c64osaf	f45gj2efafk	3	\N	\N	\N
+b410c64osaf	xse8ehk8dl3	4	\N	\N	\N
+swpktoj72vi	swpktoj72vi	0	f	properties	\N
+9bxpugcgkui	swpktoj72vi	1	\N	\N	1
+83dc85bfozz	83dc85bfozz	0	f	properties	\N
+swpktoj72vi	83dc85bfozz	1	\N	\N	1
+9bxpugcgkui	83dc85bfozz	2	\N	\N	1
+7poa6levyva	swpktoj72vi	2	\N	\N	\N
+7poa6levyva	83dc85bfozz	3	\N	\N	\N
+fe7kgdo55ax	9bxpugcgkui	2	\N	\N	\N
+fe7kgdo55ax	swpktoj72vi	3	\N	\N	\N
+fe7kgdo55ax	83dc85bfozz	4	\N	\N	\N
+hmft2ujv1uf	9bxpugcgkui	3	\N	\N	\N
+hmft2ujv1uf	swpktoj72vi	4	\N	\N	\N
+hmft2ujv1uf	83dc85bfozz	5	\N	\N	\N
+nocobase-admin-menu	9bxpugcgkui	4	\N	\N	\N
+nocobase-admin-menu	swpktoj72vi	5	\N	\N	\N
+nocobase-admin-menu	83dc85bfozz	6	\N	\N	\N
+9bxpugcgkui	9bxpugcgkui	0	f	properties	\N
+7poa6levyva	9bxpugcgkui	1	\N	\N	18
+ugc9ztt4hb4	oyw4y44yqgd	6	\N	\N	\N
+ugc9ztt4hb4	bztjip2msxq	7	\N	\N	\N
+ao2a67rjlld	7qdtw3aqf8f	4	\N	\N	\N
+ao2a67rjlld	9znhwv6jh2d	5	\N	\N	\N
+ao2a67rjlld	dohzvch4noi	6	\N	\N	\N
+ao2a67rjlld	oyw4y44yqgd	7	\N	\N	\N
+ao2a67rjlld	bztjip2msxq	8	\N	\N	\N
+bwbd6lebhkb	7qdtw3aqf8f	5	\N	\N	\N
+bwbd6lebhkb	9znhwv6jh2d	6	\N	\N	\N
+bwbd6lebhkb	dohzvch4noi	7	\N	\N	\N
+bwbd6lebhkb	oyw4y44yqgd	8	\N	\N	\N
+bwbd6lebhkb	bztjip2msxq	9	\N	\N	\N
+m8tbcrs4z9t	7qdtw3aqf8f	6	\N	\N	\N
+m8tbcrs4z9t	9znhwv6jh2d	7	\N	\N	\N
+m8tbcrs4z9t	dohzvch4noi	8	\N	\N	\N
+m8tbcrs4z9t	oyw4y44yqgd	9	\N	\N	\N
+m8tbcrs4z9t	bztjip2msxq	10	\N	\N	\N
+q4dinm52meb	7qdtw3aqf8f	7	\N	\N	\N
+q4dinm52meb	9znhwv6jh2d	8	\N	\N	\N
+q4dinm52meb	dohzvch4noi	9	\N	\N	\N
+q4dinm52meb	oyw4y44yqgd	10	\N	\N	\N
+q4dinm52meb	bztjip2msxq	11	\N	\N	\N
+vs0l89adzhc	7qdtw3aqf8f	8	\N	\N	\N
+vs0l89adzhc	9znhwv6jh2d	9	\N	\N	\N
+vs0l89adzhc	dohzvch4noi	10	\N	\N	\N
+vs0l89adzhc	oyw4y44yqgd	11	\N	\N	\N
+vs0l89adzhc	bztjip2msxq	12	\N	\N	\N
+493pimn830r	7qdtw3aqf8f	9	\N	\N	\N
+493pimn830r	9znhwv6jh2d	10	\N	\N	\N
+493pimn830r	dohzvch4noi	11	\N	\N	\N
+493pimn830r	oyw4y44yqgd	12	\N	\N	\N
+493pimn830r	bztjip2msxq	13	\N	\N	\N
+nocobase-admin-menu	7qdtw3aqf8f	10	\N	\N	\N
+nocobase-admin-menu	9znhwv6jh2d	11	\N	\N	\N
+nocobase-admin-menu	dohzvch4noi	12	\N	\N	\N
+nocobase-admin-menu	oyw4y44yqgd	13	\N	\N	\N
+nocobase-admin-menu	bztjip2msxq	14	\N	\N	\N
+oekbnvx2n7m	oekbnvx2n7m	0	f	properties	\N
+i5ep94ei4hn	oekbnvx2n7m	2	\N	\N	\N
+ugc9ztt4hb4	oekbnvx2n7m	3	\N	\N	\N
+ao2a67rjlld	oekbnvx2n7m	4	\N	\N	\N
+bwbd6lebhkb	oekbnvx2n7m	5	\N	\N	\N
+m8tbcrs4z9t	oekbnvx2n7m	6	\N	\N	\N
+q4dinm52meb	oekbnvx2n7m	7	\N	\N	\N
+vs0l89adzhc	oekbnvx2n7m	8	\N	\N	\N
+493pimn830r	oekbnvx2n7m	9	\N	\N	\N
+nocobase-admin-menu	oekbnvx2n7m	10	\N	\N	\N
+x74knwfm0hx	oekbnvx2n7m	1	\N	\N	2
+2lzmasj4pju	2lzmasj4pju	0	f	properties	\N
+abxv8689kv3	2lzmasj4pju	1	\N	\N	1
+44890jxlzup	2lzmasj4pju	2	\N	\N	\N
+xa635tbvi5c	abxv8689kv3	2	\N	\N	\N
+xa635tbvi5c	2lzmasj4pju	3	\N	\N	\N
+4dgysxrfq7o	abxv8689kv3	3	\N	\N	\N
+4dgysxrfq7o	2lzmasj4pju	4	\N	\N	\N
+sf8fl742bgm	abxv8689kv3	4	\N	\N	\N
+sf8fl742bgm	2lzmasj4pju	5	\N	\N	\N
+sptin92gm5m	abxv8689kv3	5	\N	\N	\N
+sptin92gm5m	2lzmasj4pju	6	\N	\N	\N
+i0lnhtci4u6	abxv8689kv3	6	\N	\N	\N
+i0lnhtci4u6	2lzmasj4pju	7	\N	\N	\N
+swxvjglsevf	abxv8689kv3	7	\N	\N	\N
+swxvjglsevf	2lzmasj4pju	8	\N	\N	\N
+nocobase-admin-menu	abxv8689kv3	8	\N	\N	\N
+nocobase-admin-menu	2lzmasj4pju	9	\N	\N	\N
+abxv8689kv3	abxv8689kv3	0	f	properties	\N
+44890jxlzup	abxv8689kv3	1	\N	\N	7
+zy4jidwmnvw	zy4jidwmnvw	0	f	properties	\N
+0kxudizv0xf	zy4jidwmnvw	1	\N	\N	1
+q5no45c40c6	q5no45c40c6	0	f	properties	\N
+zy4jidwmnvw	q5no45c40c6	1	\N	\N	1
+0kxudizv0xf	q5no45c40c6	2	\N	\N	1
+imo18or3xxo	imo18or3xxo	0	f	properties	\N
+q5no45c40c6	imo18or3xxo	1	\N	\N	1
+zy4jidwmnvw	imo18or3xxo	2	\N	\N	1
+0kxudizv0xf	imo18or3xxo	3	\N	\N	1
+mr7dvvk94ts	mr7dvvk94ts	0	f	properties	\N
+imo18or3xxo	mr7dvvk94ts	1	\N	\N	1
+q5no45c40c6	mr7dvvk94ts	2	\N	\N	1
+zy4jidwmnvw	mr7dvvk94ts	3	\N	\N	1
+0kxudizv0xf	mr7dvvk94ts	4	\N	\N	1
+9xqwn851uzs	9xqwn851uzs	0	f	properties	\N
+imo18or3xxo	9xqwn851uzs	1	\N	\N	2
+q5no45c40c6	9xqwn851uzs	2	\N	\N	2
+zy4jidwmnvw	9xqwn851uzs	3	\N	\N	2
+0kxudizv0xf	9xqwn851uzs	4	\N	\N	2
+bztjip2msxq	zy4jidwmnvw	2	\N	\N	\N
+bztjip2msxq	q5no45c40c6	3	\N	\N	\N
+bztjip2msxq	imo18or3xxo	4	\N	\N	\N
+bztjip2msxq	mr7dvvk94ts	5	\N	\N	\N
+bztjip2msxq	9xqwn851uzs	5	\N	\N	\N
+oyw4y44yqgd	0kxudizv0xf	2	\N	\N	\N
+oyw4y44yqgd	zy4jidwmnvw	3	\N	\N	\N
+oyw4y44yqgd	q5no45c40c6	4	\N	\N	\N
+oyw4y44yqgd	imo18or3xxo	5	\N	\N	\N
+oyw4y44yqgd	mr7dvvk94ts	6	\N	\N	\N
+oyw4y44yqgd	9xqwn851uzs	6	\N	\N	\N
+dohzvch4noi	0kxudizv0xf	3	\N	\N	\N
+dohzvch4noi	zy4jidwmnvw	4	\N	\N	\N
+dohzvch4noi	q5no45c40c6	5	\N	\N	\N
+dohzvch4noi	imo18or3xxo	6	\N	\N	\N
+dohzvch4noi	mr7dvvk94ts	7	\N	\N	\N
+dohzvch4noi	9xqwn851uzs	7	\N	\N	\N
+9znhwv6jh2d	0kxudizv0xf	4	\N	\N	\N
+9znhwv6jh2d	zy4jidwmnvw	5	\N	\N	\N
+9znhwv6jh2d	q5no45c40c6	6	\N	\N	\N
+9znhwv6jh2d	imo18or3xxo	7	\N	\N	\N
+9znhwv6jh2d	mr7dvvk94ts	8	\N	\N	\N
+9znhwv6jh2d	9xqwn851uzs	8	\N	\N	\N
+7qdtw3aqf8f	0kxudizv0xf	5	\N	\N	\N
+7qdtw3aqf8f	zy4jidwmnvw	6	\N	\N	\N
+7qdtw3aqf8f	q5no45c40c6	7	\N	\N	\N
+7qdtw3aqf8f	imo18or3xxo	8	\N	\N	\N
+7qdtw3aqf8f	mr7dvvk94ts	9	\N	\N	\N
+7qdtw3aqf8f	9xqwn851uzs	9	\N	\N	\N
+x74knwfm0hx	0kxudizv0xf	6	\N	\N	\N
+x74knwfm0hx	zy4jidwmnvw	7	\N	\N	\N
+x74knwfm0hx	q5no45c40c6	8	\N	\N	\N
+x74knwfm0hx	imo18or3xxo	9	\N	\N	\N
+x74knwfm0hx	mr7dvvk94ts	10	\N	\N	\N
+x74knwfm0hx	9xqwn851uzs	10	\N	\N	\N
+i5ep94ei4hn	0kxudizv0xf	7	\N	\N	\N
+i5ep94ei4hn	zy4jidwmnvw	8	\N	\N	\N
+i5ep94ei4hn	q5no45c40c6	9	\N	\N	\N
+i5ep94ei4hn	imo18or3xxo	10	\N	\N	\N
+i5ep94ei4hn	mr7dvvk94ts	11	\N	\N	\N
+i5ep94ei4hn	9xqwn851uzs	11	\N	\N	\N
+ugc9ztt4hb4	0kxudizv0xf	8	\N	\N	\N
+ugc9ztt4hb4	zy4jidwmnvw	9	\N	\N	\N
+ugc9ztt4hb4	q5no45c40c6	10	\N	\N	\N
+ugc9ztt4hb4	imo18or3xxo	11	\N	\N	\N
+ugc9ztt4hb4	mr7dvvk94ts	12	\N	\N	\N
+ugc9ztt4hb4	9xqwn851uzs	12	\N	\N	\N
+ao2a67rjlld	0kxudizv0xf	9	\N	\N	\N
+ao2a67rjlld	zy4jidwmnvw	10	\N	\N	\N
+ao2a67rjlld	q5no45c40c6	11	\N	\N	\N
+ao2a67rjlld	imo18or3xxo	12	\N	\N	\N
+ao2a67rjlld	mr7dvvk94ts	13	\N	\N	\N
+ao2a67rjlld	9xqwn851uzs	13	\N	\N	\N
+bwbd6lebhkb	0kxudizv0xf	10	\N	\N	\N
+bwbd6lebhkb	zy4jidwmnvw	11	\N	\N	\N
+bwbd6lebhkb	q5no45c40c6	12	\N	\N	\N
+0kxudizv0xf	0kxudizv0xf	0	f	properties	\N
+bztjip2msxq	0kxudizv0xf	1	\N	\N	1
+bwbd6lebhkb	imo18or3xxo	13	\N	\N	\N
+bwbd6lebhkb	mr7dvvk94ts	14	\N	\N	\N
+bwbd6lebhkb	9xqwn851uzs	14	\N	\N	\N
+m8tbcrs4z9t	0kxudizv0xf	11	\N	\N	\N
+m8tbcrs4z9t	zy4jidwmnvw	12	\N	\N	\N
+m8tbcrs4z9t	q5no45c40c6	13	\N	\N	\N
+m8tbcrs4z9t	imo18or3xxo	14	\N	\N	\N
+m8tbcrs4z9t	mr7dvvk94ts	15	\N	\N	\N
+m8tbcrs4z9t	9xqwn851uzs	15	\N	\N	\N
+q4dinm52meb	0kxudizv0xf	12	\N	\N	\N
+q4dinm52meb	zy4jidwmnvw	13	\N	\N	\N
+q4dinm52meb	q5no45c40c6	14	\N	\N	\N
+q4dinm52meb	imo18or3xxo	15	\N	\N	\N
+q4dinm52meb	mr7dvvk94ts	16	\N	\N	\N
+q4dinm52meb	9xqwn851uzs	16	\N	\N	\N
+vs0l89adzhc	0kxudizv0xf	13	\N	\N	\N
+vs0l89adzhc	zy4jidwmnvw	14	\N	\N	\N
+vs0l89adzhc	q5no45c40c6	15	\N	\N	\N
+vs0l89adzhc	imo18or3xxo	16	\N	\N	\N
+vs0l89adzhc	mr7dvvk94ts	17	\N	\N	\N
+vs0l89adzhc	9xqwn851uzs	17	\N	\N	\N
+493pimn830r	0kxudizv0xf	14	\N	\N	\N
+493pimn830r	zy4jidwmnvw	15	\N	\N	\N
+493pimn830r	q5no45c40c6	16	\N	\N	\N
+493pimn830r	imo18or3xxo	17	\N	\N	\N
+493pimn830r	mr7dvvk94ts	18	\N	\N	\N
+493pimn830r	9xqwn851uzs	18	\N	\N	\N
+nocobase-admin-menu	0kxudizv0xf	15	\N	\N	\N
+nocobase-admin-menu	zy4jidwmnvw	16	\N	\N	\N
+nocobase-admin-menu	q5no45c40c6	17	\N	\N	\N
+nocobase-admin-menu	imo18or3xxo	18	\N	\N	\N
+nocobase-admin-menu	mr7dvvk94ts	19	\N	\N	\N
+nocobase-admin-menu	9xqwn851uzs	19	\N	\N	\N
+h6z84g2plev	h6z84g2plev	0	f	properties	\N
+lhbk1av87n1	h6z84g2plev	1	\N	\N	1
+fj7mqkmuy05	fj7mqkmuy05	0	f	properties	\N
+h6z84g2plev	fj7mqkmuy05	1	\N	\N	1
+lhbk1av87n1	fj7mqkmuy05	2	\N	\N	1
+mr7dvvk94ts	h6z84g2plev	2	\N	\N	\N
+mr7dvvk94ts	fj7mqkmuy05	3	\N	\N	\N
+imo18or3xxo	lhbk1av87n1	2	\N	\N	\N
+imo18or3xxo	h6z84g2plev	3	\N	\N	\N
+imo18or3xxo	fj7mqkmuy05	4	\N	\N	\N
+q5no45c40c6	lhbk1av87n1	3	\N	\N	\N
+q5no45c40c6	h6z84g2plev	4	\N	\N	\N
+q5no45c40c6	fj7mqkmuy05	5	\N	\N	\N
+zy4jidwmnvw	lhbk1av87n1	4	\N	\N	\N
+zy4jidwmnvw	h6z84g2plev	5	\N	\N	\N
+zy4jidwmnvw	fj7mqkmuy05	6	\N	\N	\N
+0kxudizv0xf	lhbk1av87n1	5	\N	\N	\N
+0kxudizv0xf	h6z84g2plev	6	\N	\N	\N
+0kxudizv0xf	fj7mqkmuy05	7	\N	\N	\N
+bztjip2msxq	lhbk1av87n1	6	\N	\N	\N
+bztjip2msxq	h6z84g2plev	7	\N	\N	\N
+bztjip2msxq	fj7mqkmuy05	8	\N	\N	\N
+oyw4y44yqgd	lhbk1av87n1	7	\N	\N	\N
+oyw4y44yqgd	h6z84g2plev	8	\N	\N	\N
+oyw4y44yqgd	fj7mqkmuy05	9	\N	\N	\N
+dohzvch4noi	lhbk1av87n1	8	\N	\N	\N
+dohzvch4noi	h6z84g2plev	9	\N	\N	\N
+dohzvch4noi	fj7mqkmuy05	10	\N	\N	\N
+9znhwv6jh2d	lhbk1av87n1	9	\N	\N	\N
+9znhwv6jh2d	h6z84g2plev	10	\N	\N	\N
+9znhwv6jh2d	fj7mqkmuy05	11	\N	\N	\N
+7qdtw3aqf8f	lhbk1av87n1	10	\N	\N	\N
+7qdtw3aqf8f	h6z84g2plev	11	\N	\N	\N
+7qdtw3aqf8f	fj7mqkmuy05	12	\N	\N	\N
+x74knwfm0hx	lhbk1av87n1	11	\N	\N	\N
+x74knwfm0hx	h6z84g2plev	12	\N	\N	\N
+x74knwfm0hx	fj7mqkmuy05	13	\N	\N	\N
+i5ep94ei4hn	lhbk1av87n1	12	\N	\N	\N
+i5ep94ei4hn	h6z84g2plev	13	\N	\N	\N
+i5ep94ei4hn	fj7mqkmuy05	14	\N	\N	\N
+ugc9ztt4hb4	lhbk1av87n1	13	\N	\N	\N
+ugc9ztt4hb4	h6z84g2plev	14	\N	\N	\N
+ugc9ztt4hb4	fj7mqkmuy05	15	\N	\N	\N
+ao2a67rjlld	lhbk1av87n1	14	\N	\N	\N
+ao2a67rjlld	h6z84g2plev	15	\N	\N	\N
+ao2a67rjlld	fj7mqkmuy05	16	\N	\N	\N
+bwbd6lebhkb	lhbk1av87n1	15	\N	\N	\N
+bwbd6lebhkb	h6z84g2plev	16	\N	\N	\N
+bwbd6lebhkb	fj7mqkmuy05	17	\N	\N	\N
+m8tbcrs4z9t	lhbk1av87n1	16	\N	\N	\N
+m8tbcrs4z9t	h6z84g2plev	17	\N	\N	\N
+m8tbcrs4z9t	fj7mqkmuy05	18	\N	\N	\N
+q4dinm52meb	lhbk1av87n1	17	\N	\N	\N
+q4dinm52meb	h6z84g2plev	18	\N	\N	\N
+q4dinm52meb	fj7mqkmuy05	19	\N	\N	\N
+vs0l89adzhc	lhbk1av87n1	18	\N	\N	\N
+vs0l89adzhc	h6z84g2plev	19	\N	\N	\N
+vs0l89adzhc	fj7mqkmuy05	20	\N	\N	\N
+493pimn830r	lhbk1av87n1	19	\N	\N	\N
+493pimn830r	h6z84g2plev	20	\N	\N	\N
+493pimn830r	fj7mqkmuy05	21	\N	\N	\N
+nocobase-admin-menu	lhbk1av87n1	20	\N	\N	\N
+nocobase-admin-menu	h6z84g2plev	21	\N	\N	\N
+nocobase-admin-menu	fj7mqkmuy05	22	\N	\N	\N
+lhbk1av87n1	lhbk1av87n1	0	f	properties	\N
+mr7dvvk94ts	lhbk1av87n1	1	\N	\N	1
+z3izb1wk1tb	z3izb1wk1tb	0	f	properties	\N
+7mxt8s0yifl	z3izb1wk1tb	1	\N	\N	1
+r46d3k59dyb	r46d3k59dyb	0	f	properties	\N
+z3izb1wk1tb	r46d3k59dyb	1	\N	\N	1
+7mxt8s0yifl	r46d3k59dyb	2	\N	\N	1
+mr7dvvk94ts	z3izb1wk1tb	2	\N	\N	\N
+mr7dvvk94ts	r46d3k59dyb	3	\N	\N	\N
+imo18or3xxo	7mxt8s0yifl	2	\N	\N	\N
+imo18or3xxo	z3izb1wk1tb	3	\N	\N	\N
+imo18or3xxo	r46d3k59dyb	4	\N	\N	\N
+q5no45c40c6	7mxt8s0yifl	3	\N	\N	\N
+q5no45c40c6	z3izb1wk1tb	4	\N	\N	\N
+q5no45c40c6	r46d3k59dyb	5	\N	\N	\N
+zy4jidwmnvw	7mxt8s0yifl	4	\N	\N	\N
+zy4jidwmnvw	z3izb1wk1tb	5	\N	\N	\N
+zy4jidwmnvw	r46d3k59dyb	6	\N	\N	\N
+0kxudizv0xf	7mxt8s0yifl	5	\N	\N	\N
+0kxudizv0xf	z3izb1wk1tb	6	\N	\N	\N
+0kxudizv0xf	r46d3k59dyb	7	\N	\N	\N
+bztjip2msxq	7mxt8s0yifl	6	\N	\N	\N
+bztjip2msxq	z3izb1wk1tb	7	\N	\N	\N
+bztjip2msxq	r46d3k59dyb	8	\N	\N	\N
+oyw4y44yqgd	7mxt8s0yifl	7	\N	\N	\N
+oyw4y44yqgd	z3izb1wk1tb	8	\N	\N	\N
+oyw4y44yqgd	r46d3k59dyb	9	\N	\N	\N
+dohzvch4noi	7mxt8s0yifl	8	\N	\N	\N
+dohzvch4noi	z3izb1wk1tb	9	\N	\N	\N
+dohzvch4noi	r46d3k59dyb	10	\N	\N	\N
+9znhwv6jh2d	7mxt8s0yifl	9	\N	\N	\N
+9znhwv6jh2d	z3izb1wk1tb	10	\N	\N	\N
+9znhwv6jh2d	r46d3k59dyb	11	\N	\N	\N
+7mxt8s0yifl	7mxt8s0yifl	0	f	properties	\N
+mr7dvvk94ts	7mxt8s0yifl	1	\N	\N	2
+7qdtw3aqf8f	7mxt8s0yifl	10	\N	\N	\N
+7qdtw3aqf8f	z3izb1wk1tb	11	\N	\N	\N
+7qdtw3aqf8f	r46d3k59dyb	12	\N	\N	\N
+x74knwfm0hx	7mxt8s0yifl	11	\N	\N	\N
+x74knwfm0hx	z3izb1wk1tb	12	\N	\N	\N
+x74knwfm0hx	r46d3k59dyb	13	\N	\N	\N
+i5ep94ei4hn	7mxt8s0yifl	12	\N	\N	\N
+i5ep94ei4hn	z3izb1wk1tb	13	\N	\N	\N
+i5ep94ei4hn	r46d3k59dyb	14	\N	\N	\N
+ugc9ztt4hb4	7mxt8s0yifl	13	\N	\N	\N
+ugc9ztt4hb4	z3izb1wk1tb	14	\N	\N	\N
+ugc9ztt4hb4	r46d3k59dyb	15	\N	\N	\N
+ao2a67rjlld	7mxt8s0yifl	14	\N	\N	\N
+ao2a67rjlld	z3izb1wk1tb	15	\N	\N	\N
+ao2a67rjlld	r46d3k59dyb	16	\N	\N	\N
+bwbd6lebhkb	7mxt8s0yifl	15	\N	\N	\N
+bwbd6lebhkb	z3izb1wk1tb	16	\N	\N	\N
+bwbd6lebhkb	r46d3k59dyb	17	\N	\N	\N
+m8tbcrs4z9t	7mxt8s0yifl	16	\N	\N	\N
+m8tbcrs4z9t	z3izb1wk1tb	17	\N	\N	\N
+m8tbcrs4z9t	r46d3k59dyb	18	\N	\N	\N
+q4dinm52meb	7mxt8s0yifl	17	\N	\N	\N
+q4dinm52meb	z3izb1wk1tb	18	\N	\N	\N
+q4dinm52meb	r46d3k59dyb	19	\N	\N	\N
+vs0l89adzhc	7mxt8s0yifl	18	\N	\N	\N
+vs0l89adzhc	z3izb1wk1tb	19	\N	\N	\N
+vs0l89adzhc	r46d3k59dyb	20	\N	\N	\N
+493pimn830r	7mxt8s0yifl	19	\N	\N	\N
+493pimn830r	z3izb1wk1tb	20	\N	\N	\N
+493pimn830r	r46d3k59dyb	21	\N	\N	\N
+nocobase-admin-menu	7mxt8s0yifl	20	\N	\N	\N
+nocobase-admin-menu	z3izb1wk1tb	21	\N	\N	\N
+nocobase-admin-menu	r46d3k59dyb	22	\N	\N	\N
+0i6xo0z7gmw	0i6xo0z7gmw	0	f	properties	\N
+vkwm4wpz1us	0i6xo0z7gmw	1	\N	\N	1
+ktueizjrxpb	ktueizjrxpb	0	f	properties	\N
+0i6xo0z7gmw	ktueizjrxpb	1	\N	\N	1
+vkwm4wpz1us	ktueizjrxpb	2	\N	\N	1
+mr7dvvk94ts	0i6xo0z7gmw	2	\N	\N	\N
+mr7dvvk94ts	ktueizjrxpb	3	\N	\N	\N
+imo18or3xxo	vkwm4wpz1us	2	\N	\N	\N
+imo18or3xxo	0i6xo0z7gmw	3	\N	\N	\N
+imo18or3xxo	ktueizjrxpb	4	\N	\N	\N
+q5no45c40c6	vkwm4wpz1us	3	\N	\N	\N
+q5no45c40c6	0i6xo0z7gmw	4	\N	\N	\N
+q5no45c40c6	ktueizjrxpb	5	\N	\N	\N
+zy4jidwmnvw	vkwm4wpz1us	4	\N	\N	\N
+zy4jidwmnvw	0i6xo0z7gmw	5	\N	\N	\N
+zy4jidwmnvw	ktueizjrxpb	6	\N	\N	\N
+0kxudizv0xf	vkwm4wpz1us	5	\N	\N	\N
+0kxudizv0xf	0i6xo0z7gmw	6	\N	\N	\N
+0kxudizv0xf	ktueizjrxpb	7	\N	\N	\N
+bztjip2msxq	vkwm4wpz1us	6	\N	\N	\N
+bztjip2msxq	0i6xo0z7gmw	7	\N	\N	\N
+bztjip2msxq	ktueizjrxpb	8	\N	\N	\N
+oyw4y44yqgd	vkwm4wpz1us	7	\N	\N	\N
+oyw4y44yqgd	0i6xo0z7gmw	8	\N	\N	\N
+oyw4y44yqgd	ktueizjrxpb	9	\N	\N	\N
+dohzvch4noi	vkwm4wpz1us	8	\N	\N	\N
+dohzvch4noi	0i6xo0z7gmw	9	\N	\N	\N
+dohzvch4noi	ktueizjrxpb	10	\N	\N	\N
+9znhwv6jh2d	vkwm4wpz1us	9	\N	\N	\N
+9znhwv6jh2d	0i6xo0z7gmw	10	\N	\N	\N
+9znhwv6jh2d	ktueizjrxpb	11	\N	\N	\N
+7qdtw3aqf8f	vkwm4wpz1us	10	\N	\N	\N
+7qdtw3aqf8f	0i6xo0z7gmw	11	\N	\N	\N
+7qdtw3aqf8f	ktueizjrxpb	12	\N	\N	\N
+x74knwfm0hx	vkwm4wpz1us	11	\N	\N	\N
+x74knwfm0hx	0i6xo0z7gmw	12	\N	\N	\N
+x74knwfm0hx	ktueizjrxpb	13	\N	\N	\N
+i5ep94ei4hn	vkwm4wpz1us	12	\N	\N	\N
+i5ep94ei4hn	0i6xo0z7gmw	13	\N	\N	\N
+i5ep94ei4hn	ktueizjrxpb	14	\N	\N	\N
+ugc9ztt4hb4	vkwm4wpz1us	13	\N	\N	\N
+ugc9ztt4hb4	0i6xo0z7gmw	14	\N	\N	\N
+ugc9ztt4hb4	ktueizjrxpb	15	\N	\N	\N
+ao2a67rjlld	vkwm4wpz1us	14	\N	\N	\N
+ao2a67rjlld	0i6xo0z7gmw	15	\N	\N	\N
+ao2a67rjlld	ktueizjrxpb	16	\N	\N	\N
+bwbd6lebhkb	vkwm4wpz1us	15	\N	\N	\N
+bwbd6lebhkb	0i6xo0z7gmw	16	\N	\N	\N
+bwbd6lebhkb	ktueizjrxpb	17	\N	\N	\N
+m8tbcrs4z9t	vkwm4wpz1us	16	\N	\N	\N
+m8tbcrs4z9t	0i6xo0z7gmw	17	\N	\N	\N
+m8tbcrs4z9t	ktueizjrxpb	18	\N	\N	\N
+q4dinm52meb	vkwm4wpz1us	17	\N	\N	\N
+q4dinm52meb	0i6xo0z7gmw	18	\N	\N	\N
+q4dinm52meb	ktueizjrxpb	19	\N	\N	\N
+vs0l89adzhc	vkwm4wpz1us	18	\N	\N	\N
+vs0l89adzhc	0i6xo0z7gmw	19	\N	\N	\N
+vs0l89adzhc	ktueizjrxpb	20	\N	\N	\N
+493pimn830r	vkwm4wpz1us	19	\N	\N	\N
+493pimn830r	0i6xo0z7gmw	20	\N	\N	\N
+493pimn830r	ktueizjrxpb	21	\N	\N	\N
+nocobase-admin-menu	vkwm4wpz1us	20	\N	\N	\N
+nocobase-admin-menu	0i6xo0z7gmw	21	\N	\N	\N
+nocobase-admin-menu	ktueizjrxpb	22	\N	\N	\N
+vkwm4wpz1us	vkwm4wpz1us	0	f	properties	\N
+mr7dvvk94ts	vkwm4wpz1us	1	\N	\N	3
+h2owc9efe7d	h2owc9efe7d	0	f	properties	\N
+r4wwu0h2xhc	h2owc9efe7d	1	\N	\N	1
+h0ax2mnno9e	h0ax2mnno9e	0	f	properties	\N
+h2owc9efe7d	h0ax2mnno9e	1	\N	\N	1
+r4wwu0h2xhc	h0ax2mnno9e	2	\N	\N	1
+mr7dvvk94ts	h2owc9efe7d	2	\N	\N	\N
+mr7dvvk94ts	h0ax2mnno9e	3	\N	\N	\N
+imo18or3xxo	r4wwu0h2xhc	2	\N	\N	\N
+imo18or3xxo	h2owc9efe7d	3	\N	\N	\N
+imo18or3xxo	h0ax2mnno9e	4	\N	\N	\N
+q5no45c40c6	r4wwu0h2xhc	3	\N	\N	\N
+q5no45c40c6	h2owc9efe7d	4	\N	\N	\N
+q5no45c40c6	h0ax2mnno9e	5	\N	\N	\N
+zy4jidwmnvw	r4wwu0h2xhc	4	\N	\N	\N
+zy4jidwmnvw	h2owc9efe7d	5	\N	\N	\N
+zy4jidwmnvw	h0ax2mnno9e	6	\N	\N	\N
+0kxudizv0xf	r4wwu0h2xhc	5	\N	\N	\N
+0kxudizv0xf	h2owc9efe7d	6	\N	\N	\N
+0kxudizv0xf	h0ax2mnno9e	7	\N	\N	\N
+bztjip2msxq	r4wwu0h2xhc	6	\N	\N	\N
+bztjip2msxq	h2owc9efe7d	7	\N	\N	\N
+bztjip2msxq	h0ax2mnno9e	8	\N	\N	\N
+oyw4y44yqgd	r4wwu0h2xhc	7	\N	\N	\N
+oyw4y44yqgd	h2owc9efe7d	8	\N	\N	\N
+oyw4y44yqgd	h0ax2mnno9e	9	\N	\N	\N
+dohzvch4noi	r4wwu0h2xhc	8	\N	\N	\N
+dohzvch4noi	h2owc9efe7d	9	\N	\N	\N
+dohzvch4noi	h0ax2mnno9e	10	\N	\N	\N
+9znhwv6jh2d	r4wwu0h2xhc	9	\N	\N	\N
+9znhwv6jh2d	h2owc9efe7d	10	\N	\N	\N
+9znhwv6jh2d	h0ax2mnno9e	11	\N	\N	\N
+r4wwu0h2xhc	r4wwu0h2xhc	0	f	properties	\N
+mr7dvvk94ts	r4wwu0h2xhc	1	\N	\N	4
+7qdtw3aqf8f	r4wwu0h2xhc	10	\N	\N	\N
+7qdtw3aqf8f	h2owc9efe7d	11	\N	\N	\N
+7qdtw3aqf8f	h0ax2mnno9e	12	\N	\N	\N
+x74knwfm0hx	r4wwu0h2xhc	11	\N	\N	\N
+x74knwfm0hx	h2owc9efe7d	12	\N	\N	\N
+x74knwfm0hx	h0ax2mnno9e	13	\N	\N	\N
+i5ep94ei4hn	r4wwu0h2xhc	12	\N	\N	\N
+i5ep94ei4hn	h2owc9efe7d	13	\N	\N	\N
+i5ep94ei4hn	h0ax2mnno9e	14	\N	\N	\N
+ugc9ztt4hb4	r4wwu0h2xhc	13	\N	\N	\N
+ugc9ztt4hb4	h2owc9efe7d	14	\N	\N	\N
+ugc9ztt4hb4	h0ax2mnno9e	15	\N	\N	\N
+ao2a67rjlld	r4wwu0h2xhc	14	\N	\N	\N
+ao2a67rjlld	h2owc9efe7d	15	\N	\N	\N
+ao2a67rjlld	h0ax2mnno9e	16	\N	\N	\N
+bwbd6lebhkb	r4wwu0h2xhc	15	\N	\N	\N
+bwbd6lebhkb	h2owc9efe7d	16	\N	\N	\N
+bwbd6lebhkb	h0ax2mnno9e	17	\N	\N	\N
+m8tbcrs4z9t	r4wwu0h2xhc	16	\N	\N	\N
+m8tbcrs4z9t	h2owc9efe7d	17	\N	\N	\N
+m8tbcrs4z9t	h0ax2mnno9e	18	\N	\N	\N
+q4dinm52meb	r4wwu0h2xhc	17	\N	\N	\N
+q4dinm52meb	h2owc9efe7d	18	\N	\N	\N
+q4dinm52meb	h0ax2mnno9e	19	\N	\N	\N
+vs0l89adzhc	r4wwu0h2xhc	18	\N	\N	\N
+vs0l89adzhc	h2owc9efe7d	19	\N	\N	\N
+vs0l89adzhc	h0ax2mnno9e	20	\N	\N	\N
+493pimn830r	r4wwu0h2xhc	19	\N	\N	\N
+493pimn830r	h2owc9efe7d	20	\N	\N	\N
+493pimn830r	h0ax2mnno9e	21	\N	\N	\N
+nocobase-admin-menu	r4wwu0h2xhc	20	\N	\N	\N
+nocobase-admin-menu	h2owc9efe7d	21	\N	\N	\N
+nocobase-admin-menu	h0ax2mnno9e	22	\N	\N	\N
+jybbjrsdqyi	jybbjrsdqyi	0	f	properties	\N
+trkntmt0j43	jybbjrsdqyi	1	\N	\N	1
+x34msmoy2z7	x34msmoy2z7	0	f	properties	\N
+jybbjrsdqyi	x34msmoy2z7	1	\N	\N	1
+trkntmt0j43	x34msmoy2z7	2	\N	\N	1
+mr7dvvk94ts	jybbjrsdqyi	2	\N	\N	\N
+mr7dvvk94ts	x34msmoy2z7	3	\N	\N	\N
+imo18or3xxo	trkntmt0j43	2	\N	\N	\N
+imo18or3xxo	jybbjrsdqyi	3	\N	\N	\N
+imo18or3xxo	x34msmoy2z7	4	\N	\N	\N
+q5no45c40c6	trkntmt0j43	3	\N	\N	\N
+q5no45c40c6	jybbjrsdqyi	4	\N	\N	\N
+q5no45c40c6	x34msmoy2z7	5	\N	\N	\N
+zy4jidwmnvw	trkntmt0j43	4	\N	\N	\N
+zy4jidwmnvw	jybbjrsdqyi	5	\N	\N	\N
+zy4jidwmnvw	x34msmoy2z7	6	\N	\N	\N
+0kxudizv0xf	trkntmt0j43	5	\N	\N	\N
+0kxudizv0xf	jybbjrsdqyi	6	\N	\N	\N
+0kxudizv0xf	x34msmoy2z7	7	\N	\N	\N
+bztjip2msxq	trkntmt0j43	6	\N	\N	\N
+bztjip2msxq	jybbjrsdqyi	7	\N	\N	\N
+bztjip2msxq	x34msmoy2z7	8	\N	\N	\N
+oyw4y44yqgd	trkntmt0j43	7	\N	\N	\N
+oyw4y44yqgd	jybbjrsdqyi	8	\N	\N	\N
+oyw4y44yqgd	x34msmoy2z7	9	\N	\N	\N
+dohzvch4noi	trkntmt0j43	8	\N	\N	\N
+dohzvch4noi	jybbjrsdqyi	9	\N	\N	\N
+dohzvch4noi	x34msmoy2z7	10	\N	\N	\N
+9znhwv6jh2d	trkntmt0j43	9	\N	\N	\N
+9znhwv6jh2d	jybbjrsdqyi	10	\N	\N	\N
+9znhwv6jh2d	x34msmoy2z7	11	\N	\N	\N
+7qdtw3aqf8f	trkntmt0j43	10	\N	\N	\N
+7qdtw3aqf8f	jybbjrsdqyi	11	\N	\N	\N
+7qdtw3aqf8f	x34msmoy2z7	12	\N	\N	\N
+x74knwfm0hx	trkntmt0j43	11	\N	\N	\N
+x74knwfm0hx	jybbjrsdqyi	12	\N	\N	\N
+x74knwfm0hx	x34msmoy2z7	13	\N	\N	\N
+i5ep94ei4hn	trkntmt0j43	12	\N	\N	\N
+i5ep94ei4hn	jybbjrsdqyi	13	\N	\N	\N
+i5ep94ei4hn	x34msmoy2z7	14	\N	\N	\N
+ugc9ztt4hb4	trkntmt0j43	13	\N	\N	\N
+ugc9ztt4hb4	jybbjrsdqyi	14	\N	\N	\N
+ugc9ztt4hb4	x34msmoy2z7	15	\N	\N	\N
+ao2a67rjlld	trkntmt0j43	14	\N	\N	\N
+ao2a67rjlld	jybbjrsdqyi	15	\N	\N	\N
+ao2a67rjlld	x34msmoy2z7	16	\N	\N	\N
+bwbd6lebhkb	trkntmt0j43	15	\N	\N	\N
+bwbd6lebhkb	jybbjrsdqyi	16	\N	\N	\N
+bwbd6lebhkb	x34msmoy2z7	17	\N	\N	\N
+m8tbcrs4z9t	trkntmt0j43	16	\N	\N	\N
+m8tbcrs4z9t	jybbjrsdqyi	17	\N	\N	\N
+m8tbcrs4z9t	x34msmoy2z7	18	\N	\N	\N
+q4dinm52meb	trkntmt0j43	17	\N	\N	\N
+q4dinm52meb	jybbjrsdqyi	18	\N	\N	\N
+q4dinm52meb	x34msmoy2z7	19	\N	\N	\N
+vs0l89adzhc	trkntmt0j43	18	\N	\N	\N
+vs0l89adzhc	jybbjrsdqyi	19	\N	\N	\N
+vs0l89adzhc	x34msmoy2z7	20	\N	\N	\N
+493pimn830r	trkntmt0j43	19	\N	\N	\N
+493pimn830r	jybbjrsdqyi	20	\N	\N	\N
+493pimn830r	x34msmoy2z7	21	\N	\N	\N
+nocobase-admin-menu	trkntmt0j43	20	\N	\N	\N
+nocobase-admin-menu	jybbjrsdqyi	21	\N	\N	\N
+nocobase-admin-menu	x34msmoy2z7	22	\N	\N	\N
+trkntmt0j43	trkntmt0j43	0	f	properties	\N
+mr7dvvk94ts	trkntmt0j43	1	\N	\N	5
+q99h3pa86a9	q99h3pa86a9	0	f	properties	\N
+qa9xun5vwcj	q99h3pa86a9	1	\N	\N	1
+2w9s2xktcaq	2w9s2xktcaq	0	f	properties	\N
+q99h3pa86a9	2w9s2xktcaq	1	\N	\N	1
+qa9xun5vwcj	2w9s2xktcaq	2	\N	\N	1
+mr7dvvk94ts	q99h3pa86a9	2	\N	\N	\N
+mr7dvvk94ts	2w9s2xktcaq	3	\N	\N	\N
+imo18or3xxo	qa9xun5vwcj	2	\N	\N	\N
+imo18or3xxo	q99h3pa86a9	3	\N	\N	\N
+imo18or3xxo	2w9s2xktcaq	4	\N	\N	\N
+q5no45c40c6	qa9xun5vwcj	3	\N	\N	\N
+q5no45c40c6	q99h3pa86a9	4	\N	\N	\N
+q5no45c40c6	2w9s2xktcaq	5	\N	\N	\N
+zy4jidwmnvw	qa9xun5vwcj	4	\N	\N	\N
+zy4jidwmnvw	q99h3pa86a9	5	\N	\N	\N
+zy4jidwmnvw	2w9s2xktcaq	6	\N	\N	\N
+0kxudizv0xf	qa9xun5vwcj	5	\N	\N	\N
+0kxudizv0xf	q99h3pa86a9	6	\N	\N	\N
+0kxudizv0xf	2w9s2xktcaq	7	\N	\N	\N
+bztjip2msxq	qa9xun5vwcj	6	\N	\N	\N
+bztjip2msxq	q99h3pa86a9	7	\N	\N	\N
+bztjip2msxq	2w9s2xktcaq	8	\N	\N	\N
+oyw4y44yqgd	qa9xun5vwcj	7	\N	\N	\N
+oyw4y44yqgd	q99h3pa86a9	8	\N	\N	\N
+oyw4y44yqgd	2w9s2xktcaq	9	\N	\N	\N
+dohzvch4noi	qa9xun5vwcj	8	\N	\N	\N
+dohzvch4noi	q99h3pa86a9	9	\N	\N	\N
+dohzvch4noi	2w9s2xktcaq	10	\N	\N	\N
+9znhwv6jh2d	qa9xun5vwcj	9	\N	\N	\N
+9znhwv6jh2d	q99h3pa86a9	10	\N	\N	\N
+9znhwv6jh2d	2w9s2xktcaq	11	\N	\N	\N
+qa9xun5vwcj	qa9xun5vwcj	0	f	properties	\N
+mr7dvvk94ts	qa9xun5vwcj	1	\N	\N	6
+7qdtw3aqf8f	qa9xun5vwcj	10	\N	\N	\N
+7qdtw3aqf8f	q99h3pa86a9	11	\N	\N	\N
+7qdtw3aqf8f	2w9s2xktcaq	12	\N	\N	\N
+x74knwfm0hx	qa9xun5vwcj	11	\N	\N	\N
+x74knwfm0hx	q99h3pa86a9	12	\N	\N	\N
+x74knwfm0hx	2w9s2xktcaq	13	\N	\N	\N
+i5ep94ei4hn	qa9xun5vwcj	12	\N	\N	\N
+i5ep94ei4hn	q99h3pa86a9	13	\N	\N	\N
+i5ep94ei4hn	2w9s2xktcaq	14	\N	\N	\N
+ugc9ztt4hb4	qa9xun5vwcj	13	\N	\N	\N
+ugc9ztt4hb4	q99h3pa86a9	14	\N	\N	\N
+ugc9ztt4hb4	2w9s2xktcaq	15	\N	\N	\N
+ao2a67rjlld	qa9xun5vwcj	14	\N	\N	\N
+ao2a67rjlld	q99h3pa86a9	15	\N	\N	\N
+ao2a67rjlld	2w9s2xktcaq	16	\N	\N	\N
+bwbd6lebhkb	qa9xun5vwcj	15	\N	\N	\N
+bwbd6lebhkb	q99h3pa86a9	16	\N	\N	\N
+bwbd6lebhkb	2w9s2xktcaq	17	\N	\N	\N
+m8tbcrs4z9t	qa9xun5vwcj	16	\N	\N	\N
+m8tbcrs4z9t	q99h3pa86a9	17	\N	\N	\N
+m8tbcrs4z9t	2w9s2xktcaq	18	\N	\N	\N
+q4dinm52meb	qa9xun5vwcj	17	\N	\N	\N
+q4dinm52meb	q99h3pa86a9	18	\N	\N	\N
+q4dinm52meb	2w9s2xktcaq	19	\N	\N	\N
+vs0l89adzhc	qa9xun5vwcj	18	\N	\N	\N
+vs0l89adzhc	q99h3pa86a9	19	\N	\N	\N
+vs0l89adzhc	2w9s2xktcaq	20	\N	\N	\N
+493pimn830r	qa9xun5vwcj	19	\N	\N	\N
+493pimn830r	q99h3pa86a9	20	\N	\N	\N
+493pimn830r	2w9s2xktcaq	21	\N	\N	\N
+nocobase-admin-menu	qa9xun5vwcj	20	\N	\N	\N
+nocobase-admin-menu	q99h3pa86a9	21	\N	\N	\N
+nocobase-admin-menu	2w9s2xktcaq	22	\N	\N	\N
+zfyh24viwdy	zfyh24viwdy	0	f	properties	\N
+e218oz4chyl	zfyh24viwdy	1	\N	\N	1
+3h2a3ty94tj	3h2a3ty94tj	0	f	properties	\N
+zfyh24viwdy	3h2a3ty94tj	1	\N	\N	1
+e218oz4chyl	3h2a3ty94tj	2	\N	\N	1
+mr7dvvk94ts	zfyh24viwdy	2	\N	\N	\N
+mr7dvvk94ts	3h2a3ty94tj	3	\N	\N	\N
+imo18or3xxo	e218oz4chyl	2	\N	\N	\N
+imo18or3xxo	zfyh24viwdy	3	\N	\N	\N
+imo18or3xxo	3h2a3ty94tj	4	\N	\N	\N
+q5no45c40c6	e218oz4chyl	3	\N	\N	\N
+q5no45c40c6	zfyh24viwdy	4	\N	\N	\N
+q5no45c40c6	3h2a3ty94tj	5	\N	\N	\N
+zy4jidwmnvw	e218oz4chyl	4	\N	\N	\N
+zy4jidwmnvw	zfyh24viwdy	5	\N	\N	\N
+zy4jidwmnvw	3h2a3ty94tj	6	\N	\N	\N
+0kxudizv0xf	e218oz4chyl	5	\N	\N	\N
+0kxudizv0xf	zfyh24viwdy	6	\N	\N	\N
+0kxudizv0xf	3h2a3ty94tj	7	\N	\N	\N
+bztjip2msxq	e218oz4chyl	6	\N	\N	\N
+bztjip2msxq	zfyh24viwdy	7	\N	\N	\N
+bztjip2msxq	3h2a3ty94tj	8	\N	\N	\N
+oyw4y44yqgd	e218oz4chyl	7	\N	\N	\N
+oyw4y44yqgd	zfyh24viwdy	8	\N	\N	\N
+oyw4y44yqgd	3h2a3ty94tj	9	\N	\N	\N
+dohzvch4noi	e218oz4chyl	8	\N	\N	\N
+dohzvch4noi	zfyh24viwdy	9	\N	\N	\N
+dohzvch4noi	3h2a3ty94tj	10	\N	\N	\N
+9znhwv6jh2d	e218oz4chyl	9	\N	\N	\N
+9znhwv6jh2d	zfyh24viwdy	10	\N	\N	\N
+9znhwv6jh2d	3h2a3ty94tj	11	\N	\N	\N
+7qdtw3aqf8f	e218oz4chyl	10	\N	\N	\N
+7qdtw3aqf8f	zfyh24viwdy	11	\N	\N	\N
+7qdtw3aqf8f	3h2a3ty94tj	12	\N	\N	\N
+x74knwfm0hx	e218oz4chyl	11	\N	\N	\N
+x74knwfm0hx	zfyh24viwdy	12	\N	\N	\N
+x74knwfm0hx	3h2a3ty94tj	13	\N	\N	\N
+i5ep94ei4hn	e218oz4chyl	12	\N	\N	\N
+i5ep94ei4hn	zfyh24viwdy	13	\N	\N	\N
+i5ep94ei4hn	3h2a3ty94tj	14	\N	\N	\N
+ugc9ztt4hb4	e218oz4chyl	13	\N	\N	\N
+ugc9ztt4hb4	zfyh24viwdy	14	\N	\N	\N
+ugc9ztt4hb4	3h2a3ty94tj	15	\N	\N	\N
+ao2a67rjlld	e218oz4chyl	14	\N	\N	\N
+ao2a67rjlld	zfyh24viwdy	15	\N	\N	\N
+ao2a67rjlld	3h2a3ty94tj	16	\N	\N	\N
+bwbd6lebhkb	e218oz4chyl	15	\N	\N	\N
+bwbd6lebhkb	zfyh24viwdy	16	\N	\N	\N
+bwbd6lebhkb	3h2a3ty94tj	17	\N	\N	\N
+m8tbcrs4z9t	e218oz4chyl	16	\N	\N	\N
+m8tbcrs4z9t	zfyh24viwdy	17	\N	\N	\N
+m8tbcrs4z9t	3h2a3ty94tj	18	\N	\N	\N
+q4dinm52meb	e218oz4chyl	17	\N	\N	\N
+q4dinm52meb	zfyh24viwdy	18	\N	\N	\N
+q4dinm52meb	3h2a3ty94tj	19	\N	\N	\N
+vs0l89adzhc	e218oz4chyl	18	\N	\N	\N
+vs0l89adzhc	zfyh24viwdy	19	\N	\N	\N
+vs0l89adzhc	3h2a3ty94tj	20	\N	\N	\N
+493pimn830r	e218oz4chyl	19	\N	\N	\N
+493pimn830r	zfyh24viwdy	20	\N	\N	\N
+493pimn830r	3h2a3ty94tj	21	\N	\N	\N
+nocobase-admin-menu	e218oz4chyl	20	\N	\N	\N
+nocobase-admin-menu	zfyh24viwdy	21	\N	\N	\N
+nocobase-admin-menu	3h2a3ty94tj	22	\N	\N	\N
+e218oz4chyl	e218oz4chyl	0	f	properties	\N
+mr7dvvk94ts	e218oz4chyl	1	\N	\N	7
+dqzfsmyk8ay	dqzfsmyk8ay	0	f	properties	\N
+5dqm9vvouxz	dqzfsmyk8ay	1	\N	\N	1
+b33sc3cahsg	b33sc3cahsg	0	f	properties	\N
+dqzfsmyk8ay	b33sc3cahsg	1	\N	\N	1
+5dqm9vvouxz	b33sc3cahsg	2	\N	\N	1
+mr7dvvk94ts	dqzfsmyk8ay	2	\N	\N	\N
+mr7dvvk94ts	b33sc3cahsg	3	\N	\N	\N
+imo18or3xxo	5dqm9vvouxz	2	\N	\N	\N
+imo18or3xxo	dqzfsmyk8ay	3	\N	\N	\N
+imo18or3xxo	b33sc3cahsg	4	\N	\N	\N
+q5no45c40c6	5dqm9vvouxz	3	\N	\N	\N
+q5no45c40c6	dqzfsmyk8ay	4	\N	\N	\N
+q5no45c40c6	b33sc3cahsg	5	\N	\N	\N
+zy4jidwmnvw	5dqm9vvouxz	4	\N	\N	\N
+zy4jidwmnvw	dqzfsmyk8ay	5	\N	\N	\N
+zy4jidwmnvw	b33sc3cahsg	6	\N	\N	\N
+0kxudizv0xf	5dqm9vvouxz	5	\N	\N	\N
+0kxudizv0xf	dqzfsmyk8ay	6	\N	\N	\N
+0kxudizv0xf	b33sc3cahsg	7	\N	\N	\N
+bztjip2msxq	5dqm9vvouxz	6	\N	\N	\N
+bztjip2msxq	dqzfsmyk8ay	7	\N	\N	\N
+bztjip2msxq	b33sc3cahsg	8	\N	\N	\N
+oyw4y44yqgd	5dqm9vvouxz	7	\N	\N	\N
+oyw4y44yqgd	dqzfsmyk8ay	8	\N	\N	\N
+oyw4y44yqgd	b33sc3cahsg	9	\N	\N	\N
+dohzvch4noi	5dqm9vvouxz	8	\N	\N	\N
+dohzvch4noi	dqzfsmyk8ay	9	\N	\N	\N
+dohzvch4noi	b33sc3cahsg	10	\N	\N	\N
+9znhwv6jh2d	5dqm9vvouxz	9	\N	\N	\N
+9znhwv6jh2d	dqzfsmyk8ay	10	\N	\N	\N
+9znhwv6jh2d	b33sc3cahsg	11	\N	\N	\N
+5dqm9vvouxz	5dqm9vvouxz	0	f	properties	\N
+mr7dvvk94ts	5dqm9vvouxz	1	\N	\N	8
+7qdtw3aqf8f	5dqm9vvouxz	10	\N	\N	\N
+7qdtw3aqf8f	dqzfsmyk8ay	11	\N	\N	\N
+7qdtw3aqf8f	b33sc3cahsg	12	\N	\N	\N
+x74knwfm0hx	5dqm9vvouxz	11	\N	\N	\N
+x74knwfm0hx	dqzfsmyk8ay	12	\N	\N	\N
+x74knwfm0hx	b33sc3cahsg	13	\N	\N	\N
+i5ep94ei4hn	5dqm9vvouxz	12	\N	\N	\N
+i5ep94ei4hn	dqzfsmyk8ay	13	\N	\N	\N
+i5ep94ei4hn	b33sc3cahsg	14	\N	\N	\N
+ugc9ztt4hb4	5dqm9vvouxz	13	\N	\N	\N
+ugc9ztt4hb4	dqzfsmyk8ay	14	\N	\N	\N
+ugc9ztt4hb4	b33sc3cahsg	15	\N	\N	\N
+ao2a67rjlld	5dqm9vvouxz	14	\N	\N	\N
+ao2a67rjlld	dqzfsmyk8ay	15	\N	\N	\N
+ao2a67rjlld	b33sc3cahsg	16	\N	\N	\N
+bwbd6lebhkb	5dqm9vvouxz	15	\N	\N	\N
+bwbd6lebhkb	dqzfsmyk8ay	16	\N	\N	\N
+bwbd6lebhkb	b33sc3cahsg	17	\N	\N	\N
+m8tbcrs4z9t	5dqm9vvouxz	16	\N	\N	\N
+m8tbcrs4z9t	dqzfsmyk8ay	17	\N	\N	\N
+m8tbcrs4z9t	b33sc3cahsg	18	\N	\N	\N
+q4dinm52meb	5dqm9vvouxz	17	\N	\N	\N
+q4dinm52meb	dqzfsmyk8ay	18	\N	\N	\N
+q4dinm52meb	b33sc3cahsg	19	\N	\N	\N
+vs0l89adzhc	5dqm9vvouxz	18	\N	\N	\N
+vs0l89adzhc	dqzfsmyk8ay	19	\N	\N	\N
+vs0l89adzhc	b33sc3cahsg	20	\N	\N	\N
+493pimn830r	5dqm9vvouxz	19	\N	\N	\N
+493pimn830r	dqzfsmyk8ay	20	\N	\N	\N
+493pimn830r	b33sc3cahsg	21	\N	\N	\N
+nocobase-admin-menu	5dqm9vvouxz	20	\N	\N	\N
+nocobase-admin-menu	dqzfsmyk8ay	21	\N	\N	\N
+nocobase-admin-menu	b33sc3cahsg	22	\N	\N	\N
+tdkqbjvhskr	tdkqbjvhskr	0	f	properties	\N
+bj7d5uc6lnd	tdkqbjvhskr	1	\N	\N	1
+0u09lqdoyvt	0u09lqdoyvt	0	f	properties	\N
+tdkqbjvhskr	0u09lqdoyvt	1	\N	\N	1
+bj7d5uc6lnd	0u09lqdoyvt	2	\N	\N	1
+mr7dvvk94ts	tdkqbjvhskr	2	\N	\N	\N
+mr7dvvk94ts	0u09lqdoyvt	3	\N	\N	\N
+imo18or3xxo	bj7d5uc6lnd	2	\N	\N	\N
+imo18or3xxo	tdkqbjvhskr	3	\N	\N	\N
+imo18or3xxo	0u09lqdoyvt	4	\N	\N	\N
+q5no45c40c6	bj7d5uc6lnd	3	\N	\N	\N
+q5no45c40c6	tdkqbjvhskr	4	\N	\N	\N
+q5no45c40c6	0u09lqdoyvt	5	\N	\N	\N
+zy4jidwmnvw	bj7d5uc6lnd	4	\N	\N	\N
+zy4jidwmnvw	tdkqbjvhskr	5	\N	\N	\N
+zy4jidwmnvw	0u09lqdoyvt	6	\N	\N	\N
+0kxudizv0xf	bj7d5uc6lnd	5	\N	\N	\N
+0kxudizv0xf	tdkqbjvhskr	6	\N	\N	\N
+0kxudizv0xf	0u09lqdoyvt	7	\N	\N	\N
+bztjip2msxq	bj7d5uc6lnd	6	\N	\N	\N
+bztjip2msxq	tdkqbjvhskr	7	\N	\N	\N
+bztjip2msxq	0u09lqdoyvt	8	\N	\N	\N
+oyw4y44yqgd	bj7d5uc6lnd	7	\N	\N	\N
+oyw4y44yqgd	tdkqbjvhskr	8	\N	\N	\N
+oyw4y44yqgd	0u09lqdoyvt	9	\N	\N	\N
+dohzvch4noi	bj7d5uc6lnd	8	\N	\N	\N
+dohzvch4noi	tdkqbjvhskr	9	\N	\N	\N
+dohzvch4noi	0u09lqdoyvt	10	\N	\N	\N
+9znhwv6jh2d	bj7d5uc6lnd	9	\N	\N	\N
+9znhwv6jh2d	tdkqbjvhskr	10	\N	\N	\N
+9znhwv6jh2d	0u09lqdoyvt	11	\N	\N	\N
+7qdtw3aqf8f	bj7d5uc6lnd	10	\N	\N	\N
+7qdtw3aqf8f	tdkqbjvhskr	11	\N	\N	\N
+7qdtw3aqf8f	0u09lqdoyvt	12	\N	\N	\N
+x74knwfm0hx	bj7d5uc6lnd	11	\N	\N	\N
+x74knwfm0hx	tdkqbjvhskr	12	\N	\N	\N
+x74knwfm0hx	0u09lqdoyvt	13	\N	\N	\N
+i5ep94ei4hn	bj7d5uc6lnd	12	\N	\N	\N
+i5ep94ei4hn	tdkqbjvhskr	13	\N	\N	\N
+i5ep94ei4hn	0u09lqdoyvt	14	\N	\N	\N
+ugc9ztt4hb4	bj7d5uc6lnd	13	\N	\N	\N
+ugc9ztt4hb4	tdkqbjvhskr	14	\N	\N	\N
+ugc9ztt4hb4	0u09lqdoyvt	15	\N	\N	\N
+ao2a67rjlld	bj7d5uc6lnd	14	\N	\N	\N
+ao2a67rjlld	tdkqbjvhskr	15	\N	\N	\N
+ao2a67rjlld	0u09lqdoyvt	16	\N	\N	\N
+bwbd6lebhkb	bj7d5uc6lnd	15	\N	\N	\N
+bwbd6lebhkb	tdkqbjvhskr	16	\N	\N	\N
+bwbd6lebhkb	0u09lqdoyvt	17	\N	\N	\N
+m8tbcrs4z9t	bj7d5uc6lnd	16	\N	\N	\N
+m8tbcrs4z9t	tdkqbjvhskr	17	\N	\N	\N
+m8tbcrs4z9t	0u09lqdoyvt	18	\N	\N	\N
+q4dinm52meb	bj7d5uc6lnd	17	\N	\N	\N
+q4dinm52meb	tdkqbjvhskr	18	\N	\N	\N
+q4dinm52meb	0u09lqdoyvt	19	\N	\N	\N
+vs0l89adzhc	bj7d5uc6lnd	18	\N	\N	\N
+vs0l89adzhc	tdkqbjvhskr	19	\N	\N	\N
+vs0l89adzhc	0u09lqdoyvt	20	\N	\N	\N
+493pimn830r	bj7d5uc6lnd	19	\N	\N	\N
+493pimn830r	tdkqbjvhskr	20	\N	\N	\N
+493pimn830r	0u09lqdoyvt	21	\N	\N	\N
+nocobase-admin-menu	bj7d5uc6lnd	20	\N	\N	\N
+nocobase-admin-menu	tdkqbjvhskr	21	\N	\N	\N
+nocobase-admin-menu	0u09lqdoyvt	22	\N	\N	\N
+bj7d5uc6lnd	bj7d5uc6lnd	0	f	properties	\N
+mr7dvvk94ts	bj7d5uc6lnd	1	\N	\N	9
+3o26e8k5cba	3o26e8k5cba	0	f	properties	\N
+imo18or3xxo	3o26e8k5cba	2	\N	\N	\N
+q5no45c40c6	3o26e8k5cba	3	\N	\N	\N
+zy4jidwmnvw	3o26e8k5cba	4	\N	\N	\N
+0kxudizv0xf	3o26e8k5cba	5	\N	\N	\N
+bztjip2msxq	3o26e8k5cba	6	\N	\N	\N
+oyw4y44yqgd	3o26e8k5cba	7	\N	\N	\N
+dohzvch4noi	3o26e8k5cba	8	\N	\N	\N
+9znhwv6jh2d	3o26e8k5cba	9	\N	\N	\N
+7qdtw3aqf8f	3o26e8k5cba	10	\N	\N	\N
+x74knwfm0hx	3o26e8k5cba	11	\N	\N	\N
+i5ep94ei4hn	3o26e8k5cba	12	\N	\N	\N
+ugc9ztt4hb4	3o26e8k5cba	13	\N	\N	\N
+ao2a67rjlld	3o26e8k5cba	14	\N	\N	\N
+bwbd6lebhkb	3o26e8k5cba	15	\N	\N	\N
+m8tbcrs4z9t	3o26e8k5cba	16	\N	\N	\N
+q4dinm52meb	3o26e8k5cba	17	\N	\N	\N
+vs0l89adzhc	3o26e8k5cba	18	\N	\N	\N
+493pimn830r	3o26e8k5cba	19	\N	\N	\N
+nocobase-admin-menu	3o26e8k5cba	20	\N	\N	\N
+9xqwn851uzs	3o26e8k5cba	1	\N	\N	1
+ioq8ld31vte	ioq8ld31vte	0	f	properties	\N
+cm22blbci2c	ioq8ld31vte	1	\N	\N	1
+ojgs7eoz5hg	ojgs7eoz5hg	0	f	properties	\N
+ioq8ld31vte	ojgs7eoz5hg	1	\N	\N	1
+cm22blbci2c	ojgs7eoz5hg	2	\N	\N	1
+y05re45hs3a	ioq8ld31vte	2	\N	\N	\N
+y05re45hs3a	ojgs7eoz5hg	3	\N	\N	\N
+dsptk8t0mbr	cm22blbci2c	2	\N	\N	\N
+dsptk8t0mbr	ioq8ld31vte	3	\N	\N	\N
+dsptk8t0mbr	ojgs7eoz5hg	4	\N	\N	\N
+7qih7hq26ge	cm22blbci2c	3	\N	\N	\N
+7qih7hq26ge	ioq8ld31vte	4	\N	\N	\N
+7qih7hq26ge	ojgs7eoz5hg	5	\N	\N	\N
+m9ru2u1mst5	cm22blbci2c	4	\N	\N	\N
+m9ru2u1mst5	ioq8ld31vte	5	\N	\N	\N
+m9ru2u1mst5	ojgs7eoz5hg	6	\N	\N	\N
+t5a2xk7thpn	cm22blbci2c	5	\N	\N	\N
+t5a2xk7thpn	ioq8ld31vte	6	\N	\N	\N
+t5a2xk7thpn	ojgs7eoz5hg	7	\N	\N	\N
+ra6axo18rlo	cm22blbci2c	6	\N	\N	\N
+ra6axo18rlo	ioq8ld31vte	7	\N	\N	\N
+ra6axo18rlo	ojgs7eoz5hg	8	\N	\N	\N
+7peksipcht7	cm22blbci2c	7	\N	\N	\N
+7peksipcht7	ioq8ld31vte	8	\N	\N	\N
+7peksipcht7	ojgs7eoz5hg	9	\N	\N	\N
+vxyfqljr7j6	cm22blbci2c	8	\N	\N	\N
+vxyfqljr7j6	ioq8ld31vte	9	\N	\N	\N
+vxyfqljr7j6	ojgs7eoz5hg	10	\N	\N	\N
+v0xzwwlb3u7	cm22blbci2c	9	\N	\N	\N
+v0xzwwlb3u7	ioq8ld31vte	10	\N	\N	\N
+v0xzwwlb3u7	ojgs7eoz5hg	11	\N	\N	\N
+eajx55rxxy3	cm22blbci2c	10	\N	\N	\N
+eajx55rxxy3	ioq8ld31vte	11	\N	\N	\N
+eajx55rxxy3	ojgs7eoz5hg	12	\N	\N	\N
+8kxzcotfeb3	cm22blbci2c	11	\N	\N	\N
+8kxzcotfeb3	ioq8ld31vte	12	\N	\N	\N
+8kxzcotfeb3	ojgs7eoz5hg	13	\N	\N	\N
+5z0xpoxz87w	cm22blbci2c	12	\N	\N	\N
+5z0xpoxz87w	ioq8ld31vte	13	\N	\N	\N
+5z0xpoxz87w	ojgs7eoz5hg	14	\N	\N	\N
+o9klwv4nzei	cm22blbci2c	13	\N	\N	\N
+o9klwv4nzei	ioq8ld31vte	14	\N	\N	\N
+o9klwv4nzei	ojgs7eoz5hg	15	\N	\N	\N
+ozzmhtdpth4	cm22blbci2c	14	\N	\N	\N
+ozzmhtdpth4	ioq8ld31vte	15	\N	\N	\N
+ozzmhtdpth4	ojgs7eoz5hg	16	\N	\N	\N
+b8mogqkr3um	cm22blbci2c	15	\N	\N	\N
+b8mogqkr3um	ioq8ld31vte	16	\N	\N	\N
+b8mogqkr3um	ojgs7eoz5hg	17	\N	\N	\N
+b56io1plq44	cm22blbci2c	16	\N	\N	\N
+b56io1plq44	ioq8ld31vte	17	\N	\N	\N
+b56io1plq44	ojgs7eoz5hg	18	\N	\N	\N
+13qbrfhlbny	cm22blbci2c	17	\N	\N	\N
+13qbrfhlbny	ioq8ld31vte	18	\N	\N	\N
+13qbrfhlbny	ojgs7eoz5hg	19	\N	\N	\N
+oqsecaif6am	cm22blbci2c	18	\N	\N	\N
+oqsecaif6am	ioq8ld31vte	19	\N	\N	\N
+oqsecaif6am	ojgs7eoz5hg	20	\N	\N	\N
+63aby9t5qmb	cm22blbci2c	19	\N	\N	\N
+63aby9t5qmb	ioq8ld31vte	20	\N	\N	\N
+63aby9t5qmb	ojgs7eoz5hg	21	\N	\N	\N
+mwrnryoju9y	cm22blbci2c	20	\N	\N	\N
+mwrnryoju9y	ioq8ld31vte	21	\N	\N	\N
+mwrnryoju9y	ojgs7eoz5hg	22	\N	\N	\N
+nocobase-admin-menu	cm22blbci2c	21	\N	\N	\N
+nocobase-admin-menu	ioq8ld31vte	22	\N	\N	\N
+nocobase-admin-menu	ojgs7eoz5hg	23	\N	\N	\N
+cm22blbci2c	cm22blbci2c	0	f	properties	\N
+y05re45hs3a	cm22blbci2c	1	\N	\N	6
+fe7kgdo55ax	ssd1y8mk1mx	2	\N	\N	\N
+hmft2ujv1uf	ssd1y8mk1mx	3	\N	\N	\N
+nocobase-admin-menu	ssd1y8mk1mx	4	\N	\N	\N
+ssd1y8mk1mx	ssd1y8mk1mx	0	f	properties	\N
+7poa6levyva	ssd1y8mk1mx	1	\N	\N	20
+rnko20ymzdm	rnko20ymzdm	0	f	properties	\N
+52h8j6knyh0	rnko20ymzdm	1	\N	\N	1
+f70h0f0jiha	f70h0f0jiha	0	f	properties	\N
+52h8j6knyh0	f70h0f0jiha	1	\N	\N	2
+0f0yp3ro5dp	0f0yp3ro5dp	0	f	properties	\N
+f70h0f0jiha	0f0yp3ro5dp	1	\N	\N	1
+52h8j6knyh0	0f0yp3ro5dp	2	\N	\N	1
+ugkql0r3ggt	ugkql0r3ggt	0	f	properties	\N
+0f0yp3ro5dp	ugkql0r3ggt	1	\N	\N	1
+f70h0f0jiha	ugkql0r3ggt	2	\N	\N	1
+52h8j6knyh0	ugkql0r3ggt	3	\N	\N	1
+a61oc4tl7m1	a61oc4tl7m1	0	f	properties	\N
+0f0yp3ro5dp	a61oc4tl7m1	1	\N	\N	2
+f70h0f0jiha	a61oc4tl7m1	2	\N	\N	2
+52h8j6knyh0	a61oc4tl7m1	3	\N	\N	2
+fe7kgdo55ax	f8feuhfiywv	2	\N	\N	\N
+hmft2ujv1uf	f8feuhfiywv	3	\N	\N	\N
+nocobase-admin-menu	f8feuhfiywv	4	\N	\N	\N
+f8feuhfiywv	f8feuhfiywv	0	f	properties	\N
+7poa6levyva	f8feuhfiywv	1	\N	\N	21
+5v81x55p2nk	rnko20ymzdm	2	\N	\N	\N
+5v81x55p2nk	f70h0f0jiha	2	\N	\N	\N
+5v81x55p2nk	0f0yp3ro5dp	3	\N	\N	\N
+5v81x55p2nk	ugkql0r3ggt	4	\N	\N	\N
+5v81x55p2nk	a61oc4tl7m1	4	\N	\N	\N
+52h8j6knyh0	52h8j6knyh0	0	f	properties	\N
+5v81x55p2nk	52h8j6knyh0	1	\N	\N	1
+9bxpugcgkui	52h8j6knyh0	2	\N	\N	\N
+9bxpugcgkui	rnko20ymzdm	3	\N	\N	\N
+9bxpugcgkui	f70h0f0jiha	3	\N	\N	\N
+9bxpugcgkui	0f0yp3ro5dp	4	\N	\N	\N
+9bxpugcgkui	ugkql0r3ggt	5	\N	\N	\N
+9bxpugcgkui	a61oc4tl7m1	5	\N	\N	\N
+7poa6levyva	5v81x55p2nk	2	\N	\N	\N
+7poa6levyva	52h8j6knyh0	3	\N	\N	\N
+7poa6levyva	rnko20ymzdm	4	\N	\N	\N
+7poa6levyva	f70h0f0jiha	4	\N	\N	\N
+7poa6levyva	0f0yp3ro5dp	5	\N	\N	\N
+7poa6levyva	ugkql0r3ggt	6	\N	\N	\N
+7poa6levyva	a61oc4tl7m1	6	\N	\N	\N
+fe7kgdo55ax	5v81x55p2nk	3	\N	\N	\N
+fe7kgdo55ax	52h8j6knyh0	4	\N	\N	\N
+fe7kgdo55ax	rnko20ymzdm	5	\N	\N	\N
+fe7kgdo55ax	f70h0f0jiha	5	\N	\N	\N
+fe7kgdo55ax	0f0yp3ro5dp	6	\N	\N	\N
+fe7kgdo55ax	ugkql0r3ggt	7	\N	\N	\N
+fe7kgdo55ax	a61oc4tl7m1	7	\N	\N	\N
+hmft2ujv1uf	5v81x55p2nk	4	\N	\N	\N
+hmft2ujv1uf	52h8j6knyh0	5	\N	\N	\N
+hmft2ujv1uf	rnko20ymzdm	6	\N	\N	\N
+hmft2ujv1uf	f70h0f0jiha	6	\N	\N	\N
+hmft2ujv1uf	0f0yp3ro5dp	7	\N	\N	\N
+hmft2ujv1uf	ugkql0r3ggt	8	\N	\N	\N
+hmft2ujv1uf	a61oc4tl7m1	8	\N	\N	\N
+nocobase-admin-menu	5v81x55p2nk	5	\N	\N	\N
+nocobase-admin-menu	52h8j6knyh0	6	\N	\N	\N
+nocobase-admin-menu	rnko20ymzdm	7	\N	\N	\N
+nocobase-admin-menu	f70h0f0jiha	7	\N	\N	\N
+nocobase-admin-menu	0f0yp3ro5dp	8	\N	\N	\N
+nocobase-admin-menu	ugkql0r3ggt	9	\N	\N	\N
+nocobase-admin-menu	a61oc4tl7m1	9	\N	\N	\N
+5v81x55p2nk	5v81x55p2nk	0	f	properties	\N
+9bxpugcgkui	5v81x55p2nk	1	\N	\N	2
+am9f5xsj7ms	am9f5xsj7ms	0	f	properties	\N
+x4src7kopyo	am9f5xsj7ms	1	\N	\N	1
+j9dtajdmaoa	j9dtajdmaoa	0	f	properties	\N
+am9f5xsj7ms	j9dtajdmaoa	1	\N	\N	1
+x4src7kopyo	j9dtajdmaoa	2	\N	\N	1
+ugkql0r3ggt	am9f5xsj7ms	2	\N	\N	\N
+ugkql0r3ggt	j9dtajdmaoa	3	\N	\N	\N
+0f0yp3ro5dp	x4src7kopyo	2	\N	\N	\N
+0f0yp3ro5dp	am9f5xsj7ms	3	\N	\N	\N
+0f0yp3ro5dp	j9dtajdmaoa	4	\N	\N	\N
+f70h0f0jiha	x4src7kopyo	3	\N	\N	\N
+f70h0f0jiha	am9f5xsj7ms	4	\N	\N	\N
+f70h0f0jiha	j9dtajdmaoa	5	\N	\N	\N
+52h8j6knyh0	x4src7kopyo	4	\N	\N	\N
+52h8j6knyh0	am9f5xsj7ms	5	\N	\N	\N
+52h8j6knyh0	j9dtajdmaoa	6	\N	\N	\N
+5v81x55p2nk	x4src7kopyo	5	\N	\N	\N
+5v81x55p2nk	am9f5xsj7ms	6	\N	\N	\N
+5v81x55p2nk	j9dtajdmaoa	7	\N	\N	\N
+9bxpugcgkui	x4src7kopyo	6	\N	\N	\N
+9bxpugcgkui	am9f5xsj7ms	7	\N	\N	\N
+9bxpugcgkui	j9dtajdmaoa	8	\N	\N	\N
+7poa6levyva	x4src7kopyo	7	\N	\N	\N
+7poa6levyva	am9f5xsj7ms	8	\N	\N	\N
+7poa6levyva	j9dtajdmaoa	9	\N	\N	\N
+fe7kgdo55ax	x4src7kopyo	8	\N	\N	\N
+fe7kgdo55ax	am9f5xsj7ms	9	\N	\N	\N
+fe7kgdo55ax	j9dtajdmaoa	10	\N	\N	\N
+hmft2ujv1uf	x4src7kopyo	9	\N	\N	\N
+hmft2ujv1uf	am9f5xsj7ms	10	\N	\N	\N
+hmft2ujv1uf	j9dtajdmaoa	11	\N	\N	\N
+nocobase-admin-menu	x4src7kopyo	10	\N	\N	\N
+nocobase-admin-menu	am9f5xsj7ms	11	\N	\N	\N
+nocobase-admin-menu	j9dtajdmaoa	12	\N	\N	\N
+x4src7kopyo	x4src7kopyo	0	f	properties	\N
+ugkql0r3ggt	x4src7kopyo	1	\N	\N	1
+0f0yp3ro5dp	l8by3cc8sei	2	\N	\N	\N
+f70h0f0jiha	l8by3cc8sei	3	\N	\N	\N
+52h8j6knyh0	l8by3cc8sei	4	\N	\N	\N
+5v81x55p2nk	l8by3cc8sei	5	\N	\N	\N
+9bxpugcgkui	l8by3cc8sei	6	\N	\N	\N
+7poa6levyva	l8by3cc8sei	7	\N	\N	\N
+fe7kgdo55ax	l8by3cc8sei	8	\N	\N	\N
+l8by3cc8sei	l8by3cc8sei	0	f	properties	\N
+ugkql0r3ggt	l8by3cc8sei	1	\N	\N	2
+ge2jd4uyinh	ge2jd4uyinh	0	f	properties	\N
+hmft2ujv1uf	l8by3cc8sei	9	\N	\N	\N
+nocobase-admin-menu	l8by3cc8sei	10	\N	\N	\N
+q3szmzf1eqa	q3szmzf1eqa	0	f	properties	\N
+ugkql0r3ggt	q3szmzf1eqa	1	\N	\N	4
+0f0yp3ro5dp	7guv5eckse5	2	\N	\N	\N
+f70h0f0jiha	7guv5eckse5	3	\N	\N	\N
+52h8j6knyh0	7guv5eckse5	4	\N	\N	\N
+5v81x55p2nk	7guv5eckse5	5	\N	\N	\N
+9bxpugcgkui	7guv5eckse5	6	\N	\N	\N
+7poa6levyva	7guv5eckse5	7	\N	\N	\N
+fe7kgdo55ax	7guv5eckse5	8	\N	\N	\N
+hmft2ujv1uf	7guv5eckse5	9	\N	\N	\N
+nocobase-admin-menu	7guv5eckse5	10	\N	\N	\N
+7guv5eckse5	7guv5eckse5	0	f	properties	\N
+ugkql0r3ggt	7guv5eckse5	1	\N	\N	3
+0f0yp3ro5dp	q3szmzf1eqa	2	\N	\N	\N
+f70h0f0jiha	q3szmzf1eqa	3	\N	\N	\N
+52h8j6knyh0	q3szmzf1eqa	4	\N	\N	\N
+5v81x55p2nk	q3szmzf1eqa	5	\N	\N	\N
+9bxpugcgkui	q3szmzf1eqa	6	\N	\N	\N
+7poa6levyva	q3szmzf1eqa	7	\N	\N	\N
+fe7kgdo55ax	q3szmzf1eqa	8	\N	\N	\N
+hmft2ujv1uf	q3szmzf1eqa	9	\N	\N	\N
+nocobase-admin-menu	q3szmzf1eqa	10	\N	\N	\N
+w75rqpzvfdq	w75rqpzvfdq	0	f	properties	\N
+pxsyhrbz249	ge2jd4uyinh	1	\N	\N	1
+ugkql0r3ggt	pxsyhrbz249	2	\N	\N	\N
+ugkql0r3ggt	ge2jd4uyinh	3	\N	\N	\N
+x4src7kopyo	ge2jd4uyinh	2	\N	\N	\N
+0f0yp3ro5dp	pxsyhrbz249	3	\N	\N	\N
+0f0yp3ro5dp	ge2jd4uyinh	4	\N	\N	\N
+f70h0f0jiha	pxsyhrbz249	4	\N	\N	\N
+f70h0f0jiha	ge2jd4uyinh	5	\N	\N	\N
+52h8j6knyh0	pxsyhrbz249	5	\N	\N	\N
+52h8j6knyh0	ge2jd4uyinh	6	\N	\N	\N
+5v81x55p2nk	pxsyhrbz249	6	\N	\N	\N
+5v81x55p2nk	ge2jd4uyinh	7	\N	\N	\N
+9bxpugcgkui	pxsyhrbz249	7	\N	\N	\N
+9bxpugcgkui	ge2jd4uyinh	8	\N	\N	\N
+7poa6levyva	pxsyhrbz249	8	\N	\N	\N
+7poa6levyva	ge2jd4uyinh	9	\N	\N	\N
+fe7kgdo55ax	pxsyhrbz249	9	\N	\N	\N
+fe7kgdo55ax	ge2jd4uyinh	10	\N	\N	\N
+hmft2ujv1uf	pxsyhrbz249	10	\N	\N	\N
+hmft2ujv1uf	ge2jd4uyinh	11	\N	\N	\N
+nocobase-admin-menu	pxsyhrbz249	11	\N	\N	\N
+nocobase-admin-menu	ge2jd4uyinh	12	\N	\N	\N
+pxsyhrbz249	pxsyhrbz249	0	f	properties	\N
+x4src7kopyo	pxsyhrbz249	1	\N	\N	2
+68fxhhuy71v	68fxhhuy71v	0	f	properties	\N
+iipcd9rycsd	iipcd9rycsd	0	f	properties	\N
+w75rqpzvfdq	68fxhhuy71v	1	\N	\N	1
+ugkql0r3ggt	w75rqpzvfdq	2	\N	\N	\N
+ugkql0r3ggt	68fxhhuy71v	3	\N	\N	\N
+x4src7kopyo	68fxhhuy71v	2	\N	\N	\N
+0f0yp3ro5dp	w75rqpzvfdq	3	\N	\N	\N
+0f0yp3ro5dp	68fxhhuy71v	4	\N	\N	\N
+f70h0f0jiha	w75rqpzvfdq	4	\N	\N	\N
+f70h0f0jiha	68fxhhuy71v	5	\N	\N	\N
+52h8j6knyh0	w75rqpzvfdq	5	\N	\N	\N
+52h8j6knyh0	68fxhhuy71v	6	\N	\N	\N
+5v81x55p2nk	w75rqpzvfdq	6	\N	\N	\N
+5v81x55p2nk	68fxhhuy71v	7	\N	\N	\N
+9bxpugcgkui	w75rqpzvfdq	7	\N	\N	\N
+9bxpugcgkui	68fxhhuy71v	8	\N	\N	\N
+7poa6levyva	w75rqpzvfdq	8	\N	\N	\N
+7poa6levyva	68fxhhuy71v	9	\N	\N	\N
+x4src7kopyo	w75rqpzvfdq	1	\N	\N	3
+fe7kgdo55ax	w75rqpzvfdq	9	\N	\N	\N
+fe7kgdo55ax	68fxhhuy71v	10	\N	\N	\N
+hmft2ujv1uf	w75rqpzvfdq	10	\N	\N	\N
+hmft2ujv1uf	68fxhhuy71v	11	\N	\N	\N
+nocobase-admin-menu	w75rqpzvfdq	11	\N	\N	\N
+nocobase-admin-menu	68fxhhuy71v	12	\N	\N	\N
+1w4nstqxr2n	iipcd9rycsd	1	\N	\N	1
+ugkql0r3ggt	1w4nstqxr2n	2	\N	\N	\N
+ugkql0r3ggt	iipcd9rycsd	3	\N	\N	\N
+x4src7kopyo	iipcd9rycsd	2	\N	\N	\N
+0f0yp3ro5dp	1w4nstqxr2n	3	\N	\N	\N
+0f0yp3ro5dp	iipcd9rycsd	4	\N	\N	\N
+f70h0f0jiha	1w4nstqxr2n	4	\N	\N	\N
+f70h0f0jiha	iipcd9rycsd	5	\N	\N	\N
+52h8j6knyh0	1w4nstqxr2n	5	\N	\N	\N
+52h8j6knyh0	iipcd9rycsd	6	\N	\N	\N
+5v81x55p2nk	1w4nstqxr2n	6	\N	\N	\N
+5v81x55p2nk	iipcd9rycsd	7	\N	\N	\N
+9bxpugcgkui	1w4nstqxr2n	7	\N	\N	\N
+9bxpugcgkui	iipcd9rycsd	8	\N	\N	\N
+7poa6levyva	1w4nstqxr2n	8	\N	\N	\N
+7poa6levyva	iipcd9rycsd	9	\N	\N	\N
+fe7kgdo55ax	1w4nstqxr2n	9	\N	\N	\N
+fe7kgdo55ax	iipcd9rycsd	10	\N	\N	\N
+hmft2ujv1uf	1w4nstqxr2n	10	\N	\N	\N
+hmft2ujv1uf	iipcd9rycsd	11	\N	\N	\N
+nocobase-admin-menu	1w4nstqxr2n	11	\N	\N	\N
+nocobase-admin-menu	iipcd9rycsd	12	\N	\N	\N
+1w4nstqxr2n	1w4nstqxr2n	0	f	properties	\N
+x4src7kopyo	1w4nstqxr2n	1	\N	\N	4
 \.
 
 
@@ -13626,12 +14995,14 @@ pih9m66uox0	1q06k9gio15	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 96x36oteery	fund_id	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.fund_id","x-component-props":{"fieldNames":{"value":"id","label":"id"}},"x-app-version":"1.3.52"}
 g1zqulbaq33	lohgfrxkrn8	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
 svu377s09m8	createdAt	{"x-uid":"svu377s09m8","name":"createdAt","_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"projects.createdAt","x-component":"CollectionField","x-component-props":{"dateFormat":"MMMM Do YYYY","showTime":false},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
+f8feuhfiywv	vzalufg5uj4	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 fu4hqwdhjna	ua1vwt915j0	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 rgikecs0vb3	9r1dp9d3rlk	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"CardItem","x-settings":"blockSettings:image","x-app-version":"1.3.52"}
 0p09a8u5xr9	landing	{"_isJSONSchemaObject":true,"version":"2.0","x-component":"Landing","x-app-version":"1.3.52"}
 ycph2iwspsy	op533frw76t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 z8sfah8xqx2	awu0ue4yidj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 dtwqv1j8ahg	images_attach	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.images_attach","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.52"}
+rnko20ymzdm	actionBar	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"list:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":"var(--nb-spacing)"}},"x-app-version":"1.3.52"}
 5po28o9th2g	9fviq2pm5md	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 4xrh6k2pmoo	f9eqtqefd3t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 xzo61aenrhv	p7v5lm31wcf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
@@ -13642,20 +15013,26 @@ xt3d9e6vpx3	page	{"x-uid":"xt3d9e6vpx3","name":"page","_isJSONSchemaObject":true
 6gy09u6gkvr	b1mae2da89r	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Filter\\") }}","x-action":"filter","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:filter","x-component":"Filter.Action","x-use-component-props":"useFilterActionProps","x-component-props":{"icon":"FilterOutlined"},"x-align":"left","x-app-version":"1.3.52"}
 s41jwc7ushc	gqlhz16n5je	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 tavzpgzflnv	xjp2f8pugvx	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
-fe7kgdo55ax	page	{"x-uid":"fe7kgdo55ax","name":"page","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page","x-app-version":"1.3.52","x-component-props":{"disablePageHeader":true}}
 hmft2ujv1uf	5ddwiuc4980	{"x-uid":"hmft2ujv1uf","name":"5ddwiuc4980","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết dự án","x-component":"Menu.Item","x-decorator":"ACLMenuItemProvider","x-component-props":{"hidden":true},"x-server-hooks":[{"type":"onSelfCreate","method":"bindMenuToRole"},{"type":"onSelfSave","method":"extractTextToLocale"}],"x-app-version":"1.3.52"}
 7poa6levyva	ml05bw54cfa	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"page:addBlock","x-app-version":"1.3.52"}
 6qulve4ybk4	28ipw0hnn0f	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 4ryyxzuq87v	k0fmx8fwpy6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 zrm37tg78ob	images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.images","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.52"}
 cbhgjqiskk5	3hw8ivc03z8	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
-hs1jo8fohcn	c9q4f2wcso3	{"x-uid":"hs1jo8fohcn","name":"c9q4f2wcso3","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-component":"FormItem","x-settings":"blockSettings:carousel","x-toolbar":"BlockSchemaToolbar","x-decorator-props":{"rowKey":"id","runWhenParamsChanged":true,"readPretty":true,"dataSource":"main","collection":"projects","action":"list","request":{"params":{"appends":["images"]}},"params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]}}},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
+f70h0f0jiha	list	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-component":"List","x-use-component-props":"useListBlockProps","x-app-version":"1.3.52"}
 4jc43siezjp	10piaxniyaf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+0f0yp3ro5dp	item	{"_isJSONSchemaObject":true,"version":"2.0","type":"object","x-component":"List.Item","x-read-pretty":true,"x-use-component-props":"useListItemProps","x-app-version":"1.3.52"}
 8q3azqm4nul	carousel	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Carousel","x-use-component-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
 oq5d1lxpmfu	gl4xiqu0c66	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
-qos4gy0bday	ujrjmya3bl2	{"x-uid":"qos4gy0bday","name":"ujrjmya3bl2","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Detail","x-action":"customize:link","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:link","x-component":"Action.Link","x-use-component-props":"useLinkActionProps","x-designer-props":{"linkageAction":true},"x-component-props":{"iconColor":"#1677FF","danger":false,"url":"admin/hmft2ujv1uf","params":[{"name":"id","value":"{{$nRecord.id}}"}]}}
+3p9f7asal9h	lv5n4euwvqr	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+fe7kgdo55ax	page	{"x-uid":"fe7kgdo55ax","name":"page","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page","x-app-version":"1.3.52","x-component-props":{"disablePageHeader":true}}
+hs1jo8fohcn	c9q4f2wcso3	{"x-uid":"hs1jo8fohcn","name":"c9q4f2wcso3","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-component":"FormItem","x-settings":"blockSettings:carousel","x-toolbar":"BlockSchemaToolbar","x-decorator-props":{"rowKey":"id","runWhenParamsChanged":true,"readPretty":true,"dataSource":"main","collection":"projects","action":"list","request":{"params":{"appends":["images"]}},"params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]}}},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
+0ddzjfp9gg6	gs0mbkzv0y7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+387jrys6pj9	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.sub_title","x-component-props":{},"x-app-version":"1.3.52"}
 unis1bj47de	grgfquq7p3t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 gwkooqabv4x	lq1p6lf0d2p	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+ugkql0r3ggt	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"details:configureFields","x-app-version":"1.3.52"}
+a61oc4tl7m1	actionBar	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-align":"left","x-initializer":"list:configureItemActions","x-component":"ActionBar","x-use-component-props":"useListActionBarProps","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.52"}
 jibscsx0dfw	qendcaq0u1t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 jmayzuhpdzl	prnc93evei0	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 v0hdkdeyzrd	jaen61nqaow	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"projects:view","x-decorator":"DetailsBlockProvider","x-use-decorator-props":"useDetailsWithPaginationDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"projects","readPretty":true,"action":"list","params":{"pageSize":1}},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:detailsWithPagination","x-component":"CardItem","x-app-version":"1.3.52"}
@@ -13684,9 +15061,37 @@ p62fqqqtc8f	1kldb9are0i	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 lzuobjmh9nr	lrxdgyheuht	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 nk5b4nu4r4m	03zr42jo35m	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 pai6scdjeqt	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.sub_title","x-component-props":{},"x-app-version":"1.3.52"}
+qos4gy0bday	ujrjmya3bl2	{"x-uid":"qos4gy0bday","name":"ujrjmya3bl2","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Detail","x-action":"customize:link","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:link","x-component":"Action.Link","x-use-component-props":"useLinkActionProps","x-designer-props":{"linkageAction":true},"x-component-props":{"iconColor":"#1677FF","danger":false,"url":"admin/hmft2ujv1uf","params":[{"name":"id","value":"{{$nRecord.id}}"},{"name":"fundId","value":"{{$nRecord.fund_id.id}}"}]}}
 vww45l1kt1c	38aixf9l925	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 krq5msd3dso	images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"proposes.images","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.52"}
-bo30ugxn7d2	col_m8n37dqso3c	{"x-uid":"bo30ugxn7d2","name":"col_m8n37dqso3c","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":0,"x-component-props":{"width":"44.92"}}
+x4src7kopyo	w1f7gliwtyn	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+l8by3cc8sei	km2jizghjxq	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+9cnsplg5f8i	72v0eueipj3	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+52h8j6knyh0	bkswmhrdrp3	{"x-uid":"52h8j6knyh0","name":"bkswmhrdrp3","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"transactions:view","x-decorator":"List.Decorator","x-use-decorator-props":"useListBlockDecoratorProps","x-decorator-props":{"collection":"transactions","dataSource":"main","readPretty":true,"action":"list","params":{"pageSize":10,"filter":{"$and":[{"fund_id":{"$eq":"{{$nURLSearchParams.fundId}}"}}]},"sort":["-createdAt"]},"runWhenParamsChanged":true,"rowKey":"id"},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:list","x-app-version":"1.3.52","x-component-props":{"heightMode":"specifyValue","height":500}}
+am9f5xsj7ms	ijylqzp134z	{"x-uid":"am9f5xsj7ms","name":"ijylqzp134z","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-component-props":{"width":25}}
+bo30ugxn7d2	col_m8n37dqso3c	{"x-uid":"bo30ugxn7d2","name":"col_m8n37dqso3c","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":0,"x-component-props":{"width":"45.58"}}
+ge2jd4uyinh	amount	{"x-uid":"ge2jd4uyinh","name":"amount","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.amount","x-component-props":{},"x-app-version":"1.3.52","x-decorator-props":{"showTitle":false}}
+5v81x55p2nk	col_uoqwlaeflf6	{"x-uid":"5v81x55p2nk","name":"col_uoqwlaeflf6","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":"54.28"}}
+w55w350cfun	3vsdfowi9jd	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+xzjgh6n1pxo	wo541gsgl4h	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+q25ez0sddx0	description	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.description","x-component-props":{},"x-app-version":"1.3.52"}
+h0ax2mnno9e	transaction_code	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.transaction_code","x-component-props":{},"x-app-version":"1.3.52"}
+trkntmt0j43	qjd9o8evo8m	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+jybbjrsdqyi	dbkfz7epzpo	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+x34msmoy2z7	from_account_no	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_account_no","x-component-props":{},"x-app-version":"1.3.52"}
+qa9xun5vwcj	c9w73iph2a7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+q99h3pa86a9	t1bh4pgoa16	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+2w9s2xktcaq	from_account_name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_account_name","x-component-props":{},"x-app-version":"1.3.52"}
+e218oz4chyl	v5fi4kywdvu	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+zfyh24viwdy	nzl26bt6tc2	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+3h2a3ty94tj	from_bank_name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_bank_name","x-component-props":{},"x-app-version":"1.3.52"}
+5dqm9vvouxz	4pq40frfpa6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+dqzfsmyk8ay	i0aoc76mym6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+b33sc3cahsg	user	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.user","x-component-props":{"fieldNames":{"value":"id","label":"id"}},"x-app-version":"1.3.52"}
+bj7d5uc6lnd	5o2kdgwdq98	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+tdkqbjvhskr	j8g2cmfwto7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+0u09lqdoyvt	fund	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.fund","x-component-props":{"fieldNames":{"value":"id","label":"id"}},"x-app-version":"1.3.52"}
+3o26e8k5cba	bganen032st	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Submit\\") }}","x-action":"submit","x-component":"Action","x-use-component-props":"useUpdateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:updateSubmit","x-component-props":{"type":"primary","htmlType":"submit"},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.52"}
 eoz95qtwix6	eoz95qtwix6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"projects:view","x-decorator":"DetailsBlockProvider","x-use-decorator-props":"useDetailsWithPaginationDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"projects","readPretty":true,"action":"list","params":{"pageSize":1}},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:detailsWithPagination","x-component":"CardItem","x-app-version":"1.3.52","x-index":0}
 2h7gnmez0eb	j86wvwfhduz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Details","x-read-pretty":true,"x-use-component-props":"useDetailsWithPaginationProps","x-app-version":"1.3.52","x-index":1}
 kye7kplejx4	oq6rze1evpb	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"details:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":24}},"x-app-version":"1.3.52","x-index":1}
@@ -13706,18 +15111,69 @@ m6euh07s1zs	construction_site	{"_isJSONSchemaObject":true,"version":"2.0","type"
 gltkn1uzhh9	qendcaq0u1t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52","x-index":5}
 yivjshzifwl	9cpz8awc0fu	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 0czsrowjaug	1kldb9are0i	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-index":1}
-h4dm0c8wmu4	jjfh0jv9zgj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-decorator-props":{"dataSource":"main","collection":"projects","action":"list"},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:header picker","x-designer":"FormV2.Designer","x-component-props":{"useConfigureFields":true},"x-app-version":"1.3.52"}
+7guv5eckse5	3gve41npdh6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 tjpv9f744r6	images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.images","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.52","x-index":1}
 ll2so9vdgu3	lrxdgyheuht	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52","x-index":6}
 0jqiruu9vf6	03zr42jo35m	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-index":1}
 b6910vi3jym	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.sub_title","x-component-props":{},"x-app-version":"1.3.52","x-index":1}
 quxuyp8dl2x	pagination	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Pagination","x-use-component-props":"useDetailsPaginationProps","x-app-version":"1.3.52","x-index":3}
-tf3bh58lv6q	col_l88u0g0xu87	{"x-uid":"tf3bh58lv6q","name":"col_l88u0g0xu87","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":"55.08"}}
-vbof97c5249	header picker	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-use-component-props":"useHeaderPickerProps","x-app-version":"1.3.52"}
-q1pb5sukxkw	fields	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"info:configureFields","x-app-version":"1.3.52"}
+q3szmzf1eqa	cmft0hwzk3f	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+68fxhhuy71v	from_account_name	{"x-uid":"68fxhhuy71v","name":"from_account_name","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_account_name","x-component-props":{},"x-app-version":"1.3.52","x-decorator-props":{"showTitle":false}}
+iipcd9rycsd	from_bank_name	{"x-uid":"iipcd9rycsd","name":"from_bank_name","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_bank_name","x-component-props":{},"x-app-version":"1.3.52","x-decorator-props":{"showTitle":false},"description":""}
+pde5ayqzqo1	col_odcegh5w9pb	{"x-uid":"pde5ayqzqo1","name":"col_odcegh5w9pb","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":"54.42"}}
+pxsyhrbz249	col_7rm6cpurb8p	{"x-uid":"pxsyhrbz249","name":"col_7rm6cpurb8p","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":25}}
+w75rqpzvfdq	col_tee1znazv4f	{"x-uid":"w75rqpzvfdq","name":"col_tee1znazv4f","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":2,"x-component-props":{"width":25}}
+1w4nstqxr2n	col_5qtmgj1qg1n	{"x-uid":"1w4nstqxr2n","name":"col_5qtmgj1qg1n","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":3,"x-component-props":{"width":25}}
+pbpsju21w1y	fromxe1ognk	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Refresh\\") }}","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined"},"x-align":"right","type":"void","x-app-version":"1.3.52"}
+j0x0k0rv3yw	z0rr8522rdf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+hupe35j3waf	wdcjw5oonnf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+ypdn0dkn4wx	qltijl6t53w	{"x-uid":"ypdn0dkn4wx","name":"qltijl6t53w","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-settings":"blockSettings:iframe","x-decorator":"BlockItem","x-decorator-props":{"name":"iframe"},"x-component":"Iframe","x-component-props":{"mode":"html","height":200,"engine":"string","params":[],"htmlId":"kfrlwu4mh96","heightMode":"specifyValue"},"x-app-version":"1.3.52"}
+i5ep94ei4hn	74v0up0r5vs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Actions\\") }}","x-decorator":"TableV2.Column.ActionBar","x-component":"TableV2.Column","x-toolbar":"TableColumnSchemaToolbar","x-initializer":"table:configureItemActions","x-settings":"fieldSettings:TableColumn","x-toolbar-props":{"initializer":"table:configureItemActions"},"x-action-column":"actions","x-app-version":"1.3.52"}
+x74knwfm0hx	luf7vtkqq1b	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DndContext","x-component":"Space","x-component-props":{"split":"|"},"x-app-version":"1.3.52"}
+7qdtw3aqf8f	3um9q5ispqm	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Edit\\") }}","x-action":"update","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:edit","x-component":"Action.Link","x-component-props":{"openMode":"drawer","icon":"EditOutlined"},"x-action-context":{"dataSource":"main","collection":"transactions"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
+9znhwv6jh2d	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Edit record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"}}
+dohzvch4noi	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab"}
+oyw4y44yqgd	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Edit\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{}}
+bztjip2msxq	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock"}
+oekbnvx2n7m	w5sg29xsuwg	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Delete\\") }}","x-action":"destroy","x-component":"Action.Link","x-use-component-props":"useDestroyActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:delete","x-component-props":{"icon":"DeleteOutlined","confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"refreshDataBlockRequest":true},"x-action-settings":{"triggerWorkflows":[]},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"type":"void"}
+cm22blbci2c	3n6konsxrcv	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+ioq8ld31vte	ujdem34nq3l	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+ojgs7eoz5hg	fund_id	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.fund_id","x-component-props":{"fieldNames":{"value":"id","label":"id"}},"x-app-version":"1.3.52"}
 qxskufg0hv4	jgngp3286ie	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+j9dtajdmaoa	createdAt	{"x-uid":"j9dtajdmaoa","name":"createdAt","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.createdAt","x-component-props":{"dateFormat":"DD/MM/YYYY","showTime":true,"timeFormat":"h:mm a"},"x-read-pretty":true,"x-app-version":"1.3.52","x-decorator-props":{"showTitle":false}}
+swpktoj72vi	gf7pul5epv8	{"x-uid":"swpktoj72vi","name":"gf7pul5epv8","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-component-props":{"width":"45.72"}}
+abxv8689kv3	ho0c7mbjda1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
+2lzmasj4pju	project_id	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"funds.project_id","x-component":"CollectionField","x-component-props":{},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
+ssd1y8mk1mx	9879c23cj0s	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+r1jfuy0x2g2	ihoxsztugt7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+mupdgh8dhyb	pfoxy9zmkx7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 swbgm59qce3	ufrasmewkf9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+n65uanub9sx	header picker	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-use-component-props":"useHeaderPickerProps","x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
+fvz3km1i6ms	fields	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"info:configureFields","x-app-version":"1.3.52"}
 pkcprxz6rfy	lzsv1w75i9y	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+b410c64osaf	t7cx7ml1ss1	{"x-uid":"b410c64osaf","name":"t7cx7ml1ss1","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-decorator-props":{"dataSource":"main","collection":"projects","action":"list","params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]}}},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:header picker","x-designer":"FormV2.Designer","x-component-props":{"useConfigureFields":true},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
+9bxpugcgkui	s13ehtexjiz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+lhbk1av87n1	zc7kwh6kagc	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+zll47lo8fgt	jxin3bi7pq9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-collection-field":"id","x-collection-field-key":{"uiSchema":{"type":"number","title":"{{t(\\"ID\\")}}","x-component":"InputNumber","x-read-pretty":true,"rawTitle":"{{t(\\"ID\\")}}"},"key":"fmtgbzqzs72","name":"id","type":"bigInt","interface":"integer","description":null,"collectionName":"projects","parentKey":null,"reverseKey":null,"autoIncrement":true,"primaryKey":true,"allowNull":false},"x-component":"Grid.Row","x-component-props":{"getInfoItemSchema":true},"x-app-version":"1.3.52"}
+f45gj2efafk	jswh7wechcg	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+xse8ehk8dl3	id	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-settings":"fieldSettings:info","x-decorator":"FormItem","x-app-version":"1.3.52"}
+0kxudizv0xf	klwlhf63eyz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+zy4jidwmnvw	cea73ch8trk	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+q5no45c40c6	g42m4asqz7s	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action-props":{"skipScopeCheck":false},"x-acl-action":"transactions:update","x-decorator":"FormBlockProvider","x-use-decorator-props":"useEditFormBlockDecoratorProps","x-decorator-props":{"action":"get","dataSource":"main","collection":"transactions"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:editForm","x-component":"CardItem","x-app-version":"1.3.52"}
+imo18or3xxo	eiyx95gi2ex	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"FormV2","x-use-component-props":"useEditFormBlockProps","x-app-version":"1.3.52"}
+mr7dvvk94ts	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"form:configureFields","x-app-version":"1.3.52"}
+9xqwn851uzs	vlamjp62x2t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"editForm:configureActions","x-component":"ActionBar","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.52"}
+h6z84g2plev	pgqgrxu3saz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+fj7mqkmuy05	id	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.id","x-component-props":{},"x-read-pretty":true,"x-app-version":"1.3.52"}
+7mxt8s0yifl	qwzluez9x09	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+z3izb1wk1tb	8j5opzefy68	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+r46d3k59dyb	amount	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.amount","x-component-props":{},"x-app-version":"1.3.52"}
+vkwm4wpz1us	7b3laozce26	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+0i6xo0z7gmw	aejmv2c9ff7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+ktueizjrxpb	description	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.description","x-component-props":{},"x-app-version":"1.3.52"}
+r4wwu0h2xhc	nhia9ko11ng	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+h2owc9efe7d	q9ogag58p1b	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+83dc85bfozz	159taitaspr	{"x-uid":"83dc85bfozz","name":"159taitaspr","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-settings":"blockSettings:markdown","x-decorator":"CardItem","x-decorator-props":{"name":"markdown","engine":"string"},"x-component":"Markdown.Void","x-editable":false,"x-component-props":{"content":"### Thông tin chi tiết\\n\\nTheo lãnh đạo xã Trà Tập, đợt mưa trước đó đã gây sạt lở ta-luy dương sau trường. Do đó, chính quyền địa phương đã cho đóng cửa điểm trường trên, dời lớp học về điểm trường cũ (bằng gỗ), chờ phương án xây dựng kè phía sau. Tuy nhiên, đợt mưa này tiếp tục gây sạt lở khiến điểm trường bị sập.\\n\\nĐược biết, điểm trường Răng Chuối mới khánh thành hồi tháng 9 với tổng kinh phí xây dựng hơn 1,4 tỉ đồng, do một nhà tài trợ tại TP HCM hỗ trợ toàn bộ chi phí.\\n\\nCông trình có tổng diện tích gần 200m², tường xây kiên cố, 2 phòng học, 1 phòng ở tập thể, bếp ăn, khu vệ sinh, sân chơi, tường rào.\\n\\nĐiểm trường có 35 học sinh mầm non và tiểu học. Ngôi trường mới đưa vào sử dụng thay thế điểm trường tạm vốn đã xuống cấp.\\n\\nNgoài điểm trường Răng Chuối bị thiệt hại, tại huyện Nam Trà My những ngày qua trời mưa lớn kéo dài khiến nhiều điểm sạt lở tuyến đường bị đứt gãy, hư hỏng nặng.\\n\\nHuyện Nam Trà My đã chỉ đạo các địa phương cắm biển báo nguy hiểm và cắm biển cấm xe tải trọng lớn, chỉ đạo đơn vị duy tu bảo vệ kè tạm để đảm bảo giao thông xe tải nhỏ và xe ô tô con lưu thông.\\n"},"x-app-version":"1.3.52"}
 \.
 
 
@@ -13781,7 +15237,7 @@ COPY public.verifications_providers (id, "createdAt", "updatedAt", title, type, 
 COPY public.workflows (id, "createdAt", "updatedAt", key, title, enabled, description, type, "triggerTitle", config, executed, "allExecuted", current, sync, options) FROM stdin;
 12	2024-11-23 08:33:04.685+00	2024-11-23 09:09:45.259+00	okdlz4mlk8m	Pre-Delete Project	t	\N	collection	\N	{"mode": 2, "appends": ["fund_id"], "changed": ["is_deleted"], "condition": {"$and": [{"fund_id": {"current_amount": {"$gt": 0}}}, {"is_deleted": {"$eq": 0}}]}, "collection": "projects"}	3	3	t	f	{}
 11	2024-11-23 07:06:06.908+00	2024-11-23 08:55:36.67+00	iib4y9voya1	Pre-Delete Project	f	\N	collection	\N	{"mode": 2, "appends": ["updatedBy", "fund_id", "createdBy"], "changed": ["is_deleted"], "condition": {"$and": [{"fund_id": {"current_amount": {"$eq": 0}}}]}, "collection": "projects"}	6	6	t	f	{"deleteExecutionOnStatus": []}
-22	2024-11-23 11:49:01.633+00	2024-11-24 02:43:58.374+00	07lrf76z5ab	Approve Propose	t	\N	collection	\N	{"mode": 2, "appends": ["createdBy"], "changed": ["status"], "condition": {"$and": []}, "collection": "proposes"}	8	8	t	f	{}
+22	2024-11-23 11:49:01.633+00	2024-11-29 20:13:20.423+00	07lrf76z5ab	Approve Propose	t	\N	collection	\N	{"mode": 2, "appends": ["createdBy"], "changed": ["status"], "condition": {"$and": []}, "collection": "proposes"}	9	9	t	f	{}
 \.
 
 
@@ -13818,7 +15274,7 @@ SELECT pg_catalog.setval('public."applicationVersion_id_seq"', 1, true);
 -- Name: attachments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.attachments_id_seq', 21, true);
+SELECT pg_catalog.setval('public.attachments_id_seq', 24, true);
 
 
 --
@@ -13872,7 +15328,7 @@ SELECT pg_catalog.setval('public."dataSourcesRolesResources_id_seq"', 1, false);
 -- Name: executions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.executions_id_seq', 32, true);
+SELECT pg_catalog.setval('public.executions_id_seq', 33, true);
 
 
 --
@@ -13890,7 +15346,7 @@ SELECT pg_catalog.setval('public.flow_nodes_id_seq', 71, true);
 -- Name: funds_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.funds_id_seq', 24, true);
+SELECT pg_catalog.setval('public.funds_id_seq', 25, true);
 
 
 --
@@ -13917,7 +15373,7 @@ SELECT pg_catalog.setval('public.images_id_seq', 1, false);
 -- Name: jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.jobs_id_seq', 99, true);
+SELECT pg_catalog.setval('public.jobs_id_seq', 103, true);
 
 
 --
@@ -13926,7 +15382,7 @@ SELECT pg_catalog.setval('public.jobs_id_seq', 99, true);
 -- Name: projects_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.projects_id_seq', 26, true);
+SELECT pg_catalog.setval('public.projects_id_seq', 27, true);
 
 
 --
@@ -13935,7 +15391,7 @@ SELECT pg_catalog.setval('public.projects_id_seq', 26, true);
 -- Name: proposes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.proposes_id_seq', 22, true);
+SELECT pg_catalog.setval('public.proposes_id_seq', 23, true);
 
 
 --
@@ -14034,7 +15490,7 @@ SELECT pg_catalog.setval('public."tokenBlacklist_id_seq"', 1, false);
 -- Name: transactions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.transactions_id_seq', 1, true);
+SELECT pg_catalog.setval('public.transactions_id_seq', 4, true);
 
 
 --
@@ -15189,7 +16645,7 @@ CREATE INDEX verifications_provider_id ON public.verifications USING btree ("pro
 CREATE UNIQUE INDEX workflows_key_current ON public.workflows USING btree (key, current);
 
 
--- Completed on 2024-11-29 18:51:39 UTC
+-- Completed on 2024-11-30 03:55:01 UTC
 
 --
 -- PostgreSQL database dump complete

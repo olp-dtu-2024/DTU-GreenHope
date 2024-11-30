@@ -40,19 +40,6 @@ function getFieldInitializerItem(options: GetFieldInitializerItemOptions) {
       }
 
       insert(getInfoItemSchema({ name, key }));
-      const headerPickerContainer = schema.properties?.[BlockNameLowercase];
-      if (headerPickerContainer) {
-        const newSchema = getInfoItemSchema({ name, key });
-        if (!headerPickerContainer.properties) {
-          headerPickerContainer.properties = {};
-        }
-        headerPickerContainer.properties[name] = newSchema;
-
-        Schema.compile(schema);
-
-        schema['x-uid'] =
-          schema['x-uid'] || Math.random().toString(36).slice(2);
-      }
     },
   } as SchemaInitializerItemType;
 }

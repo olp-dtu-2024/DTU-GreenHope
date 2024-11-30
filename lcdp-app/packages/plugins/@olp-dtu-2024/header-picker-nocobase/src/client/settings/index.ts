@@ -1,12 +1,13 @@
 import {
   SchemaSettings,
+  SchemaSettingsBlockTitleItem,
   SchemaSettingsDataScope,
   useAPIClient,
   useCollection,
   useDesignable,
 } from '@nocobase/client';
-import { BlockNameLowercase } from '../constants';
 import { useFieldSchema } from '@formily/react';
+import { BlockNameLowercase } from '../constants';
 
 export const headerPickerSettings = new SchemaSettings({
   name: `blockSettings:${BlockNameLowercase}`,

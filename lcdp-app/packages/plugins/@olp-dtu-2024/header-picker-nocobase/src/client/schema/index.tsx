@@ -7,9 +7,8 @@ import {
   useParentRecordCommon,
   useParsedFilter,
 } from '@nocobase/client';
-import { BlockNameLowercase } from '../constants';
+import { BlockName, BlockNameLowercase } from '../constants';
 import { headerPickerSettings } from '../settings';
-import { HeaderPickerComponent } from '../component/headerPicker';
 
 export interface HeaderPickerProps {
   collectionName: string;
@@ -103,7 +102,6 @@ export function getHeaderPickerSchema({ dataSource = 'main', collection }) {
     properties: {
       [BlockNameLowercase]: {
         type: 'void',
-        'x-component': HeaderPickerComponent,
         'x-use-component-props': 'useHeaderPickerProps',
         'x-use-decorator-props': 'useBlockScopeDecoratorProps',
         properties: {}, // This will be populated dynamically
