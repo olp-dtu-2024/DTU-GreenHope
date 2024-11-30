@@ -5,7 +5,7 @@
 -- Dumped from database version 16.4
 -- Dumped by pg_dump version 16.4
 
--- Started on 2024-11-30 10:07:11 UTC
+-- Started on 2024-11-30 12:46:45 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -12088,7 +12088,6 @@ nocobase-admin-menu	fvz3km1i6ms	7	\N	\N	\N
 nocobase-admin-menu	b410c64osaf	6	\N	\N	\N
 pde5ayqzqo1	pde5ayqzqo1	0	f	properties	\N
 rnko20ymzdm	pbpsju21w1y	1	\N	\N	1
-yivjshzifwl	pde5ayqzqo1	1	\N	\N	3
 fe7kgdo55ax	oq5d1lxpmfu	2	\N	\N	\N
 wsafpwbqr88	wsafpwbqr88	0	f	properties	\N
 ifzzkj7loaj	ifzzkj7loaj	0	f	properties	\N
@@ -12122,6 +12121,7 @@ nocobase-admin-menu	k99w3v09n98	14	\N	\N	\N
 nocobase-admin-menu	ifzzkj7loaj	15	\N	\N	\N
 k99w3v09n98	k99w3v09n98	0	f	properties	\N
 48d58aj2z3f	k99w3v09n98	1	\N	\N	1
+yivjshzifwl	pde5ayqzqo1	1	\N	\N	4
 jfqsx79zobd	jfqsx79zobd	0	f	properties	\N
 wsafpwbqr88	jfqsx79zobd	1	\N	\N	1
 66lgu9id6bj	66lgu9id6bj	0	f	properties	\N
@@ -13150,6 +13150,11 @@ lmp1irsvgom	krq5msd3dso	4	\N	\N	\N
 3nhe9kyydb1	vww45l1kt1c	4	\N	\N	\N
 3nhe9kyydb1	krq5msd3dso	5	\N	\N	\N
 1t1bel9ufqz	p352d38u95n	4	\N	\N	\N
+o7l7yx71sxx	o7l7yx71sxx	0	f	properties	\N
+2uwr165tom0	o7l7yx71sxx	1	\N	\N	1
+fe7kgdo55ax	c7cl1yivppx	2	\N	\N	\N
+hmft2ujv1uf	c7cl1yivppx	3	\N	\N	\N
+nocobase-admin-menu	c7cl1yivppx	4	\N	\N	\N
 1t1bel9ufqz	vww45l1kt1c	5	\N	\N	\N
 1t1bel9ufqz	krq5msd3dso	6	\N	\N	\N
 oxj8sl5a4x4	p352d38u95n	5	\N	\N	\N
@@ -13176,6 +13181,9 @@ nc92u2m878d	krq5msd3dso	15	\N	\N	\N
 jiq42lrek0j	p352d38u95n	14	\N	\N	\N
 jiq42lrek0j	vww45l1kt1c	15	\N	\N	\N
 jiq42lrek0j	krq5msd3dso	16	\N	\N	\N
+c7cl1yivppx	c7cl1yivppx	0	f	properties	\N
+7poa6levyva	c7cl1yivppx	1	\N	\N	25
+2uwr165tom0	2uwr165tom0	0	f	properties	\N
 fe7kgdo55ax	4jc43siezjp	2	\N	\N	\N
 hmft2ujv1uf	4jc43siezjp	3	\N	\N	\N
 nocobase-admin-menu	4jc43siezjp	4	\N	\N	\N
@@ -13186,8 +13194,6 @@ hmft2ujv1uf	yivjshzifwl	3	\N	\N	\N
 nocobase-admin-menu	yivjshzifwl	4	\N	\N	\N
 yivjshzifwl	yivjshzifwl	0	f	properties	\N
 7poa6levyva	yivjshzifwl	1	\N	\N	9
-f1naeic0v01	f1naeic0v01	0	f	properties	\N
-8syckvf383p	f1naeic0v01	1	\N	\N	1
 7poa6levyva	p2fd2nllyzz	3	\N	\N	\N
 fe7kgdo55ax	p2fd2nllyzz	4	\N	\N	\N
 hmft2ujv1uf	p2fd2nllyzz	5	\N	\N	\N
@@ -13195,25 +13201,24 @@ nocobase-admin-menu	p2fd2nllyzz	6	\N	\N	\N
 yivjshzifwl	p2fd2nllyzz	2	\N	\N	\N
 p2fd2nllyzz	p2fd2nllyzz	0	f	properties	\N
 pde5ayqzqo1	p2fd2nllyzz	1	\N	\N	2
-5lsetx6q4um	f1naeic0v01	2	\N	\N	\N
-8syckvf383p	8syckvf383p	0	f	properties	\N
-5lsetx6q4um	8syckvf383p	1	\N	\N	1
-yivjshzifwl	8syckvf383p	2	\N	\N	\N
-yivjshzifwl	f1naeic0v01	3	\N	\N	\N
-7poa6levyva	5lsetx6q4um	2	\N	\N	\N
-7poa6levyva	8syckvf383p	3	\N	\N	\N
-7poa6levyva	f1naeic0v01	4	\N	\N	\N
-fe7kgdo55ax	5lsetx6q4um	3	\N	\N	\N
-fe7kgdo55ax	8syckvf383p	4	\N	\N	\N
-fe7kgdo55ax	f1naeic0v01	5	\N	\N	\N
-hmft2ujv1uf	5lsetx6q4um	4	\N	\N	\N
-hmft2ujv1uf	8syckvf383p	5	\N	\N	\N
-hmft2ujv1uf	f1naeic0v01	6	\N	\N	\N
-nocobase-admin-menu	5lsetx6q4um	5	\N	\N	\N
-nocobase-admin-menu	8syckvf383p	6	\N	\N	\N
-nocobase-admin-menu	f1naeic0v01	7	\N	\N	\N
-5lsetx6q4um	5lsetx6q4um	0	f	properties	\N
-yivjshzifwl	5lsetx6q4um	1	\N	\N	1
+2u98suka1k5	o7l7yx71sxx	2	\N	\N	\N
+2u98suka1k5	2uwr165tom0	1	\N	\N	1
+yivjshzifwl	2uwr165tom0	2	\N	\N	\N
+yivjshzifwl	o7l7yx71sxx	3	\N	\N	\N
+7poa6levyva	2u98suka1k5	2	\N	\N	\N
+7poa6levyva	2uwr165tom0	3	\N	\N	\N
+7poa6levyva	o7l7yx71sxx	4	\N	\N	\N
+fe7kgdo55ax	2u98suka1k5	3	\N	\N	\N
+fe7kgdo55ax	2uwr165tom0	4	\N	\N	\N
+fe7kgdo55ax	o7l7yx71sxx	5	\N	\N	\N
+hmft2ujv1uf	2u98suka1k5	4	\N	\N	\N
+hmft2ujv1uf	2uwr165tom0	5	\N	\N	\N
+hmft2ujv1uf	o7l7yx71sxx	6	\N	\N	\N
+nocobase-admin-menu	2u98suka1k5	5	\N	\N	\N
+nocobase-admin-menu	2uwr165tom0	6	\N	\N	\N
+nocobase-admin-menu	o7l7yx71sxx	7	\N	\N	\N
+2u98suka1k5	2u98suka1k5	0	f	properties	\N
+yivjshzifwl	2u98suka1k5	1	\N	\N	1
 v0hdkdeyzrd	v0hdkdeyzrd	0	f	properties	\N
 fg366x2n25f	fg366x2n25f	0	f	properties	\N
 v0hdkdeyzrd	fg366x2n25f	1	\N	\N	1
@@ -15071,6 +15076,7 @@ f70h0f0jiha	list	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-c
 4jc43siezjp	10piaxniyaf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 0f0yp3ro5dp	item	{"_isJSONSchemaObject":true,"version":"2.0","type":"object","x-component":"List.Item","x-read-pretty":true,"x-use-component-props":"useListItemProps","x-app-version":"1.3.52"}
 oq5d1lxpmfu	gl4xiqu0c66	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+2u98suka1k5	col_me866m5g46a	{"x-uid":"2u98suka1k5","name":"col_me866m5g46a","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":0,"x-component-props":{"width":50}}
 3p9f7asal9h	lv5n4euwvqr	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 fe7kgdo55ax	page	{"x-uid":"fe7kgdo55ax","name":"page","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page","x-app-version":"1.3.52","x-component-props":{"disablePageHeader":true}}
 p2fd2nllyzz	s0fp6p9ut2y	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":1,"x-app-version":"1.3.52"}
@@ -15167,9 +15173,9 @@ b6910vi3jym	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string
 quxuyp8dl2x	pagination	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Pagination","x-use-component-props":"useDetailsPaginationProps","x-app-version":"1.3.52","x-index":3}
 cm46dlsp65t	xm2n4k0v72h	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 q3szmzf1eqa	cmft0hwzk3f	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+pde5ayqzqo1	col_odcegh5w9pb	{"x-uid":"pde5ayqzqo1","name":"col_odcegh5w9pb","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
 68fxhhuy71v	from_account_name	{"x-uid":"68fxhhuy71v","name":"from_account_name","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_account_name","x-component-props":{},"x-app-version":"1.3.52","x-decorator-props":{"showTitle":false}}
 iipcd9rycsd	from_bank_name	{"x-uid":"iipcd9rycsd","name":"from_bank_name","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_bank_name","x-component-props":{},"x-app-version":"1.3.52","x-decorator-props":{"showTitle":false},"description":""}
-pde5ayqzqo1	col_odcegh5w9pb	{"x-uid":"pde5ayqzqo1","name":"col_odcegh5w9pb","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
 pxsyhrbz249	col_7rm6cpurb8p	{"x-uid":"pxsyhrbz249","name":"col_7rm6cpurb8p","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":25}}
 w75rqpzvfdq	col_tee1znazv4f	{"x-uid":"w75rqpzvfdq","name":"col_tee1znazv4f","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":2,"x-component-props":{"width":25}}
 1w4nstqxr2n	col_5qtmgj1qg1n	{"x-uid":"1w4nstqxr2n","name":"col_5qtmgj1qg1n","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":3,"x-component-props":{"width":25}}
@@ -15224,10 +15230,10 @@ ktueizjrxpb	description	{"_isJSONSchemaObject":true,"version":"2.0","type":"stri
 r4wwu0h2xhc	nhia9ko11ng	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 h2owc9efe7d	q9ogag58p1b	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 52h8j6knyh0	bkswmhrdrp3	{"x-uid":"52h8j6knyh0","name":"bkswmhrdrp3","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"transactions:view","x-decorator":"List.Decorator","x-use-decorator-props":"useListBlockDecoratorProps","x-decorator-props":{"collection":"transactions","dataSource":"main","readPretty":true,"action":"list","params":{"pageSize":10,"filter":{"$and":[{"fund_id":{"$eq":"{{$nURLSearchParams.fundId}}"}}]},"sort":["-createdAt"]},"runWhenParamsChanged":true,"rowKey":"id"},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:list","x-app-version":"1.3.52","x-component-props":{"heightMode":"specifyValue","height":500}}
-5lsetx6q4um	col_6njh32yy0yn	{"x-uid":"5lsetx6q4um","name":"col_6njh32yy0yn","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":0,"x-component-props":{"width":50}}
-8syckvf383p	hhlzz16lp9n	{"x-uid":"8syckvf383p","name":"hhlzz16lp9n","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-component":"FormItem","x-settings":"blockSettings:carousel","x-toolbar":"BlockSchemaToolbar","x-decorator-props":{"rowKey":"id","runWhenParamsChanged":true,"readPretty":true,"dataSource":"main","collection":"projects","action":"list","request":{"params":{"appends":["images"]}},"params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]}},"carousel":{"objectFit":"contain","height":500}},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
-f1naeic0v01	carousel	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Carousel","x-use-component-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
 83dc85bfozz	159taitaspr	{"x-uid":"83dc85bfozz","name":"159taitaspr","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-settings":"blockSettings:markdown","x-decorator":"CardItem","x-decorator-props":{"name":"markdown","engine":"string"},"x-component":"Markdown.Void","x-editable":false,"x-component-props":{"content":"### Thông tin chi tiết\\n\\nTheo lãnh đạo xã Trà Tập, đợt mưa trước đó đã gây sạt lở ta-luy dương sau trường. Do đó, chính quyền địa phương đã cho đóng cửa điểm trường trên, dời lớp học về điểm trường cũ (bằng gỗ), chờ phương án xây dựng kè phía sau. Tuy nhiên, đợt mưa này tiếp tục gây sạt lở khiến điểm trường bị sập.\\n\\nĐược biết, điểm trường Răng Chuối mới khánh thành hồi tháng 9 với tổng kinh phí xây dựng hơn 1,4 tỉ đồng, do một nhà tài trợ tại TP HCM hỗ trợ toàn bộ chi phí.\\n\\nCông trình có tổng diện tích gần 200m², tường xây kiên cố, 2 phòng học, 1 phòng ở tập thể, bếp ăn, khu vệ sinh, sân chơi, tường rào.\\n\\nĐiểm trường có 35 học sinh mầm non và tiểu học. Ngôi trường mới đưa vào sử dụng thay thế điểm trường tạm vốn đã xuống cấp.\\n\\nNgoài điểm trường Răng Chuối bị thiệt hại, tại huyện Nam Trà My những ngày qua trời mưa lớn kéo dài khiến nhiều điểm sạt lở tuyến đường bị đứt gãy, hư hỏng nặng.\\n\\nHuyện Nam Trà My đã chỉ đạo các địa phương cắm biển báo nguy hiểm và cắm biển cấm xe tải trọng lớn, chỉ đạo đơn vị duy tu bảo vệ kè tạm để đảm bảo giao thông xe tải nhỏ và xe ô tô con lưu thông.\\n","heightMode":"specifyValue","height":500},"x-app-version":"1.3.52"}
+c7cl1yivppx	oedwk0ldjd7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+o7l7yx71sxx	carousel	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Carousel","x-use-component-props":"useCarouselBlockProps","x-app-version":"1.3.52"}
+2uwr165tom0	ch9vdh3veri	{"x-uid":"2uwr165tom0","name":"ch9vdh3veri","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-component":"FormItem","x-settings":"blockSettings:carousel","x-toolbar":"BlockSchemaToolbar","x-decorator-props":{"carousel":{"height":400,"objectFit":"cover","autoplay":true},"rowKey":"id","runWhenParamsChanged":true,"readPretty":true,"dataSource":"main","collection":"projects","action":"list","request":{"params":{"appends":["images"]}}},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
 \.
 
 
@@ -16699,7 +16705,7 @@ CREATE INDEX verifications_provider_id ON public.verifications USING btree ("pro
 CREATE UNIQUE INDEX workflows_key_current ON public.workflows USING btree (key, current);
 
 
--- Completed on 2024-11-30 10:07:12 UTC
+-- Completed on 2024-11-30 12:46:45 UTC
 
 --
 -- PostgreSQL database dump complete

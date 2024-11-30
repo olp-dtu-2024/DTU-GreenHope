@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useParentRecordCommon, useParsedFilter } from '@nocobase/client';
 import { BlockNameLowerCase, BlockName } from '../constants';
 import { carouselSettings } from '../settings';
+import { useFieldSchema } from '@formily/react';
 
 function useBlockScopeParams(props) {
   const { filter, parseVariableLoading } = useParsedFilter({
@@ -48,6 +49,11 @@ export function useBlockScopeDecoratorProps(props) {
   };
 }
 
+export function useCarouselBlockProps() {
+  const fieldSchema = useFieldSchema();
+  return fieldSchema.parent?.['x-decorator-props']?.[BlockNameLowerCase];
+}
+
 export const carouselSchema = ({ dataSource = 'main', collection }) => {
   return {
     type: 'void',
@@ -56,6 +62,7 @@ export const carouselSchema = ({ dataSource = 'main', collection }) => {
     'x-settings': carouselSettings.name,
     'x-toolbar': 'BlockSchemaToolbar',
     'x-decorator-props': {
+      [BlockNameLowerCase]: {}, // Height & ObjectFit
       rowKey: 'id',
       runWhenParamsChanged: true,
       readPretty: true,
@@ -71,7 +78,7 @@ export const carouselSchema = ({ dataSource = 'main', collection }) => {
       [BlockNameLowerCase]: {
         type: 'void',
         'x-component': BlockName,
-        'x-use-component-props': 'useBlockScopeDecoratorProps',
+        'x-use-component-props': 'useCarouselBlockProps',
       },
     },
   };

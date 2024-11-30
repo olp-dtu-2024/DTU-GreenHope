@@ -10,6 +10,7 @@ import { BlockNameLowerCase } from '../constants';
 import { heightSchemaSettingsItem } from './items/height';
 import { objectFitSchemaSettingsItem } from './items/objectFit';
 import { useFieldSchema } from '@formily/react';
+import { autoplaySchemaSettingsItem } from './items/autoPlay';
 
 export const carouselSettings = new SchemaSettings({
   name: `blockSettings:${BlockNameLowerCase}`,
@@ -82,5 +83,6 @@ export const carouselSettings = new SchemaSettings({
     },
     heightSchemaSettingsItem,
     objectFitSchemaSettingsItem,
+    autoplaySchemaSettingsItem,
   ],
 });

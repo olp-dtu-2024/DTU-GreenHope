@@ -1,5 +1,5 @@
 import { Plugin } from '@nocobase/client';
-import { useBlockScopeDecoratorProps } from './schema';
+import { useBlockScopeDecoratorProps, useCarouselBlockProps } from './schema';
 import { Carousel } from './component';
 import { carouselSettings } from './settings';
 import { carouselInitializerItem } from './initializer';
@@ -22,6 +22,7 @@ export class CarouselNocobaseClient extends Plugin {
     this.app.addScopes({
       // useInfoProps,
       useBlockScopeDecoratorProps,
+      useCarouselBlockProps,
     });
     this.app.addComponents({
       Carousel,
