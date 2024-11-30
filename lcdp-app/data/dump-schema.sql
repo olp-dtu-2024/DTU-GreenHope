@@ -5,7 +5,7 @@
 -- Dumped from database version 16.4
 -- Dumped by pg_dump version 16.4
 
--- Started on 2024-11-30 16:31:00 UTC
+-- Started on 2024-11-30 17:36:42 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -6317,7 +6317,7 @@ COPY public.funds ("createdAt", "updatedAt", id, "createdById", "updatedById", n
 2024-11-23 14:32:55.113+00	2024-11-25 06:56:35.053+00	22	\N	\N	Xây cầu	0	0	\N	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quyX%C3%A2y%20c%E1%BA%A7u
 2024-11-24 02:36:51.286+00	2024-11-25 06:56:35.055+00	23	\N	\N	AAAA	0	0	\N	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quyAAAA
 2024-11-24 02:43:58.661+00	2024-11-25 06:56:35.056+00	24	\N	\N	bbbbdf	0	0	\N	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20bbbbdf
-2024-11-29 20:13:20.707+00	2024-11-29 20:13:20.886+00	25	\N	\N	fdfggdfg	0	0	27	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20fdfggdfg
+2024-11-29 20:13:20.707+00	2024-11-30 17:05:13.252+00	25	\N	1	fdfggdfg	120000000	400003	27	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20fdfggdfg
 \.
 
 
@@ -6510,7 +6510,7 @@ COPY public.migrations (name) FROM stdin;
 COPY public.projects ("createdAt", "updatedAt", id, "createdById", "updatedById", name, total_amount, construction_site, is_deleted, sub_title, description) FROM stdin;
 2024-11-27 05:12:46.906+00	2024-11-27 05:12:46.906+00	26	1	1	Dự án 2	20000000	HCM	0	\N	\N
 2024-11-25 06:57:02.948+00	2024-11-25 07:08:32.343+00	25	1	1	Dự án 1	1000000	Đà Nẵng	0	\N	\N
-2024-11-29 20:13:20.591+00	2024-11-30 07:51:05.245+00	27	\N	1	Xây dựng cầu treo	0	gfdsdfg	0	Theo lãnh đạo xã Trà Tập, đợt mưa trước đó đã gây sạt lở ta-luy dương sau trường. Do đó, chính quyền địa phương đã cho đóng cửa điểm trường trên, dời lớp học ...	<p><strong>Thông tin chi tiết</strong></p><p>Theo lãnh đạo xã Trà Tập, đợt mưa trước đó đã gây sạt lở ta-luy dương sau trường. Do đó, chính quyền địa phương đã cho đóng cửa điểm trường trên, dời lớp học về điểm trường cũ (bằng gỗ), chờ phương án xây dựng kè phía sau. Tuy nhiên, đợt mưa này tiếp tục gây sạt lở khiến điểm trường bị sập.</p><p><br></p><p>Được biết, điểm trường Răng Chuối mới khánh thành hồi tháng 9 với tổng kinh phí xây dựng hơn 1,4 tỉ đồng, do một nhà tài trợ tại TP HCM hỗ trợ toàn bộ chi phí.</p><p><br></p><p>Công trình có tổng diện tích gần 200m², tường xây kiên cố, 2 phòng học, 1 phòng ở tập thể, bếp ăn, khu vệ sinh, sân chơi, tường rào.</p><p><br></p><p>Điểm trường có 35 học sinh mầm non và tiểu học. Ngôi trường mới đưa vào sử dụng thay thế điểm trường tạm vốn đã xuống cấp.</p><p><br></p><p>Ngoài điểm trường Răng Chuối bị thiệt hại, tại huyện Nam Trà My những ngày qua trời mưa lớn kéo dài khiến nhiều điểm sạt lở tuyến đường bị đứt gãy, hư hỏng nặng.</p><p><br></p><p>Huyện Nam Trà My đã chỉ đạo các địa phương cắm biển báo nguy hiểm và cắm biển cấm xe tải trọng lớn, chỉ đạo đơn vị duy tu bảo vệ kè tạm để đảm bảo giao thông xe tải nhỏ và xe ô tô con lưu thông.</p>
+2024-11-29 20:13:20.591+00	2024-11-30 17:03:12.981+00	27	\N	1	Xây dựng cầu treo	120000000	gfdsdfg	0	Theo lãnh đạo xã Trà Tập, đợt mưa trước đó đã gây sạt lở ta-luy dương sau trường. Do đó, chính quyền địa phương đã cho đóng cửa điểm trường trên, dời lớp học ...	<p><strong>Thông tin chi tiết</strong></p><p>Theo lãnh đạo xã Trà Tập, đợt mưa trước đó đã gây sạt lở ta-luy dương sau trường. Do đó, chính quyền địa phương đã cho đóng cửa điểm trường trên, dời lớp học về điểm trường cũ (bằng gỗ), chờ phương án xây dựng kè phía sau. Tuy nhiên, đợt mưa này tiếp tục gây sạt lở khiến điểm trường bị sập.</p><p><br></p><p>Được biết, điểm trường Răng Chuối mới khánh thành hồi tháng 9 với tổng kinh phí xây dựng hơn 1,4 tỉ đồng, do một nhà tài trợ tại TP HCM hỗ trợ toàn bộ chi phí.</p><p><br></p><p>Công trình có tổng diện tích gần 200m², tường xây kiên cố, 2 phòng học, 1 phòng ở tập thể, bếp ăn, khu vệ sinh, sân chơi, tường rào.</p><p><br></p><p>Điểm trường có 35 học sinh mầm non và tiểu học. Ngôi trường mới đưa vào sử dụng thay thế điểm trường tạm vốn đã xuống cấp.</p><p><br></p><p>Ngoài điểm trường Răng Chuối bị thiệt hại, tại huyện Nam Trà My những ngày qua trời mưa lớn kéo dài khiến nhiều điểm sạt lở tuyến đường bị đứt gãy, hư hỏng nặng.</p><p><br></p><p>Huyện Nam Trà My đã chỉ đạo các địa phương cắm biển báo nguy hiểm và cắm biển cấm xe tải trọng lớn, chỉ đạo đơn vị duy tu bảo vệ kè tạm để đảm bảo giao thông xe tải nhỏ và xe ô tô con lưu thông.</p>
 \.
 
 
@@ -11706,7 +11706,6 @@ nocobase-admin-menu	qkanxqd13dl	12	\N	\N	\N
 u62y9zt7gwu	u62y9zt7gwu	0	f	properties	\N
 yc5x6qvg4mh	u62y9zt7gwu	1	\N	\N	1
 hmft2ujv1uf	pbpsju21w1y	7	\N	\N	\N
-pde5ayqzqo1	n65uanub9sx	2	\N	\N	\N
 v4rijabnpgp	v4rijabnpgp	0	f	properties	\N
 r6v5yp99nbl	v4rijabnpgp	1	\N	\N	1
 zwlt9p2m4v5	zwlt9p2m4v5	0	f	properties	\N
@@ -11723,7 +11722,6 @@ i99shgxsfzv	zwlt9p2m4v5	5	\N	\N	\N
 6e6up9qf6jw	r6v5yp99nbl	4	\N	\N	\N
 6e6up9qf6jw	v4rijabnpgp	5	\N	\N	\N
 6e6up9qf6jw	zwlt9p2m4v5	6	\N	\N	\N
-pde5ayqzqo1	fvz3km1i6ms	2	\N	\N	\N
 q5sp3fyrz47	r6v5yp99nbl	5	\N	\N	\N
 q5sp3fyrz47	v4rijabnpgp	6	\N	\N	\N
 q5sp3fyrz47	zwlt9p2m4v5	7	\N	\N	\N
@@ -11773,7 +11771,6 @@ r6v5yp99nbl	r6v5yp99nbl	0	f	properties	\N
 n596xt7b4gz	r6v5yp99nbl	1	\N	\N	8
 ilc9ma1uakv	ilc9ma1uakv	0	f	properties	\N
 xw2eyjxkao7	xw2eyjxkao7	0	f	properties	\N
-pde5ayqzqo1	b410c64osaf	1	\N	\N	1
 xw2eyjxkao7	ilc9ma1uakv	1	\N	\N	1
 xhaimvl6v3t	xhaimvl6v3t	0	f	properties	\N
 ilc9ma1uakv	xhaimvl6v3t	1	\N	\N	1
@@ -11872,12 +11869,7 @@ i0lnhtci4u6	darepap4yo5	17	\N	\N	\N
 swxvjglsevf	darepap4yo5	18	\N	\N	\N
 nocobase-admin-menu	darepap4yo5	19	\N	\N	\N
 4gnesuyiq9w	darepap4yo5	1	\N	\N	1
-yivjshzifwl	n65uanub9sx	3	\N	\N	\N
-yivjshzifwl	fvz3km1i6ms	3	\N	\N	\N
-yivjshzifwl	b410c64osaf	2	\N	\N	\N
 7poa6levyva	pde5ayqzqo1	2	\N	\N	\N
-7poa6levyva	n65uanub9sx	4	\N	\N	\N
-7poa6levyva	fvz3km1i6ms	4	\N	\N	\N
 wtu8v3wspnv	wtu8v3wspnv	0	f	properties	\N
 dv1xjwdmvcg	wtu8v3wspnv	1	\N	\N	1
 oi4cs4tbslz	oi4cs4tbslz	0	f	properties	\N
@@ -12073,20 +12065,9 @@ nc92u2m878d	17dq5190uui	1	\N	\N	8
 hmft2ujv1uf	cbhgjqiskk5	3	\N	\N	\N
 nocobase-admin-menu	cbhgjqiskk5	4	\N	\N	\N
 cbhgjqiskk5	cbhgjqiskk5	0	f	properties	\N
-7poa6levyva	cbhgjqiskk5	1	\N	\N	7
-7poa6levyva	b410c64osaf	3	\N	\N	\N
 fe7kgdo55ax	pde5ayqzqo1	3	\N	\N	\N
-fe7kgdo55ax	n65uanub9sx	5	\N	\N	\N
-fe7kgdo55ax	fvz3km1i6ms	5	\N	\N	\N
-fe7kgdo55ax	b410c64osaf	4	\N	\N	\N
 hmft2ujv1uf	pde5ayqzqo1	4	\N	\N	\N
-hmft2ujv1uf	n65uanub9sx	6	\N	\N	\N
-hmft2ujv1uf	fvz3km1i6ms	6	\N	\N	\N
-hmft2ujv1uf	b410c64osaf	5	\N	\N	\N
 nocobase-admin-menu	pde5ayqzqo1	5	\N	\N	\N
-nocobase-admin-menu	n65uanub9sx	7	\N	\N	\N
-nocobase-admin-menu	fvz3km1i6ms	7	\N	\N	\N
-nocobase-admin-menu	b410c64osaf	6	\N	\N	\N
 pde5ayqzqo1	pde5ayqzqo1	0	f	properties	\N
 rnko20ymzdm	pbpsju21w1y	1	\N	\N	1
 fe7kgdo55ax	oq5d1lxpmfu	2	\N	\N	\N
@@ -12127,6 +12108,7 @@ wsafpwbqr88	jfqsx79zobd	1	\N	\N	1
 66lgu9id6bj	66lgu9id6bj	0	f	properties	\N
 jfqsx79zobd	66lgu9id6bj	1	\N	\N	1
 wsafpwbqr88	66lgu9id6bj	2	\N	\N	1
+7poa6levyva	cbhgjqiskk5	1	\N	\N	8
 8t2c5f2jjl9	8t2c5f2jjl9	0	f	properties	\N
 66lgu9id6bj	8t2c5f2jjl9	1	\N	\N	1
 jfqsx79zobd	8t2c5f2jjl9	2	\N	\N	1
@@ -12153,7 +12135,6 @@ k99w3v09n98	8t2c5f2jjl9	5	\N	\N	\N
 hmft2ujv1uf	oq5d1lxpmfu	3	\N	\N	\N
 nocobase-admin-menu	oq5d1lxpmfu	4	\N	\N	\N
 oq5d1lxpmfu	oq5d1lxpmfu	0	f	properties	\N
-7poa6levyva	oq5d1lxpmfu	1	\N	\N	6
 k99w3v09n98	odogwwfdotc	6	\N	\N	\N
 k99w3v09n98	oj491oo69he	6	\N	\N	\N
 48d58aj2z3f	wsafpwbqr88	3	\N	\N	\N
@@ -12759,7 +12740,6 @@ fe7kgdo55ax	5po28o9th2g	2	\N	\N	\N
 hmft2ujv1uf	5po28o9th2g	3	\N	\N	\N
 nocobase-admin-menu	5po28o9th2g	4	\N	\N	\N
 5po28o9th2g	5po28o9th2g	0	f	properties	\N
-7poa6levyva	5po28o9th2g	1	\N	\N	4
 tavzpgzflnv	tavzpgzflnv	0	f	properties	\N
 s41jwc7ushc	tavzpgzflnv	1	\N	\N	1
 fe7kgdo55ax	fe7kgdo55ax	0	t	properties	\N
@@ -12779,7 +12759,6 @@ hmft2ujv1uf	tavzpgzflnv	4	\N	\N	\N
 nocobase-admin-menu	s41jwc7ushc	4	\N	\N	\N
 nocobase-admin-menu	tavzpgzflnv	5	\N	\N	\N
 s41jwc7ushc	s41jwc7ushc	0	f	properties	\N
-7poa6levyva	s41jwc7ushc	1	\N	\N	5
 6qulve4ybk4	6qulve4ybk4	0	f	properties	\N
 y05re45hs3a	6qulve4ybk4	1	\N	\N	5
 4ryyxzuq87v	4ryyxzuq87v	0	f	properties	\N
@@ -12922,9 +12901,9 @@ nocobase-admin-menu	387jrys6pj9	23	\N	\N	\N
 3p9f7asal9h	3p9f7asal9h	0	f	properties	\N
 y05re45hs3a	3p9f7asal9h	1	\N	\N	7
 swbgm59qce3	swbgm59qce3	0	f	properties	\N
-7poa6levyva	swbgm59qce3	1	\N	\N	8
 fe7kgdo55ax	swbgm59qce3	2	\N	\N	\N
 fe7kgdo55ax	gwkooqabv4x	2	\N	\N	\N
+7poa6levyva	swbgm59qce3	1	\N	\N	9
 hmft2ujv1uf	swbgm59qce3	3	\N	\N	\N
 hmft2ujv1uf	gwkooqabv4x	3	\N	\N	\N
 nocobase-admin-menu	swbgm59qce3	4	\N	\N	\N
@@ -13178,11 +13157,10 @@ nocobase-admin-menu	4jc43siezjp	4	\N	\N	\N
 fe7kgdo55ax	yivjshzifwl	2	\N	\N	\N
 hmft2ujv1uf	yivjshzifwl	3	\N	\N	\N
 nocobase-admin-menu	yivjshzifwl	4	\N	\N	\N
-7poa6levyva	j0x0k0rv3yw	1	\N	\N	25
-7poa6levyva	c7cl1yivppx	1	\N	\N	26
-7poa6levyva	4jc43siezjp	1	\N	\N	17
+7poa6levyva	j0x0k0rv3yw	1	\N	\N	26
+7poa6levyva	c7cl1yivppx	1	\N	\N	27
+7poa6levyva	4jc43siezjp	1	\N	\N	18
 yivjshzifwl	yivjshzifwl	0	f	properties	\N
-7poa6levyva	yivjshzifwl	1	\N	\N	9
 7poa6levyva	p2fd2nllyzz	3	\N	\N	\N
 fe7kgdo55ax	p2fd2nllyzz	4	\N	\N	\N
 hmft2ujv1uf	p2fd2nllyzz	5	\N	\N	\N
@@ -13294,6 +13272,7 @@ ugc9ztt4hb4	i5ep94ei4hn	1	\N	\N	2
 7qdtw3aqf8f	9znhwv6jh2d	1	\N	\N	1
 dohzvch4noi	dohzvch4noi	0	f	properties	\N
 9znhwv6jh2d	dohzvch4noi	1	\N	\N	1
+7poa6levyva	yivjshzifwl	1	\N	\N	10
 7qdtw3aqf8f	dohzvch4noi	2	\N	\N	1
 oyw4y44yqgd	oyw4y44yqgd	0	f	properties	\N
 dohzvch4noi	oyw4y44yqgd	1	\N	\N	1
@@ -13316,7 +13295,6 @@ i5ep94ei4hn	bztjip2msxq	6	\N	\N	\N
 ugc9ztt4hb4	7qdtw3aqf8f	3	\N	\N	\N
 ugc9ztt4hb4	9znhwv6jh2d	4	\N	\N	\N
 ugc9ztt4hb4	dohzvch4noi	5	\N	\N	\N
-b410c64osaf	b410c64osaf	0	f	properties	\N
 mupdgh8dhyb	mupdgh8dhyb	0	f	properties	\N
 lzuobjmh9nr	lzuobjmh9nr	0	f	properties	\N
 2yh8xonuy9p	lzuobjmh9nr	1	\N	\N	6
@@ -13384,10 +13362,6 @@ u1nyxe00lc6	u1nyxe00lc6	0	f	properties	\N
 hwi0frrc1o1	u1nyxe00lc6	1	\N	\N	1
 8avia19u880	u1nyxe00lc6	2	\N	\N	1
 eoz95qtwix6	eoz95qtwix6	0	f	properties	\N
-n65uanub9sx	n65uanub9sx	0	f	properties	\N
-b410c64osaf	n65uanub9sx	1	\N	\N	1
-fvz3km1i6ms	fvz3km1i6ms	0	f	properties	\N
-b410c64osaf	fvz3km1i6ms	1	\N	\N	2
 fe7kgdo55ax	mupdgh8dhyb	2	\N	\N	\N
 hmft2ujv1uf	mupdgh8dhyb	3	\N	\N	\N
 nocobase-admin-menu	mupdgh8dhyb	4	\N	\N	\N
@@ -14335,69 +14309,10 @@ nocobase-admin-menu	ioq8ld31vte	22	\N	\N	\N
 nocobase-admin-menu	ojgs7eoz5hg	23	\N	\N	\N
 cm22blbci2c	cm22blbci2c	0	f	properties	\N
 y05re45hs3a	cm22blbci2c	1	\N	\N	6
-x3ls6jq4ldm	x3ls6jq4ldm	0	f	properties	\N
-fvz3km1i6ms	x3ls6jq4ldm	1	\N	\N	2
 fe7kgdo55ax	ssd1y8mk1mx	2	\N	\N	\N
 hmft2ujv1uf	ssd1y8mk1mx	3	\N	\N	\N
 nocobase-admin-menu	ssd1y8mk1mx	4	\N	\N	\N
 ssd1y8mk1mx	ssd1y8mk1mx	0	f	properties	\N
-cm46dlsp65t	cm46dlsp65t	0	f	properties	\N
-xkyavrac3i1	cm46dlsp65t	1	\N	\N	1
-jdpnao7e4yj	jdpnao7e4yj	0	f	properties	\N
-cm46dlsp65t	jdpnao7e4yj	1	\N	\N	1
-xkyavrac3i1	jdpnao7e4yj	2	\N	\N	1
-pde5ayqzqo1	xkyavrac3i1	3	\N	\N	\N
-pde5ayqzqo1	cm46dlsp65t	4	\N	\N	\N
-pde5ayqzqo1	jdpnao7e4yj	5	\N	\N	\N
-yivjshzifwl	xkyavrac3i1	4	\N	\N	\N
-yivjshzifwl	cm46dlsp65t	5	\N	\N	\N
-yivjshzifwl	jdpnao7e4yj	6	\N	\N	\N
-7poa6levyva	xkyavrac3i1	5	\N	\N	\N
-7poa6levyva	cm46dlsp65t	6	\N	\N	\N
-7poa6levyva	jdpnao7e4yj	7	\N	\N	\N
-fe7kgdo55ax	xkyavrac3i1	6	\N	\N	\N
-fe7kgdo55ax	cm46dlsp65t	7	\N	\N	\N
-fe7kgdo55ax	jdpnao7e4yj	8	\N	\N	\N
-hmft2ujv1uf	xkyavrac3i1	7	\N	\N	\N
-hmft2ujv1uf	cm46dlsp65t	8	\N	\N	\N
-hmft2ujv1uf	jdpnao7e4yj	9	\N	\N	\N
-nocobase-admin-menu	xkyavrac3i1	8	\N	\N	\N
-nocobase-admin-menu	cm46dlsp65t	9	\N	\N	\N
-nocobase-admin-menu	jdpnao7e4yj	10	\N	\N	\N
-fvz3km1i6ms	cm46dlsp65t	2	\N	\N	\N
-fvz3km1i6ms	jdpnao7e4yj	3	\N	\N	\N
-b410c64osaf	xkyavrac3i1	2	\N	\N	\N
-b410c64osaf	cm46dlsp65t	3	\N	\N	\N
-b410c64osaf	jdpnao7e4yj	4	\N	\N	\N
-xkyavrac3i1	xkyavrac3i1	0	f	properties	\N
-fvz3km1i6ms	xkyavrac3i1	1	\N	\N	1
-6fy9l9kloul	6fy9l9kloul	0	f	properties	\N
-x3ls6jq4ldm	6fy9l9kloul	1	\N	\N	1
-mxutorz6z5i	mxutorz6z5i	0	f	properties	\N
-6fy9l9kloul	mxutorz6z5i	1	\N	\N	1
-x3ls6jq4ldm	mxutorz6z5i	2	\N	\N	1
-pde5ayqzqo1	x3ls6jq4ldm	3	\N	\N	\N
-pde5ayqzqo1	6fy9l9kloul	4	\N	\N	\N
-pde5ayqzqo1	mxutorz6z5i	5	\N	\N	\N
-yivjshzifwl	x3ls6jq4ldm	4	\N	\N	\N
-yivjshzifwl	6fy9l9kloul	5	\N	\N	\N
-yivjshzifwl	mxutorz6z5i	6	\N	\N	\N
-7poa6levyva	x3ls6jq4ldm	5	\N	\N	\N
-7poa6levyva	6fy9l9kloul	6	\N	\N	\N
-7poa6levyva	mxutorz6z5i	7	\N	\N	\N
-fe7kgdo55ax	x3ls6jq4ldm	6	\N	\N	\N
-fe7kgdo55ax	6fy9l9kloul	7	\N	\N	\N
-fe7kgdo55ax	mxutorz6z5i	8	\N	\N	\N
-hmft2ujv1uf	x3ls6jq4ldm	7	\N	\N	\N
-hmft2ujv1uf	6fy9l9kloul	8	\N	\N	\N
-hmft2ujv1uf	mxutorz6z5i	9	\N	\N	\N
-nocobase-admin-menu	x3ls6jq4ldm	8	\N	\N	\N
-nocobase-admin-menu	6fy9l9kloul	9	\N	\N	\N
-nocobase-admin-menu	mxutorz6z5i	10	\N	\N	\N
-fvz3km1i6ms	6fy9l9kloul	2	\N	\N	\N
-fvz3km1i6ms	mxutorz6z5i	3	\N	\N	\N
-b410c64osaf	x3ls6jq4ldm	2	\N	\N	\N
-b410c64osaf	6fy9l9kloul	3	\N	\N	\N
 rnko20ymzdm	rnko20ymzdm	0	f	properties	\N
 52h8j6knyh0	rnko20ymzdm	1	\N	\N	1
 f70h0f0jiha	f70h0f0jiha	0	f	properties	\N
@@ -14510,7 +14425,6 @@ hmft2ujv1uf	l8by3cc8sei	9	\N	\N	\N
 nocobase-admin-menu	l8by3cc8sei	10	\N	\N	\N
 q3szmzf1eqa	q3szmzf1eqa	0	f	properties	\N
 ugkql0r3ggt	q3szmzf1eqa	1	\N	\N	4
-b410c64osaf	mxutorz6z5i	4	\N	\N	\N
 0f0yp3ro5dp	7guv5eckse5	2	\N	\N	\N
 f70h0f0jiha	7guv5eckse5	3	\N	\N	\N
 52h8j6knyh0	7guv5eckse5	4	\N	\N	\N
@@ -14612,8 +14526,6 @@ fe7kgdo55ax	xq16274v512	2	\N	\N	\N
 fe7kgdo55ax	wabcyx326vn	3	\N	\N	\N
 wabcyx326vn	wabcyx326vn	0	f	properties	\N
 xq16274v512	wabcyx326vn	1	\N	\N	1
-g18audwltax	g18audwltax	0	f	properties	\N
-sar63npzon8	g18audwltax	1	\N	\N	1
 hmft2ujv1uf	xq16274v512	3	\N	\N	\N
 hmft2ujv1uf	wabcyx326vn	4	\N	\N	\N
 nocobase-admin-menu	xq16274v512	4	\N	\N	\N
@@ -14622,59 +14534,231 @@ xq16274v512	xq16274v512	0	f	properties	\N
 fe7kgdo55ax	x3fc9scqc79	2	\N	\N	\N
 hmft2ujv1uf	x3fc9scqc79	3	\N	\N	\N
 nocobase-admin-menu	x3fc9scqc79	4	\N	\N	\N
-7poa6levyva	r1jfuy0x2g2	1	\N	\N	24
-7poa6levyva	gwkooqabv4x	1	\N	\N	16
-7poa6levyva	9cnsplg5f8i	1	\N	\N	21
-7poa6levyva	ris4kebta55	1	\N	\N	15
-7poa6levyva	unis1bj47de	1	\N	\N	12
-7poa6levyva	qxskufg0hv4	1	\N	\N	13
-7poa6levyva	pkcprxz6rfy	1	\N	\N	14
-7poa6levyva	mupdgh8dhyb	1	\N	\N	18
-7poa6levyva	9bxpugcgkui	1	\N	\N	19
-7poa6levyva	ssd1y8mk1mx	1	\N	\N	22
-7poa6levyva	f8feuhfiywv	1	\N	\N	23
-7poa6levyva	xq16274v512	1	\N	\N	28
-7poa6levyva	x3fc9scqc79	1	\N	\N	29
 vvnjfeman6s	vvnjfeman6s	0	f	properties	\N
 tl0outhgcgx	vvnjfeman6s	1	\N	\N	1
-7poa6levyva	g18audwltax	4	\N	\N	\N
-7poa6levyva	sar63npzon8	3	\N	\N	\N
-fe7kgdo55ax	g18audwltax	5	\N	\N	\N
-fe7kgdo55ax	sar63npzon8	4	\N	\N	\N
-hmft2ujv1uf	g18audwltax	6	\N	\N	\N
-hmft2ujv1uf	sar63npzon8	5	\N	\N	\N
-nocobase-admin-menu	g18audwltax	7	\N	\N	\N
-nocobase-admin-menu	sar63npzon8	6	\N	\N	\N
-pde5ayqzqo1	g18audwltax	2	\N	\N	\N
-yivjshzifwl	g18audwltax	3	\N	\N	\N
-yivjshzifwl	sar63npzon8	2	\N	\N	\N
-sar63npzon8	sar63npzon8	0	f	properties	\N
-pde5ayqzqo1	sar63npzon8	1	\N	\N	4
 fe7kgdo55ax	yklcecblv53	2	\N	\N	\N
 hmft2ujv1uf	yklcecblv53	3	\N	\N	\N
 nocobase-admin-menu	yklcecblv53	4	\N	\N	\N
 yklcecblv53	yklcecblv53	0	f	properties	\N
-7poa6levyva	yklcecblv53	1	\N	\N	30
-gw7uq6e8ucw	vvnjfeman6s	2	\N	\N	\N
 tl0outhgcgx	tl0outhgcgx	0	f	properties	\N
-gw7uq6e8ucw	tl0outhgcgx	1	\N	\N	1
-fe7kgdo55ax	gw7uq6e8ucw	3	\N	\N	\N
-fe7kgdo55ax	tl0outhgcgx	4	\N	\N	\N
-fe7kgdo55ax	vvnjfeman6s	5	\N	\N	\N
-hmft2ujv1uf	gw7uq6e8ucw	4	\N	\N	\N
-hmft2ujv1uf	tl0outhgcgx	5	\N	\N	\N
-hmft2ujv1uf	vvnjfeman6s	6	\N	\N	\N
-nocobase-admin-menu	gw7uq6e8ucw	5	\N	\N	\N
-nocobase-admin-menu	tl0outhgcgx	6	\N	\N	\N
-nocobase-admin-menu	vvnjfeman6s	7	\N	\N	\N
-yivjshzifwl	tl0outhgcgx	2	\N	\N	\N
-yivjshzifwl	vvnjfeman6s	3	\N	\N	\N
-7poa6levyva	gw7uq6e8ucw	2	\N	\N	\N
+yivjshzifwl	pde5ayqzqo1	1	\N	\N	6
+d56je1k3zqr	d56je1k3zqr	0	f	properties	\N
+zkxpp9dciks	d56je1k3zqr	1	\N	\N	1
+pu169zvh60m	pu169zvh60m	0	f	properties	\N
+d56je1k3zqr	pu169zvh60m	1	\N	\N	1
+zkxpp9dciks	pu169zvh60m	2	\N	\N	1
+1u4agf34j24	1u4agf34j24	0	f	properties	\N
+nrjlwkyfth3	1u4agf34j24	1	\N	\N	1
+ap4tz1vugqh	ap4tz1vugqh	0	f	properties	\N
+1u4agf34j24	ap4tz1vugqh	1	\N	\N	1
+nrjlwkyfth3	ap4tz1vugqh	2	\N	\N	1
+pu169zvh60m	1u4agf34j24	2	\N	\N	\N
+pu169zvh60m	ap4tz1vugqh	3	\N	\N	\N
+d56je1k3zqr	nrjlwkyfth3	2	\N	\N	\N
+d56je1k3zqr	1u4agf34j24	3	\N	\N	\N
+d56je1k3zqr	ap4tz1vugqh	4	\N	\N	\N
+zkxpp9dciks	nrjlwkyfth3	3	\N	\N	\N
+zkxpp9dciks	1u4agf34j24	4	\N	\N	\N
+zkxpp9dciks	ap4tz1vugqh	5	\N	\N	\N
+nrjlwkyfth3	nrjlwkyfth3	0	f	properties	\N
+pu169zvh60m	nrjlwkyfth3	1	\N	\N	1
+zkxpp9dciks	zkxpp9dciks	0	f	properties	\N
+kec946p29nh	kec946p29nh	0	f	properties	\N
+xxrv6yw7ug9	xxrv6yw7ug9	0	f	properties	\N
+ni9s0jfe89u	xxrv6yw7ug9	1	\N	\N	1
+vugxsjmnyiz	vugxsjmnyiz	0	f	properties	\N
+xxrv6yw7ug9	vugxsjmnyiz	1	\N	\N	1
+ni9s0jfe89u	vugxsjmnyiz	2	\N	\N	1
+pu169zvh60m	xxrv6yw7ug9	2	\N	\N	\N
+pu169zvh60m	vugxsjmnyiz	3	\N	\N	\N
+d56je1k3zqr	ni9s0jfe89u	2	\N	\N	\N
+d56je1k3zqr	xxrv6yw7ug9	3	\N	\N	\N
+d56je1k3zqr	vugxsjmnyiz	4	\N	\N	\N
+zkxpp9dciks	ni9s0jfe89u	3	\N	\N	\N
+zkxpp9dciks	xxrv6yw7ug9	4	\N	\N	\N
+zkxpp9dciks	vugxsjmnyiz	5	\N	\N	\N
+ni9s0jfe89u	ni9s0jfe89u	0	f	properties	\N
+pu169zvh60m	ni9s0jfe89u	1	\N	\N	2
+37z9mqnsbzi	37z9mqnsbzi	0	f	properties	\N
+37z9mqnsbzi	d56je1k3zqr	2	\N	\N	\N
+37z9mqnsbzi	pu169zvh60m	3	\N	\N	\N
+37z9mqnsbzi	nrjlwkyfth3	4	\N	\N	\N
+37z9mqnsbzi	1u4agf34j24	5	\N	\N	\N
+37z9mqnsbzi	ap4tz1vugqh	6	\N	\N	\N
+37z9mqnsbzi	ni9s0jfe89u	4	\N	\N	\N
+37z9mqnsbzi	xxrv6yw7ug9	5	\N	\N	\N
+37z9mqnsbzi	vugxsjmnyiz	6	\N	\N	\N
+kec946p29nh	zkxpp9dciks	2	\N	\N	\N
+kec946p29nh	d56je1k3zqr	3	\N	\N	\N
+kec946p29nh	pu169zvh60m	4	\N	\N	\N
+kec946p29nh	nrjlwkyfth3	5	\N	\N	\N
+kec946p29nh	1u4agf34j24	6	\N	\N	\N
+kec946p29nh	ap4tz1vugqh	7	\N	\N	\N
+kec946p29nh	ni9s0jfe89u	5	\N	\N	\N
+kec946p29nh	xxrv6yw7ug9	6	\N	\N	\N
+kec946p29nh	vugxsjmnyiz	7	\N	\N	\N
+37z9mqnsbzi	zkxpp9dciks	1	\N	\N	1
+7poa6levyva	37z9mqnsbzi	2	\N	\N	\N
+7poa6levyva	zkxpp9dciks	3	\N	\N	\N
+7poa6levyva	d56je1k3zqr	4	\N	\N	\N
+7poa6levyva	pu169zvh60m	5	\N	\N	\N
+7poa6levyva	nrjlwkyfth3	6	\N	\N	\N
+7poa6levyva	1u4agf34j24	7	\N	\N	\N
+7poa6levyva	ap4tz1vugqh	8	\N	\N	\N
+7poa6levyva	ni9s0jfe89u	6	\N	\N	\N
+7poa6levyva	xxrv6yw7ug9	7	\N	\N	\N
+7poa6levyva	vugxsjmnyiz	8	\N	\N	\N
+fe7kgdo55ax	kec946p29nh	2	\N	\N	\N
+fe7kgdo55ax	37z9mqnsbzi	3	\N	\N	\N
+fe7kgdo55ax	zkxpp9dciks	4	\N	\N	\N
+fe7kgdo55ax	d56je1k3zqr	5	\N	\N	\N
+fe7kgdo55ax	pu169zvh60m	6	\N	\N	\N
+fe7kgdo55ax	nrjlwkyfth3	7	\N	\N	\N
+fe7kgdo55ax	1u4agf34j24	8	\N	\N	\N
+fe7kgdo55ax	ap4tz1vugqh	9	\N	\N	\N
+fe7kgdo55ax	ni9s0jfe89u	7	\N	\N	\N
+fe7kgdo55ax	xxrv6yw7ug9	8	\N	\N	\N
+fe7kgdo55ax	vugxsjmnyiz	9	\N	\N	\N
+hmft2ujv1uf	kec946p29nh	3	\N	\N	\N
+hmft2ujv1uf	37z9mqnsbzi	4	\N	\N	\N
+hmft2ujv1uf	zkxpp9dciks	5	\N	\N	\N
+hmft2ujv1uf	d56je1k3zqr	6	\N	\N	\N
+hmft2ujv1uf	pu169zvh60m	7	\N	\N	\N
+hmft2ujv1uf	nrjlwkyfth3	8	\N	\N	\N
+hmft2ujv1uf	1u4agf34j24	9	\N	\N	\N
+hmft2ujv1uf	ap4tz1vugqh	10	\N	\N	\N
+hmft2ujv1uf	ni9s0jfe89u	8	\N	\N	\N
+hmft2ujv1uf	xxrv6yw7ug9	9	\N	\N	\N
+hmft2ujv1uf	vugxsjmnyiz	10	\N	\N	\N
+nocobase-admin-menu	kec946p29nh	4	\N	\N	\N
+nocobase-admin-menu	37z9mqnsbzi	5	\N	\N	\N
+nocobase-admin-menu	zkxpp9dciks	6	\N	\N	\N
+nocobase-admin-menu	d56je1k3zqr	7	\N	\N	\N
+nocobase-admin-menu	pu169zvh60m	8	\N	\N	\N
+nocobase-admin-menu	nrjlwkyfth3	9	\N	\N	\N
+7poa6levyva	kec946p29nh	1	\N	\N	1
+kec946p29nh	37z9mqnsbzi	1	\N	\N	2
+nocobase-admin-menu	1u4agf34j24	10	\N	\N	\N
+nocobase-admin-menu	ap4tz1vugqh	11	\N	\N	\N
+nocobase-admin-menu	ni9s0jfe89u	9	\N	\N	\N
+nocobase-admin-menu	xxrv6yw7ug9	10	\N	\N	\N
+nocobase-admin-menu	vugxsjmnyiz	11	\N	\N	\N
+7poa6levyva	oq5d1lxpmfu	1	\N	\N	7
+7poa6levyva	5po28o9th2g	1	\N	\N	5
+7poa6levyva	s41jwc7ushc	1	\N	\N	6
+7poa6levyva	r1jfuy0x2g2	1	\N	\N	25
+7poa6levyva	gwkooqabv4x	1	\N	\N	17
+7poa6levyva	9cnsplg5f8i	1	\N	\N	22
+7poa6levyva	ris4kebta55	1	\N	\N	16
+7poa6levyva	unis1bj47de	1	\N	\N	13
+7poa6levyva	qxskufg0hv4	1	\N	\N	14
+7poa6levyva	pkcprxz6rfy	1	\N	\N	15
+7poa6levyva	mupdgh8dhyb	1	\N	\N	19
+7poa6levyva	9bxpugcgkui	1	\N	\N	20
+7poa6levyva	ssd1y8mk1mx	1	\N	\N	23
+7poa6levyva	f8feuhfiywv	1	\N	\N	24
+7poa6levyva	xq16274v512	1	\N	\N	29
+7poa6levyva	x3fc9scqc79	1	\N	\N	30
+7poa6levyva	yklcecblv53	1	\N	\N	31
+waxys3iyxy9	vvnjfeman6s	2	\N	\N	\N
+qoeo1gjqrv7	qoeo1gjqrv7	0	f	properties	\N
+waxys3iyxy9	tl0outhgcgx	1	\N	\N	1
+kec946p29nh	tl0outhgcgx	2	\N	\N	\N
+kec946p29nh	vvnjfeman6s	3	\N	\N	\N
+7poa6levyva	waxys3iyxy9	2	\N	\N	\N
 7poa6levyva	tl0outhgcgx	3	\N	\N	\N
 7poa6levyva	vvnjfeman6s	4	\N	\N	\N
-gw7uq6e8ucw	gw7uq6e8ucw	0	f	properties	\N
-yivjshzifwl	pde5ayqzqo1	1	\N	\N	6
-yivjshzifwl	gw7uq6e8ucw	1	\N	\N	1
+fe7kgdo55ax	waxys3iyxy9	3	\N	\N	\N
+fe7kgdo55ax	tl0outhgcgx	4	\N	\N	\N
+fe7kgdo55ax	vvnjfeman6s	5	\N	\N	\N
+hmft2ujv1uf	waxys3iyxy9	4	\N	\N	\N
+hmft2ujv1uf	tl0outhgcgx	5	\N	\N	\N
+hmft2ujv1uf	vvnjfeman6s	6	\N	\N	\N
+nocobase-admin-menu	waxys3iyxy9	5	\N	\N	\N
+nocobase-admin-menu	tl0outhgcgx	6	\N	\N	\N
+nocobase-admin-menu	vvnjfeman6s	7	\N	\N	\N
+waxys3iyxy9	waxys3iyxy9	0	f	properties	\N
+kec946p29nh	waxys3iyxy9	1	\N	\N	1
+lvn71fru6iw	lvn71fru6iw	0	f	properties	\N
+qoeo1gjqrv7	lvn71fru6iw	1	\N	\N	1
+qlpok27amsj	qlpok27amsj	0	f	properties	\N
+lvn71fru6iw	qlpok27amsj	1	\N	\N	1
+qoeo1gjqrv7	qlpok27amsj	2	\N	\N	1
+w4ciktesp5j	qoeo1gjqrv7	11	\N	\N	\N
+w4ciktesp5j	lvn71fru6iw	12	\N	\N	\N
+w4ciktesp5j	qlpok27amsj	13	\N	\N	\N
+tg2hn64ei8t	qoeo1gjqrv7	12	\N	\N	\N
+tg2hn64ei8t	lvn71fru6iw	13	\N	\N	\N
+tg2hn64ei8t	qlpok27amsj	14	\N	\N	\N
+44890jxlzup	qoeo1gjqrv7	13	\N	\N	\N
+44890jxlzup	lvn71fru6iw	14	\N	\N	\N
+44890jxlzup	qlpok27amsj	15	\N	\N	\N
+xa635tbvi5c	qoeo1gjqrv7	14	\N	\N	\N
+xa635tbvi5c	lvn71fru6iw	15	\N	\N	\N
+xa635tbvi5c	qlpok27amsj	16	\N	\N	\N
+46p5wcng6sm	qoeo1gjqrv7	8	\N	\N	\N
+46p5wcng6sm	lvn71fru6iw	9	\N	\N	\N
+46p5wcng6sm	qlpok27amsj	10	\N	\N	\N
+r3e9s9hvz53	qoeo1gjqrv7	9	\N	\N	\N
+r3e9s9hvz53	lvn71fru6iw	10	\N	\N	\N
+r3e9s9hvz53	qlpok27amsj	11	\N	\N	\N
+ylyr9dd0a50	qoeo1gjqrv7	10	\N	\N	\N
+ylyr9dd0a50	lvn71fru6iw	11	\N	\N	\N
+ylyr9dd0a50	qlpok27amsj	12	\N	\N	\N
+4dgysxrfq7o	qoeo1gjqrv7	15	\N	\N	\N
+4dgysxrfq7o	lvn71fru6iw	16	\N	\N	\N
+4dgysxrfq7o	qlpok27amsj	17	\N	\N	\N
+sf8fl742bgm	qoeo1gjqrv7	16	\N	\N	\N
+sf8fl742bgm	lvn71fru6iw	17	\N	\N	\N
+sf8fl742bgm	qlpok27amsj	18	\N	\N	\N
+sptin92gm5m	qoeo1gjqrv7	17	\N	\N	\N
+sptin92gm5m	lvn71fru6iw	18	\N	\N	\N
+sptin92gm5m	qlpok27amsj	19	\N	\N	\N
+i0lnhtci4u6	qoeo1gjqrv7	18	\N	\N	\N
+i0lnhtci4u6	lvn71fru6iw	19	\N	\N	\N
+i0lnhtci4u6	qlpok27amsj	20	\N	\N	\N
+swxvjglsevf	qoeo1gjqrv7	19	\N	\N	\N
+swxvjglsevf	lvn71fru6iw	20	\N	\N	\N
+swxvjglsevf	qlpok27amsj	21	\N	\N	\N
+nocobase-admin-menu	qoeo1gjqrv7	20	\N	\N	\N
+nocobase-admin-menu	lvn71fru6iw	21	\N	\N	\N
+nocobase-admin-menu	qlpok27amsj	22	\N	\N	\N
+h0tf2zekdwj	lvn71fru6iw	2	\N	\N	\N
+h0tf2zekdwj	qlpok27amsj	3	\N	\N	\N
+f4amot355dj	qoeo1gjqrv7	2	\N	\N	\N
+f4amot355dj	lvn71fru6iw	3	\N	\N	\N
+f4amot355dj	qlpok27amsj	4	\N	\N	\N
+iam40dae216	qoeo1gjqrv7	3	\N	\N	\N
+iam40dae216	lvn71fru6iw	4	\N	\N	\N
+iam40dae216	qlpok27amsj	5	\N	\N	\N
+szg62voxazi	qoeo1gjqrv7	4	\N	\N	\N
+szg62voxazi	lvn71fru6iw	5	\N	\N	\N
+szg62voxazi	qlpok27amsj	6	\N	\N	\N
+jkiooahp540	qoeo1gjqrv7	5	\N	\N	\N
+jkiooahp540	lvn71fru6iw	6	\N	\N	\N
+jkiooahp540	qlpok27amsj	7	\N	\N	\N
+ndgk36ztoyy	qoeo1gjqrv7	6	\N	\N	\N
+ndgk36ztoyy	lvn71fru6iw	7	\N	\N	\N
+ndgk36ztoyy	qlpok27amsj	8	\N	\N	\N
+a62axznlu5x	qoeo1gjqrv7	7	\N	\N	\N
+a62axznlu5x	lvn71fru6iw	8	\N	\N	\N
+a62axznlu5x	qlpok27amsj	9	\N	\N	\N
+h0tf2zekdwj	qoeo1gjqrv7	1	\N	\N	5
+8974fc201bl	8974fc201bl	0	f	properties	\N
+7o0raci3dyn	8974fc201bl	1	\N	\N	1
+37z9mqnsbzi	8974fc201bl	2	\N	\N	\N
+kec946p29nh	7o0raci3dyn	2	\N	\N	\N
+kec946p29nh	8974fc201bl	3	\N	\N	\N
+7poa6levyva	7o0raci3dyn	3	\N	\N	\N
+7poa6levyva	8974fc201bl	4	\N	\N	\N
+fe7kgdo55ax	7o0raci3dyn	4	\N	\N	\N
+fe7kgdo55ax	8974fc201bl	5	\N	\N	\N
+hmft2ujv1uf	7o0raci3dyn	5	\N	\N	\N
+hmft2ujv1uf	8974fc201bl	6	\N	\N	\N
+nocobase-admin-menu	7o0raci3dyn	6	\N	\N	\N
+nocobase-admin-menu	8974fc201bl	7	\N	\N	\N
+7o0raci3dyn	7o0raci3dyn	0	f	properties	\N
+37z9mqnsbzi	7o0raci3dyn	1	\N	\N	2
 \.
 
 
@@ -15162,7 +15246,6 @@ bj7d5uc6lnd	5o2kdgwdq98	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 tdkqbjvhskr	j8g2cmfwto7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 0u09lqdoyvt	fund	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.fund","x-component-props":{"fieldNames":{"value":"id","label":"id"}},"x-app-version":"1.3.52"}
 3o26e8k5cba	bganen032st	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Submit\\") }}","x-action":"submit","x-component":"Action","x-use-component-props":"useUpdateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:updateSubmit","x-component-props":{"type":"primary","htmlType":"submit"},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.52"}
-xkyavrac3i1	b5wirmu6r55	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-collection-field":"name","x-component":"Grid.Row","x-app-version":"1.3.52"}
 eoz95qtwix6	eoz95qtwix6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"projects:view","x-decorator":"DetailsBlockProvider","x-use-decorator-props":"useDetailsWithPaginationDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"projects","readPretty":true,"action":"list","params":{"pageSize":1}},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:detailsWithPagination","x-component":"CardItem","x-app-version":"1.3.52","x-index":0}
 2h7gnmez0eb	j86wvwfhduz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Details","x-read-pretty":true,"x-use-component-props":"useDetailsWithPaginationProps","x-app-version":"1.3.52","x-index":1}
 kye7kplejx4	oq6rze1evpb	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"details:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":24}},"x-app-version":"1.3.52","x-index":1}
@@ -15188,7 +15271,6 @@ ll2so9vdgu3	lrxdgyheuht	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 0jqiruu9vf6	03zr42jo35m	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-index":1}
 b6910vi3jym	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.sub_title","x-component-props":{},"x-app-version":"1.3.52","x-index":1}
 quxuyp8dl2x	pagination	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Pagination","x-use-component-props":"useDetailsPaginationProps","x-app-version":"1.3.52","x-index":3}
-cm46dlsp65t	xm2n4k0v72h	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 q3szmzf1eqa	cmft0hwzk3f	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 68fxhhuy71v	from_account_name	{"x-uid":"68fxhhuy71v","name":"from_account_name","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_account_name","x-component-props":{},"x-app-version":"1.3.52","x-decorator-props":{"showTitle":false}}
 iipcd9rycsd	from_bank_name	{"x-uid":"iipcd9rycsd","name":"from_bank_name","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_bank_name","x-component-props":{},"x-app-version":"1.3.52","x-decorator-props":{"showTitle":false},"description":""}
@@ -15198,10 +15280,6 @@ w75rqpzvfdq	col_tee1znazv4f	{"x-uid":"w75rqpzvfdq","name":"col_tee1znazv4f","_is
 pbpsju21w1y	fromxe1ognk	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Refresh\\") }}","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined"},"x-align":"right","type":"void","x-app-version":"1.3.52"}
 j0x0k0rv3yw	z0rr8522rdf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 hupe35j3waf	wdcjw5oonnf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
-x3ls6jq4ldm	7m04sefds5p	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-collection-field":"sub_title","x-component":"Grid.Row","x-app-version":"1.3.52"}
-6fy9l9kloul	dqb2nempowo	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
-mxutorz6z5i	sub_title	{"x-uid":"mxutorz6z5i","name":"sub_title","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"InfoField","x-component-props":{"name":"sub_title","headerType":"p"},"x-settings":"fieldSettings:component:header picker","x-decorator":"FormItem","x-app-version":"1.3.52"}
-jdpnao7e4yj	name	{"x-uid":"jdpnao7e4yj","name":"name","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"InfoField","x-component-props":{"name":"name","headerType":"h2"},"x-settings":"fieldSettings:component:header picker","x-decorator":"FormItem","x-app-version":"1.3.52","x-async":false,"x-index":1}
 i5ep94ei4hn	74v0up0r5vs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Actions\\") }}","x-decorator":"TableV2.Column.ActionBar","x-component":"TableV2.Column","x-toolbar":"TableColumnSchemaToolbar","x-initializer":"table:configureItemActions","x-settings":"fieldSettings:TableColumn","x-toolbar-props":{"initializer":"table:configureItemActions"},"x-action-column":"actions","x-app-version":"1.3.52"}
 x74knwfm0hx	luf7vtkqq1b	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DndContext","x-component":"Space","x-component-props":{"split":"|"},"x-app-version":"1.3.52"}
 7qdtw3aqf8f	3um9q5ispqm	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Edit\\") }}","x-action":"update","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:edit","x-component":"Action.Link","x-component-props":{"openMode":"drawer","icon":"EditOutlined"},"x-action-context":{"dataSource":"main","collection":"transactions"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
@@ -15222,10 +15300,7 @@ ssd1y8mk1mx	9879c23cj0s	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 r1jfuy0x2g2	ihoxsztugt7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 mupdgh8dhyb	pfoxy9zmkx7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 swbgm59qce3	ufrasmewkf9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
-n65uanub9sx	header picker	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-use-component-props":"useHeaderPickerProps","x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
-fvz3km1i6ms	fields	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"info:configureFields","x-app-version":"1.3.52"}
 pkcprxz6rfy	lzsv1w75i9y	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
-b410c64osaf	t7cx7ml1ss1	{"x-uid":"b410c64osaf","name":"t7cx7ml1ss1","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-decorator-props":{"dataSource":"main","collection":"projects","action":"list","params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]}}},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:header picker","x-designer":"FormV2.Designer","x-component-props":{"useConfigureFields":true},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
 9bxpugcgkui	s13ehtexjiz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 lhbk1av87n1	zc7kwh6kagc	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 0kxudizv0xf	klwlhf63eyz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
@@ -15250,12 +15325,26 @@ c7cl1yivppx	oedwk0ldjd7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 x3fc9scqc79	d8w7evisb3h	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 xq16274v512	igkl4sy4f7u	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 wabcyx326vn	kwy8e9sly34	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
-sar63npzon8	y5xseg4fyi2	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-component":"FormItem","x-settings":"blockSettings:progress","x-toolbar":"BlockSchemaToolbar","x-decorator-props":{"progress":{},"rowKey":"id","runWhenParamsChanged":true,"readPretty":true,"dataSource":"main","collection":"projects","action":"list"},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
-g18audwltax	progress	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Progress","x-use-component-props":"useProgressBlockProps","x-app-version":"1.3.52"}
-gw7uq6e8ucw	col_jj9h9dkaa74	{"x-uid":"gw7uq6e8ucw","name":"col_jj9h9dkaa74","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":0,"x-component-props":{"width":50}}
-pde5ayqzqo1	col_odcegh5w9pb	{"x-uid":"pde5ayqzqo1","name":"col_odcegh5w9pb","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
+d56je1k3zqr	header picker	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"HeaderPickerBlock","x-app-version":"1.3.52"}
+pu169zvh60m	fields	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"info:configureFields","x-app-version":"1.3.52"}
+nrjlwkyfth3	wsvomijvhkd	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-collection-field":"name","x-component":"Grid.Row","x-app-version":"1.3.52"}
 yklcecblv53	o4dtetanwcx	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 tl0outhgcgx	flredz4yslg	{"x-uid":"tl0outhgcgx","name":"flredz4yslg","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-component":"FormItem","x-settings":"blockSettings:carousel","x-toolbar":"BlockSchemaToolbar","x-decorator-props":{"carousel":{"autoplay":true,"objectFit":"cover","height":400},"rowKey":"id","runWhenParamsChanged":true,"readPretty":true,"dataSource":"main","collection":"projects","action":"list","params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]},"appends":["images"]}},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
+1u4agf34j24	d5bdg6hxrlx	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+ni9s0jfe89u	si801o2gevr	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-collection-field":"sub_title","x-component":"Grid.Row","x-app-version":"1.3.52"}
+xxrv6yw7ug9	837ziej2csh	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+vugxsjmnyiz	sub_title	{"x-uid":"vugxsjmnyiz","name":"sub_title","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"InfoField","x-component-props":{"name":"sub_title","headerType":"p"},"x-settings":"fieldSettings:component:header picker","x-decorator":"FormItem","x-app-version":"1.3.52","x-async":false,"x-index":1}
+ap4tz1vugqh	name	{"x-uid":"ap4tz1vugqh","name":"name","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"InfoField","x-component-props":{"name":"name","headerType":"h3"},"x-settings":"fieldSettings:component:header picker","x-decorator":"FormItem","x-app-version":"1.3.52","x-async":false,"x-index":1}
+kec946p29nh	row_p4eq918bc0z	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":0}
+waxys3iyxy9	col_3w44pzjzeam	{"x-uid":"waxys3iyxy9","name":"col_3w44pzjzeam","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":0,"x-component-props":{"width":50}}
+37z9mqnsbzi	jad4cmvf89j	{"x-uid":"37z9mqnsbzi","name":"jad4cmvf89j","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-component-props":{"width":50}}
+pde5ayqzqo1	col_odcegh5w9pb	{"x-uid":"pde5ayqzqo1","name":"col_odcegh5w9pb","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":100}}
+zkxpp9dciks	9kxc1ow3e5f	{"x-uid":"zkxpp9dciks","name":"9kxc1ow3e5f","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-decorator-props":{"header picker":{"height":350},"dataSource":"main","collection":"projects","action":"list","headertype":{"height":345},"params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]}}},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:header picker","x-designer":"FormV2.Designer","x-component-props":{"useConfigureFields":true},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
+7o0raci3dyn	323ub6uje4i	{"x-uid":"7o0raci3dyn","name":"323ub6uje4i","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-component":"CardItem","x-settings":"blockSettings:progress","x-toolbar":"BlockSchemaToolbar","x-decorator-props":{"progress":{},"rowKey":"id","runWhenParamsChanged":true,"readPretty":true,"dataSource":"main","collection":"funds","action":"list","params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.fundId}}"}}]}}},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
+qoeo1gjqrv7	kw16xww70r9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+lvn71fru6iw	bl20ycxnjuz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+qlpok27amsj	current_amount	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"funds.current_amount","x-component-props":{},"x-app-version":"1.3.52"}
+8974fc201bl	progress	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Progress","x-use-component-props":"useProgressBlockProps","x-app-version":"1.3.52"}
 \.
 
 
@@ -16727,7 +16816,7 @@ CREATE INDEX verifications_provider_id ON public.verifications USING btree ("pro
 CREATE UNIQUE INDEX workflows_key_current ON public.workflows USING btree (key, current);
 
 
--- Completed on 2024-11-30 16:31:00 UTC
+-- Completed on 2024-11-30 17:36:42 UTC
 
 --
 -- PostgreSQL database dump complete

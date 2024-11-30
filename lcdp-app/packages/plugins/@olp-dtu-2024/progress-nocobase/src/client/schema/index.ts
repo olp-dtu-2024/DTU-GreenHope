@@ -45,7 +45,7 @@ export const progressSchema = ({ dataSource = 'main', collection }) => {
   return {
     type: 'void',
     'x-decorator': 'DataBlockProvider',
-    'x-component': 'FormItem',
+    'x-component': 'CardItem',
     'x-settings': progressSettings.name,
     'x-toolbar': 'BlockSchemaToolbar',
     'x-decorator-props': {
