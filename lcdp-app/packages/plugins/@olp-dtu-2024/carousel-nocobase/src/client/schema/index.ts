@@ -69,9 +69,6 @@ export const carouselSchema = ({ dataSource = 'main', collection }) => {
       dataSource,
       collection,
       action: 'list',
-      request: {
-        params: { appends: ['images'] },
-      },
     },
     'x-use-decorator-props': 'useBlockScopeDecoratorProps',
     properties: {

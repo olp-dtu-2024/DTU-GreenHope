@@ -39,6 +39,7 @@ export const carouselSettings = new SchemaSettings({
                     ...currentFilter,
                     ...data.filter,
                   },
+                  appends: ['images'],
                 },
               },
             };
@@ -58,6 +59,7 @@ export const carouselSettings = new SchemaSettings({
                           ...currentFilter,
                           ...data.filter,
                         },
+                        appends: ['images'],
                       },
                     },
                   });
