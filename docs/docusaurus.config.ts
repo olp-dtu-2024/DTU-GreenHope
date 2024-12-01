@@ -6,10 +6,8 @@ const config: Config = {
   title: 'DTU GreenHope',
   tagline: 'DTU GreenHope',
   favicon: 'img/favicon.ico',
-  url: 'https://olp-dtu-2024.github.io',
-  baseUrl: '/DTU-GreenHope/',
-  organizationName: 'olp-dtu-2024',
-  projectName: 'DTU-GreenHope',
+  url: 'http://green-hope.minhtuandng.id.vn',
+  baseUrl: '/',
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   i18n: {
