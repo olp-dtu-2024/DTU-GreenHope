@@ -4,8 +4,6 @@
 
 **develop**: for development
 
-**staging**: for testing
-
 **main**: for deploy to production
 
 ## Handle new feature
