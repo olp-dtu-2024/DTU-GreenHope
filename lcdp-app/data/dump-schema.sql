@@ -5,7 +5,7 @@
 -- Dumped from database version 16.4
 -- Dumped by pg_dump version 16.4
 
--- Started on 2024-11-27 16:13:48 UTC
+-- Started on 2024-12-01 05:12:21 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -38,6 +38,7 @@ DROP INDEX IF EXISTS public.transactions_f_e47my4oktv2;
 DROP INDEX IF EXISTS public.transactions_created_by_id;
 DROP INDEX IF EXISTS public.token_blacklist_token;
 DROP INDEX IF EXISTS public.t_s9b2jhcxq9q_f_8o3qqdvq8bk;
+DROP INDEX IF EXISTS public.t_ncaek4uddrw_f_9k9506pi4rq;
 DROP INDEX IF EXISTS public.t_bzkvdw2a767_f_qxu5av3g0sx;
 DROP INDEX IF EXISTS public.system_settings_logo_id;
 DROP INDEX IF EXISTS public.roles_users_user_id;
@@ -99,6 +100,7 @@ ALTER TABLE IF EXISTS ONLY public.transactions DROP CONSTRAINT IF EXISTS transac
 ALTER TABLE IF EXISTS ONLY public."tokenBlacklist" DROP CONSTRAINT IF EXISTS "tokenBlacklist_pkey";
 ALTER TABLE IF EXISTS ONLY public."themeConfig" DROP CONSTRAINT IF EXISTS "themeConfig_pkey";
 ALTER TABLE IF EXISTS ONLY public.t_s9b2jhcxq9q DROP CONSTRAINT IF EXISTS t_s9b2jhcxq9q_pkey;
+ALTER TABLE IF EXISTS ONLY public.t_ncaek4uddrw DROP CONSTRAINT IF EXISTS t_ncaek4uddrw_pkey;
 ALTER TABLE IF EXISTS ONLY public.t_bzkvdw2a767 DROP CONSTRAINT IF EXISTS t_bzkvdw2a767_pkey;
 ALTER TABLE IF EXISTS ONLY public.t_587vrvz0gcb DROP CONSTRAINT IF EXISTS t_587vrvz0gcb_pkey;
 ALTER TABLE IF EXISTS ONLY public."systemSettings" DROP CONSTRAINT IF EXISTS "systemSettings_pkey";
@@ -115,6 +117,8 @@ ALTER TABLE IF EXISTS ONLY public."rolesResourcesActions" DROP CONSTRAINT IF EXI
 ALTER TABLE IF EXISTS ONLY public.proposes DROP CONSTRAINT IF EXISTS proposes_pkey;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.migrations DROP CONSTRAINT IF EXISTS migrations_pkey;
+ALTER TABLE IF EXISTS ONLY public.kafka_topics DROP CONSTRAINT IF EXISTS kafka_topics_pkey;
+ALTER TABLE IF EXISTS ONLY public.kafka_configs DROP CONSTRAINT IF EXISTS kafka_configs_pkey;
 ALTER TABLE IF EXISTS ONLY public.jobs DROP CONSTRAINT IF EXISTS jobs_pkey;
 ALTER TABLE IF EXISTS ONLY public."iframeHtml" DROP CONSTRAINT IF EXISTS "iframeHtml_pkey";
 ALTER TABLE IF EXISTS ONLY public.hello DROP CONSTRAINT IF EXISTS hello_pkey;
@@ -197,6 +201,7 @@ DROP TABLE IF EXISTS public."tokenBlacklist";
 DROP SEQUENCE IF EXISTS public."themeConfig_id_seq";
 DROP TABLE IF EXISTS public."themeConfig";
 DROP TABLE IF EXISTS public.t_s9b2jhcxq9q;
+DROP TABLE IF EXISTS public.t_ncaek4uddrw;
 DROP TABLE IF EXISTS public.t_bzkvdw2a767;
 DROP TABLE IF EXISTS public.t_b3tiaxzyeu3;
 DROP SEQUENCE IF EXISTS public.t_587vrvz0gcb_id_seq;
@@ -222,6 +227,8 @@ DROP TABLE IF EXISTS public.proposes;
 DROP SEQUENCE IF EXISTS public.projects_id_seq;
 DROP TABLE IF EXISTS public.projects;
 DROP TABLE IF EXISTS public.migrations;
+DROP TABLE IF EXISTS public.kafka_topics;
+DROP TABLE IF EXISTS public.kafka_configs;
 DROP SEQUENCE IF EXISTS public.jobs_id_seq;
 DROP TABLE IF EXISTS public.jobs;
 DROP SEQUENCE IF EXISTS public.images_id_seq;
@@ -268,7 +275,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 218 (class 1259 OID 292540)
+-- TOC entry 215 (class 1259 OID 398095)
 -- Name: apiKeys; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -287,7 +294,7 @@ CREATE TABLE public."apiKeys" (
 ALTER TABLE public."apiKeys" OWNER TO postgres;
 
 --
--- TOC entry 219 (class 1259 OID 292545)
+-- TOC entry 216 (class 1259 OID 398100)
 -- Name: apiKeys_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -302,8 +309,8 @@ CREATE SEQUENCE public."apiKeys_id_seq"
 ALTER SEQUENCE public."apiKeys_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3964 (class 0 OID 0)
--- Dependencies: 219
+-- TOC entry 3986 (class 0 OID 0)
+-- Dependencies: 216
 -- Name: apiKeys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -311,7 +318,7 @@ ALTER SEQUENCE public."apiKeys_id_seq" OWNED BY public."apiKeys".id;
 
 
 --
--- TOC entry 220 (class 1259 OID 292546)
+-- TOC entry 217 (class 1259 OID 398101)
 -- Name: applicationPlugins; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -332,7 +339,7 @@ CREATE TABLE public."applicationPlugins" (
 ALTER TABLE public."applicationPlugins" OWNER TO postgres;
 
 --
--- TOC entry 221 (class 1259 OID 292551)
+-- TOC entry 218 (class 1259 OID 398106)
 -- Name: applicationPlugins_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -347,8 +354,8 @@ CREATE SEQUENCE public."applicationPlugins_id_seq"
 ALTER SEQUENCE public."applicationPlugins_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3965 (class 0 OID 0)
--- Dependencies: 221
+-- TOC entry 3987 (class 0 OID 0)
+-- Dependencies: 218
 -- Name: applicationPlugins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -356,7 +363,7 @@ ALTER SEQUENCE public."applicationPlugins_id_seq" OWNED BY public."applicationPl
 
 
 --
--- TOC entry 222 (class 1259 OID 292552)
+-- TOC entry 219 (class 1259 OID 398107)
 -- Name: applicationVersion; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -369,7 +376,7 @@ CREATE TABLE public."applicationVersion" (
 ALTER TABLE public."applicationVersion" OWNER TO postgres;
 
 --
--- TOC entry 223 (class 1259 OID 292555)
+-- TOC entry 220 (class 1259 OID 398110)
 -- Name: applicationVersion_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -384,8 +391,8 @@ CREATE SEQUENCE public."applicationVersion_id_seq"
 ALTER SEQUENCE public."applicationVersion_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3966 (class 0 OID 0)
--- Dependencies: 223
+-- TOC entry 3988 (class 0 OID 0)
+-- Dependencies: 220
 -- Name: applicationVersion_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -393,7 +400,7 @@ ALTER SEQUENCE public."applicationVersion_id_seq" OWNED BY public."applicationVe
 
 
 --
--- TOC entry 224 (class 1259 OID 292556)
+-- TOC entry 221 (class 1259 OID 398111)
 -- Name: attachments; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -418,8 +425,8 @@ CREATE TABLE public.attachments (
 ALTER TABLE public.attachments OWNER TO postgres;
 
 --
--- TOC entry 3967 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 3989 (class 0 OID 0)
+-- Dependencies: 221
 -- Name: COLUMN attachments.title; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -427,8 +434,8 @@ COMMENT ON COLUMN public.attachments.title IS '用户文件名（不含扩展名
 
 
 --
--- TOC entry 3968 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 3990 (class 0 OID 0)
+-- Dependencies: 221
 -- Name: COLUMN attachments.filename; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -436,8 +443,8 @@ COMMENT ON COLUMN public.attachments.filename IS '系统文件名（含扩展名
 
 
 --
--- TOC entry 3969 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 3991 (class 0 OID 0)
+-- Dependencies: 221
 -- Name: COLUMN attachments.extname; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -445,8 +452,8 @@ COMMENT ON COLUMN public.attachments.extname IS '扩展名（含“.”）';
 
 
 --
--- TOC entry 3970 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 3992 (class 0 OID 0)
+-- Dependencies: 221
 -- Name: COLUMN attachments.size; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -454,8 +461,8 @@ COMMENT ON COLUMN public.attachments.size IS '文件体积（字节）';
 
 
 --
--- TOC entry 3971 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 3993 (class 0 OID 0)
+-- Dependencies: 221
 -- Name: COLUMN attachments.path; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -463,8 +470,8 @@ COMMENT ON COLUMN public.attachments.path IS '相对路径（含“/”前缀）
 
 
 --
--- TOC entry 3972 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 3994 (class 0 OID 0)
+-- Dependencies: 221
 -- Name: COLUMN attachments.meta; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -472,8 +479,8 @@ COMMENT ON COLUMN public.attachments.meta IS '其他文件信息（如图片的�
 
 
 --
--- TOC entry 3973 (class 0 OID 0)
--- Dependencies: 224
+-- TOC entry 3995 (class 0 OID 0)
+-- Dependencies: 221
 -- Name: COLUMN attachments.url; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -481,7 +488,7 @@ COMMENT ON COLUMN public.attachments.url IS '网络访问地址';
 
 
 --
--- TOC entry 225 (class 1259 OID 292562)
+-- TOC entry 222 (class 1259 OID 398117)
 -- Name: attachments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -496,8 +503,8 @@ CREATE SEQUENCE public.attachments_id_seq
 ALTER SEQUENCE public.attachments_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3974 (class 0 OID 0)
--- Dependencies: 225
+-- TOC entry 3996 (class 0 OID 0)
+-- Dependencies: 222
 -- Name: attachments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -505,7 +512,7 @@ ALTER SEQUENCE public.attachments_id_seq OWNED BY public.attachments.id;
 
 
 --
--- TOC entry 226 (class 1259 OID 292563)
+-- TOC entry 223 (class 1259 OID 398118)
 -- Name: authenticators; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -528,7 +535,7 @@ CREATE TABLE public.authenticators (
 ALTER TABLE public.authenticators OWNER TO postgres;
 
 --
--- TOC entry 227 (class 1259 OID 292571)
+-- TOC entry 224 (class 1259 OID 398126)
 -- Name: authenticators_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -543,8 +550,8 @@ CREATE SEQUENCE public.authenticators_id_seq
 ALTER SEQUENCE public.authenticators_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3975 (class 0 OID 0)
--- Dependencies: 227
+-- TOC entry 3997 (class 0 OID 0)
+-- Dependencies: 224
 -- Name: authenticators_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -552,7 +559,7 @@ ALTER SEQUENCE public.authenticators_id_seq OWNED BY public.authenticators.id;
 
 
 --
--- TOC entry 228 (class 1259 OID 292572)
+-- TOC entry 225 (class 1259 OID 398127)
 -- Name: chinaRegions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -569,7 +576,7 @@ CREATE TABLE public."chinaRegions" (
 ALTER TABLE public."chinaRegions" OWNER TO postgres;
 
 --
--- TOC entry 229 (class 1259 OID 292577)
+-- TOC entry 226 (class 1259 OID 398132)
 -- Name: collectionCategories; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -586,7 +593,7 @@ CREATE TABLE public."collectionCategories" (
 ALTER TABLE public."collectionCategories" OWNER TO postgres;
 
 --
--- TOC entry 230 (class 1259 OID 292583)
+-- TOC entry 227 (class 1259 OID 398138)
 -- Name: collectionCategories_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -601,8 +608,8 @@ CREATE SEQUENCE public."collectionCategories_id_seq"
 ALTER SEQUENCE public."collectionCategories_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3976 (class 0 OID 0)
--- Dependencies: 230
+-- TOC entry 3998 (class 0 OID 0)
+-- Dependencies: 227
 -- Name: collectionCategories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -610,7 +617,7 @@ ALTER SEQUENCE public."collectionCategories_id_seq" OWNED BY public."collectionC
 
 
 --
--- TOC entry 231 (class 1259 OID 292584)
+-- TOC entry 228 (class 1259 OID 398139)
 -- Name: collectionCategory; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -625,7 +632,7 @@ CREATE TABLE public."collectionCategory" (
 ALTER TABLE public."collectionCategory" OWNER TO postgres;
 
 --
--- TOC entry 232 (class 1259 OID 292587)
+-- TOC entry 229 (class 1259 OID 398142)
 -- Name: collections; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -644,7 +651,7 @@ CREATE TABLE public.collections (
 ALTER TABLE public.collections OWNER TO postgres;
 
 --
--- TOC entry 233 (class 1259 OID 292595)
+-- TOC entry 230 (class 1259 OID 398150)
 -- Name: customRequests; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -659,7 +666,7 @@ CREATE TABLE public."customRequests" (
 ALTER TABLE public."customRequests" OWNER TO postgres;
 
 --
--- TOC entry 234 (class 1259 OID 292600)
+-- TOC entry 231 (class 1259 OID 398155)
 -- Name: customRequestsRoles; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -674,7 +681,7 @@ CREATE TABLE public."customRequestsRoles" (
 ALTER TABLE public."customRequestsRoles" OWNER TO postgres;
 
 --
--- TOC entry 235 (class 1259 OID 292605)
+-- TOC entry 232 (class 1259 OID 398160)
 -- Name: dataSources; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -693,7 +700,7 @@ CREATE TABLE public."dataSources" (
 ALTER TABLE public."dataSources" OWNER TO postgres;
 
 --
--- TOC entry 236 (class 1259 OID 292612)
+-- TOC entry 233 (class 1259 OID 398167)
 -- Name: dataSourcesCollections; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -708,7 +715,7 @@ CREATE TABLE public."dataSourcesCollections" (
 ALTER TABLE public."dataSourcesCollections" OWNER TO postgres;
 
 --
--- TOC entry 237 (class 1259 OID 292617)
+-- TOC entry 234 (class 1259 OID 398172)
 -- Name: dataSourcesFields; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -728,7 +735,7 @@ CREATE TABLE public."dataSourcesFields" (
 ALTER TABLE public."dataSourcesFields" OWNER TO postgres;
 
 --
--- TOC entry 238 (class 1259 OID 292623)
+-- TOC entry 235 (class 1259 OID 398178)
 -- Name: dataSourcesRoles; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -743,7 +750,7 @@ CREATE TABLE public."dataSourcesRoles" (
 ALTER TABLE public."dataSourcesRoles" OWNER TO postgres;
 
 --
--- TOC entry 239 (class 1259 OID 292628)
+-- TOC entry 236 (class 1259 OID 398183)
 -- Name: dataSourcesRolesResources; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -761,7 +768,7 @@ CREATE TABLE public."dataSourcesRolesResources" (
 ALTER TABLE public."dataSourcesRolesResources" OWNER TO postgres;
 
 --
--- TOC entry 240 (class 1259 OID 292634)
+-- TOC entry 237 (class 1259 OID 398189)
 -- Name: dataSourcesRolesResourcesActions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -779,7 +786,7 @@ CREATE TABLE public."dataSourcesRolesResourcesActions" (
 ALTER TABLE public."dataSourcesRolesResourcesActions" OWNER TO postgres;
 
 --
--- TOC entry 241 (class 1259 OID 292640)
+-- TOC entry 238 (class 1259 OID 398195)
 -- Name: dataSourcesRolesResourcesActions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -794,8 +801,8 @@ CREATE SEQUENCE public."dataSourcesRolesResourcesActions_id_seq"
 ALTER SEQUENCE public."dataSourcesRolesResourcesActions_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3977 (class 0 OID 0)
--- Dependencies: 241
+-- TOC entry 3999 (class 0 OID 0)
+-- Dependencies: 238
 -- Name: dataSourcesRolesResourcesActions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -803,7 +810,7 @@ ALTER SEQUENCE public."dataSourcesRolesResourcesActions_id_seq" OWNED BY public.
 
 
 --
--- TOC entry 242 (class 1259 OID 292641)
+-- TOC entry 239 (class 1259 OID 398196)
 -- Name: dataSourcesRolesResourcesScopes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -822,7 +829,7 @@ CREATE TABLE public."dataSourcesRolesResourcesScopes" (
 ALTER TABLE public."dataSourcesRolesResourcesScopes" OWNER TO postgres;
 
 --
--- TOC entry 243 (class 1259 OID 292647)
+-- TOC entry 240 (class 1259 OID 398202)
 -- Name: dataSourcesRolesResourcesScopes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -837,8 +844,8 @@ CREATE SEQUENCE public."dataSourcesRolesResourcesScopes_id_seq"
 ALTER SEQUENCE public."dataSourcesRolesResourcesScopes_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3978 (class 0 OID 0)
--- Dependencies: 243
+-- TOC entry 4000 (class 0 OID 0)
+-- Dependencies: 240
 -- Name: dataSourcesRolesResourcesScopes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -846,7 +853,7 @@ ALTER SEQUENCE public."dataSourcesRolesResourcesScopes_id_seq" OWNED BY public."
 
 
 --
--- TOC entry 244 (class 1259 OID 292648)
+-- TOC entry 241 (class 1259 OID 398203)
 -- Name: dataSourcesRolesResources_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -861,8 +868,8 @@ CREATE SEQUENCE public."dataSourcesRolesResources_id_seq"
 ALTER SEQUENCE public."dataSourcesRolesResources_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3979 (class 0 OID 0)
--- Dependencies: 244
+-- TOC entry 4001 (class 0 OID 0)
+-- Dependencies: 241
 -- Name: dataSourcesRolesResources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -870,7 +877,7 @@ ALTER SEQUENCE public."dataSourcesRolesResources_id_seq" OWNED BY public."dataSo
 
 
 --
--- TOC entry 245 (class 1259 OID 292649)
+-- TOC entry 242 (class 1259 OID 398204)
 -- Name: executions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -889,7 +896,7 @@ CREATE TABLE public.executions (
 ALTER TABLE public.executions OWNER TO postgres;
 
 --
--- TOC entry 246 (class 1259 OID 292654)
+-- TOC entry 243 (class 1259 OID 398209)
 -- Name: executions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -904,8 +911,8 @@ CREATE SEQUENCE public.executions_id_seq
 ALTER SEQUENCE public.executions_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3980 (class 0 OID 0)
--- Dependencies: 246
+-- TOC entry 4002 (class 0 OID 0)
+-- Dependencies: 243
 -- Name: executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -913,7 +920,7 @@ ALTER SEQUENCE public.executions_id_seq OWNED BY public.executions.id;
 
 
 --
--- TOC entry 247 (class 1259 OID 292655)
+-- TOC entry 244 (class 1259 OID 398210)
 -- Name: fields; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -934,7 +941,7 @@ CREATE TABLE public.fields (
 ALTER TABLE public.fields OWNER TO postgres;
 
 --
--- TOC entry 248 (class 1259 OID 292661)
+-- TOC entry 245 (class 1259 OID 398216)
 -- Name: flow_nodes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -956,7 +963,7 @@ CREATE TABLE public.flow_nodes (
 ALTER TABLE public.flow_nodes OWNER TO postgres;
 
 --
--- TOC entry 249 (class 1259 OID 292667)
+-- TOC entry 246 (class 1259 OID 398222)
 -- Name: flow_nodes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -971,8 +978,8 @@ CREATE SEQUENCE public.flow_nodes_id_seq
 ALTER SEQUENCE public.flow_nodes_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3981 (class 0 OID 0)
--- Dependencies: 249
+-- TOC entry 4003 (class 0 OID 0)
+-- Dependencies: 246
 -- Name: flow_nodes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -980,7 +987,7 @@ ALTER SEQUENCE public.flow_nodes_id_seq OWNED BY public.flow_nodes.id;
 
 
 --
--- TOC entry 250 (class 1259 OID 292668)
+-- TOC entry 247 (class 1259 OID 398223)
 -- Name: funds; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1003,7 +1010,7 @@ CREATE TABLE public.funds (
 ALTER TABLE public.funds OWNER TO postgres;
 
 --
--- TOC entry 251 (class 1259 OID 292674)
+-- TOC entry 248 (class 1259 OID 398229)
 -- Name: funds_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1018,8 +1025,8 @@ CREATE SEQUENCE public.funds_id_seq
 ALTER SEQUENCE public.funds_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3982 (class 0 OID 0)
--- Dependencies: 251
+-- TOC entry 4004 (class 0 OID 0)
+-- Dependencies: 248
 -- Name: funds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1027,7 +1034,7 @@ ALTER SEQUENCE public.funds_id_seq OWNED BY public.funds.id;
 
 
 --
--- TOC entry 252 (class 1259 OID 292675)
+-- TOC entry 249 (class 1259 OID 398230)
 -- Name: hello; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1042,7 +1049,7 @@ CREATE TABLE public.hello (
 ALTER TABLE public.hello OWNER TO postgres;
 
 --
--- TOC entry 253 (class 1259 OID 292678)
+-- TOC entry 250 (class 1259 OID 398233)
 -- Name: hello_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1057,8 +1064,8 @@ CREATE SEQUENCE public.hello_id_seq
 ALTER SEQUENCE public.hello_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3983 (class 0 OID 0)
--- Dependencies: 253
+-- TOC entry 4005 (class 0 OID 0)
+-- Dependencies: 250
 -- Name: hello_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1066,7 +1073,7 @@ ALTER SEQUENCE public.hello_id_seq OWNED BY public.hello.id;
 
 
 --
--- TOC entry 254 (class 1259 OID 292679)
+-- TOC entry 251 (class 1259 OID 398234)
 -- Name: iframeHtml; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1083,7 +1090,7 @@ CREATE TABLE public."iframeHtml" (
 ALTER TABLE public."iframeHtml" OWNER TO postgres;
 
 --
--- TOC entry 215 (class 1259 OID 292310)
+-- TOC entry 252 (class 1259 OID 398239)
 -- Name: images; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1101,7 +1108,7 @@ CREATE TABLE public.images (
 ALTER TABLE public.images OWNER TO postgres;
 
 --
--- TOC entry 216 (class 1259 OID 292315)
+-- TOC entry 253 (class 1259 OID 398244)
 -- Name: images_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1116,8 +1123,8 @@ CREATE SEQUENCE public.images_id_seq
 ALTER SEQUENCE public.images_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3984 (class 0 OID 0)
--- Dependencies: 216
+-- TOC entry 4006 (class 0 OID 0)
+-- Dependencies: 253
 -- Name: images_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1125,7 +1132,7 @@ ALTER SEQUENCE public.images_id_seq OWNED BY public.images.id;
 
 
 --
--- TOC entry 255 (class 1259 OID 292684)
+-- TOC entry 254 (class 1259 OID 398245)
 -- Name: jobs; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1145,7 +1152,7 @@ CREATE TABLE public.jobs (
 ALTER TABLE public.jobs OWNER TO postgres;
 
 --
--- TOC entry 256 (class 1259 OID 292689)
+-- TOC entry 255 (class 1259 OID 398250)
 -- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1160,8 +1167,8 @@ CREATE SEQUENCE public.jobs_id_seq
 ALTER SEQUENCE public.jobs_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3985 (class 0 OID 0)
--- Dependencies: 256
+-- TOC entry 4007 (class 0 OID 0)
+-- Dependencies: 255
 -- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1169,7 +1176,40 @@ ALTER SEQUENCE public.jobs_id_seq OWNED BY public.jobs.id;
 
 
 --
--- TOC entry 257 (class 1259 OID 292690)
+-- TOC entry 256 (class 1259 OID 398251)
+-- Name: kafka_configs; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.kafka_configs (
+    id uuid NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    group_id character varying(255),
+    client_id character varying(255)
+);
+
+
+ALTER TABLE public.kafka_configs OWNER TO postgres;
+
+--
+-- TOC entry 257 (class 1259 OID 398256)
+-- Name: kafka_topics; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.kafka_topics (
+    id uuid NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    broker_host character varying(255),
+    topic_name character varying(255),
+    type character varying(255)
+);
+
+
+ALTER TABLE public.kafka_topics OWNER TO postgres;
+
+--
+-- TOC entry 258 (class 1259 OID 398261)
 -- Name: migrations; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1181,7 +1221,7 @@ CREATE TABLE public.migrations (
 ALTER TABLE public.migrations OWNER TO postgres;
 
 --
--- TOC entry 258 (class 1259 OID 292693)
+-- TOC entry 259 (class 1259 OID 398264)
 -- Name: projects; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1195,14 +1235,15 @@ CREATE TABLE public.projects (
     total_amount double precision DEFAULT '0'::double precision,
     construction_site character varying(255) DEFAULT ''::character varying,
     is_deleted bigint DEFAULT 0,
-    sub_title character varying(255)
+    sub_title character varying(255),
+    description text
 );
 
 
 ALTER TABLE public.projects OWNER TO postgres;
 
 --
--- TOC entry 259 (class 1259 OID 292702)
+-- TOC entry 260 (class 1259 OID 398272)
 -- Name: projects_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1217,8 +1258,8 @@ CREATE SEQUENCE public.projects_id_seq
 ALTER SEQUENCE public.projects_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3986 (class 0 OID 0)
--- Dependencies: 259
+-- TOC entry 4008 (class 0 OID 0)
+-- Dependencies: 260
 -- Name: projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1226,7 +1267,7 @@ ALTER SEQUENCE public.projects_id_seq OWNED BY public.projects.id;
 
 
 --
--- TOC entry 260 (class 1259 OID 292703)
+-- TOC entry 261 (class 1259 OID 398273)
 -- Name: proposes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1247,7 +1288,7 @@ CREATE TABLE public.proposes (
 ALTER TABLE public.proposes OWNER TO postgres;
 
 --
--- TOC entry 261 (class 1259 OID 292710)
+-- TOC entry 262 (class 1259 OID 398280)
 -- Name: proposes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1262,8 +1303,8 @@ CREATE SEQUENCE public.proposes_id_seq
 ALTER SEQUENCE public.proposes_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3987 (class 0 OID 0)
--- Dependencies: 261
+-- TOC entry 4009 (class 0 OID 0)
+-- Dependencies: 262
 -- Name: proposes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1271,7 +1312,7 @@ ALTER SEQUENCE public.proposes_id_seq OWNED BY public.proposes.id;
 
 
 --
--- TOC entry 262 (class 1259 OID 292711)
+-- TOC entry 263 (class 1259 OID 398281)
 -- Name: roles; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1294,7 +1335,7 @@ CREATE TABLE public.roles (
 ALTER TABLE public.roles OWNER TO postgres;
 
 --
--- TOC entry 263 (class 1259 OID 292719)
+-- TOC entry 264 (class 1259 OID 398289)
 -- Name: rolesResources; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1311,7 +1352,7 @@ CREATE TABLE public."rolesResources" (
 ALTER TABLE public."rolesResources" OWNER TO postgres;
 
 --
--- TOC entry 264 (class 1259 OID 292724)
+-- TOC entry 265 (class 1259 OID 398294)
 -- Name: rolesResourcesActions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1329,7 +1370,7 @@ CREATE TABLE public."rolesResourcesActions" (
 ALTER TABLE public."rolesResourcesActions" OWNER TO postgres;
 
 --
--- TOC entry 265 (class 1259 OID 292730)
+-- TOC entry 266 (class 1259 OID 398300)
 -- Name: rolesResourcesActions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1344,8 +1385,8 @@ CREATE SEQUENCE public."rolesResourcesActions_id_seq"
 ALTER SEQUENCE public."rolesResourcesActions_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3988 (class 0 OID 0)
--- Dependencies: 265
+-- TOC entry 4010 (class 0 OID 0)
+-- Dependencies: 266
 -- Name: rolesResourcesActions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1353,7 +1394,7 @@ ALTER SEQUENCE public."rolesResourcesActions_id_seq" OWNED BY public."rolesResou
 
 
 --
--- TOC entry 266 (class 1259 OID 292731)
+-- TOC entry 267 (class 1259 OID 398301)
 -- Name: rolesResourcesScopes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1371,7 +1412,7 @@ CREATE TABLE public."rolesResourcesScopes" (
 ALTER TABLE public."rolesResourcesScopes" OWNER TO postgres;
 
 --
--- TOC entry 267 (class 1259 OID 292736)
+-- TOC entry 268 (class 1259 OID 398306)
 -- Name: rolesResourcesScopes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1386,8 +1427,8 @@ CREATE SEQUENCE public."rolesResourcesScopes_id_seq"
 ALTER SEQUENCE public."rolesResourcesScopes_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3989 (class 0 OID 0)
--- Dependencies: 267
+-- TOC entry 4011 (class 0 OID 0)
+-- Dependencies: 268
 -- Name: rolesResourcesScopes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1395,7 +1436,7 @@ ALTER SEQUENCE public."rolesResourcesScopes_id_seq" OWNED BY public."rolesResour
 
 
 --
--- TOC entry 268 (class 1259 OID 292737)
+-- TOC entry 269 (class 1259 OID 398307)
 -- Name: rolesResources_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1410,8 +1451,8 @@ CREATE SEQUENCE public."rolesResources_id_seq"
 ALTER SEQUENCE public."rolesResources_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3990 (class 0 OID 0)
--- Dependencies: 268
+-- TOC entry 4012 (class 0 OID 0)
+-- Dependencies: 269
 -- Name: rolesResources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1419,7 +1460,7 @@ ALTER SEQUENCE public."rolesResources_id_seq" OWNED BY public."rolesResources".i
 
 
 --
--- TOC entry 269 (class 1259 OID 292738)
+-- TOC entry 270 (class 1259 OID 398308)
 -- Name: rolesUischemas; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1434,7 +1475,7 @@ CREATE TABLE public."rolesUischemas" (
 ALTER TABLE public."rolesUischemas" OWNER TO postgres;
 
 --
--- TOC entry 270 (class 1259 OID 292743)
+-- TOC entry 271 (class 1259 OID 398313)
 -- Name: rolesUsers; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1450,7 +1491,7 @@ CREATE TABLE public."rolesUsers" (
 ALTER TABLE public."rolesUsers" OWNER TO postgres;
 
 --
--- TOC entry 271 (class 1259 OID 292746)
+-- TOC entry 272 (class 1259 OID 398316)
 -- Name: sequences; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1469,7 +1510,7 @@ CREATE TABLE public.sequences (
 ALTER TABLE public.sequences OWNER TO postgres;
 
 --
--- TOC entry 272 (class 1259 OID 292751)
+-- TOC entry 273 (class 1259 OID 398321)
 -- Name: sequences_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1484,8 +1525,8 @@ CREATE SEQUENCE public.sequences_id_seq
 ALTER SEQUENCE public.sequences_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3991 (class 0 OID 0)
--- Dependencies: 272
+-- TOC entry 4013 (class 0 OID 0)
+-- Dependencies: 273
 -- Name: sequences_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1493,7 +1534,7 @@ ALTER SEQUENCE public.sequences_id_seq OWNED BY public.sequences.id;
 
 
 --
--- TOC entry 273 (class 1259 OID 292752)
+-- TOC entry 274 (class 1259 OID 398322)
 -- Name: storages; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1516,8 +1557,8 @@ CREATE TABLE public.storages (
 ALTER TABLE public.storages OWNER TO postgres;
 
 --
--- TOC entry 3992 (class 0 OID 0)
--- Dependencies: 273
+-- TOC entry 4014 (class 0 OID 0)
+-- Dependencies: 274
 -- Name: COLUMN storages.title; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1525,8 +1566,8 @@ COMMENT ON COLUMN public.storages.title IS '存储引擎名称';
 
 
 --
--- TOC entry 3993 (class 0 OID 0)
--- Dependencies: 273
+-- TOC entry 4015 (class 0 OID 0)
+-- Dependencies: 274
 -- Name: COLUMN storages.type; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1534,8 +1575,8 @@ COMMENT ON COLUMN public.storages.type IS '类型标识，如 local/ali-oss 等'
 
 
 --
--- TOC entry 3994 (class 0 OID 0)
--- Dependencies: 273
+-- TOC entry 4016 (class 0 OID 0)
+-- Dependencies: 274
 -- Name: COLUMN storages.options; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1543,8 +1584,8 @@ COMMENT ON COLUMN public.storages.options IS '配置项';
 
 
 --
--- TOC entry 3995 (class 0 OID 0)
--- Dependencies: 273
+-- TOC entry 4017 (class 0 OID 0)
+-- Dependencies: 274
 -- Name: COLUMN storages.rules; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1552,8 +1593,8 @@ COMMENT ON COLUMN public.storages.rules IS '文件规则';
 
 
 --
--- TOC entry 3996 (class 0 OID 0)
--- Dependencies: 273
+-- TOC entry 4018 (class 0 OID 0)
+-- Dependencies: 274
 -- Name: COLUMN storages.path; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1561,8 +1602,8 @@ COMMENT ON COLUMN public.storages.path IS '存储相对路径模板';
 
 
 --
--- TOC entry 3997 (class 0 OID 0)
--- Dependencies: 273
+-- TOC entry 4019 (class 0 OID 0)
+-- Dependencies: 274
 -- Name: COLUMN storages."baseUrl"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1570,8 +1611,8 @@ COMMENT ON COLUMN public.storages."baseUrl" IS '访问地址前缀';
 
 
 --
--- TOC entry 3998 (class 0 OID 0)
--- Dependencies: 273
+-- TOC entry 4020 (class 0 OID 0)
+-- Dependencies: 274
 -- Name: COLUMN storages."default"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1579,7 +1620,7 @@ COMMENT ON COLUMN public.storages."default" IS '默认引擎';
 
 
 --
--- TOC entry 274 (class 1259 OID 292763)
+-- TOC entry 275 (class 1259 OID 398333)
 -- Name: storages_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1594,8 +1635,8 @@ CREATE SEQUENCE public.storages_id_seq
 ALTER SEQUENCE public.storages_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3999 (class 0 OID 0)
--- Dependencies: 274
+-- TOC entry 4021 (class 0 OID 0)
+-- Dependencies: 275
 -- Name: storages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1603,7 +1644,7 @@ ALTER SEQUENCE public.storages_id_seq OWNED BY public.storages.id;
 
 
 --
--- TOC entry 275 (class 1259 OID 292764)
+-- TOC entry 276 (class 1259 OID 398334)
 -- Name: student_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1618,7 +1659,7 @@ CREATE SEQUENCE public.student_id_seq
 ALTER SEQUENCE public.student_id_seq OWNER TO postgres;
 
 --
--- TOC entry 276 (class 1259 OID 292765)
+-- TOC entry 277 (class 1259 OID 398335)
 -- Name: systemSettings; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1640,7 +1681,7 @@ CREATE TABLE public."systemSettings" (
 ALTER TABLE public."systemSettings" OWNER TO postgres;
 
 --
--- TOC entry 277 (class 1259 OID 292774)
+-- TOC entry 278 (class 1259 OID 398344)
 -- Name: systemSettings_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1655,8 +1696,8 @@ CREATE SEQUENCE public."systemSettings_id_seq"
 ALTER SEQUENCE public."systemSettings_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4000 (class 0 OID 0)
--- Dependencies: 277
+-- TOC entry 4022 (class 0 OID 0)
+-- Dependencies: 278
 -- Name: systemSettings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1664,7 +1705,7 @@ ALTER SEQUENCE public."systemSettings_id_seq" OWNED BY public."systemSettings".i
 
 
 --
--- TOC entry 278 (class 1259 OID 292775)
+-- TOC entry 279 (class 1259 OID 398345)
 -- Name: t_587vrvz0gcb; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1685,7 +1726,7 @@ CREATE TABLE public.t_587vrvz0gcb (
 ALTER TABLE public.t_587vrvz0gcb OWNER TO postgres;
 
 --
--- TOC entry 279 (class 1259 OID 292783)
+-- TOC entry 280 (class 1259 OID 398353)
 -- Name: t_587vrvz0gcb_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1700,8 +1741,8 @@ CREATE SEQUENCE public.t_587vrvz0gcb_id_seq
 ALTER SEQUENCE public.t_587vrvz0gcb_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4001 (class 0 OID 0)
--- Dependencies: 279
+-- TOC entry 4023 (class 0 OID 0)
+-- Dependencies: 280
 -- Name: t_587vrvz0gcb_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1709,7 +1750,7 @@ ALTER SEQUENCE public.t_587vrvz0gcb_id_seq OWNED BY public.t_587vrvz0gcb.id;
 
 
 --
--- TOC entry 217 (class 1259 OID 292415)
+-- TOC entry 281 (class 1259 OID 398354)
 -- Name: t_b3tiaxzyeu3; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1724,7 +1765,7 @@ CREATE TABLE public.t_b3tiaxzyeu3 (
 ALTER TABLE public.t_b3tiaxzyeu3 OWNER TO postgres;
 
 --
--- TOC entry 301 (class 1259 OID 293107)
+-- TOC entry 282 (class 1259 OID 398357)
 -- Name: t_bzkvdw2a767; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1739,7 +1780,22 @@ CREATE TABLE public.t_bzkvdw2a767 (
 ALTER TABLE public.t_bzkvdw2a767 OWNER TO postgres;
 
 --
--- TOC entry 280 (class 1259 OID 292784)
+-- TOC entry 283 (class 1259 OID 398360)
+-- Name: t_ncaek4uddrw; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.t_ncaek4uddrw (
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    f_j72jrq1b0nw bigint NOT NULL,
+    f_9k9506pi4rq bigint NOT NULL
+);
+
+
+ALTER TABLE public.t_ncaek4uddrw OWNER TO postgres;
+
+--
+-- TOC entry 284 (class 1259 OID 398363)
 -- Name: t_s9b2jhcxq9q; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1754,7 +1810,7 @@ CREATE TABLE public.t_s9b2jhcxq9q (
 ALTER TABLE public.t_s9b2jhcxq9q OWNER TO postgres;
 
 --
--- TOC entry 281 (class 1259 OID 292787)
+-- TOC entry 285 (class 1259 OID 398366)
 -- Name: themeConfig; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1773,7 +1829,7 @@ CREATE TABLE public."themeConfig" (
 ALTER TABLE public."themeConfig" OWNER TO postgres;
 
 --
--- TOC entry 282 (class 1259 OID 292793)
+-- TOC entry 286 (class 1259 OID 398372)
 -- Name: themeConfig_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1788,8 +1844,8 @@ CREATE SEQUENCE public."themeConfig_id_seq"
 ALTER SEQUENCE public."themeConfig_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4002 (class 0 OID 0)
--- Dependencies: 282
+-- TOC entry 4024 (class 0 OID 0)
+-- Dependencies: 286
 -- Name: themeConfig_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1797,7 +1853,7 @@ ALTER SEQUENCE public."themeConfig_id_seq" OWNED BY public."themeConfig".id;
 
 
 --
--- TOC entry 283 (class 1259 OID 292794)
+-- TOC entry 287 (class 1259 OID 398373)
 -- Name: tokenBlacklist; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1813,7 +1869,7 @@ CREATE TABLE public."tokenBlacklist" (
 ALTER TABLE public."tokenBlacklist" OWNER TO postgres;
 
 --
--- TOC entry 284 (class 1259 OID 292797)
+-- TOC entry 288 (class 1259 OID 398376)
 -- Name: tokenBlacklist_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1828,8 +1884,8 @@ CREATE SEQUENCE public."tokenBlacklist_id_seq"
 ALTER SEQUENCE public."tokenBlacklist_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4003 (class 0 OID 0)
--- Dependencies: 284
+-- TOC entry 4025 (class 0 OID 0)
+-- Dependencies: 288
 -- Name: tokenBlacklist_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1837,7 +1893,7 @@ ALTER SEQUENCE public."tokenBlacklist_id_seq" OWNED BY public."tokenBlacklist".i
 
 
 --
--- TOC entry 285 (class 1259 OID 292798)
+-- TOC entry 289 (class 1259 OID 398377)
 -- Name: transactions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1863,7 +1919,7 @@ CREATE TABLE public.transactions (
 ALTER TABLE public.transactions OWNER TO postgres;
 
 --
--- TOC entry 286 (class 1259 OID 292806)
+-- TOC entry 290 (class 1259 OID 398385)
 -- Name: transactions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1878,8 +1934,8 @@ CREATE SEQUENCE public.transactions_id_seq
 ALTER SEQUENCE public.transactions_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4004 (class 0 OID 0)
--- Dependencies: 286
+-- TOC entry 4026 (class 0 OID 0)
+-- Dependencies: 290
 -- Name: transactions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1887,7 +1943,7 @@ ALTER SEQUENCE public.transactions_id_seq OWNED BY public.transactions.id;
 
 
 --
--- TOC entry 287 (class 1259 OID 292807)
+-- TOC entry 291 (class 1259 OID 398386)
 -- Name: uiSchemaServerHooks; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1905,7 +1961,7 @@ CREATE TABLE public."uiSchemaServerHooks" (
 ALTER TABLE public."uiSchemaServerHooks" OWNER TO postgres;
 
 --
--- TOC entry 288 (class 1259 OID 292812)
+-- TOC entry 292 (class 1259 OID 398391)
 -- Name: uiSchemaServerHooks_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1920,8 +1976,8 @@ CREATE SEQUENCE public."uiSchemaServerHooks_id_seq"
 ALTER SEQUENCE public."uiSchemaServerHooks_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4005 (class 0 OID 0)
--- Dependencies: 288
+-- TOC entry 4027 (class 0 OID 0)
+-- Dependencies: 292
 -- Name: uiSchemaServerHooks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1929,7 +1985,7 @@ ALTER SEQUENCE public."uiSchemaServerHooks_id_seq" OWNED BY public."uiSchemaServ
 
 
 --
--- TOC entry 289 (class 1259 OID 292813)
+-- TOC entry 293 (class 1259 OID 398392)
 -- Name: uiSchemaTemplates; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1950,7 +2006,7 @@ CREATE TABLE public."uiSchemaTemplates" (
 ALTER TABLE public."uiSchemaTemplates" OWNER TO postgres;
 
 --
--- TOC entry 290 (class 1259 OID 292818)
+-- TOC entry 294 (class 1259 OID 398397)
 -- Name: uiSchemaTreePath; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1967,8 +2023,8 @@ CREATE TABLE public."uiSchemaTreePath" (
 ALTER TABLE public."uiSchemaTreePath" OWNER TO postgres;
 
 --
--- TOC entry 4006 (class 0 OID 0)
--- Dependencies: 290
+-- TOC entry 4028 (class 0 OID 0)
+-- Dependencies: 294
 -- Name: COLUMN "uiSchemaTreePath".type; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1976,8 +2032,8 @@ COMMENT ON COLUMN public."uiSchemaTreePath".type IS 'type of node';
 
 
 --
--- TOC entry 4007 (class 0 OID 0)
--- Dependencies: 290
+-- TOC entry 4029 (class 0 OID 0)
+-- Dependencies: 294
 -- Name: COLUMN "uiSchemaTreePath".sort; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1985,7 +2041,7 @@ COMMENT ON COLUMN public."uiSchemaTreePath".sort IS 'sort of node in adjacency';
 
 
 --
--- TOC entry 291 (class 1259 OID 292823)
+-- TOC entry 295 (class 1259 OID 398402)
 -- Name: uiSchemas; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1999,7 +2055,7 @@ CREATE TABLE public."uiSchemas" (
 ALTER TABLE public."uiSchemas" OWNER TO postgres;
 
 --
--- TOC entry 292 (class 1259 OID 292829)
+-- TOC entry 296 (class 1259 OID 398408)
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2024,7 +2080,7 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
--- TOC entry 293 (class 1259 OID 292835)
+-- TOC entry 297 (class 1259 OID 398414)
 -- Name: usersAuthenticators; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2045,7 +2101,7 @@ CREATE TABLE public."usersAuthenticators" (
 ALTER TABLE public."usersAuthenticators" OWNER TO postgres;
 
 --
--- TOC entry 294 (class 1259 OID 292843)
+-- TOC entry 298 (class 1259 OID 398422)
 -- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -2060,8 +2116,8 @@ CREATE SEQUENCE public.users_id_seq
 ALTER SEQUENCE public.users_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4008 (class 0 OID 0)
--- Dependencies: 294
+-- TOC entry 4030 (class 0 OID 0)
+-- Dependencies: 298
 -- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -2069,7 +2125,7 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- TOC entry 295 (class 1259 OID 292844)
+-- TOC entry 299 (class 1259 OID 398423)
 -- Name: users_jobs; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2090,7 +2146,7 @@ CREATE TABLE public.users_jobs (
 ALTER TABLE public.users_jobs OWNER TO postgres;
 
 --
--- TOC entry 296 (class 1259 OID 292849)
+-- TOC entry 300 (class 1259 OID 398428)
 -- Name: users_jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -2105,8 +2161,8 @@ CREATE SEQUENCE public.users_jobs_id_seq
 ALTER SEQUENCE public.users_jobs_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4009 (class 0 OID 0)
--- Dependencies: 296
+-- TOC entry 4031 (class 0 OID 0)
+-- Dependencies: 300
 -- Name: users_jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -2114,7 +2170,7 @@ ALTER SEQUENCE public.users_jobs_id_seq OWNED BY public.users_jobs.id;
 
 
 --
--- TOC entry 297 (class 1259 OID 292850)
+-- TOC entry 301 (class 1259 OID 398429)
 -- Name: verifications; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2134,7 +2190,7 @@ CREATE TABLE public.verifications (
 ALTER TABLE public.verifications OWNER TO postgres;
 
 --
--- TOC entry 298 (class 1259 OID 292856)
+-- TOC entry 302 (class 1259 OID 398435)
 -- Name: verifications_providers; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2152,7 +2208,7 @@ CREATE TABLE public.verifications_providers (
 ALTER TABLE public.verifications_providers OWNER TO postgres;
 
 --
--- TOC entry 299 (class 1259 OID 292861)
+-- TOC entry 303 (class 1259 OID 398440)
 -- Name: workflows; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2178,7 +2234,7 @@ CREATE TABLE public.workflows (
 ALTER TABLE public.workflows OWNER TO postgres;
 
 --
--- TOC entry 300 (class 1259 OID 292873)
+-- TOC entry 304 (class 1259 OID 398452)
 -- Name: workflows_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -2193,8 +2249,8 @@ CREATE SEQUENCE public.workflows_id_seq
 ALTER SEQUENCE public.workflows_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4010 (class 0 OID 0)
--- Dependencies: 300
+-- TOC entry 4032 (class 0 OID 0)
+-- Dependencies: 304
 -- Name: workflows_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -2202,7 +2258,7 @@ ALTER SEQUENCE public.workflows_id_seq OWNED BY public.workflows.id;
 
 
 --
--- TOC entry 3451 (class 2604 OID 292874)
+-- TOC entry 3462 (class 2604 OID 398453)
 -- Name: apiKeys id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2210,7 +2266,7 @@ ALTER TABLE ONLY public."apiKeys" ALTER COLUMN id SET DEFAULT nextval('public."a
 
 
 --
--- TOC entry 3452 (class 2604 OID 292875)
+-- TOC entry 3463 (class 2604 OID 398454)
 -- Name: applicationPlugins id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2218,7 +2274,7 @@ ALTER TABLE ONLY public."applicationPlugins" ALTER COLUMN id SET DEFAULT nextval
 
 
 --
--- TOC entry 3453 (class 2604 OID 292876)
+-- TOC entry 3464 (class 2604 OID 398455)
 -- Name: applicationVersion id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2226,7 +2282,7 @@ ALTER TABLE ONLY public."applicationVersion" ALTER COLUMN id SET DEFAULT nextval
 
 
 --
--- TOC entry 3454 (class 2604 OID 292877)
+-- TOC entry 3465 (class 2604 OID 398456)
 -- Name: attachments id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2234,7 +2290,7 @@ ALTER TABLE ONLY public.attachments ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 3456 (class 2604 OID 292878)
+-- TOC entry 3467 (class 2604 OID 398457)
 -- Name: authenticators id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2242,7 +2298,7 @@ ALTER TABLE ONLY public.authenticators ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
--- TOC entry 3460 (class 2604 OID 292879)
+-- TOC entry 3471 (class 2604 OID 398458)
 -- Name: collectionCategories id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2250,7 +2306,7 @@ ALTER TABLE ONLY public."collectionCategories" ALTER COLUMN id SET DEFAULT nextv
 
 
 --
--- TOC entry 3468 (class 2604 OID 292880)
+-- TOC entry 3479 (class 2604 OID 398459)
 -- Name: dataSourcesRolesResources id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2258,7 +2314,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResources" ALTER COLUMN id SET DEFAULT 
 
 
 --
--- TOC entry 3470 (class 2604 OID 292881)
+-- TOC entry 3481 (class 2604 OID 398460)
 -- Name: dataSourcesRolesResourcesActions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2266,7 +2322,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResourcesActions" ALTER COLUMN id SET D
 
 
 --
--- TOC entry 3472 (class 2604 OID 292882)
+-- TOC entry 3483 (class 2604 OID 398461)
 -- Name: dataSourcesRolesResourcesScopes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2274,7 +2330,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResourcesScopes" ALTER COLUMN id SET DE
 
 
 --
--- TOC entry 3474 (class 2604 OID 292883)
+-- TOC entry 3485 (class 2604 OID 398462)
 -- Name: executions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2282,7 +2338,7 @@ ALTER TABLE ONLY public.executions ALTER COLUMN id SET DEFAULT nextval('public.e
 
 
 --
--- TOC entry 3476 (class 2604 OID 292884)
+-- TOC entry 3487 (class 2604 OID 398463)
 -- Name: flow_nodes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2290,7 +2346,7 @@ ALTER TABLE ONLY public.flow_nodes ALTER COLUMN id SET DEFAULT nextval('public.f
 
 
 --
--- TOC entry 3478 (class 2604 OID 292885)
+-- TOC entry 3489 (class 2604 OID 398464)
 -- Name: funds id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2298,7 +2354,7 @@ ALTER TABLE ONLY public.funds ALTER COLUMN id SET DEFAULT nextval('public.funds_
 
 
 --
--- TOC entry 3480 (class 2604 OID 292886)
+-- TOC entry 3491 (class 2604 OID 398465)
 -- Name: hello id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2306,7 +2362,7 @@ ALTER TABLE ONLY public.hello ALTER COLUMN id SET DEFAULT nextval('public.hello_
 
 
 --
--- TOC entry 3450 (class 2604 OID 292521)
+-- TOC entry 3492 (class 2604 OID 398466)
 -- Name: images id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2314,7 +2370,7 @@ ALTER TABLE ONLY public.images ALTER COLUMN id SET DEFAULT nextval('public.image
 
 
 --
--- TOC entry 3481 (class 2604 OID 292887)
+-- TOC entry 3493 (class 2604 OID 398467)
 -- Name: jobs id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2322,7 +2378,7 @@ ALTER TABLE ONLY public.jobs ALTER COLUMN id SET DEFAULT nextval('public.jobs_id
 
 
 --
--- TOC entry 3482 (class 2604 OID 292888)
+-- TOC entry 3494 (class 2604 OID 398468)
 -- Name: projects id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2330,7 +2386,7 @@ ALTER TABLE ONLY public.projects ALTER COLUMN id SET DEFAULT nextval('public.pro
 
 
 --
--- TOC entry 3486 (class 2604 OID 292889)
+-- TOC entry 3498 (class 2604 OID 398469)
 -- Name: proposes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2338,7 +2394,7 @@ ALTER TABLE ONLY public.proposes ALTER COLUMN id SET DEFAULT nextval('public.pro
 
 
 --
--- TOC entry 3492 (class 2604 OID 292890)
+-- TOC entry 3504 (class 2604 OID 398470)
 -- Name: rolesResources id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2346,7 +2402,7 @@ ALTER TABLE ONLY public."rolesResources" ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- TOC entry 3493 (class 2604 OID 292891)
+-- TOC entry 3505 (class 2604 OID 398471)
 -- Name: rolesResourcesActions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2354,7 +2410,7 @@ ALTER TABLE ONLY public."rolesResourcesActions" ALTER COLUMN id SET DEFAULT next
 
 
 --
--- TOC entry 3495 (class 2604 OID 292892)
+-- TOC entry 3507 (class 2604 OID 398472)
 -- Name: rolesResourcesScopes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2362,7 +2418,7 @@ ALTER TABLE ONLY public."rolesResourcesScopes" ALTER COLUMN id SET DEFAULT nextv
 
 
 --
--- TOC entry 3496 (class 2604 OID 292893)
+-- TOC entry 3508 (class 2604 OID 398473)
 -- Name: sequences id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2370,7 +2426,7 @@ ALTER TABLE ONLY public.sequences ALTER COLUMN id SET DEFAULT nextval('public.se
 
 
 --
--- TOC entry 3497 (class 2604 OID 292894)
+-- TOC entry 3509 (class 2604 OID 398474)
 -- Name: storages id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2378,7 +2434,7 @@ ALTER TABLE ONLY public.storages ALTER COLUMN id SET DEFAULT nextval('public.sto
 
 
 --
--- TOC entry 3504 (class 2604 OID 292895)
+-- TOC entry 3516 (class 2604 OID 398475)
 -- Name: systemSettings id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2386,7 +2442,7 @@ ALTER TABLE ONLY public."systemSettings" ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- TOC entry 3509 (class 2604 OID 292896)
+-- TOC entry 3521 (class 2604 OID 398476)
 -- Name: t_587vrvz0gcb id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2394,7 +2450,7 @@ ALTER TABLE ONLY public.t_587vrvz0gcb ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 3513 (class 2604 OID 292897)
+-- TOC entry 3525 (class 2604 OID 398477)
 -- Name: themeConfig id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2402,7 +2458,7 @@ ALTER TABLE ONLY public."themeConfig" ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 3515 (class 2604 OID 292898)
+-- TOC entry 3527 (class 2604 OID 398478)
 -- Name: tokenBlacklist id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2410,7 +2466,7 @@ ALTER TABLE ONLY public."tokenBlacklist" ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- TOC entry 3516 (class 2604 OID 292899)
+-- TOC entry 3528 (class 2604 OID 398479)
 -- Name: transactions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2418,7 +2474,7 @@ ALTER TABLE ONLY public.transactions ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- TOC entry 3520 (class 2604 OID 292900)
+-- TOC entry 3532 (class 2604 OID 398480)
 -- Name: uiSchemaServerHooks id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2426,7 +2482,7 @@ ALTER TABLE ONLY public."uiSchemaServerHooks" ALTER COLUMN id SET DEFAULT nextva
 
 
 --
--- TOC entry 3522 (class 2604 OID 292901)
+-- TOC entry 3534 (class 2604 OID 398481)
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2434,7 +2490,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
--- TOC entry 3527 (class 2604 OID 292902)
+-- TOC entry 3539 (class 2604 OID 398482)
 -- Name: users_jobs id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2442,7 +2498,7 @@ ALTER TABLE ONLY public.users_jobs ALTER COLUMN id SET DEFAULT nextval('public.u
 
 
 --
--- TOC entry 3529 (class 2604 OID 292903)
+-- TOC entry 3541 (class 2604 OID 398483)
 -- Name: workflows id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2450,8 +2506,8 @@ ALTER TABLE ONLY public.workflows ALTER COLUMN id SET DEFAULT nextval('public.wo
 
 
 --
--- TOC entry 3875 (class 0 OID 292540)
--- Dependencies: 218
+-- TOC entry 3891 (class 0 OID 398095)
+-- Dependencies: 215
 -- Data for Name: apiKeys; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -2460,8 +2516,8 @@ COPY public."apiKeys" (id, "createdAt", name, "roleName", "expiresIn", token, so
 
 
 --
--- TOC entry 3877 (class 0 OID 292546)
--- Dependencies: 220
+-- TOC entry 3893 (class 0 OID 398101)
+-- Dependencies: 217
 -- Data for Name: applicationPlugins; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -2515,7 +2571,6 @@ COPY public."applicationPlugins" (id, "createdAt", "updatedAt", name, "packageNa
 38	2024-11-22 08:42:35.855+00	2024-11-22 08:42:43.296+00	action-print	@nocobase/plugin-action-print	1.3.52	t	t	t	\N
 39	2024-11-22 08:42:35.905+00	2024-11-22 08:42:43.345+00	collection-sql	@nocobase/plugin-collection-sql	1.3.52	t	t	t	\N
 40	2024-11-22 08:42:35.955+00	2024-11-22 08:42:43.397+00	collection-tree	@nocobase/plugin-collection-tree	1.3.52	t	t	t	\N
-54	2024-11-22 08:43:33.991+00	2024-11-22 08:49:26.255+00	@olp-dtu-2024/kafka-nocobase	@olp-dtu-2024/kafka-nocobase	0.1.0	t	t	\N	\N
 55	2024-11-22 11:23:36.527+00	2024-11-22 11:24:17.458+00	@service/rescue_requests	@service/rescue_requests	0.1.0	t	t	\N	\N
 48	2024-11-22 08:42:36.355+00	2024-11-23 01:03:38.981+00	api-doc	@nocobase/plugin-api-doc	1.3.52	t	t	\N	\N
 47	2024-11-22 08:42:36.304+00	2024-11-22 16:31:39.363+00	theme-editor	@nocobase/plugin-theme-editor	1.3.52	t	t	\N	\N
@@ -2527,14 +2582,16 @@ COPY public."applicationPlugins" (id, "createdAt", "updatedAt", name, "packageNa
 50	2024-11-22 08:42:36.455+00	2024-11-24 13:49:14.928+00	field-markdown-vditor	@nocobase/plugin-field-markdown-vditor	1.3.52	f	t	\N	\N
 61	2024-11-24 03:34:37.804+00	2024-11-24 03:35:12.479+00	@olp-dtu-2024/ui	@olp-dtu-2024/ui	0.1.0	t	t	\N	\N
 59	2024-11-23 15:30:20.12+00	2024-11-25 05:45:43.086+00	@olp-dtu-2024/landing-page	@olp-dtu-2024/landing-page	0.1.0	t	t	\N	\N
-64	2024-11-27 15:25:59.045+00	2024-11-27 15:26:53.128+00	@olp-dtu-2024/carousel	@olp-dtu-2024/carousel	0.1.0	t	t	\N	\N
-65	2024-11-27 16:08:39.398+00	2024-11-27 16:10:09.543+00	@olp-dtu-2024/header-picker	@olp-dtu-2024/header-picker	0.1.0	t	t	\N	\N
+54	2024-11-22 08:43:33.991+00	2024-11-28 01:46:15.614+00	@olp-dtu-2024/kafka-nocobase	@olp-dtu-2024/kafka-nocobase	1.0.1	t	t	\N	\N
+67	2024-11-29 18:21:11.386+00	2024-11-29 18:23:11.444+00	@olp-dtu-2024/carousel-nocobase	@olp-dtu-2024/carousel-nocobase	0.1.0	t	t	\N	\N
+68	2024-11-29 18:40:03.216+00	2024-11-29 18:42:18.26+00	@olp-dtu-2024/header-picker-nocobase	@olp-dtu-2024/header-picker-nocobase	0.1.0	t	t	\N	\N
+69	2024-11-30 13:23:30.877+00	2024-11-30 13:25:57.597+00	@olp-dtu-2024/progress-nocobase	@olp-dtu-2024/progress-nocobase	0.1.0	t	t	\N	\N
 \.
 
 
 --
--- TOC entry 3879 (class 0 OID 292552)
--- Dependencies: 222
+-- TOC entry 3895 (class 0 OID 398107)
+-- Dependencies: 219
 -- Data for Name: applicationVersion; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -2544,8 +2601,8 @@ COPY public."applicationVersion" (id, value) FROM stdin;
 
 
 --
--- TOC entry 3881 (class 0 OID 292556)
--- Dependencies: 224
+-- TOC entry 3897 (class 0 OID 398111)
+-- Dependencies: 221
 -- Data for Name: attachments; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -2569,12 +2626,17 @@ COPY public.attachments (id, "createdAt", "updatedAt", title, filename, extname,
 17	2024-11-27 09:55:44.638+00	2024-11-27 09:55:44.638+00	pexels-pramodtiwari-14447524	f1a3269960bdd472a0b9fac61f9b8b66.jpg	.jpg	450211	image/jpeg	1		{}	/storage/uploads/f1a3269960bdd472a0b9fac61f9b8b66.jpg	1	1
 18	2024-11-27 09:55:44.646+00	2024-11-27 09:55:44.646+00	pexels-rpnickson-2775196	072ebe851cde60218d694d039602de89.jpg	.jpg	1192657	image/jpeg	1		{}	/storage/uploads/072ebe851cde60218d694d039602de89.jpg	1	1
 19	2024-11-27 09:55:44.649+00	2024-11-27 09:55:44.649+00	pexels-stywo-1261728	b1529ff8db3038f27aa8b9563803e1d5.jpg	.jpg	1433451	image/jpeg	1		{}	/storage/uploads/b1529ff8db3038f27aa8b9563803e1d5.jpg	1	1
+20	2024-11-29 16:15:58.451+00	2024-11-29 16:15:58.451+00	hinh-nen-desktop-cute_004670-1280x720	a35707a7f73abf1fb7c85ec2cb23f120.jpg	.jpg	109242	image/jpeg	1		{}	/storage/uploads/a35707a7f73abf1fb7c85ec2cb23f120.jpg	1	1
+21	2024-11-29 16:15:58.457+00	2024-11-29 16:15:58.457+00	pexels-yaroslav-shuraev-1553962	fed82265811b91ac20b0be253113244a.jpg	.jpg	571806	image/jpeg	1		{}	/storage/uploads/fed82265811b91ac20b0be253113244a.jpg	1	1
+22	2024-11-29 20:13:56.017+00	2024-11-29 20:13:56.017+00	hinh-nen-may-tinh-chill-4k28	46a194489a72225527567e65c84572d5.jpg	.jpg	190990	image/jpeg	1		{}	/storage/uploads/46a194489a72225527567e65c84572d5.jpg	1	1
+23	2024-11-29 20:13:56.031+00	2024-11-29 20:13:56.031+00	hinh-nen-desktop-phong-canh-full-hd	d6ee4a229399d8a7c2172838e3ca3937.jpg	.jpg	686638	image/jpeg	1		{}	/storage/uploads/d6ee4a229399d8a7c2172838e3ca3937.jpg	1	1
+24	2024-11-29 20:13:56.037+00	2024-11-29 20:13:56.037+00	pexels-8moments-1323550	9f1ed8f8c46de09614de4103ad02c65f.jpg	.jpg	1247723	image/jpeg	1		{}	/storage/uploads/9f1ed8f8c46de09614de4103ad02c65f.jpg	1	1
 \.
 
 
 --
--- TOC entry 3883 (class 0 OID 292563)
--- Dependencies: 226
+-- TOC entry 3899 (class 0 OID 398118)
+-- Dependencies: 223
 -- Data for Name: authenticators; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -2584,8 +2646,8 @@ COPY public.authenticators (id, "createdAt", "updatedAt", name, "authType", titl
 
 
 --
--- TOC entry 3885 (class 0 OID 292572)
--- Dependencies: 228
+-- TOC entry 3901 (class 0 OID 398127)
+-- Dependencies: 225
 -- Data for Name: chinaRegions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -5945,8 +6007,8 @@ COPY public."chinaRegions" ("createdAt", "updatedAt", code, name, "parentCode", 
 
 
 --
--- TOC entry 3886 (class 0 OID 292577)
--- Dependencies: 229
+-- TOC entry 3902 (class 0 OID 398132)
+-- Dependencies: 226
 -- Data for Name: collectionCategories; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -5955,8 +6017,8 @@ COPY public."collectionCategories" (id, "createdAt", "updatedAt", name, color, s
 
 
 --
--- TOC entry 3888 (class 0 OID 292584)
--- Dependencies: 231
+-- TOC entry 3904 (class 0 OID 398139)
+-- Dependencies: 228
 -- Data for Name: collectionCategory; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -5965,8 +6027,8 @@ COPY public."collectionCategory" ("createdAt", "updatedAt", "collectionName", "c
 
 
 --
--- TOC entry 3889 (class 0 OID 292587)
--- Dependencies: 232
+-- TOC entry 3905 (class 0 OID 398142)
+-- Dependencies: 229
 -- Data for Name: collections; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -5977,12 +6039,14 @@ b4qy9da9jew	transactions	Transactions	f	f	{"logging":true,"autoGenId":false,"cre
 s8tqzphff7e	funds	Funds	f	f	{"logging":true,"autoGenId":false,"createdAt":true,"createdBy":true,"updatedAt":true,"updatedBy":true,"template":"general","view":false,"inherits":[],"simplePaginate":true,"schema":"public"}	\N	5
 p2kkcq3rhn8	proposes	Proposes	f	f	{"logging":true,"autoGenId":false,"createdAt":true,"createdBy":true,"updatedAt":true,"updatedBy":true,"template":"general","view":false,"schema":"public"}	Các đề xuất xây dựng từ người dùng	6
 zoq5dq360w9	projects	Dự án	f	f	{"logging":true,"autoGenId":false,"createdAt":true,"createdBy":true,"updatedAt":true,"updatedBy":true,"template":"general","view":false,"simplePaginate":true,"schema":"public","filterTargetKey":"id","unavailableActions":[]}	\N	4
+z7a2ikzf0c6	kafka_topics	Kafka Topics	f	f	{"actions":[{"name":"create","type":"create","title":"Create Kafka Topic","viewName":"form"},{"name":"view","type":"view","title":"View","viewName":"form"},{"name":"edit","type":"edit","title":"Edit","viewName":"form"},{"name":"destroy","type":"destroy","title":"Delete"}],"schema":"public"}	\N	7
+wnpw5lzo0se	kafka_configs	Kafka Configs	f	f	{"actions":[{"name":"create","type":"create","title":"Create Kafka Config","viewName":"form"},{"name":"view","type":"view","title":"View","viewName":"form"},{"name":"edit","type":"edit","title":"Edit","viewName":"form"},{"name":"destroy","type":"destroy","title":"Delete"}],"schema":"public"}	\N	8
 \.
 
 
 --
--- TOC entry 3890 (class 0 OID 292595)
--- Dependencies: 233
+-- TOC entry 3906 (class 0 OID 398150)
+-- Dependencies: 230
 -- Data for Name: customRequests; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -5995,8 +6059,8 @@ COPY public."customRequests" ("createdAt", "updatedAt", key, options) FROM stdin
 
 
 --
--- TOC entry 3891 (class 0 OID 292600)
--- Dependencies: 234
+-- TOC entry 3907 (class 0 OID 398155)
+-- Dependencies: 231
 -- Data for Name: customRequestsRoles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6005,8 +6069,8 @@ COPY public."customRequestsRoles" ("createdAt", "updatedAt", "customRequestKey",
 
 
 --
--- TOC entry 3892 (class 0 OID 292605)
--- Dependencies: 235
+-- TOC entry 3908 (class 0 OID 398160)
+-- Dependencies: 232
 -- Data for Name: dataSources; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6016,8 +6080,8 @@ COPY public."dataSources" ("createdAt", "updatedAt", key, "displayName", type, o
 
 
 --
--- TOC entry 3893 (class 0 OID 292612)
--- Dependencies: 236
+-- TOC entry 3909 (class 0 OID 398167)
+-- Dependencies: 233
 -- Data for Name: dataSourcesCollections; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6026,8 +6090,8 @@ COPY public."dataSourcesCollections" (key, name, options, "dataSourceKey") FROM 
 
 
 --
--- TOC entry 3894 (class 0 OID 292617)
--- Dependencies: 237
+-- TOC entry 3910 (class 0 OID 398172)
+-- Dependencies: 234
 -- Data for Name: dataSourcesFields; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6036,8 +6100,8 @@ COPY public."dataSourcesFields" (key, name, "collectionName", interface, descrip
 
 
 --
--- TOC entry 3895 (class 0 OID 292623)
--- Dependencies: 238
+-- TOC entry 3911 (class 0 OID 398178)
+-- Dependencies: 235
 -- Data for Name: dataSourcesRoles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6050,8 +6114,8 @@ nlk3ipx1f9e	\N	main	guest
 
 
 --
--- TOC entry 3896 (class 0 OID 292628)
--- Dependencies: 239
+-- TOC entry 3912 (class 0 OID 398183)
+-- Dependencies: 236
 -- Data for Name: dataSourcesRolesResources; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6060,8 +6124,8 @@ COPY public."dataSourcesRolesResources" (id, "createdAt", "updatedAt", "dataSour
 
 
 --
--- TOC entry 3897 (class 0 OID 292634)
--- Dependencies: 240
+-- TOC entry 3913 (class 0 OID 398189)
+-- Dependencies: 237
 -- Data for Name: dataSourcesRolesResourcesActions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6070,8 +6134,8 @@ COPY public."dataSourcesRolesResourcesActions" (id, "createdAt", "updatedAt", na
 
 
 --
--- TOC entry 3899 (class 0 OID 292641)
--- Dependencies: 242
+-- TOC entry 3915 (class 0 OID 398196)
+-- Dependencies: 239
 -- Data for Name: dataSourcesRolesResourcesScopes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6082,8 +6146,8 @@ COPY public."dataSourcesRolesResourcesScopes" (id, "createdAt", "updatedAt", key
 
 
 --
--- TOC entry 3902 (class 0 OID 292649)
--- Dependencies: 245
+-- TOC entry 3918 (class 0 OID 398204)
+-- Dependencies: 242
 -- Data for Name: executions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6120,12 +6184,13 @@ COPY public.executions (id, "createdAt", "updatedAt", key, "eventKey", context, 
 17	2024-11-23 10:24:00.423+00	2024-11-23 10:24:00.978+00	tbhf0n5k4ba	ab79f6e1-ac48-462d-8b05-36dcec598ad3	{"data":{"createdAt":"2024-11-23T10:22:50.823Z","updatedAt":"2024-11-23T10:24:00.357Z","name":"aaaaa","description":"dfdfdsfdsfsdf","construction_site":"Cao Bằng","id":8,"status":"APPROVED","is_deleted":0,"createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"cb9f202d91599a21382c42be46ee032487d7ad26dd17d17f3b827a8cb07174f8","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-11-22T08:42:38.679Z","updatedAt":"2024-11-22T08:42:38.679Z","sort":1,"createdById":null,"updatedById":null}}}	-1	16
 18	2024-11-23 10:44:46.637+00	2024-11-23 10:44:47.756+00	tbhf0n5k4ba	6f57b07a-a6b3-4f6f-8e8e-f6477b04971f	{"data":{"createdAt":"2024-11-23T10:44:05.704Z","updatedAt":"2024-11-23T10:44:46.561Z","name":"dseww","description":"sdgdsfgwvsfgs","construction_site":"fwef","id":9,"status":"APPROVED","is_deleted":0,"createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"cb9f202d91599a21382c42be46ee032487d7ad26dd17d17f3b827a8cb07174f8","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-11-22T08:42:38.679Z","updatedAt":"2024-11-22T08:42:38.679Z","sort":1,"createdById":null,"updatedById":null}}}	-1	16
 20	2024-11-23 10:53:47.76+00	2024-11-23 10:53:48.421+00	gyc7yynd5w0	aa670944-d977-428f-9c7b-00884090fb80	{"data":{"createdAt":"2024-11-23T10:53:32.680Z","updatedAt":"2024-11-23T10:53:47.700Z","name":"dfsf3qwrqwe","description":"dsfdsgđsfa","construction_site":"3e3qfsdfasdvas","id":10,"status":"APPROVED","is_deleted":0,"createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"cb9f202d91599a21382c42be46ee032487d7ad26dd17d17f3b827a8cb07174f8","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-11-22T08:42:38.679Z","updatedAt":"2024-11-22T08:42:38.679Z","sort":1,"createdById":null,"updatedById":null}}}	1	18
+33	2024-11-29 20:13:20.368+00	2024-11-29 20:13:20.994+00	07lrf76z5ab	af22db29-536f-461a-91c0-79d18ec8c9c0	{"data":{"createdAt":"2024-11-29T20:13:03.294Z","updatedAt":"2024-11-29T20:13:20.272Z","name":"fdfggdfg","description":null,"construction_site":"gfdsdfg","id":23,"status":"APPROVED","is_deleted":0,"createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"cb9f202d91599a21382c42be46ee032487d7ad26dd17d17f3b827a8cb07174f8","appLang":null,"resetToken":null,"systemSettings":{"themeId":5},"createdAt":"2024-11-22T08:42:38.679Z","updatedAt":"2024-11-25T06:09:25.389Z","sort":1,"createdById":null,"updatedById":null}}}	1	22
 \.
 
 
 --
--- TOC entry 3904 (class 0 OID 292655)
--- Dependencies: 247
+-- TOC entry 3920 (class 0 OID 398210)
+-- Dependencies: 244
 -- Data for Name: fields; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6212,12 +6277,20 @@ py2pvrrxk3n	is_deleted	bigInt	integer	\N	transactions	\N	\N	{"uiSchema":{"type":
 k2m3hzx00cm	qr_code_url	text	url	\N	funds	\N	\N	{"uiSchema":{"type":"string","x-component":"Input.URL","title":"QR Code Url"}}	12
 htj0x3vc2hp	images	belongsToMany	attachment	\N	projects	\N	\N	{"uiSchema":{"x-component-props":{"multiple":true,"accept":"image/*"},"type":"array","x-component":"Upload.Attachment","x-use-component-props":"useAttachmentFieldProps","title":"Hình ảnh"},"target":"attachments","storage":"local","through":"t_bzkvdw2a767","foreignKey":"f_s8php2rxxwe","otherKey":"f_qxu5av3g0sx","targetKey":"id","sourceKey":"id"}	12
 q5ty0c42q5t	sub_title	string	input	\N	projects	\N	\N	{"uiSchema":{"type":"string","x-component":"Input","title":"Mô tả ngắn"}}	13
+saiotft86cb	id	uuid	input	\N	kafka_topics	\N	\N	{"primaryKey":true,"autoIncrement":false,"uiSchema":{"type":"string","title":"ID","x-component":"Input","required":true}}	1
+969zz3odpcx	broker_host	string	input	\N	kafka_topics	\N	\N	{"uiSchema":{"type":"string","title":"Broker Host","x-component":"Input","required":true}}	2
+3el51vwparp	topic_name	string	input	\N	kafka_topics	\N	\N	{"uiSchema":{"type":"string","title":"Topic Name","x-component":"Input","required":true}}	3
+0jgap03o46r	type	string	select	\N	kafka_topics	\N	\N	{"uiSchema":{"type":"string","title":"Type","x-component":"Select","x-component-props":{"options":[{"label":"Producer","value":"producer"},{"label":"Consumer","value":"consumer"}]},"required":true}}	4
+wneudei1j9h	id	uuid	input	\N	kafka_configs	\N	\N	{"primaryKey":true,"autoIncrement":false,"uiSchema":{"type":"string","title":"ID","x-component":"Input","required":true}}	1
+hion733k0k3	group_id	string	input	\N	kafka_configs	\N	\N	{"uiSchema":{"type":"string","title":"Group Id","x-component":"Input","required":true}}	2
+unjp623888f	client_id	string	input	\N	kafka_configs	\N	\N	{"uiSchema":{"type":"string","title":"Client Id","x-component":"Input","required":true}}	3
+ataartdxovv	description	text	richText	\N	projects	\N	\N	{"uiSchema":{"type":"string","x-component":"RichText","title":"Mô tả"}}	14
 \.
 
 
 --
--- TOC entry 3905 (class 0 OID 292661)
--- Dependencies: 248
+-- TOC entry 3921 (class 0 OID 398216)
+-- Dependencies: 245
 -- Data for Name: flow_nodes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6234,22 +6307,23 @@ COPY public.flow_nodes (id, "createdAt", "updatedAt", key, title, "upstreamId", 
 
 
 --
--- TOC entry 3907 (class 0 OID 292668)
--- Dependencies: 250
+-- TOC entry 3923 (class 0 OID 398223)
+-- Dependencies: 247
 -- Data for Name: funds; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.funds ("createdAt", "updatedAt", id, "createdById", "updatedById", name, target_amount, current_amount, project_id, description, is_deleted, qr_code_url) FROM stdin;
-2024-11-23 12:14:08.318+00	2024-11-25 06:56:35.051+00	21	\N	1	Xây nhà cho tui	500000000	0	\N	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=X%C3%A2y%20nh%C3%A0%20cho%20tui
-2024-11-23 14:32:55.113+00	2024-11-25 06:56:35.053+00	22	\N	\N	Xây cầu	0	0	\N	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quyX%C3%A2y%20c%E1%BA%A7u
 2024-11-24 02:36:51.286+00	2024-11-25 06:56:35.055+00	23	\N	\N	AAAA	0	0	\N	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quyAAAA
 2024-11-24 02:43:58.661+00	2024-11-25 06:56:35.056+00	24	\N	\N	bbbbdf	0	0	\N	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20bbbbdf
+2024-11-29 20:13:20.707+00	2024-11-30 17:05:13.252+00	25	\N	1	fdfggdfg	120000000	400003	27	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20fdfggdfg
+2024-11-23 14:32:55.113+00	2024-12-01 03:23:31.385+00	22	\N	1	Xây cầu	0	0	26	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quyX%C3%A2y%20c%E1%BA%A7u
+2024-11-23 12:14:08.318+00	2024-12-01 03:23:41.015+00	21	\N	1	Xây nhà cho tui	500000000	0	25	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=X%C3%A2y%20nh%C3%A0%20cho%20tui
 \.
 
 
 --
--- TOC entry 3909 (class 0 OID 292675)
--- Dependencies: 252
+-- TOC entry 3925 (class 0 OID 398230)
+-- Dependencies: 249
 -- Data for Name: hello; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6258,19 +6332,21 @@ COPY public.hello (id, "createdAt", "updatedAt", name) FROM stdin;
 
 
 --
--- TOC entry 3911 (class 0 OID 292679)
--- Dependencies: 254
+-- TOC entry 3927 (class 0 OID 398234)
+-- Dependencies: 251
 -- Data for Name: iframeHtml; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."iframeHtml" (id, "createdAt", "updatedAt", html, "createdById", "updatedById") FROM stdin;
 8411zu1034t	2024-11-23 03:18:27.009+00	2024-11-23 12:08:00.692+00	<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>QR Code with Padding</title>\n  <style>\n    body {\n      margin: 0;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n      height: 100vh; /* Chiều cao toàn màn hình */\n      background: linear-gradient(135deg, #e0eafc, #cfdef3); /* Nền gradient */\n    }\n    .container {\n      display: flex;\n      flex-direction: column;\n      align-items: center;\n      justify-content: center;\n      background: #fff; /* Nền trắng */\n      padding: 40px; /* Khoảng cách viền tổng thể */\n      border-radius: 30px; /* Bo góc nền tổng */\n      box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.2); /* Bóng đổ để nổi bật */\n    }\n    img {\n      width: 90%; /* Chiếm 80% chiều rộng của khung nền */\n      max-width: 230px; /* Giới hạn kích thước lớn nhất */\n      height: auto; /* Tự động điều chỉnh chiều cao theo tỷ lệ */\n      object-fit: contain; /* Đảm bảo hình ảnh giữ đúng tỷ lệ */\n      margin-bottom: 20px; /* Khoảng cách giữa hình ảnh và nền nhỏ */\n    }\n    .text-background {\n      background-color: #f1f5f9; /* Nền nhỏ bên dưới */\n      padding: 10px 20px; /* Khoảng cách bên trong */\n      border-radius: 10px; /* Bo góc nền nhỏ */\n      font-size: 16px; /* Kích thước chữ */\n      color: #333; /* Màu chữ */\n      user-select: none;\n      text-align: center; /* Canh giữa nội dung */\n    }\n  </style>\n</head>\n<body>\n  <div class="container">\n    <!-- Hình ảnh QR Code -->\n    <img src="{{$nPopupRecord.qr_code_url}}" alt="QR Code">\n    <!-- Nền nhỏ bên dưới -->\n    <div class="text-background">Quét mã để đóng góp</div>\n  </div>\n</body>\n</html>	1	1
+j4k0yp6pcp0	2024-11-29 20:30:44.581+00	2024-11-29 20:30:44.581+00	<!DOCTYPE html>\n<html lang="vi">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>Nút Progress</title>\n  <style>\n    * {\n      box-sizing: border-box;\n      margin: 0;\n      padding: 0;\n    }\n\n    body {\n      font-family: Arial, sans-serif;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n      height: 100vh;\n      background-color: #f4f4f4;\n    }\n\n    .button-container {\n      position: relative;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n    }\n\n    .progress-button {\n      position: relative;\n      padding: 15px 30px;\n      font-size: 16px;\n      font-weight: bold;\n      color: white;\n      background-color: #4caf50;\n      border: none;\n      border-radius: 30px;\n      cursor: pointer;\n      outline: none;\n      overflow: hidden;\n      text-align: center;\n    }\n\n    .progress-button .button-text {\n      position: relative;\n      z-index: 1;\n    }\n\n    .progress-bar {\n      position: absolute;\n      bottom: 0;\n      left: 0;\n      width: 100%;\n      height: 5px;\n      background-color: #ddd;\n    }\n\n    .progress {\n      width: 0;\n      height: 100%;\n      background-color: #76c7c0;\n      transition: width 0.25s ease;\n    }\n  </style>\n</head>\n<body>\n\n  <div class="button-container">\n    <button id="progress-button" class="progress-button">\n      <span class="button-text">Tải về</span>\n      <div class="progress-bar">\n        <div class="progress" id="progress"></div>\n      </div>\n    </button>\n  </div>\n\n  <script>\n    document.getElementById('progress-button').addEventListener('click', function() {\n      var progress = document.getElementById('progress');\n      var width = 0;\n      \n      // Set interval để cập nhật tiến trình\n      var interval = setInterval(function() {\n        if (width >= 100) {\n          clearInterval(interval);  // Dừng tiến trình khi đạt 100%\n        } else {\n          width++;  // Tăng giá trị width\n          progress.style.width = width + '%';  // Cập nhật thanh tiến trình\n        }\n      }, 50);  // Thời gian để hoàn thành 100% (50ms mỗi lần)\n    });\n  </script>\n\n</body>\n</html>\n	1	1
+kfrlwu4mh96	2024-11-29 20:33:49.455+00	2024-11-29 20:40:51.633+00	<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>Fundraising Progress Bar</title>\n    <style>\n        .progress-container {\n            width: 765px;\n            background-color: #f3f3f3;\n            border-radius: 10px;\n            padding: 10px;\n            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);\n        }\n        .progress-bar {\n            width: 13%;\n            height: 20px;\n            background-color: #4caf50;\n            border-radius: 15px;\n        }\n        .progress-info {\n            display: flex;\n            justify-content: space-between;\n            align-items: center;\n            margin-top: 10px;\n        }\n        .progress-info div {\n            font-size: 14px;\n        }\n        .progress-info .amount {\n            font-weight: bold;\n        }\n        .progress-info .countdown {\n            font-weight: bold;\n        }\n    </style>\n</head>\n<body>\n    <div class="progress-container">\n        <div class="progress-bar"></div>\n        <div class="progress-info">\n            <div class="amount">12,500,000 VND</div>\n            <div>18% của 100,000,000 VND</div>\n        </div>\n    </div>\n</body>\n</html>\n	1	1
 \.
 
 
 --
--- TOC entry 3872 (class 0 OID 292310)
--- Dependencies: 215
+-- TOC entry 3928 (class 0 OID 398239)
+-- Dependencies: 252
 -- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6281,8 +6357,8 @@ COPY public.images ("createdAt", "updatedAt", id, "createdById", "updatedById", 
 
 
 --
--- TOC entry 3912 (class 0 OID 292684)
--- Dependencies: 255
+-- TOC entry 3930 (class 0 OID 398245)
+-- Dependencies: 254
 -- Data for Name: jobs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6386,12 +6462,36 @@ COPY public.jobs (id, "createdAt", "updatedAt", "executionId", "nodeId", "nodeKe
 97	2024-11-24 02:43:58.608+00	2024-11-24 02:43:58.608+00	32	67	mf435tyq0zj	96	1	{"createdAt":"2024-11-24T02:43:58.543Z","updatedAt":"2024-11-24T02:43:58.543Z","id":23,"name":"bbbbdf","construction_site":"fd","actual_expenditures":null,"total_amount":0,"is_deleted":0,"createdById":null,"updatedById":null,"createdBy":null,"fund_id":null}
 98	2024-11-24 02:43:58.72+00	2024-11-24 02:43:58.72+00	32	68	purpjsbvaog	97	1	{"is_deleted":0,"id":24,"name":"bbbbdf","project_id":23,"target_amount":0,"current_amount":0,"updatedAt":"2024-11-24T02:43:58.661Z","createdAt":"2024-11-24T02:43:58.661Z","createdById":null,"updatedById":null,"description":null,"qr_code_url":null}
 99	2024-11-24 02:43:58.769+00	2024-11-24 02:43:58.891+00	32	71	dryirmt6df0	98	1	{"status":200,"statusText":"OK","headers":{"x-powered-by":"Express","vary":"Origin, Accept-Encoding","access-control-allow-credentials":"true","x-request-id":"cc8d49dd-3947-4e01-a20c-d6b473e28e39","content-type":"application/json; charset=utf-8","content-length":"230","date":"Sun, 24 Nov 2024 02:43:58 GMT","connection":"close","x-real-url":"http://127.0.0.1:13001/api/qr-donate"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":48},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":24,\\"fund_name\\":\\"bbbbdf\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20bbbbdf","meta":{"fund_id":24,"fund_name":"bbbbdf","user_id":null}}}
+100	2024-11-29 20:13:20.537+00	2024-11-29 20:13:20.537+00	33	66	dl3c184o658	\N	1	true
+101	2024-11-29 20:13:20.652+00	2024-11-29 20:13:20.652+00	33	67	mf435tyq0zj	100	1	{"createdAt":"2024-11-29T20:13:20.591Z","updatedAt":"2024-11-29T20:13:20.591Z","id":27,"name":"fdfggdfg","total_amount":0,"construction_site":"gfdsdfg","is_deleted":0,"sub_title":null,"createdById":null,"updatedById":null,"createdBy":null,"fund_id":null}
+102	2024-11-29 20:13:20.756+00	2024-11-29 20:13:20.756+00	33	68	purpjsbvaog	101	1	{"is_deleted":0,"id":25,"name":"fdfggdfg","project_id":27,"target_amount":0,"current_amount":0,"updatedAt":"2024-11-29T20:13:20.707Z","createdAt":"2024-11-29T20:13:20.707Z","createdById":null,"updatedById":null,"description":null,"qr_code_url":null}
+103	2024-11-29 20:13:20.806+00	2024-11-29 20:13:20.949+00	33	71	dryirmt6df0	102	1	{"status":200,"statusText":"OK","headers":{"x-powered-by":"Express","vary":"Origin, Accept-Encoding","access-control-allow-credentials":"true","x-request-id":"c19149e9-891d-4215-8494-86eff649b0f9","content-type":"application/json; charset=utf-8","content-length":"234","date":"Fri, 29 Nov 2024 20:13:20 GMT","connection":"close","x-real-url":"http://127.0.0.1:13001/api/qr-donate"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":50},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":25,\\"fund_name\\":\\"fdfggdfg\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20fdfggdfg","meta":{"fund_id":25,"fund_name":"fdfggdfg","user_id":null}}}
 \.
 
 
 --
--- TOC entry 3914 (class 0 OID 292690)
+-- TOC entry 3932 (class 0 OID 398251)
+-- Dependencies: 256
+-- Data for Name: kafka_configs; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.kafka_configs (id, "createdAt", "updatedAt", group_id, client_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3933 (class 0 OID 398256)
 -- Dependencies: 257
+-- Data for Name: kafka_topics; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.kafka_topics (id, "createdAt", "updatedAt", broker_host, topic_name, type) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3934 (class 0 OID 398261)
+-- Dependencies: 258
 -- Data for Name: migrations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6402,20 +6502,21 @@ COPY public.migrations (name) FROM stdin;
 
 
 --
--- TOC entry 3915 (class 0 OID 292693)
--- Dependencies: 258
+-- TOC entry 3935 (class 0 OID 398264)
+-- Dependencies: 259
 -- Data for Name: projects; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.projects ("createdAt", "updatedAt", id, "createdById", "updatedById", name, total_amount, construction_site, is_deleted, sub_title) FROM stdin;
-2024-11-27 05:12:46.906+00	2024-11-27 05:12:46.906+00	26	1	1	Dự án 2	20000000	HCM	0	\N
-2024-11-25 06:57:02.948+00	2024-11-25 07:08:32.343+00	25	1	1	Dự án 1	1000000	Đà Nẵng	0	\N
+COPY public.projects ("createdAt", "updatedAt", id, "createdById", "updatedById", name, total_amount, construction_site, is_deleted, sub_title, description) FROM stdin;
+2024-11-29 20:13:20.591+00	2024-11-30 17:03:12.981+00	27	\N	1	Xây dựng cầu treo	120000000	gfdsdfg	0	Theo lãnh đạo xã Trà Tập, đợt mưa trước đó đã gây sạt lở ta-luy dương sau trường. Do đó, chính quyền địa phương đã cho đóng cửa điểm trường trên, dời lớp học ...	<p><strong>Thông tin chi tiết</strong></p><p>Theo lãnh đạo xã Trà Tập, đợt mưa trước đó đã gây sạt lở ta-luy dương sau trường. Do đó, chính quyền địa phương đã cho đóng cửa điểm trường trên, dời lớp học về điểm trường cũ (bằng gỗ), chờ phương án xây dựng kè phía sau. Tuy nhiên, đợt mưa này tiếp tục gây sạt lở khiến điểm trường bị sập.</p><p><br></p><p>Được biết, điểm trường Răng Chuối mới khánh thành hồi tháng 9 với tổng kinh phí xây dựng hơn 1,4 tỉ đồng, do một nhà tài trợ tại TP HCM hỗ trợ toàn bộ chi phí.</p><p><br></p><p>Công trình có tổng diện tích gần 200m², tường xây kiên cố, 2 phòng học, 1 phòng ở tập thể, bếp ăn, khu vệ sinh, sân chơi, tường rào.</p><p><br></p><p>Điểm trường có 35 học sinh mầm non và tiểu học. Ngôi trường mới đưa vào sử dụng thay thế điểm trường tạm vốn đã xuống cấp.</p><p><br></p><p>Ngoài điểm trường Răng Chuối bị thiệt hại, tại huyện Nam Trà My những ngày qua trời mưa lớn kéo dài khiến nhiều điểm sạt lở tuyến đường bị đứt gãy, hư hỏng nặng.</p><p><br></p><p>Huyện Nam Trà My đã chỉ đạo các địa phương cắm biển báo nguy hiểm và cắm biển cấm xe tải trọng lớn, chỉ đạo đơn vị duy tu bảo vệ kè tạm để đảm bảo giao thông xe tải nhỏ và xe ô tô con lưu thông.</p>
+2024-11-27 05:12:46.906+00	2024-11-27 05:12:46.906+00	26	1	1	Dự án 2	20000000	HCM	0	\N	\N
+2024-11-25 06:57:02.948+00	2024-11-25 07:08:32.343+00	25	1	1	Dự án 1	1000000	Đà Nẵng	0	\N	\N
 \.
 
 
 --
--- TOC entry 3917 (class 0 OID 292703)
--- Dependencies: 260
+-- TOC entry 3937 (class 0 OID 398273)
+-- Dependencies: 261
 -- Data for Name: proposes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6424,12 +6525,13 @@ COPY public.proposes ("createdAt", "updatedAt", id, "createdById", "updatedById"
 2024-11-23 14:32:40.645+00	2024-11-23 14:32:54.689+00	20	1	1	Xây cầu	\N	Sơn La	APPROVED	0
 2024-11-24 02:36:39.231+00	2024-11-24 02:36:50.863+00	21	1	1	AAAA	fdfd	Hà Nội	APPROVED	0
 2024-11-24 02:43:51.285+00	2024-11-24 02:43:58.247+00	22	1	1	bbbbdf	fdf	fd	APPROVED	0
+2024-11-29 20:13:03.294+00	2024-11-29 20:13:20.272+00	23	1	1	fdfggdfg	\N	gfdsdfg	APPROVED	0
 \.
 
 
 --
--- TOC entry 3919 (class 0 OID 292711)
--- Dependencies: 262
+-- TOC entry 3939 (class 0 OID 398281)
+-- Dependencies: 263
 -- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6442,8 +6544,8 @@ COPY public.roles ("createdAt", "updatedAt", name, title, description, strategy,
 
 
 --
--- TOC entry 3920 (class 0 OID 292719)
--- Dependencies: 263
+-- TOC entry 3940 (class 0 OID 398289)
+-- Dependencies: 264
 -- Data for Name: rolesResources; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6452,8 +6554,8 @@ COPY public."rolesResources" (id, "createdAt", "updatedAt", "roleName", name, "u
 
 
 --
--- TOC entry 3921 (class 0 OID 292724)
--- Dependencies: 264
+-- TOC entry 3941 (class 0 OID 398294)
+-- Dependencies: 265
 -- Data for Name: rolesResourcesActions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6462,8 +6564,8 @@ COPY public."rolesResourcesActions" (id, "createdAt", "updatedAt", "rolesResourc
 
 
 --
--- TOC entry 3923 (class 0 OID 292731)
--- Dependencies: 266
+-- TOC entry 3943 (class 0 OID 398301)
+-- Dependencies: 267
 -- Data for Name: rolesResourcesScopes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6472,8 +6574,8 @@ COPY public."rolesResourcesScopes" (id, "createdAt", "updatedAt", key, name, "re
 
 
 --
--- TOC entry 3926 (class 0 OID 292738)
--- Dependencies: 269
+-- TOC entry 3946 (class 0 OID 398308)
+-- Dependencies: 270
 -- Data for Name: rolesUischemas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6507,21 +6609,21 @@ COPY public."rolesUischemas" ("createdAt", "updatedAt", "roleName", "uiSchemaXUi
 
 
 --
--- TOC entry 3927 (class 0 OID 292743)
--- Dependencies: 270
+-- TOC entry 3947 (class 0 OID 398313)
+-- Dependencies: 271
 -- Data for Name: rolesUsers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."rolesUsers" ("createdAt", "updatedAt", "default", "roleName", "userId") FROM stdin;
-2024-11-22 08:42:39.974+00	2024-11-25 05:18:22.592+00	f	admin	1
-2024-11-22 08:42:38.779+00	2024-11-25 06:08:48.573+00	f	member	1
-2024-11-22 08:42:39.973+00	2024-11-25 06:08:48.628+00	t	root	1
+2024-11-22 08:42:39.973+00	2024-11-28 09:13:37.854+00	f	root	1
+2024-11-22 08:42:38.779+00	2024-11-29 05:36:12.584+00	f	member	1
+2024-11-22 08:42:39.974+00	2024-11-29 05:36:12.638+00	t	admin	1
 \.
 
 
 --
--- TOC entry 3928 (class 0 OID 292746)
--- Dependencies: 271
+-- TOC entry 3948 (class 0 OID 398316)
+-- Dependencies: 272
 -- Data for Name: sequences; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6530,8 +6632,8 @@ COPY public.sequences (id, "createdAt", "updatedAt", collection, field, key, cur
 
 
 --
--- TOC entry 3930 (class 0 OID 292752)
--- Dependencies: 273
+-- TOC entry 3950 (class 0 OID 398322)
+-- Dependencies: 274
 -- Data for Name: storages; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6541,8 +6643,8 @@ COPY public.storages (id, "createdAt", "updatedAt", title, name, type, options, 
 
 
 --
--- TOC entry 3933 (class 0 OID 292765)
--- Dependencies: 276
+-- TOC entry 3953 (class 0 OID 398335)
+-- Dependencies: 277
 -- Data for Name: systemSettings; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6552,8 +6654,8 @@ COPY public."systemSettings" (id, "createdAt", "updatedAt", title, "showLogoOnly
 
 
 --
--- TOC entry 3935 (class 0 OID 292775)
--- Dependencies: 278
+-- TOC entry 3955 (class 0 OID 398345)
+-- Dependencies: 279
 -- Data for Name: t_587vrvz0gcb; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6563,8 +6665,8 @@ COPY public.t_587vrvz0gcb ("createdAt", "updatedAt", id, "createdById", "updated
 
 
 --
--- TOC entry 3874 (class 0 OID 292415)
--- Dependencies: 217
+-- TOC entry 3957 (class 0 OID 398354)
+-- Dependencies: 281
 -- Data for Name: t_b3tiaxzyeu3; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6581,8 +6683,8 @@ COPY public.t_b3tiaxzyeu3 ("createdAt", "updatedAt", f_6v6rqo2fmi1, f_h8ptb1wlp6
 
 
 --
--- TOC entry 3958 (class 0 OID 293107)
--- Dependencies: 301
+-- TOC entry 3958 (class 0 OID 398357)
+-- Dependencies: 282
 -- Data for Name: t_bzkvdw2a767; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6594,12 +6696,27 @@ COPY public.t_bzkvdw2a767 ("createdAt", "updatedAt", f_s8php2rxxwe, f_qxu5av3g0s
 2024-11-27 09:55:46.611+00	2024-11-27 09:55:46.611+00	25	17
 2024-11-27 09:55:46.611+00	2024-11-27 09:55:46.611+00	25	18
 2024-11-27 09:55:46.611+00	2024-11-27 09:55:46.611+00	25	19
+2024-11-29 20:13:57.157+00	2024-11-29 20:13:57.157+00	27	23
+2024-11-29 20:13:57.158+00	2024-11-29 20:13:57.158+00	27	22
+2024-11-29 20:13:57.158+00	2024-11-29 20:13:57.158+00	27	24
 \.
 
 
 --
--- TOC entry 3937 (class 0 OID 292784)
--- Dependencies: 280
+-- TOC entry 3959 (class 0 OID 398360)
+-- Dependencies: 283
+-- Data for Name: t_ncaek4uddrw; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.t_ncaek4uddrw ("createdAt", "updatedAt", f_j72jrq1b0nw, f_9k9506pi4rq) FROM stdin;
+2024-11-29 16:16:00.387+00	2024-11-29 16:16:00.387+00	22	20
+2024-11-29 16:16:00.387+00	2024-11-29 16:16:00.387+00	22	21
+\.
+
+
+--
+-- TOC entry 3960 (class 0 OID 398363)
+-- Dependencies: 284
 -- Data for Name: t_s9b2jhcxq9q; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6609,8 +6726,8 @@ COPY public.t_s9b2jhcxq9q ("createdAt", "updatedAt", f_b37rybuw15a, f_8o3qqdvq8b
 
 
 --
--- TOC entry 3938 (class 0 OID 292787)
--- Dependencies: 281
+-- TOC entry 3961 (class 0 OID 398366)
+-- Dependencies: 285
 -- Data for Name: themeConfig; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6624,8 +6741,8 @@ COPY public."themeConfig" (id, "createdAt", "updatedAt", config, optional, "isBu
 
 
 --
--- TOC entry 3940 (class 0 OID 292794)
--- Dependencies: 283
+-- TOC entry 3963 (class 0 OID 398373)
+-- Dependencies: 287
 -- Data for Name: tokenBlacklist; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6634,18 +6751,21 @@ COPY public."tokenBlacklist" (id, "createdAt", "updatedAt", token, expiration) F
 
 
 --
--- TOC entry 3942 (class 0 OID 292798)
--- Dependencies: 285
+-- TOC entry 3965 (class 0 OID 398377)
+-- Dependencies: 289
 -- Data for Name: transactions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.transactions ("createdAt", "updatedAt", id, "createdById", "updatedById", transaction_code, amount, description, from_account_no, from_account_name, from_bank_name, f_e47my4oktv2, user_id, fund_id, is_deleted) FROM stdin;
+2024-11-29 20:11:28.381+00	2024-11-29 20:18:31.562+00	3	1	1	2	2	2	2	2	2	\N	\N	25	0
+2024-11-29 20:11:17.505+00	2024-11-29 20:18:36.783+00	2	1	1	1	1	1	1	1	1	\N	\N	25	0
+2024-11-29 20:26:28.741+00	2024-11-29 20:26:39.241+00	4	1	1	45342546456673	400000	\N	1017142420	TRAN NGUYEN DUY KHANH	VCB - Ngân hàng ngoại thương Việt Nam	\N	1	25	0
 \.
 
 
 --
--- TOC entry 3944 (class 0 OID 292807)
--- Dependencies: 287
+-- TOC entry 3967 (class 0 OID 398386)
+-- Dependencies: 291
 -- Data for Name: uiSchemaServerHooks; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6654,18 +6774,20 @@ COPY public."uiSchemaServerHooks" (id, uid, type, collection, field, method, par
 
 
 --
--- TOC entry 3946 (class 0 OID 292813)
--- Dependencies: 289
+-- TOC entry 3969 (class 0 OID 398392)
+-- Dependencies: 293
 -- Data for Name: uiSchemaTemplates; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."uiSchemaTemplates" ("createdAt", "updatedAt", key, name, "componentName", "associationName", "resourceName", "collectionName", "dataSourceKey", uid) FROM stdin;
+2024-11-29 02:21:31.537+00	2024-11-29 02:21:31.537+00	773g40dyl79	Dự án_Details	Details	\N	\N	projects	main	v0hdkdeyzrd
+2024-11-29 02:22:20.76+00	2024-11-29 02:22:20.76+00	x4aatqdb9qp	Dự án_Details	Details	\N	\N	projects	main	eoz95qtwix6
 \.
 
 
 --
--- TOC entry 3947 (class 0 OID 292818)
--- Dependencies: 290
+-- TOC entry 3970 (class 0 OID 398397)
+-- Dependencies: 294
 -- Data for Name: uiSchemaTreePath; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -7190,7 +7312,6 @@ vs0l89adzhc	h0dmilgg31n	7	\N	\N	\N
 nocobase-admin-menu	bzk49nzivdu	8	\N	\N	\N
 nocobase-admin-menu	h0dmilgg31n	9	\N	\N	\N
 bzk49nzivdu	bzk49nzivdu	0	f	properties	\N
-ugc9ztt4hb4	bzk49nzivdu	1	\N	\N	2
 8kgds5aufmv	8kgds5aufmv	0	f	properties	\N
 pfhb8ncb652	8kgds5aufmv	1	\N	\N	1
 ugc9ztt4hb4	8kgds5aufmv	2	\N	\N	\N
@@ -7209,7 +7330,7 @@ vs0l89adzhc	pfhb8ncb652	6	\N	\N	\N
 nocobase-admin-menu	8kgds5aufmv	9	\N	\N	\N
 nocobase-admin-menu	pfhb8ncb652	8	\N	\N	\N
 pfhb8ncb652	pfhb8ncb652	0	f	properties	\N
-ugc9ztt4hb4	pfhb8ncb652	1	\N	\N	3
+pbpsju21w1y	pbpsju21w1y	0	f	properties	\N
 4l7u09ydsdg	4l7u09ydsdg	0	f	properties	\N
 ainrki9f600	4l7u09ydsdg	1	\N	\N	1
 ugc9ztt4hb4	4l7u09ydsdg	2	\N	\N	\N
@@ -7228,7 +7349,6 @@ vs0l89adzhc	ainrki9f600	6	\N	\N	\N
 nocobase-admin-menu	4l7u09ydsdg	9	\N	\N	\N
 nocobase-admin-menu	ainrki9f600	8	\N	\N	\N
 ainrki9f600	ainrki9f600	0	f	properties	\N
-ugc9ztt4hb4	ainrki9f600	1	\N	\N	4
 hvx8jvtqk6e	hvx8jvtqk6e	0	f	properties	\N
 oae1g24te1h	hvx8jvtqk6e	1	\N	\N	1
 ugc9ztt4hb4	hvx8jvtqk6e	2	\N	\N	\N
@@ -7247,7 +7367,7 @@ vs0l89adzhc	oae1g24te1h	6	\N	\N	\N
 nocobase-admin-menu	hvx8jvtqk6e	9	\N	\N	\N
 nocobase-admin-menu	oae1g24te1h	8	\N	\N	\N
 oae1g24te1h	oae1g24te1h	0	f	properties	\N
-ugc9ztt4hb4	oae1g24te1h	1	\N	\N	5
+52h8j6knyh0	pbpsju21w1y	2	\N	\N	\N
 ct41p5st7f6	ct41p5st7f6	0	f	properties	\N
 z4nqlth7kk8	ct41p5st7f6	1	\N	\N	1
 ugc9ztt4hb4	ct41p5st7f6	2	\N	\N	\N
@@ -7266,7 +7386,7 @@ vs0l89adzhc	z4nqlth7kk8	6	\N	\N	\N
 nocobase-admin-menu	ct41p5st7f6	9	\N	\N	\N
 nocobase-admin-menu	z4nqlth7kk8	8	\N	\N	\N
 z4nqlth7kk8	z4nqlth7kk8	0	f	properties	\N
-ugc9ztt4hb4	z4nqlth7kk8	1	\N	\N	6
+5v81x55p2nk	pbpsju21w1y	3	\N	\N	\N
 zwjfadzxpj5	zwjfadzxpj5	0	f	properties	\N
 hswwx0lxpac	zwjfadzxpj5	1	\N	\N	1
 ugc9ztt4hb4	zwjfadzxpj5	2	\N	\N	\N
@@ -7285,7 +7405,7 @@ vs0l89adzhc	zwjfadzxpj5	7	\N	\N	\N
 nocobase-admin-menu	hswwx0lxpac	8	\N	\N	\N
 nocobase-admin-menu	zwjfadzxpj5	9	\N	\N	\N
 hswwx0lxpac	hswwx0lxpac	0	f	properties	\N
-ugc9ztt4hb4	hswwx0lxpac	1	\N	\N	7
+9bxpugcgkui	pbpsju21w1y	4	\N	\N	\N
 hxeqe8wc2b5	hxeqe8wc2b5	0	f	properties	\N
 s2txozhh9f0	hxeqe8wc2b5	1	\N	\N	1
 ugc9ztt4hb4	hxeqe8wc2b5	2	\N	\N	\N
@@ -7304,7 +7424,7 @@ vs0l89adzhc	s2txozhh9f0	6	\N	\N	\N
 nocobase-admin-menu	hxeqe8wc2b5	9	\N	\N	\N
 nocobase-admin-menu	s2txozhh9f0	8	\N	\N	\N
 s2txozhh9f0	s2txozhh9f0	0	f	properties	\N
-ugc9ztt4hb4	s2txozhh9f0	1	\N	\N	8
+7poa6levyva	pbpsju21w1y	5	\N	\N	\N
 se2q3viuytu	se2q3viuytu	0	f	properties	\N
 fb0lajxibgu	se2q3viuytu	1	\N	\N	1
 ugc9ztt4hb4	se2q3viuytu	2	\N	\N	\N
@@ -7323,7 +7443,7 @@ vs0l89adzhc	se2q3viuytu	7	\N	\N	\N
 nocobase-admin-menu	fb0lajxibgu	8	\N	\N	\N
 nocobase-admin-menu	se2q3viuytu	9	\N	\N	\N
 fb0lajxibgu	fb0lajxibgu	0	f	properties	\N
-ugc9ztt4hb4	fb0lajxibgu	1	\N	\N	9
+fe7kgdo55ax	pbpsju21w1y	6	\N	\N	\N
 quxu2mc9wp8	quxu2mc9wp8	0	f	properties	\N
 xa635tbvi5c	quxu2mc9wp8	2	\N	\N	\N
 4dgysxrfq7o	quxu2mc9wp8	3	\N	\N	\N
@@ -11585,9 +11705,7 @@ nocobase-admin-menu	mexjj7b1g93	11	\N	\N	\N
 nocobase-admin-menu	qkanxqd13dl	12	\N	\N	\N
 u62y9zt7gwu	u62y9zt7gwu	0	f	properties	\N
 yc5x6qvg4mh	u62y9zt7gwu	1	\N	\N	1
-lc1jm6dpsrp	lc1jm6dpsrp	0	f	properties	\N
-luu86la6tb1	lc1jm6dpsrp	1	\N	\N	1
-wrrgz9e3y2l	wrrgz9e3y2l	0	f	properties	\N
+hmft2ujv1uf	pbpsju21w1y	7	\N	\N	\N
 v4rijabnpgp	v4rijabnpgp	0	f	properties	\N
 r6v5yp99nbl	v4rijabnpgp	1	\N	\N	1
 zwlt9p2m4v5	zwlt9p2m4v5	0	f	properties	\N
@@ -11653,8 +11771,6 @@ r6v5yp99nbl	r6v5yp99nbl	0	f	properties	\N
 n596xt7b4gz	r6v5yp99nbl	1	\N	\N	8
 ilc9ma1uakv	ilc9ma1uakv	0	f	properties	\N
 xw2eyjxkao7	xw2eyjxkao7	0	f	properties	\N
-lc1jm6dpsrp	wrrgz9e3y2l	1	\N	\N	1
-luu86la6tb1	wrrgz9e3y2l	2	\N	\N	1
 xw2eyjxkao7	ilc9ma1uakv	1	\N	\N	1
 xhaimvl6v3t	xhaimvl6v3t	0	f	properties	\N
 ilc9ma1uakv	xhaimvl6v3t	1	\N	\N	1
@@ -11686,7 +11802,7 @@ ypqs0x71ybe	xw2eyjxkao7	9	\N	\N	\N
 ypqs0x71ybe	ilc9ma1uakv	10	\N	\N	\N
 ypqs0x71ybe	xhaimvl6v3t	11	\N	\N	\N
 u62y9zt7gwu	xw2eyjxkao7	10	\N	\N	\N
-luu86la6tb1	luu86la6tb1	0	f	properties	\N
+nocobase-admin-menu	pbpsju21w1y	8	\N	\N	\N
 u62y9zt7gwu	ilc9ma1uakv	11	\N	\N	\N
 u62y9zt7gwu	xhaimvl6v3t	12	\N	\N	\N
 yc5x6qvg4mh	xw2eyjxkao7	11	\N	\N	\N
@@ -11753,12 +11869,7 @@ i0lnhtci4u6	darepap4yo5	17	\N	\N	\N
 swxvjglsevf	darepap4yo5	18	\N	\N	\N
 nocobase-admin-menu	darepap4yo5	19	\N	\N	\N
 4gnesuyiq9w	darepap4yo5	1	\N	\N	1
-xaiv6bxfonx	xaiv6bxfonx	0	f	properties	\N
-lc1jm6dpsrp	xaiv6bxfonx	1	\N	\N	2
-luu86la6tb1	xaiv6bxfonx	2	\N	\N	2
-u5xpd0w3jh3	u5xpd0w3jh3	0	f	properties	\N
-lc1jm6dpsrp	u5xpd0w3jh3	1	\N	\N	3
-luu86la6tb1	u5xpd0w3jh3	2	\N	\N	3
+7poa6levyva	pde5ayqzqo1	2	\N	\N	\N
 wtu8v3wspnv	wtu8v3wspnv	0	f	properties	\N
 dv1xjwdmvcg	wtu8v3wspnv	1	\N	\N	1
 oi4cs4tbslz	oi4cs4tbslz	0	f	properties	\N
@@ -11954,25 +12065,11 @@ nc92u2m878d	17dq5190uui	1	\N	\N	8
 hmft2ujv1uf	cbhgjqiskk5	3	\N	\N	\N
 nocobase-admin-menu	cbhgjqiskk5	4	\N	\N	\N
 cbhgjqiskk5	cbhgjqiskk5	0	f	properties	\N
-7poa6levyva	cbhgjqiskk5	1	\N	\N	7
-a6osakgoyy3	lc1jm6dpsrp	2	\N	\N	\N
-a6osakgoyy3	wrrgz9e3y2l	3	\N	\N	\N
-a6osakgoyy3	xaiv6bxfonx	3	\N	\N	\N
-a6osakgoyy3	u5xpd0w3jh3	3	\N	\N	\N
-a6osakgoyy3	luu86la6tb1	1	\N	\N	1
-natitkej0fr	luu86la6tb1	2	\N	\N	\N
-natitkej0fr	lc1jm6dpsrp	3	\N	\N	\N
-natitkej0fr	wrrgz9e3y2l	4	\N	\N	\N
-natitkej0fr	xaiv6bxfonx	4	\N	\N	\N
-natitkej0fr	u5xpd0w3jh3	4	\N	\N	\N
-7poa6levyva	a6osakgoyy3	2	\N	\N	\N
-7poa6levyva	luu86la6tb1	3	\N	\N	\N
-7poa6levyva	lc1jm6dpsrp	4	\N	\N	\N
-7poa6levyva	wrrgz9e3y2l	5	\N	\N	\N
-7poa6levyva	xaiv6bxfonx	5	\N	\N	\N
-7poa6levyva	u5xpd0w3jh3	5	\N	\N	\N
-fe7kgdo55ax	a6osakgoyy3	3	\N	\N	\N
-fe7kgdo55ax	luu86la6tb1	4	\N	\N	\N
+fe7kgdo55ax	pde5ayqzqo1	3	\N	\N	\N
+hmft2ujv1uf	pde5ayqzqo1	4	\N	\N	\N
+nocobase-admin-menu	pde5ayqzqo1	5	\N	\N	\N
+pde5ayqzqo1	pde5ayqzqo1	0	f	properties	\N
+rnko20ymzdm	pbpsju21w1y	1	\N	\N	1
 fe7kgdo55ax	oq5d1lxpmfu	2	\N	\N	\N
 wsafpwbqr88	wsafpwbqr88	0	f	properties	\N
 ifzzkj7loaj	ifzzkj7loaj	0	f	properties	\N
@@ -12011,6 +12108,7 @@ wsafpwbqr88	jfqsx79zobd	1	\N	\N	1
 66lgu9id6bj	66lgu9id6bj	0	f	properties	\N
 jfqsx79zobd	66lgu9id6bj	1	\N	\N	1
 wsafpwbqr88	66lgu9id6bj	2	\N	\N	1
+7poa6levyva	cbhgjqiskk5	1	\N	\N	8
 8t2c5f2jjl9	8t2c5f2jjl9	0	f	properties	\N
 66lgu9id6bj	8t2c5f2jjl9	1	\N	\N	1
 jfqsx79zobd	8t2c5f2jjl9	2	\N	\N	1
@@ -12037,7 +12135,6 @@ k99w3v09n98	8t2c5f2jjl9	5	\N	\N	\N
 hmft2ujv1uf	oq5d1lxpmfu	3	\N	\N	\N
 nocobase-admin-menu	oq5d1lxpmfu	4	\N	\N	\N
 oq5d1lxpmfu	oq5d1lxpmfu	0	f	properties	\N
-7poa6levyva	oq5d1lxpmfu	1	\N	\N	6
 k99w3v09n98	odogwwfdotc	6	\N	\N	\N
 k99w3v09n98	oj491oo69he	6	\N	\N	\N
 48d58aj2z3f	wsafpwbqr88	3	\N	\N	\N
@@ -12452,24 +12549,6 @@ llvsctq28hp	lo3cfi2mnr8	5	\N	\N	\N
 we414l1saan	lo3cfi2mnr8	8	\N	\N	\N
 nocobase-admin-menu	lo3cfi2mnr8	9	\N	\N	\N
 c6mpmcq8sh2	lo3cfi2mnr8	1	\N	\N	2
-fe7kgdo55ax	lc1jm6dpsrp	5	\N	\N	\N
-fe7kgdo55ax	wrrgz9e3y2l	6	\N	\N	\N
-fe7kgdo55ax	xaiv6bxfonx	6	\N	\N	\N
-fe7kgdo55ax	u5xpd0w3jh3	6	\N	\N	\N
-hmft2ujv1uf	a6osakgoyy3	4	\N	\N	\N
-hmft2ujv1uf	luu86la6tb1	5	\N	\N	\N
-hmft2ujv1uf	lc1jm6dpsrp	6	\N	\N	\N
-hmft2ujv1uf	wrrgz9e3y2l	7	\N	\N	\N
-hmft2ujv1uf	xaiv6bxfonx	7	\N	\N	\N
-hmft2ujv1uf	u5xpd0w3jh3	7	\N	\N	\N
-nocobase-admin-menu	a6osakgoyy3	5	\N	\N	\N
-nocobase-admin-menu	luu86la6tb1	6	\N	\N	\N
-nocobase-admin-menu	lc1jm6dpsrp	7	\N	\N	\N
-nocobase-admin-menu	wrrgz9e3y2l	8	\N	\N	\N
-nocobase-admin-menu	xaiv6bxfonx	8	\N	\N	\N
-nocobase-admin-menu	u5xpd0w3jh3	8	\N	\N	\N
-a6osakgoyy3	a6osakgoyy3	0	f	properties	\N
-natitkej0fr	a6osakgoyy3	1	\N	\N	2
 xt3d9e6vpx3	xt3d9e6vpx3	0	t	properties	\N
 8k1zlpvo9rl	xt3d9e6vpx3	1	\N	\N	1
 hfflouqm5vf	hfflouqm5vf	0	f	properties	\N
@@ -12656,37 +12735,11 @@ oqsecaif6am	qos4gy0bday	8	\N	\N	\N
 mwrnryoju9y	qos4gy0bday	10	\N	\N	\N
 nocobase-admin-menu	qos4gy0bday	11	\N	\N	\N
 8kxzcotfeb3	qos4gy0bday	1	\N	\N	4
-c0fmoqtflrf	c0fmoqtflrf	0	f	properties	\N
-natitkej0fr	c0fmoqtflrf	1	\N	\N	1
-vsj0dfm9bdq	vsj0dfm9bdq	0	f	properties	\N
-c0fmoqtflrf	vsj0dfm9bdq	1	\N	\N	1
-natitkej0fr	vsj0dfm9bdq	2	\N	\N	1
-55y05lnguuw	55y05lnguuw	0	f	properties	\N
-vsj0dfm9bdq	55y05lnguuw	1	\N	\N	1
-c0fmoqtflrf	55y05lnguuw	2	\N	\N	1
-natitkej0fr	55y05lnguuw	3	\N	\N	1
-7poa6levyva	c0fmoqtflrf	2	\N	\N	\N
-7poa6levyva	vsj0dfm9bdq	3	\N	\N	\N
-7poa6levyva	55y05lnguuw	4	\N	\N	\N
-fe7kgdo55ax	natitkej0fr	2	\N	\N	\N
-fe7kgdo55ax	c0fmoqtflrf	3	\N	\N	\N
-fe7kgdo55ax	vsj0dfm9bdq	4	\N	\N	\N
-fe7kgdo55ax	55y05lnguuw	5	\N	\N	\N
-hmft2ujv1uf	natitkej0fr	3	\N	\N	\N
-hmft2ujv1uf	c0fmoqtflrf	4	\N	\N	\N
-hmft2ujv1uf	vsj0dfm9bdq	5	\N	\N	\N
-hmft2ujv1uf	55y05lnguuw	6	\N	\N	\N
-nocobase-admin-menu	natitkej0fr	4	\N	\N	\N
-nocobase-admin-menu	c0fmoqtflrf	5	\N	\N	\N
-nocobase-admin-menu	vsj0dfm9bdq	6	\N	\N	\N
-nocobase-admin-menu	55y05lnguuw	7	\N	\N	\N
-natitkej0fr	natitkej0fr	0	f	properties	\N
-7poa6levyva	natitkej0fr	1	\N	\N	3
+fe7kgdo55ax	r1jfuy0x2g2	2	\N	\N	\N
 fe7kgdo55ax	5po28o9th2g	2	\N	\N	\N
 hmft2ujv1uf	5po28o9th2g	3	\N	\N	\N
 nocobase-admin-menu	5po28o9th2g	4	\N	\N	\N
 5po28o9th2g	5po28o9th2g	0	f	properties	\N
-7poa6levyva	5po28o9th2g	1	\N	\N	4
 tavzpgzflnv	tavzpgzflnv	0	f	properties	\N
 s41jwc7ushc	tavzpgzflnv	1	\N	\N	1
 fe7kgdo55ax	fe7kgdo55ax	0	t	properties	\N
@@ -12706,7 +12759,6 @@ hmft2ujv1uf	tavzpgzflnv	4	\N	\N	\N
 nocobase-admin-menu	s41jwc7ushc	4	\N	\N	\N
 nocobase-admin-menu	tavzpgzflnv	5	\N	\N	\N
 s41jwc7ushc	s41jwc7ushc	0	f	properties	\N
-7poa6levyva	s41jwc7ushc	1	\N	\N	5
 6qulve4ybk4	6qulve4ybk4	0	f	properties	\N
 y05re45hs3a	6qulve4ybk4	1	\N	\N	5
 4ryyxzuq87v	4ryyxzuq87v	0	f	properties	\N
@@ -12776,12 +12828,1943 @@ mwrnryoju9y	zrm37tg78ob	22	\N	\N	\N
 nocobase-admin-menu	6qulve4ybk4	21	\N	\N	\N
 nocobase-admin-menu	4ryyxzuq87v	22	\N	\N	\N
 nocobase-admin-menu	zrm37tg78ob	23	\N	\N	\N
+hmft2ujv1uf	r1jfuy0x2g2	3	\N	\N	\N
+nocobase-admin-menu	r1jfuy0x2g2	4	\N	\N	\N
+r1jfuy0x2g2	r1jfuy0x2g2	0	f	properties	\N
+0ddzjfp9gg6	0ddzjfp9gg6	0	f	properties	\N
+3p9f7asal9h	0ddzjfp9gg6	1	\N	\N	1
+387jrys6pj9	387jrys6pj9	0	f	properties	\N
+0ddzjfp9gg6	387jrys6pj9	1	\N	\N	1
+3p9f7asal9h	387jrys6pj9	2	\N	\N	1
+y05re45hs3a	0ddzjfp9gg6	2	\N	\N	\N
+y05re45hs3a	387jrys6pj9	3	\N	\N	\N
+dsptk8t0mbr	3p9f7asal9h	2	\N	\N	\N
+dsptk8t0mbr	0ddzjfp9gg6	3	\N	\N	\N
+dsptk8t0mbr	387jrys6pj9	4	\N	\N	\N
+7qih7hq26ge	3p9f7asal9h	3	\N	\N	\N
+7qih7hq26ge	0ddzjfp9gg6	4	\N	\N	\N
+7qih7hq26ge	387jrys6pj9	5	\N	\N	\N
+m9ru2u1mst5	3p9f7asal9h	4	\N	\N	\N
+m9ru2u1mst5	0ddzjfp9gg6	5	\N	\N	\N
+m9ru2u1mst5	387jrys6pj9	6	\N	\N	\N
+t5a2xk7thpn	3p9f7asal9h	5	\N	\N	\N
+t5a2xk7thpn	0ddzjfp9gg6	6	\N	\N	\N
+t5a2xk7thpn	387jrys6pj9	7	\N	\N	\N
+ra6axo18rlo	3p9f7asal9h	6	\N	\N	\N
+ra6axo18rlo	0ddzjfp9gg6	7	\N	\N	\N
+ra6axo18rlo	387jrys6pj9	8	\N	\N	\N
+7peksipcht7	3p9f7asal9h	7	\N	\N	\N
+7peksipcht7	0ddzjfp9gg6	8	\N	\N	\N
+7peksipcht7	387jrys6pj9	9	\N	\N	\N
+vxyfqljr7j6	3p9f7asal9h	8	\N	\N	\N
+vxyfqljr7j6	0ddzjfp9gg6	9	\N	\N	\N
+vxyfqljr7j6	387jrys6pj9	10	\N	\N	\N
+v0xzwwlb3u7	3p9f7asal9h	9	\N	\N	\N
+v0xzwwlb3u7	0ddzjfp9gg6	10	\N	\N	\N
+v0xzwwlb3u7	387jrys6pj9	11	\N	\N	\N
+eajx55rxxy3	3p9f7asal9h	10	\N	\N	\N
+eajx55rxxy3	0ddzjfp9gg6	11	\N	\N	\N
+eajx55rxxy3	387jrys6pj9	12	\N	\N	\N
+8kxzcotfeb3	3p9f7asal9h	11	\N	\N	\N
+8kxzcotfeb3	0ddzjfp9gg6	12	\N	\N	\N
+8kxzcotfeb3	387jrys6pj9	13	\N	\N	\N
+5z0xpoxz87w	3p9f7asal9h	12	\N	\N	\N
+5z0xpoxz87w	0ddzjfp9gg6	13	\N	\N	\N
+5z0xpoxz87w	387jrys6pj9	14	\N	\N	\N
+o9klwv4nzei	3p9f7asal9h	13	\N	\N	\N
+o9klwv4nzei	0ddzjfp9gg6	14	\N	\N	\N
+o9klwv4nzei	387jrys6pj9	15	\N	\N	\N
+ozzmhtdpth4	3p9f7asal9h	14	\N	\N	\N
+ozzmhtdpth4	0ddzjfp9gg6	15	\N	\N	\N
+ozzmhtdpth4	387jrys6pj9	16	\N	\N	\N
+b8mogqkr3um	3p9f7asal9h	15	\N	\N	\N
+b8mogqkr3um	0ddzjfp9gg6	16	\N	\N	\N
+b8mogqkr3um	387jrys6pj9	17	\N	\N	\N
+b56io1plq44	3p9f7asal9h	16	\N	\N	\N
+b56io1plq44	0ddzjfp9gg6	17	\N	\N	\N
+b56io1plq44	387jrys6pj9	18	\N	\N	\N
+13qbrfhlbny	3p9f7asal9h	17	\N	\N	\N
+13qbrfhlbny	0ddzjfp9gg6	18	\N	\N	\N
+13qbrfhlbny	387jrys6pj9	19	\N	\N	\N
+oqsecaif6am	3p9f7asal9h	18	\N	\N	\N
+oqsecaif6am	0ddzjfp9gg6	19	\N	\N	\N
+oqsecaif6am	387jrys6pj9	20	\N	\N	\N
+63aby9t5qmb	3p9f7asal9h	19	\N	\N	\N
+63aby9t5qmb	0ddzjfp9gg6	20	\N	\N	\N
+63aby9t5qmb	387jrys6pj9	21	\N	\N	\N
+mwrnryoju9y	3p9f7asal9h	20	\N	\N	\N
+mwrnryoju9y	0ddzjfp9gg6	21	\N	\N	\N
+mwrnryoju9y	387jrys6pj9	22	\N	\N	\N
+nocobase-admin-menu	3p9f7asal9h	21	\N	\N	\N
+nocobase-admin-menu	0ddzjfp9gg6	22	\N	\N	\N
+nocobase-admin-menu	387jrys6pj9	23	\N	\N	\N
+3p9f7asal9h	3p9f7asal9h	0	f	properties	\N
+y05re45hs3a	3p9f7asal9h	1	\N	\N	7
+swbgm59qce3	swbgm59qce3	0	f	properties	\N
+fe7kgdo55ax	swbgm59qce3	2	\N	\N	\N
+fe7kgdo55ax	gwkooqabv4x	2	\N	\N	\N
+7poa6levyva	swbgm59qce3	1	\N	\N	9
+hmft2ujv1uf	swbgm59qce3	3	\N	\N	\N
+hmft2ujv1uf	gwkooqabv4x	3	\N	\N	\N
+nocobase-admin-menu	swbgm59qce3	4	\N	\N	\N
+nocobase-admin-menu	gwkooqabv4x	4	\N	\N	\N
+gwkooqabv4x	gwkooqabv4x	0	f	properties	\N
+fe7kgdo55ax	9cnsplg5f8i	2	\N	\N	\N
+hmft2ujv1uf	9cnsplg5f8i	3	\N	\N	\N
+nocobase-admin-menu	9cnsplg5f8i	4	\N	\N	\N
+9cnsplg5f8i	9cnsplg5f8i	0	f	properties	\N
+fe7kgdo55ax	ris4kebta55	2	\N	\N	\N
+hmft2ujv1uf	ris4kebta55	3	\N	\N	\N
+nocobase-admin-menu	ris4kebta55	4	\N	\N	\N
+ris4kebta55	ris4kebta55	0	f	properties	\N
+xzjgh6n1pxo	xzjgh6n1pxo	0	f	properties	\N
+w55w350cfun	xzjgh6n1pxo	1	\N	\N	1
+q25ez0sddx0	q25ez0sddx0	0	f	properties	\N
+xzjgh6n1pxo	q25ez0sddx0	1	\N	\N	1
+w55w350cfun	q25ez0sddx0	2	\N	\N	1
+y05re45hs3a	xzjgh6n1pxo	2	\N	\N	\N
+y05re45hs3a	q25ez0sddx0	3	\N	\N	\N
+dsptk8t0mbr	w55w350cfun	2	\N	\N	\N
+dsptk8t0mbr	xzjgh6n1pxo	3	\N	\N	\N
+dsptk8t0mbr	q25ez0sddx0	4	\N	\N	\N
+7qih7hq26ge	w55w350cfun	3	\N	\N	\N
+7qih7hq26ge	xzjgh6n1pxo	4	\N	\N	\N
+7qih7hq26ge	q25ez0sddx0	5	\N	\N	\N
+m9ru2u1mst5	w55w350cfun	4	\N	\N	\N
+m9ru2u1mst5	xzjgh6n1pxo	5	\N	\N	\N
+m9ru2u1mst5	q25ez0sddx0	6	\N	\N	\N
+t5a2xk7thpn	w55w350cfun	5	\N	\N	\N
+t5a2xk7thpn	xzjgh6n1pxo	6	\N	\N	\N
+t5a2xk7thpn	q25ez0sddx0	7	\N	\N	\N
+ra6axo18rlo	w55w350cfun	6	\N	\N	\N
+ra6axo18rlo	xzjgh6n1pxo	7	\N	\N	\N
+ra6axo18rlo	q25ez0sddx0	8	\N	\N	\N
+7peksipcht7	w55w350cfun	7	\N	\N	\N
+7peksipcht7	xzjgh6n1pxo	8	\N	\N	\N
+jmayzuhpdzl	jmayzuhpdzl	0	f	properties	\N
+oj491oo69he	jmayzuhpdzl	1	\N	\N	5
+7peksipcht7	q25ez0sddx0	9	\N	\N	\N
+vxyfqljr7j6	w55w350cfun	8	\N	\N	\N
+fe7kgdo55ax	unis1bj47de	2	\N	\N	\N
+vxyfqljr7j6	xzjgh6n1pxo	9	\N	\N	\N
+vxyfqljr7j6	q25ez0sddx0	10	\N	\N	\N
+v0xzwwlb3u7	w55w350cfun	9	\N	\N	\N
+v0xzwwlb3u7	xzjgh6n1pxo	10	\N	\N	\N
+v0xzwwlb3u7	q25ez0sddx0	11	\N	\N	\N
+eajx55rxxy3	w55w350cfun	10	\N	\N	\N
+hmft2ujv1uf	unis1bj47de	3	\N	\N	\N
+eajx55rxxy3	xzjgh6n1pxo	11	\N	\N	\N
+eajx55rxxy3	q25ez0sddx0	12	\N	\N	\N
+8kxzcotfeb3	w55w350cfun	11	\N	\N	\N
+8kxzcotfeb3	xzjgh6n1pxo	12	\N	\N	\N
+8kxzcotfeb3	q25ez0sddx0	13	\N	\N	\N
+5z0xpoxz87w	w55w350cfun	12	\N	\N	\N
+nocobase-admin-menu	unis1bj47de	4	\N	\N	\N
+5z0xpoxz87w	xzjgh6n1pxo	13	\N	\N	\N
+5z0xpoxz87w	q25ez0sddx0	14	\N	\N	\N
+o9klwv4nzei	w55w350cfun	13	\N	\N	\N
+o9klwv4nzei	xzjgh6n1pxo	14	\N	\N	\N
+o9klwv4nzei	q25ez0sddx0	15	\N	\N	\N
+ozzmhtdpth4	w55w350cfun	14	\N	\N	\N
+unis1bj47de	unis1bj47de	0	f	properties	\N
+ozzmhtdpth4	xzjgh6n1pxo	15	\N	\N	\N
+ozzmhtdpth4	q25ez0sddx0	16	\N	\N	\N
+b8mogqkr3um	w55w350cfun	15	\N	\N	\N
+b8mogqkr3um	xzjgh6n1pxo	16	\N	\N	\N
+b8mogqkr3um	q25ez0sddx0	17	\N	\N	\N
+b56io1plq44	w55w350cfun	16	\N	\N	\N
+b56io1plq44	xzjgh6n1pxo	17	\N	\N	\N
+b56io1plq44	q25ez0sddx0	18	\N	\N	\N
+13qbrfhlbny	w55w350cfun	17	\N	\N	\N
+13qbrfhlbny	xzjgh6n1pxo	18	\N	\N	\N
+13qbrfhlbny	q25ez0sddx0	19	\N	\N	\N
+oqsecaif6am	w55w350cfun	18	\N	\N	\N
+oqsecaif6am	xzjgh6n1pxo	19	\N	\N	\N
+oqsecaif6am	q25ez0sddx0	20	\N	\N	\N
+63aby9t5qmb	w55w350cfun	19	\N	\N	\N
+63aby9t5qmb	xzjgh6n1pxo	20	\N	\N	\N
+63aby9t5qmb	q25ez0sddx0	21	\N	\N	\N
+mwrnryoju9y	w55w350cfun	20	\N	\N	\N
+mwrnryoju9y	xzjgh6n1pxo	21	\N	\N	\N
+mwrnryoju9y	q25ez0sddx0	22	\N	\N	\N
+nocobase-admin-menu	w55w350cfun	21	\N	\N	\N
+nocobase-admin-menu	xzjgh6n1pxo	22	\N	\N	\N
+nocobase-admin-menu	q25ez0sddx0	23	\N	\N	\N
+w55w350cfun	w55w350cfun	0	f	properties	\N
+y05re45hs3a	w55w350cfun	1	\N	\N	8
+5n3prf95enu	5n3prf95enu	0	f	properties	\N
+jmayzuhpdzl	5n3prf95enu	1	\N	\N	1
+77znodag4w0	77znodag4w0	0	f	properties	\N
+5n3prf95enu	77znodag4w0	1	\N	\N	1
+jmayzuhpdzl	77znodag4w0	2	\N	\N	1
+oj491oo69he	5n3prf95enu	2	\N	\N	\N
+oj491oo69he	77znodag4w0	3	\N	\N	\N
+8t2c5f2jjl9	jmayzuhpdzl	2	\N	\N	\N
+8t2c5f2jjl9	5n3prf95enu	3	\N	\N	\N
+8t2c5f2jjl9	77znodag4w0	4	\N	\N	\N
+66lgu9id6bj	jmayzuhpdzl	3	\N	\N	\N
+66lgu9id6bj	5n3prf95enu	4	\N	\N	\N
+66lgu9id6bj	77znodag4w0	5	\N	\N	\N
+jfqsx79zobd	jmayzuhpdzl	4	\N	\N	\N
+jfqsx79zobd	5n3prf95enu	5	\N	\N	\N
+jfqsx79zobd	77znodag4w0	6	\N	\N	\N
+wsafpwbqr88	jmayzuhpdzl	5	\N	\N	\N
+wsafpwbqr88	5n3prf95enu	6	\N	\N	\N
+wsafpwbqr88	77znodag4w0	7	\N	\N	\N
+ifzzkj7loaj	jmayzuhpdzl	6	\N	\N	\N
+fe7kgdo55ax	qxskufg0hv4	2	\N	\N	\N
+hmft2ujv1uf	qxskufg0hv4	3	\N	\N	\N
+nocobase-admin-menu	qxskufg0hv4	4	\N	\N	\N
+qxskufg0hv4	qxskufg0hv4	0	f	properties	\N
+pkcprxz6rfy	pkcprxz6rfy	0	f	properties	\N
+fe7kgdo55ax	pkcprxz6rfy	2	\N	\N	\N
+hmft2ujv1uf	pkcprxz6rfy	3	\N	\N	\N
+nocobase-admin-menu	pkcprxz6rfy	4	\N	\N	\N
+hupe35j3waf	hupe35j3waf	0	f	properties	\N
+j0x0k0rv3yw	hupe35j3waf	1	\N	\N	1
+7poa6levyva	hupe35j3waf	2	\N	\N	\N
+fe7kgdo55ax	j0x0k0rv3yw	2	\N	\N	\N
+fe7kgdo55ax	hupe35j3waf	3	\N	\N	\N
+hmft2ujv1uf	j0x0k0rv3yw	3	\N	\N	\N
+hmft2ujv1uf	hupe35j3waf	4	\N	\N	\N
+nocobase-admin-menu	j0x0k0rv3yw	4	\N	\N	\N
+nocobase-admin-menu	hupe35j3waf	5	\N	\N	\N
+p352d38u95n	p352d38u95n	0	f	properties	\N
+7x6oyetmotw	p352d38u95n	1	\N	\N	7
+j0x0k0rv3yw	j0x0k0rv3yw	0	f	properties	\N
+ifzzkj7loaj	5n3prf95enu	7	\N	\N	\N
+ifzzkj7loaj	77znodag4w0	8	\N	\N	\N
+k99w3v09n98	jmayzuhpdzl	7	\N	\N	\N
+k99w3v09n98	5n3prf95enu	8	\N	\N	\N
+k99w3v09n98	77znodag4w0	9	\N	\N	\N
+48d58aj2z3f	jmayzuhpdzl	8	\N	\N	\N
+48d58aj2z3f	5n3prf95enu	9	\N	\N	\N
+48d58aj2z3f	77znodag4w0	10	\N	\N	\N
+dnlwo60b33v	jmayzuhpdzl	9	\N	\N	\N
+dnlwo60b33v	5n3prf95enu	10	\N	\N	\N
+dnlwo60b33v	77znodag4w0	11	\N	\N	\N
+89nfa89tbje	jmayzuhpdzl	10	\N	\N	\N
+89nfa89tbje	5n3prf95enu	11	\N	\N	\N
+89nfa89tbje	77znodag4w0	12	\N	\N	\N
+nc92u2m878d	jmayzuhpdzl	13	\N	\N	\N
+nc92u2m878d	5n3prf95enu	14	\N	\N	\N
+nc92u2m878d	77znodag4w0	15	\N	\N	\N
+jiq42lrek0j	jmayzuhpdzl	14	\N	\N	\N
+jiq42lrek0j	5n3prf95enu	15	\N	\N	\N
+jiq42lrek0j	77znodag4w0	16	\N	\N	\N
+w149la0utnx	jmayzuhpdzl	15	\N	\N	\N
+w149la0utnx	5n3prf95enu	16	\N	\N	\N
+w149la0utnx	77znodag4w0	17	\N	\N	\N
+z02388u42s9	jmayzuhpdzl	16	\N	\N	\N
+z02388u42s9	5n3prf95enu	17	\N	\N	\N
+z02388u42s9	77znodag4w0	18	\N	\N	\N
+llvsctq28hp	jmayzuhpdzl	17	\N	\N	\N
+llvsctq28hp	5n3prf95enu	18	\N	\N	\N
+llvsctq28hp	77znodag4w0	19	\N	\N	\N
+8xvbgh18zfk	jmayzuhpdzl	18	\N	\N	\N
+8xvbgh18zfk	5n3prf95enu	19	\N	\N	\N
+8xvbgh18zfk	77znodag4w0	20	\N	\N	\N
+2pij3wiepc4	jmayzuhpdzl	19	\N	\N	\N
+2pij3wiepc4	5n3prf95enu	20	\N	\N	\N
+2pij3wiepc4	77znodag4w0	21	\N	\N	\N
+we414l1saan	jmayzuhpdzl	20	\N	\N	\N
+we414l1saan	5n3prf95enu	21	\N	\N	\N
+we414l1saan	77znodag4w0	22	\N	\N	\N
+t4v2kcudvg5	jmayzuhpdzl	11	\N	\N	\N
+t4v2kcudvg5	5n3prf95enu	12	\N	\N	\N
+t4v2kcudvg5	77znodag4w0	13	\N	\N	\N
+q9zjnv8mc9j	jmayzuhpdzl	12	\N	\N	\N
+q9zjnv8mc9j	5n3prf95enu	13	\N	\N	\N
+q9zjnv8mc9j	77znodag4w0	14	\N	\N	\N
+nocobase-admin-menu	jmayzuhpdzl	21	\N	\N	\N
+nocobase-admin-menu	5n3prf95enu	22	\N	\N	\N
+nocobase-admin-menu	77znodag4w0	23	\N	\N	\N
+vww45l1kt1c	vww45l1kt1c	0	f	properties	\N
+p352d38u95n	vww45l1kt1c	1	\N	\N	1
+krq5msd3dso	krq5msd3dso	0	f	properties	\N
+vww45l1kt1c	krq5msd3dso	1	\N	\N	1
+p352d38u95n	krq5msd3dso	2	\N	\N	1
+w149la0utnx	p352d38u95n	15	\N	\N	\N
+w149la0utnx	vww45l1kt1c	16	\N	\N	\N
+w149la0utnx	krq5msd3dso	17	\N	\N	\N
+z02388u42s9	p352d38u95n	16	\N	\N	\N
+z02388u42s9	vww45l1kt1c	17	\N	\N	\N
+z02388u42s9	krq5msd3dso	18	\N	\N	\N
+llvsctq28hp	p352d38u95n	17	\N	\N	\N
+llvsctq28hp	vww45l1kt1c	18	\N	\N	\N
+llvsctq28hp	krq5msd3dso	19	\N	\N	\N
+8xvbgh18zfk	p352d38u95n	18	\N	\N	\N
+8xvbgh18zfk	vww45l1kt1c	19	\N	\N	\N
+8xvbgh18zfk	krq5msd3dso	20	\N	\N	\N
+2pij3wiepc4	p352d38u95n	19	\N	\N	\N
+2pij3wiepc4	vww45l1kt1c	20	\N	\N	\N
+2pij3wiepc4	krq5msd3dso	21	\N	\N	\N
+we414l1saan	p352d38u95n	20	\N	\N	\N
+we414l1saan	vww45l1kt1c	21	\N	\N	\N
+we414l1saan	krq5msd3dso	22	\N	\N	\N
+t4v2kcudvg5	p352d38u95n	11	\N	\N	\N
+t4v2kcudvg5	vww45l1kt1c	12	\N	\N	\N
+t4v2kcudvg5	krq5msd3dso	13	\N	\N	\N
+q9zjnv8mc9j	p352d38u95n	12	\N	\N	\N
+q9zjnv8mc9j	vww45l1kt1c	13	\N	\N	\N
+q9zjnv8mc9j	krq5msd3dso	14	\N	\N	\N
+nocobase-admin-menu	p352d38u95n	21	\N	\N	\N
+nocobase-admin-menu	vww45l1kt1c	22	\N	\N	\N
+nocobase-admin-menu	krq5msd3dso	23	\N	\N	\N
+7x6oyetmotw	vww45l1kt1c	2	\N	\N	\N
+7x6oyetmotw	krq5msd3dso	3	\N	\N	\N
+lmp1irsvgom	p352d38u95n	2	\N	\N	\N
+lmp1irsvgom	vww45l1kt1c	3	\N	\N	\N
+lmp1irsvgom	krq5msd3dso	4	\N	\N	\N
+3nhe9kyydb1	p352d38u95n	3	\N	\N	\N
+3nhe9kyydb1	vww45l1kt1c	4	\N	\N	\N
+3nhe9kyydb1	krq5msd3dso	5	\N	\N	\N
+1t1bel9ufqz	p352d38u95n	4	\N	\N	\N
+fe7kgdo55ax	c7cl1yivppx	2	\N	\N	\N
+hmft2ujv1uf	c7cl1yivppx	3	\N	\N	\N
+nocobase-admin-menu	c7cl1yivppx	4	\N	\N	\N
+1t1bel9ufqz	vww45l1kt1c	5	\N	\N	\N
+1t1bel9ufqz	krq5msd3dso	6	\N	\N	\N
+oxj8sl5a4x4	p352d38u95n	5	\N	\N	\N
+oxj8sl5a4x4	vww45l1kt1c	6	\N	\N	\N
+oxj8sl5a4x4	krq5msd3dso	7	\N	\N	\N
+ew9dla1iwk8	p352d38u95n	6	\N	\N	\N
+ew9dla1iwk8	vww45l1kt1c	7	\N	\N	\N
+ew9dla1iwk8	krq5msd3dso	8	\N	\N	\N
+haxe3y5jbxr	p352d38u95n	7	\N	\N	\N
+haxe3y5jbxr	vww45l1kt1c	8	\N	\N	\N
+haxe3y5jbxr	krq5msd3dso	9	\N	\N	\N
+48d58aj2z3f	p352d38u95n	8	\N	\N	\N
+48d58aj2z3f	vww45l1kt1c	9	\N	\N	\N
+48d58aj2z3f	krq5msd3dso	10	\N	\N	\N
+dnlwo60b33v	p352d38u95n	9	\N	\N	\N
+dnlwo60b33v	vww45l1kt1c	10	\N	\N	\N
+dnlwo60b33v	krq5msd3dso	11	\N	\N	\N
+89nfa89tbje	p352d38u95n	10	\N	\N	\N
+89nfa89tbje	vww45l1kt1c	11	\N	\N	\N
+89nfa89tbje	krq5msd3dso	12	\N	\N	\N
+nc92u2m878d	p352d38u95n	13	\N	\N	\N
+nc92u2m878d	vww45l1kt1c	14	\N	\N	\N
+nc92u2m878d	krq5msd3dso	15	\N	\N	\N
+jiq42lrek0j	p352d38u95n	14	\N	\N	\N
+jiq42lrek0j	vww45l1kt1c	15	\N	\N	\N
+jiq42lrek0j	krq5msd3dso	16	\N	\N	\N
+c7cl1yivppx	c7cl1yivppx	0	f	properties	\N
+fe7kgdo55ax	4jc43siezjp	2	\N	\N	\N
+hmft2ujv1uf	4jc43siezjp	3	\N	\N	\N
+nocobase-admin-menu	4jc43siezjp	4	\N	\N	\N
+4jc43siezjp	4jc43siezjp	0	f	properties	\N
+fe7kgdo55ax	yivjshzifwl	2	\N	\N	\N
+hmft2ujv1uf	yivjshzifwl	3	\N	\N	\N
+nocobase-admin-menu	yivjshzifwl	4	\N	\N	\N
+7poa6levyva	j0x0k0rv3yw	1	\N	\N	26
+7poa6levyva	c7cl1yivppx	1	\N	\N	27
+7poa6levyva	4jc43siezjp	1	\N	\N	18
+yivjshzifwl	yivjshzifwl	0	f	properties	\N
+7poa6levyva	p2fd2nllyzz	3	\N	\N	\N
+fe7kgdo55ax	p2fd2nllyzz	4	\N	\N	\N
+hmft2ujv1uf	p2fd2nllyzz	5	\N	\N	\N
+nocobase-admin-menu	p2fd2nllyzz	6	\N	\N	\N
+yivjshzifwl	p2fd2nllyzz	2	\N	\N	\N
+p2fd2nllyzz	p2fd2nllyzz	0	f	properties	\N
+v0hdkdeyzrd	v0hdkdeyzrd	0	f	properties	\N
+fg366x2n25f	fg366x2n25f	0	f	properties	\N
+v0hdkdeyzrd	fg366x2n25f	1	\N	\N	1
+g3wb17ry7i2	g3wb17ry7i2	0	f	properties	\N
+fg366x2n25f	g3wb17ry7i2	1	\N	\N	1
+v0hdkdeyzrd	g3wb17ry7i2	2	\N	\N	1
+2yh8xonuy9p	2yh8xonuy9p	0	f	properties	\N
+fg366x2n25f	2yh8xonuy9p	1	\N	\N	2
+v0hdkdeyzrd	2yh8xonuy9p	2	\N	\N	2
+d7ss6dyrft2	d7ss6dyrft2	0	f	properties	\N
+fg366x2n25f	d7ss6dyrft2	1	\N	\N	3
+v0hdkdeyzrd	d7ss6dyrft2	2	\N	\N	3
+lrpe7x7uska	lrpe7x7uska	0	f	properties	\N
+5ra7uzzi0b0	lrpe7x7uska	1	\N	\N	1
+cnt5l2vyvus	cnt5l2vyvus	0	f	properties	\N
+lrpe7x7uska	cnt5l2vyvus	1	\N	\N	1
+5ra7uzzi0b0	cnt5l2vyvus	2	\N	\N	1
+2yh8xonuy9p	lrpe7x7uska	2	\N	\N	\N
+2yh8xonuy9p	cnt5l2vyvus	3	\N	\N	\N
+fg366x2n25f	5ra7uzzi0b0	2	\N	\N	\N
+fg366x2n25f	lrpe7x7uska	3	\N	\N	\N
+fg366x2n25f	cnt5l2vyvus	4	\N	\N	\N
+v0hdkdeyzrd	5ra7uzzi0b0	3	\N	\N	\N
+v0hdkdeyzrd	lrpe7x7uska	4	\N	\N	\N
+v0hdkdeyzrd	cnt5l2vyvus	5	\N	\N	\N
+5ra7uzzi0b0	5ra7uzzi0b0	0	f	properties	\N
+2yh8xonuy9p	5ra7uzzi0b0	1	\N	\N	1
+em6cpoit5dn	em6cpoit5dn	0	f	properties	\N
+4rfztuqwvcn	em6cpoit5dn	1	\N	\N	1
+9ha55op1k8z	9ha55op1k8z	0	f	properties	\N
+em6cpoit5dn	9ha55op1k8z	1	\N	\N	1
+4rfztuqwvcn	9ha55op1k8z	2	\N	\N	1
+2yh8xonuy9p	em6cpoit5dn	2	\N	\N	\N
+2yh8xonuy9p	9ha55op1k8z	3	\N	\N	\N
+fg366x2n25f	4rfztuqwvcn	2	\N	\N	\N
+fg366x2n25f	em6cpoit5dn	3	\N	\N	\N
+fg366x2n25f	9ha55op1k8z	4	\N	\N	\N
+v0hdkdeyzrd	4rfztuqwvcn	3	\N	\N	\N
+v0hdkdeyzrd	em6cpoit5dn	4	\N	\N	\N
+v0hdkdeyzrd	9ha55op1k8z	5	\N	\N	\N
+x74knwfm0hx	x74knwfm0hx	0	f	properties	\N
+4rfztuqwvcn	4rfztuqwvcn	0	f	properties	\N
+2yh8xonuy9p	4rfztuqwvcn	1	\N	\N	2
+wtx7vw7yz0x	wtx7vw7yz0x	0	f	properties	\N
+mgxem84qs7g	wtx7vw7yz0x	1	\N	\N	1
+y5v7ivsb3ot	y5v7ivsb3ot	0	f	properties	\N
+wtx7vw7yz0x	y5v7ivsb3ot	1	\N	\N	1
+mgxem84qs7g	y5v7ivsb3ot	2	\N	\N	1
+2yh8xonuy9p	wtx7vw7yz0x	2	\N	\N	\N
+2yh8xonuy9p	y5v7ivsb3ot	3	\N	\N	\N
+fg366x2n25f	mgxem84qs7g	2	\N	\N	\N
+fg366x2n25f	wtx7vw7yz0x	3	\N	\N	\N
+fg366x2n25f	y5v7ivsb3ot	4	\N	\N	\N
+v0hdkdeyzrd	mgxem84qs7g	3	\N	\N	\N
+v0hdkdeyzrd	wtx7vw7yz0x	4	\N	\N	\N
+v0hdkdeyzrd	y5v7ivsb3ot	5	\N	\N	\N
+mgxem84qs7g	mgxem84qs7g	0	f	properties	\N
+2yh8xonuy9p	mgxem84qs7g	1	\N	\N	3
+ksp2jvw2zju	ksp2jvw2zju	0	f	properties	\N
+lt4x5i1gin9	ksp2jvw2zju	1	\N	\N	1
+qlix4l9q49g	qlix4l9q49g	0	f	properties	\N
+ksp2jvw2zju	qlix4l9q49g	1	\N	\N	1
+lt4x5i1gin9	qlix4l9q49g	2	\N	\N	1
+2yh8xonuy9p	ksp2jvw2zju	2	\N	\N	\N
+2yh8xonuy9p	qlix4l9q49g	3	\N	\N	\N
+fg366x2n25f	lt4x5i1gin9	2	\N	\N	\N
+fg366x2n25f	ksp2jvw2zju	3	\N	\N	\N
+fg366x2n25f	qlix4l9q49g	4	\N	\N	\N
+v0hdkdeyzrd	lt4x5i1gin9	3	\N	\N	\N
+v0hdkdeyzrd	ksp2jvw2zju	4	\N	\N	\N
+v0hdkdeyzrd	qlix4l9q49g	5	\N	\N	\N
+i5ep94ei4hn	i5ep94ei4hn	0	f	properties	\N
+i5ep94ei4hn	x74knwfm0hx	1	\N	\N	1
+lt4x5i1gin9	lt4x5i1gin9	0	f	properties	\N
+2yh8xonuy9p	lt4x5i1gin9	1	\N	\N	4
+7qdtw3aqf8f	7qdtw3aqf8f	0	f	properties	\N
+x74knwfm0hx	7qdtw3aqf8f	1	\N	\N	1
+ugc9ztt4hb4	x74knwfm0hx	2	\N	\N	\N
+ao2a67rjlld	i5ep94ei4hn	2	\N	\N	\N
+ao2a67rjlld	x74knwfm0hx	3	\N	\N	\N
+bwbd6lebhkb	i5ep94ei4hn	3	\N	\N	\N
+bwbd6lebhkb	x74knwfm0hx	4	\N	\N	\N
+m8tbcrs4z9t	i5ep94ei4hn	4	\N	\N	\N
+m8tbcrs4z9t	x74knwfm0hx	5	\N	\N	\N
+q4dinm52meb	i5ep94ei4hn	5	\N	\N	\N
+q4dinm52meb	x74knwfm0hx	6	\N	\N	\N
+vs0l89adzhc	i5ep94ei4hn	6	\N	\N	\N
+vs0l89adzhc	x74knwfm0hx	7	\N	\N	\N
+493pimn830r	i5ep94ei4hn	7	\N	\N	\N
+493pimn830r	x74knwfm0hx	8	\N	\N	\N
+nocobase-admin-menu	i5ep94ei4hn	8	\N	\N	\N
+nocobase-admin-menu	x74knwfm0hx	9	\N	\N	\N
+ugc9ztt4hb4	bzk49nzivdu	1	\N	\N	3
+ugc9ztt4hb4	pfhb8ncb652	1	\N	\N	4
+ugc9ztt4hb4	ainrki9f600	1	\N	\N	5
+ugc9ztt4hb4	oae1g24te1h	1	\N	\N	6
+ugc9ztt4hb4	z4nqlth7kk8	1	\N	\N	7
+ugc9ztt4hb4	hswwx0lxpac	1	\N	\N	8
+ugc9ztt4hb4	s2txozhh9f0	1	\N	\N	9
+ugc9ztt4hb4	fb0lajxibgu	1	\N	\N	10
+ugc9ztt4hb4	i5ep94ei4hn	1	\N	\N	2
+9znhwv6jh2d	9znhwv6jh2d	0	f	properties	\N
+7qdtw3aqf8f	9znhwv6jh2d	1	\N	\N	1
+dohzvch4noi	dohzvch4noi	0	f	properties	\N
+9znhwv6jh2d	dohzvch4noi	1	\N	\N	1
+7poa6levyva	yivjshzifwl	1	\N	\N	10
+7qdtw3aqf8f	dohzvch4noi	2	\N	\N	1
+oyw4y44yqgd	oyw4y44yqgd	0	f	properties	\N
+dohzvch4noi	oyw4y44yqgd	1	\N	\N	1
+9znhwv6jh2d	oyw4y44yqgd	2	\N	\N	1
+7qdtw3aqf8f	oyw4y44yqgd	3	\N	\N	1
+bztjip2msxq	bztjip2msxq	0	f	properties	\N
+oyw4y44yqgd	bztjip2msxq	1	\N	\N	1
+dohzvch4noi	bztjip2msxq	2	\N	\N	1
+9znhwv6jh2d	bztjip2msxq	3	\N	\N	1
+7qdtw3aqf8f	bztjip2msxq	4	\N	\N	1
+x74knwfm0hx	9znhwv6jh2d	2	\N	\N	\N
+x74knwfm0hx	dohzvch4noi	3	\N	\N	\N
+x74knwfm0hx	oyw4y44yqgd	4	\N	\N	\N
+x74knwfm0hx	bztjip2msxq	5	\N	\N	\N
+i5ep94ei4hn	7qdtw3aqf8f	2	\N	\N	\N
+i5ep94ei4hn	9znhwv6jh2d	3	\N	\N	\N
+i5ep94ei4hn	dohzvch4noi	4	\N	\N	\N
+i5ep94ei4hn	oyw4y44yqgd	5	\N	\N	\N
+i5ep94ei4hn	bztjip2msxq	6	\N	\N	\N
+ugc9ztt4hb4	7qdtw3aqf8f	3	\N	\N	\N
+ugc9ztt4hb4	9znhwv6jh2d	4	\N	\N	\N
+ugc9ztt4hb4	dohzvch4noi	5	\N	\N	\N
+mupdgh8dhyb	mupdgh8dhyb	0	f	properties	\N
+lzuobjmh9nr	lzuobjmh9nr	0	f	properties	\N
+2yh8xonuy9p	lzuobjmh9nr	1	\N	\N	6
+p62fqqqtc8f	p62fqqqtc8f	0	f	properties	\N
+jibscsx0dfw	p62fqqqtc8f	1	\N	\N	1
+1oeceyajjp1	1oeceyajjp1	0	f	properties	\N
+p62fqqqtc8f	1oeceyajjp1	1	\N	\N	1
+jibscsx0dfw	1oeceyajjp1	2	\N	\N	1
+2yh8xonuy9p	p62fqqqtc8f	2	\N	\N	\N
+2yh8xonuy9p	1oeceyajjp1	3	\N	\N	\N
+fg366x2n25f	jibscsx0dfw	2	\N	\N	\N
+fg366x2n25f	p62fqqqtc8f	3	\N	\N	\N
+fg366x2n25f	1oeceyajjp1	4	\N	\N	\N
+v0hdkdeyzrd	jibscsx0dfw	3	\N	\N	\N
+v0hdkdeyzrd	p62fqqqtc8f	4	\N	\N	\N
+v0hdkdeyzrd	1oeceyajjp1	5	\N	\N	\N
+jibscsx0dfw	jibscsx0dfw	0	f	properties	\N
+2yh8xonuy9p	jibscsx0dfw	1	\N	\N	5
+nk5b4nu4r4m	nk5b4nu4r4m	0	f	properties	\N
+lzuobjmh9nr	nk5b4nu4r4m	1	\N	\N	1
+pai6scdjeqt	pai6scdjeqt	0	f	properties	\N
+nk5b4nu4r4m	pai6scdjeqt	1	\N	\N	1
+lzuobjmh9nr	pai6scdjeqt	2	\N	\N	1
+2yh8xonuy9p	nk5b4nu4r4m	2	\N	\N	\N
+2yh8xonuy9p	pai6scdjeqt	3	\N	\N	\N
+fg366x2n25f	lzuobjmh9nr	2	\N	\N	\N
+fg366x2n25f	nk5b4nu4r4m	3	\N	\N	\N
+fg366x2n25f	pai6scdjeqt	4	\N	\N	\N
+v0hdkdeyzrd	lzuobjmh9nr	3	\N	\N	\N
+v0hdkdeyzrd	nk5b4nu4r4m	4	\N	\N	\N
+v0hdkdeyzrd	pai6scdjeqt	5	\N	\N	\N
+2h7gnmez0eb	2h7gnmez0eb	0	f	properties	\N
+eoz95qtwix6	2h7gnmez0eb	1	\N	\N	1
+kye7kplejx4	kye7kplejx4	0	f	properties	\N
+2h7gnmez0eb	kye7kplejx4	1	\N	\N	1
+eoz95qtwix6	kye7kplejx4	2	\N	\N	1
+pv8ilcp4ez0	pv8ilcp4ez0	0	f	properties	\N
+2h7gnmez0eb	pv8ilcp4ez0	1	\N	\N	2
+eoz95qtwix6	pv8ilcp4ez0	2	\N	\N	2
+mo9367563k2	mo9367563k2	0	f	properties	\N
+pv8ilcp4ez0	mo9367563k2	1	\N	\N	1
+2h7gnmez0eb	mo9367563k2	2	\N	\N	1
+eoz95qtwix6	mo9367563k2	3	\N	\N	1
+hk90w8ktd8b	hk90w8ktd8b	0	f	properties	\N
+mo9367563k2	hk90w8ktd8b	1	\N	\N	1
+pv8ilcp4ez0	hk90w8ktd8b	2	\N	\N	1
+2h7gnmez0eb	hk90w8ktd8b	3	\N	\N	1
+eoz95qtwix6	hk90w8ktd8b	4	\N	\N	1
+fetusergrtk	fetusergrtk	0	f	properties	\N
+hk90w8ktd8b	fetusergrtk	1	\N	\N	1
+mo9367563k2	fetusergrtk	2	\N	\N	1
+pv8ilcp4ez0	fetusergrtk	3	\N	\N	1
+2h7gnmez0eb	fetusergrtk	4	\N	\N	1
+eoz95qtwix6	fetusergrtk	5	\N	\N	1
+8avia19u880	8avia19u880	0	f	properties	\N
+pv8ilcp4ez0	8avia19u880	1	\N	\N	2
+2h7gnmez0eb	8avia19u880	2	\N	\N	2
+eoz95qtwix6	8avia19u880	3	\N	\N	2
+hwi0frrc1o1	hwi0frrc1o1	0	f	properties	\N
+8avia19u880	hwi0frrc1o1	1	\N	\N	1
+pv8ilcp4ez0	hwi0frrc1o1	2	\N	\N	1
+2h7gnmez0eb	hwi0frrc1o1	3	\N	\N	1
+eoz95qtwix6	hwi0frrc1o1	4	\N	\N	1
+u1nyxe00lc6	u1nyxe00lc6	0	f	properties	\N
+hwi0frrc1o1	u1nyxe00lc6	1	\N	\N	1
+8avia19u880	u1nyxe00lc6	2	\N	\N	1
+eoz95qtwix6	eoz95qtwix6	0	f	properties	\N
+fe7kgdo55ax	mupdgh8dhyb	2	\N	\N	\N
+hmft2ujv1uf	mupdgh8dhyb	3	\N	\N	\N
+nocobase-admin-menu	mupdgh8dhyb	4	\N	\N	\N
+pv8ilcp4ez0	u1nyxe00lc6	3	\N	\N	1
+2h7gnmez0eb	u1nyxe00lc6	4	\N	\N	1
+eoz95qtwix6	u1nyxe00lc6	5	\N	\N	1
+rxmunii1ry1	rxmunii1ry1	0	f	properties	\N
+pv8ilcp4ez0	rxmunii1ry1	1	\N	\N	3
+2h7gnmez0eb	rxmunii1ry1	2	\N	\N	3
+eoz95qtwix6	rxmunii1ry1	3	\N	\N	3
+5i5wcujn2r0	5i5wcujn2r0	0	f	properties	\N
+rxmunii1ry1	5i5wcujn2r0	1	\N	\N	1
+pv8ilcp4ez0	5i5wcujn2r0	2	\N	\N	1
+2h7gnmez0eb	5i5wcujn2r0	3	\N	\N	1
+eoz95qtwix6	5i5wcujn2r0	4	\N	\N	1
+6ajwqegl8fu	6ajwqegl8fu	0	f	properties	\N
+5i5wcujn2r0	6ajwqegl8fu	1	\N	\N	1
+rxmunii1ry1	6ajwqegl8fu	2	\N	\N	1
+pv8ilcp4ez0	6ajwqegl8fu	3	\N	\N	1
+2h7gnmez0eb	6ajwqegl8fu	4	\N	\N	1
+eoz95qtwix6	6ajwqegl8fu	5	\N	\N	1
+eg8g77o8vr3	eg8g77o8vr3	0	f	properties	\N
+pv8ilcp4ez0	eg8g77o8vr3	1	\N	\N	4
+2h7gnmez0eb	eg8g77o8vr3	2	\N	\N	4
+eoz95qtwix6	eg8g77o8vr3	3	\N	\N	4
+pfrp5as10jq	pfrp5as10jq	0	f	properties	\N
+eg8g77o8vr3	pfrp5as10jq	1	\N	\N	1
+pv8ilcp4ez0	pfrp5as10jq	2	\N	\N	1
+2h7gnmez0eb	pfrp5as10jq	3	\N	\N	1
+eoz95qtwix6	pfrp5as10jq	4	\N	\N	1
+m6euh07s1zs	m6euh07s1zs	0	f	properties	\N
+pfrp5as10jq	m6euh07s1zs	1	\N	\N	1
+eg8g77o8vr3	m6euh07s1zs	2	\N	\N	1
+pv8ilcp4ez0	m6euh07s1zs	3	\N	\N	1
+2h7gnmez0eb	m6euh07s1zs	4	\N	\N	1
+eoz95qtwix6	m6euh07s1zs	5	\N	\N	1
+gltkn1uzhh9	gltkn1uzhh9	0	f	properties	\N
+pv8ilcp4ez0	gltkn1uzhh9	1	\N	\N	5
+2h7gnmez0eb	gltkn1uzhh9	2	\N	\N	5
+eoz95qtwix6	gltkn1uzhh9	3	\N	\N	5
+0czsrowjaug	0czsrowjaug	0	f	properties	\N
+gltkn1uzhh9	0czsrowjaug	1	\N	\N	1
+pv8ilcp4ez0	0czsrowjaug	2	\N	\N	1
+2h7gnmez0eb	0czsrowjaug	3	\N	\N	1
+eoz95qtwix6	0czsrowjaug	4	\N	\N	1
+tjpv9f744r6	tjpv9f744r6	0	f	properties	\N
+0czsrowjaug	tjpv9f744r6	1	\N	\N	1
+gltkn1uzhh9	tjpv9f744r6	2	\N	\N	1
+pv8ilcp4ez0	tjpv9f744r6	3	\N	\N	1
+2h7gnmez0eb	tjpv9f744r6	4	\N	\N	1
+eoz95qtwix6	tjpv9f744r6	5	\N	\N	1
+ll2so9vdgu3	ll2so9vdgu3	0	f	properties	\N
+pv8ilcp4ez0	ll2so9vdgu3	1	\N	\N	6
+2h7gnmez0eb	ll2so9vdgu3	2	\N	\N	6
+eoz95qtwix6	ll2so9vdgu3	3	\N	\N	6
+0jqiruu9vf6	0jqiruu9vf6	0	f	properties	\N
+ll2so9vdgu3	0jqiruu9vf6	1	\N	\N	1
+pv8ilcp4ez0	0jqiruu9vf6	2	\N	\N	1
+2h7gnmez0eb	0jqiruu9vf6	3	\N	\N	1
+eoz95qtwix6	0jqiruu9vf6	4	\N	\N	1
+b6910vi3jym	b6910vi3jym	0	f	properties	\N
+0jqiruu9vf6	b6910vi3jym	1	\N	\N	1
+ll2so9vdgu3	b6910vi3jym	2	\N	\N	1
+pv8ilcp4ez0	b6910vi3jym	3	\N	\N	1
+2h7gnmez0eb	b6910vi3jym	4	\N	\N	1
+eoz95qtwix6	b6910vi3jym	5	\N	\N	1
+quxuyp8dl2x	quxuyp8dl2x	0	f	properties	\N
+2h7gnmez0eb	quxuyp8dl2x	1	\N	\N	3
+eoz95qtwix6	quxuyp8dl2x	2	\N	\N	3
+swpktoj72vi	swpktoj72vi	0	f	properties	\N
+9bxpugcgkui	swpktoj72vi	1	\N	\N	1
+83dc85bfozz	83dc85bfozz	0	f	properties	\N
+swpktoj72vi	83dc85bfozz	1	\N	\N	1
+9bxpugcgkui	83dc85bfozz	2	\N	\N	1
+7poa6levyva	swpktoj72vi	2	\N	\N	\N
+7poa6levyva	83dc85bfozz	3	\N	\N	\N
+fe7kgdo55ax	9bxpugcgkui	2	\N	\N	\N
+fe7kgdo55ax	swpktoj72vi	3	\N	\N	\N
+fe7kgdo55ax	83dc85bfozz	4	\N	\N	\N
+hmft2ujv1uf	9bxpugcgkui	3	\N	\N	\N
+hmft2ujv1uf	swpktoj72vi	4	\N	\N	\N
+hmft2ujv1uf	83dc85bfozz	5	\N	\N	\N
+nocobase-admin-menu	9bxpugcgkui	4	\N	\N	\N
+nocobase-admin-menu	swpktoj72vi	5	\N	\N	\N
+nocobase-admin-menu	83dc85bfozz	6	\N	\N	\N
+9bxpugcgkui	9bxpugcgkui	0	f	properties	\N
+ugc9ztt4hb4	oyw4y44yqgd	6	\N	\N	\N
+ugc9ztt4hb4	bztjip2msxq	7	\N	\N	\N
+ao2a67rjlld	7qdtw3aqf8f	4	\N	\N	\N
+ao2a67rjlld	9znhwv6jh2d	5	\N	\N	\N
+ao2a67rjlld	dohzvch4noi	6	\N	\N	\N
+ao2a67rjlld	oyw4y44yqgd	7	\N	\N	\N
+ao2a67rjlld	bztjip2msxq	8	\N	\N	\N
+bwbd6lebhkb	7qdtw3aqf8f	5	\N	\N	\N
+bwbd6lebhkb	9znhwv6jh2d	6	\N	\N	\N
+bwbd6lebhkb	dohzvch4noi	7	\N	\N	\N
+bwbd6lebhkb	oyw4y44yqgd	8	\N	\N	\N
+bwbd6lebhkb	bztjip2msxq	9	\N	\N	\N
+m8tbcrs4z9t	7qdtw3aqf8f	6	\N	\N	\N
+m8tbcrs4z9t	9znhwv6jh2d	7	\N	\N	\N
+m8tbcrs4z9t	dohzvch4noi	8	\N	\N	\N
+m8tbcrs4z9t	oyw4y44yqgd	9	\N	\N	\N
+m8tbcrs4z9t	bztjip2msxq	10	\N	\N	\N
+q4dinm52meb	7qdtw3aqf8f	7	\N	\N	\N
+q4dinm52meb	9znhwv6jh2d	8	\N	\N	\N
+q4dinm52meb	dohzvch4noi	9	\N	\N	\N
+q4dinm52meb	oyw4y44yqgd	10	\N	\N	\N
+q4dinm52meb	bztjip2msxq	11	\N	\N	\N
+vs0l89adzhc	7qdtw3aqf8f	8	\N	\N	\N
+vs0l89adzhc	9znhwv6jh2d	9	\N	\N	\N
+vs0l89adzhc	dohzvch4noi	10	\N	\N	\N
+vs0l89adzhc	oyw4y44yqgd	11	\N	\N	\N
+vs0l89adzhc	bztjip2msxq	12	\N	\N	\N
+493pimn830r	7qdtw3aqf8f	9	\N	\N	\N
+493pimn830r	9znhwv6jh2d	10	\N	\N	\N
+493pimn830r	dohzvch4noi	11	\N	\N	\N
+493pimn830r	oyw4y44yqgd	12	\N	\N	\N
+493pimn830r	bztjip2msxq	13	\N	\N	\N
+nocobase-admin-menu	7qdtw3aqf8f	10	\N	\N	\N
+nocobase-admin-menu	9znhwv6jh2d	11	\N	\N	\N
+nocobase-admin-menu	dohzvch4noi	12	\N	\N	\N
+nocobase-admin-menu	oyw4y44yqgd	13	\N	\N	\N
+nocobase-admin-menu	bztjip2msxq	14	\N	\N	\N
+oekbnvx2n7m	oekbnvx2n7m	0	f	properties	\N
+i5ep94ei4hn	oekbnvx2n7m	2	\N	\N	\N
+ugc9ztt4hb4	oekbnvx2n7m	3	\N	\N	\N
+ao2a67rjlld	oekbnvx2n7m	4	\N	\N	\N
+bwbd6lebhkb	oekbnvx2n7m	5	\N	\N	\N
+m8tbcrs4z9t	oekbnvx2n7m	6	\N	\N	\N
+q4dinm52meb	oekbnvx2n7m	7	\N	\N	\N
+vs0l89adzhc	oekbnvx2n7m	8	\N	\N	\N
+493pimn830r	oekbnvx2n7m	9	\N	\N	\N
+nocobase-admin-menu	oekbnvx2n7m	10	\N	\N	\N
+x74knwfm0hx	oekbnvx2n7m	1	\N	\N	2
+2lzmasj4pju	2lzmasj4pju	0	f	properties	\N
+abxv8689kv3	2lzmasj4pju	1	\N	\N	1
+44890jxlzup	2lzmasj4pju	2	\N	\N	\N
+xa635tbvi5c	abxv8689kv3	2	\N	\N	\N
+xa635tbvi5c	2lzmasj4pju	3	\N	\N	\N
+4dgysxrfq7o	abxv8689kv3	3	\N	\N	\N
+4dgysxrfq7o	2lzmasj4pju	4	\N	\N	\N
+sf8fl742bgm	abxv8689kv3	4	\N	\N	\N
+sf8fl742bgm	2lzmasj4pju	5	\N	\N	\N
+sptin92gm5m	abxv8689kv3	5	\N	\N	\N
+sptin92gm5m	2lzmasj4pju	6	\N	\N	\N
+i0lnhtci4u6	abxv8689kv3	6	\N	\N	\N
+i0lnhtci4u6	2lzmasj4pju	7	\N	\N	\N
+swxvjglsevf	abxv8689kv3	7	\N	\N	\N
+swxvjglsevf	2lzmasj4pju	8	\N	\N	\N
+nocobase-admin-menu	abxv8689kv3	8	\N	\N	\N
+nocobase-admin-menu	2lzmasj4pju	9	\N	\N	\N
+abxv8689kv3	abxv8689kv3	0	f	properties	\N
+44890jxlzup	abxv8689kv3	1	\N	\N	7
+zy4jidwmnvw	zy4jidwmnvw	0	f	properties	\N
+0kxudizv0xf	zy4jidwmnvw	1	\N	\N	1
+q5no45c40c6	q5no45c40c6	0	f	properties	\N
+zy4jidwmnvw	q5no45c40c6	1	\N	\N	1
+0kxudizv0xf	q5no45c40c6	2	\N	\N	1
+imo18or3xxo	imo18or3xxo	0	f	properties	\N
+q5no45c40c6	imo18or3xxo	1	\N	\N	1
+zy4jidwmnvw	imo18or3xxo	2	\N	\N	1
+0kxudizv0xf	imo18or3xxo	3	\N	\N	1
+mr7dvvk94ts	mr7dvvk94ts	0	f	properties	\N
+imo18or3xxo	mr7dvvk94ts	1	\N	\N	1
+q5no45c40c6	mr7dvvk94ts	2	\N	\N	1
+zy4jidwmnvw	mr7dvvk94ts	3	\N	\N	1
+0kxudizv0xf	mr7dvvk94ts	4	\N	\N	1
+9xqwn851uzs	9xqwn851uzs	0	f	properties	\N
+imo18or3xxo	9xqwn851uzs	1	\N	\N	2
+q5no45c40c6	9xqwn851uzs	2	\N	\N	2
+zy4jidwmnvw	9xqwn851uzs	3	\N	\N	2
+0kxudizv0xf	9xqwn851uzs	4	\N	\N	2
+bztjip2msxq	zy4jidwmnvw	2	\N	\N	\N
+bztjip2msxq	q5no45c40c6	3	\N	\N	\N
+bztjip2msxq	imo18or3xxo	4	\N	\N	\N
+bztjip2msxq	mr7dvvk94ts	5	\N	\N	\N
+bztjip2msxq	9xqwn851uzs	5	\N	\N	\N
+oyw4y44yqgd	0kxudizv0xf	2	\N	\N	\N
+oyw4y44yqgd	zy4jidwmnvw	3	\N	\N	\N
+oyw4y44yqgd	q5no45c40c6	4	\N	\N	\N
+oyw4y44yqgd	imo18or3xxo	5	\N	\N	\N
+oyw4y44yqgd	mr7dvvk94ts	6	\N	\N	\N
+oyw4y44yqgd	9xqwn851uzs	6	\N	\N	\N
+dohzvch4noi	0kxudizv0xf	3	\N	\N	\N
+dohzvch4noi	zy4jidwmnvw	4	\N	\N	\N
+dohzvch4noi	q5no45c40c6	5	\N	\N	\N
+dohzvch4noi	imo18or3xxo	6	\N	\N	\N
+dohzvch4noi	mr7dvvk94ts	7	\N	\N	\N
+dohzvch4noi	9xqwn851uzs	7	\N	\N	\N
+9znhwv6jh2d	0kxudizv0xf	4	\N	\N	\N
+9znhwv6jh2d	zy4jidwmnvw	5	\N	\N	\N
+9znhwv6jh2d	q5no45c40c6	6	\N	\N	\N
+9znhwv6jh2d	imo18or3xxo	7	\N	\N	\N
+9znhwv6jh2d	mr7dvvk94ts	8	\N	\N	\N
+9znhwv6jh2d	9xqwn851uzs	8	\N	\N	\N
+7qdtw3aqf8f	0kxudizv0xf	5	\N	\N	\N
+7qdtw3aqf8f	zy4jidwmnvw	6	\N	\N	\N
+7qdtw3aqf8f	q5no45c40c6	7	\N	\N	\N
+7qdtw3aqf8f	imo18or3xxo	8	\N	\N	\N
+7qdtw3aqf8f	mr7dvvk94ts	9	\N	\N	\N
+7qdtw3aqf8f	9xqwn851uzs	9	\N	\N	\N
+x74knwfm0hx	0kxudizv0xf	6	\N	\N	\N
+x74knwfm0hx	zy4jidwmnvw	7	\N	\N	\N
+x74knwfm0hx	q5no45c40c6	8	\N	\N	\N
+x74knwfm0hx	imo18or3xxo	9	\N	\N	\N
+x74knwfm0hx	mr7dvvk94ts	10	\N	\N	\N
+x74knwfm0hx	9xqwn851uzs	10	\N	\N	\N
+i5ep94ei4hn	0kxudizv0xf	7	\N	\N	\N
+i5ep94ei4hn	zy4jidwmnvw	8	\N	\N	\N
+i5ep94ei4hn	q5no45c40c6	9	\N	\N	\N
+i5ep94ei4hn	imo18or3xxo	10	\N	\N	\N
+i5ep94ei4hn	mr7dvvk94ts	11	\N	\N	\N
+i5ep94ei4hn	9xqwn851uzs	11	\N	\N	\N
+ugc9ztt4hb4	0kxudizv0xf	8	\N	\N	\N
+ugc9ztt4hb4	zy4jidwmnvw	9	\N	\N	\N
+ugc9ztt4hb4	q5no45c40c6	10	\N	\N	\N
+ugc9ztt4hb4	imo18or3xxo	11	\N	\N	\N
+ugc9ztt4hb4	mr7dvvk94ts	12	\N	\N	\N
+ugc9ztt4hb4	9xqwn851uzs	12	\N	\N	\N
+ao2a67rjlld	0kxudizv0xf	9	\N	\N	\N
+ao2a67rjlld	zy4jidwmnvw	10	\N	\N	\N
+ao2a67rjlld	q5no45c40c6	11	\N	\N	\N
+ao2a67rjlld	imo18or3xxo	12	\N	\N	\N
+ao2a67rjlld	mr7dvvk94ts	13	\N	\N	\N
+ao2a67rjlld	9xqwn851uzs	13	\N	\N	\N
+bwbd6lebhkb	0kxudizv0xf	10	\N	\N	\N
+bwbd6lebhkb	zy4jidwmnvw	11	\N	\N	\N
+bwbd6lebhkb	q5no45c40c6	12	\N	\N	\N
+0kxudizv0xf	0kxudizv0xf	0	f	properties	\N
+bztjip2msxq	0kxudizv0xf	1	\N	\N	1
+bwbd6lebhkb	imo18or3xxo	13	\N	\N	\N
+bwbd6lebhkb	mr7dvvk94ts	14	\N	\N	\N
+bwbd6lebhkb	9xqwn851uzs	14	\N	\N	\N
+m8tbcrs4z9t	0kxudizv0xf	11	\N	\N	\N
+m8tbcrs4z9t	zy4jidwmnvw	12	\N	\N	\N
+m8tbcrs4z9t	q5no45c40c6	13	\N	\N	\N
+m8tbcrs4z9t	imo18or3xxo	14	\N	\N	\N
+m8tbcrs4z9t	mr7dvvk94ts	15	\N	\N	\N
+m8tbcrs4z9t	9xqwn851uzs	15	\N	\N	\N
+q4dinm52meb	0kxudizv0xf	12	\N	\N	\N
+q4dinm52meb	zy4jidwmnvw	13	\N	\N	\N
+q4dinm52meb	q5no45c40c6	14	\N	\N	\N
+q4dinm52meb	imo18or3xxo	15	\N	\N	\N
+q4dinm52meb	mr7dvvk94ts	16	\N	\N	\N
+q4dinm52meb	9xqwn851uzs	16	\N	\N	\N
+vs0l89adzhc	0kxudizv0xf	13	\N	\N	\N
+vs0l89adzhc	zy4jidwmnvw	14	\N	\N	\N
+vs0l89adzhc	q5no45c40c6	15	\N	\N	\N
+vs0l89adzhc	imo18or3xxo	16	\N	\N	\N
+vs0l89adzhc	mr7dvvk94ts	17	\N	\N	\N
+vs0l89adzhc	9xqwn851uzs	17	\N	\N	\N
+493pimn830r	0kxudizv0xf	14	\N	\N	\N
+493pimn830r	zy4jidwmnvw	15	\N	\N	\N
+493pimn830r	q5no45c40c6	16	\N	\N	\N
+493pimn830r	imo18or3xxo	17	\N	\N	\N
+493pimn830r	mr7dvvk94ts	18	\N	\N	\N
+493pimn830r	9xqwn851uzs	18	\N	\N	\N
+nocobase-admin-menu	0kxudizv0xf	15	\N	\N	\N
+nocobase-admin-menu	zy4jidwmnvw	16	\N	\N	\N
+nocobase-admin-menu	q5no45c40c6	17	\N	\N	\N
+nocobase-admin-menu	imo18or3xxo	18	\N	\N	\N
+nocobase-admin-menu	mr7dvvk94ts	19	\N	\N	\N
+nocobase-admin-menu	9xqwn851uzs	19	\N	\N	\N
+h6z84g2plev	h6z84g2plev	0	f	properties	\N
+lhbk1av87n1	h6z84g2plev	1	\N	\N	1
+fj7mqkmuy05	fj7mqkmuy05	0	f	properties	\N
+h6z84g2plev	fj7mqkmuy05	1	\N	\N	1
+lhbk1av87n1	fj7mqkmuy05	2	\N	\N	1
+mr7dvvk94ts	h6z84g2plev	2	\N	\N	\N
+mr7dvvk94ts	fj7mqkmuy05	3	\N	\N	\N
+imo18or3xxo	lhbk1av87n1	2	\N	\N	\N
+imo18or3xxo	h6z84g2plev	3	\N	\N	\N
+imo18or3xxo	fj7mqkmuy05	4	\N	\N	\N
+q5no45c40c6	lhbk1av87n1	3	\N	\N	\N
+q5no45c40c6	h6z84g2plev	4	\N	\N	\N
+q5no45c40c6	fj7mqkmuy05	5	\N	\N	\N
+zy4jidwmnvw	lhbk1av87n1	4	\N	\N	\N
+zy4jidwmnvw	h6z84g2plev	5	\N	\N	\N
+zy4jidwmnvw	fj7mqkmuy05	6	\N	\N	\N
+0kxudizv0xf	lhbk1av87n1	5	\N	\N	\N
+0kxudizv0xf	h6z84g2plev	6	\N	\N	\N
+0kxudizv0xf	fj7mqkmuy05	7	\N	\N	\N
+bztjip2msxq	lhbk1av87n1	6	\N	\N	\N
+bztjip2msxq	h6z84g2plev	7	\N	\N	\N
+bztjip2msxq	fj7mqkmuy05	8	\N	\N	\N
+oyw4y44yqgd	lhbk1av87n1	7	\N	\N	\N
+oyw4y44yqgd	h6z84g2plev	8	\N	\N	\N
+oyw4y44yqgd	fj7mqkmuy05	9	\N	\N	\N
+dohzvch4noi	lhbk1av87n1	8	\N	\N	\N
+dohzvch4noi	h6z84g2plev	9	\N	\N	\N
+dohzvch4noi	fj7mqkmuy05	10	\N	\N	\N
+9znhwv6jh2d	lhbk1av87n1	9	\N	\N	\N
+9znhwv6jh2d	h6z84g2plev	10	\N	\N	\N
+9znhwv6jh2d	fj7mqkmuy05	11	\N	\N	\N
+7qdtw3aqf8f	lhbk1av87n1	10	\N	\N	\N
+7qdtw3aqf8f	h6z84g2plev	11	\N	\N	\N
+7qdtw3aqf8f	fj7mqkmuy05	12	\N	\N	\N
+x74knwfm0hx	lhbk1av87n1	11	\N	\N	\N
+x74knwfm0hx	h6z84g2plev	12	\N	\N	\N
+x74knwfm0hx	fj7mqkmuy05	13	\N	\N	\N
+i5ep94ei4hn	lhbk1av87n1	12	\N	\N	\N
+i5ep94ei4hn	h6z84g2plev	13	\N	\N	\N
+i5ep94ei4hn	fj7mqkmuy05	14	\N	\N	\N
+ugc9ztt4hb4	lhbk1av87n1	13	\N	\N	\N
+ugc9ztt4hb4	h6z84g2plev	14	\N	\N	\N
+ugc9ztt4hb4	fj7mqkmuy05	15	\N	\N	\N
+ao2a67rjlld	lhbk1av87n1	14	\N	\N	\N
+ao2a67rjlld	h6z84g2plev	15	\N	\N	\N
+ao2a67rjlld	fj7mqkmuy05	16	\N	\N	\N
+bwbd6lebhkb	lhbk1av87n1	15	\N	\N	\N
+bwbd6lebhkb	h6z84g2plev	16	\N	\N	\N
+bwbd6lebhkb	fj7mqkmuy05	17	\N	\N	\N
+m8tbcrs4z9t	lhbk1av87n1	16	\N	\N	\N
+m8tbcrs4z9t	h6z84g2plev	17	\N	\N	\N
+m8tbcrs4z9t	fj7mqkmuy05	18	\N	\N	\N
+q4dinm52meb	lhbk1av87n1	17	\N	\N	\N
+q4dinm52meb	h6z84g2plev	18	\N	\N	\N
+q4dinm52meb	fj7mqkmuy05	19	\N	\N	\N
+vs0l89adzhc	lhbk1av87n1	18	\N	\N	\N
+vs0l89adzhc	h6z84g2plev	19	\N	\N	\N
+vs0l89adzhc	fj7mqkmuy05	20	\N	\N	\N
+493pimn830r	lhbk1av87n1	19	\N	\N	\N
+493pimn830r	h6z84g2plev	20	\N	\N	\N
+493pimn830r	fj7mqkmuy05	21	\N	\N	\N
+nocobase-admin-menu	lhbk1av87n1	20	\N	\N	\N
+nocobase-admin-menu	h6z84g2plev	21	\N	\N	\N
+nocobase-admin-menu	fj7mqkmuy05	22	\N	\N	\N
+lhbk1av87n1	lhbk1av87n1	0	f	properties	\N
+mr7dvvk94ts	lhbk1av87n1	1	\N	\N	1
+z3izb1wk1tb	z3izb1wk1tb	0	f	properties	\N
+7mxt8s0yifl	z3izb1wk1tb	1	\N	\N	1
+r46d3k59dyb	r46d3k59dyb	0	f	properties	\N
+z3izb1wk1tb	r46d3k59dyb	1	\N	\N	1
+7mxt8s0yifl	r46d3k59dyb	2	\N	\N	1
+mr7dvvk94ts	z3izb1wk1tb	2	\N	\N	\N
+mr7dvvk94ts	r46d3k59dyb	3	\N	\N	\N
+imo18or3xxo	7mxt8s0yifl	2	\N	\N	\N
+imo18or3xxo	z3izb1wk1tb	3	\N	\N	\N
+imo18or3xxo	r46d3k59dyb	4	\N	\N	\N
+q5no45c40c6	7mxt8s0yifl	3	\N	\N	\N
+q5no45c40c6	z3izb1wk1tb	4	\N	\N	\N
+q5no45c40c6	r46d3k59dyb	5	\N	\N	\N
+zy4jidwmnvw	7mxt8s0yifl	4	\N	\N	\N
+zy4jidwmnvw	z3izb1wk1tb	5	\N	\N	\N
+zy4jidwmnvw	r46d3k59dyb	6	\N	\N	\N
+0kxudizv0xf	7mxt8s0yifl	5	\N	\N	\N
+0kxudizv0xf	z3izb1wk1tb	6	\N	\N	\N
+0kxudizv0xf	r46d3k59dyb	7	\N	\N	\N
+bztjip2msxq	7mxt8s0yifl	6	\N	\N	\N
+bztjip2msxq	z3izb1wk1tb	7	\N	\N	\N
+bztjip2msxq	r46d3k59dyb	8	\N	\N	\N
+oyw4y44yqgd	7mxt8s0yifl	7	\N	\N	\N
+oyw4y44yqgd	z3izb1wk1tb	8	\N	\N	\N
+oyw4y44yqgd	r46d3k59dyb	9	\N	\N	\N
+dohzvch4noi	7mxt8s0yifl	8	\N	\N	\N
+dohzvch4noi	z3izb1wk1tb	9	\N	\N	\N
+dohzvch4noi	r46d3k59dyb	10	\N	\N	\N
+9znhwv6jh2d	7mxt8s0yifl	9	\N	\N	\N
+9znhwv6jh2d	z3izb1wk1tb	10	\N	\N	\N
+9znhwv6jh2d	r46d3k59dyb	11	\N	\N	\N
+7mxt8s0yifl	7mxt8s0yifl	0	f	properties	\N
+mr7dvvk94ts	7mxt8s0yifl	1	\N	\N	2
+7qdtw3aqf8f	7mxt8s0yifl	10	\N	\N	\N
+7qdtw3aqf8f	z3izb1wk1tb	11	\N	\N	\N
+7qdtw3aqf8f	r46d3k59dyb	12	\N	\N	\N
+x74knwfm0hx	7mxt8s0yifl	11	\N	\N	\N
+x74knwfm0hx	z3izb1wk1tb	12	\N	\N	\N
+x74knwfm0hx	r46d3k59dyb	13	\N	\N	\N
+i5ep94ei4hn	7mxt8s0yifl	12	\N	\N	\N
+i5ep94ei4hn	z3izb1wk1tb	13	\N	\N	\N
+i5ep94ei4hn	r46d3k59dyb	14	\N	\N	\N
+ugc9ztt4hb4	7mxt8s0yifl	13	\N	\N	\N
+ugc9ztt4hb4	z3izb1wk1tb	14	\N	\N	\N
+ugc9ztt4hb4	r46d3k59dyb	15	\N	\N	\N
+ao2a67rjlld	7mxt8s0yifl	14	\N	\N	\N
+ao2a67rjlld	z3izb1wk1tb	15	\N	\N	\N
+ao2a67rjlld	r46d3k59dyb	16	\N	\N	\N
+bwbd6lebhkb	7mxt8s0yifl	15	\N	\N	\N
+bwbd6lebhkb	z3izb1wk1tb	16	\N	\N	\N
+bwbd6lebhkb	r46d3k59dyb	17	\N	\N	\N
+m8tbcrs4z9t	7mxt8s0yifl	16	\N	\N	\N
+m8tbcrs4z9t	z3izb1wk1tb	17	\N	\N	\N
+m8tbcrs4z9t	r46d3k59dyb	18	\N	\N	\N
+q4dinm52meb	7mxt8s0yifl	17	\N	\N	\N
+q4dinm52meb	z3izb1wk1tb	18	\N	\N	\N
+q4dinm52meb	r46d3k59dyb	19	\N	\N	\N
+vs0l89adzhc	7mxt8s0yifl	18	\N	\N	\N
+vs0l89adzhc	z3izb1wk1tb	19	\N	\N	\N
+vs0l89adzhc	r46d3k59dyb	20	\N	\N	\N
+493pimn830r	7mxt8s0yifl	19	\N	\N	\N
+493pimn830r	z3izb1wk1tb	20	\N	\N	\N
+493pimn830r	r46d3k59dyb	21	\N	\N	\N
+nocobase-admin-menu	7mxt8s0yifl	20	\N	\N	\N
+nocobase-admin-menu	z3izb1wk1tb	21	\N	\N	\N
+nocobase-admin-menu	r46d3k59dyb	22	\N	\N	\N
+0i6xo0z7gmw	0i6xo0z7gmw	0	f	properties	\N
+vkwm4wpz1us	0i6xo0z7gmw	1	\N	\N	1
+ktueizjrxpb	ktueizjrxpb	0	f	properties	\N
+0i6xo0z7gmw	ktueizjrxpb	1	\N	\N	1
+vkwm4wpz1us	ktueizjrxpb	2	\N	\N	1
+mr7dvvk94ts	0i6xo0z7gmw	2	\N	\N	\N
+mr7dvvk94ts	ktueizjrxpb	3	\N	\N	\N
+imo18or3xxo	vkwm4wpz1us	2	\N	\N	\N
+imo18or3xxo	0i6xo0z7gmw	3	\N	\N	\N
+imo18or3xxo	ktueizjrxpb	4	\N	\N	\N
+q5no45c40c6	vkwm4wpz1us	3	\N	\N	\N
+q5no45c40c6	0i6xo0z7gmw	4	\N	\N	\N
+q5no45c40c6	ktueizjrxpb	5	\N	\N	\N
+zy4jidwmnvw	vkwm4wpz1us	4	\N	\N	\N
+zy4jidwmnvw	0i6xo0z7gmw	5	\N	\N	\N
+zy4jidwmnvw	ktueizjrxpb	6	\N	\N	\N
+0kxudizv0xf	vkwm4wpz1us	5	\N	\N	\N
+0kxudizv0xf	0i6xo0z7gmw	6	\N	\N	\N
+0kxudizv0xf	ktueizjrxpb	7	\N	\N	\N
+bztjip2msxq	vkwm4wpz1us	6	\N	\N	\N
+bztjip2msxq	0i6xo0z7gmw	7	\N	\N	\N
+bztjip2msxq	ktueizjrxpb	8	\N	\N	\N
+oyw4y44yqgd	vkwm4wpz1us	7	\N	\N	\N
+oyw4y44yqgd	0i6xo0z7gmw	8	\N	\N	\N
+oyw4y44yqgd	ktueizjrxpb	9	\N	\N	\N
+dohzvch4noi	vkwm4wpz1us	8	\N	\N	\N
+dohzvch4noi	0i6xo0z7gmw	9	\N	\N	\N
+dohzvch4noi	ktueizjrxpb	10	\N	\N	\N
+9znhwv6jh2d	vkwm4wpz1us	9	\N	\N	\N
+9znhwv6jh2d	0i6xo0z7gmw	10	\N	\N	\N
+9znhwv6jh2d	ktueizjrxpb	11	\N	\N	\N
+7qdtw3aqf8f	vkwm4wpz1us	10	\N	\N	\N
+7qdtw3aqf8f	0i6xo0z7gmw	11	\N	\N	\N
+7qdtw3aqf8f	ktueizjrxpb	12	\N	\N	\N
+x74knwfm0hx	vkwm4wpz1us	11	\N	\N	\N
+x74knwfm0hx	0i6xo0z7gmw	12	\N	\N	\N
+x74knwfm0hx	ktueizjrxpb	13	\N	\N	\N
+i5ep94ei4hn	vkwm4wpz1us	12	\N	\N	\N
+i5ep94ei4hn	0i6xo0z7gmw	13	\N	\N	\N
+i5ep94ei4hn	ktueizjrxpb	14	\N	\N	\N
+ugc9ztt4hb4	vkwm4wpz1us	13	\N	\N	\N
+ugc9ztt4hb4	0i6xo0z7gmw	14	\N	\N	\N
+ugc9ztt4hb4	ktueizjrxpb	15	\N	\N	\N
+ao2a67rjlld	vkwm4wpz1us	14	\N	\N	\N
+ao2a67rjlld	0i6xo0z7gmw	15	\N	\N	\N
+ao2a67rjlld	ktueizjrxpb	16	\N	\N	\N
+bwbd6lebhkb	vkwm4wpz1us	15	\N	\N	\N
+bwbd6lebhkb	0i6xo0z7gmw	16	\N	\N	\N
+bwbd6lebhkb	ktueizjrxpb	17	\N	\N	\N
+m8tbcrs4z9t	vkwm4wpz1us	16	\N	\N	\N
+m8tbcrs4z9t	0i6xo0z7gmw	17	\N	\N	\N
+m8tbcrs4z9t	ktueizjrxpb	18	\N	\N	\N
+q4dinm52meb	vkwm4wpz1us	17	\N	\N	\N
+q4dinm52meb	0i6xo0z7gmw	18	\N	\N	\N
+q4dinm52meb	ktueizjrxpb	19	\N	\N	\N
+vs0l89adzhc	vkwm4wpz1us	18	\N	\N	\N
+vs0l89adzhc	0i6xo0z7gmw	19	\N	\N	\N
+vs0l89adzhc	ktueizjrxpb	20	\N	\N	\N
+493pimn830r	vkwm4wpz1us	19	\N	\N	\N
+493pimn830r	0i6xo0z7gmw	20	\N	\N	\N
+493pimn830r	ktueizjrxpb	21	\N	\N	\N
+nocobase-admin-menu	vkwm4wpz1us	20	\N	\N	\N
+nocobase-admin-menu	0i6xo0z7gmw	21	\N	\N	\N
+nocobase-admin-menu	ktueizjrxpb	22	\N	\N	\N
+vkwm4wpz1us	vkwm4wpz1us	0	f	properties	\N
+mr7dvvk94ts	vkwm4wpz1us	1	\N	\N	3
+h2owc9efe7d	h2owc9efe7d	0	f	properties	\N
+r4wwu0h2xhc	h2owc9efe7d	1	\N	\N	1
+h0ax2mnno9e	h0ax2mnno9e	0	f	properties	\N
+h2owc9efe7d	h0ax2mnno9e	1	\N	\N	1
+r4wwu0h2xhc	h0ax2mnno9e	2	\N	\N	1
+mr7dvvk94ts	h2owc9efe7d	2	\N	\N	\N
+mr7dvvk94ts	h0ax2mnno9e	3	\N	\N	\N
+imo18or3xxo	r4wwu0h2xhc	2	\N	\N	\N
+imo18or3xxo	h2owc9efe7d	3	\N	\N	\N
+imo18or3xxo	h0ax2mnno9e	4	\N	\N	\N
+q5no45c40c6	r4wwu0h2xhc	3	\N	\N	\N
+q5no45c40c6	h2owc9efe7d	4	\N	\N	\N
+q5no45c40c6	h0ax2mnno9e	5	\N	\N	\N
+zy4jidwmnvw	r4wwu0h2xhc	4	\N	\N	\N
+zy4jidwmnvw	h2owc9efe7d	5	\N	\N	\N
+zy4jidwmnvw	h0ax2mnno9e	6	\N	\N	\N
+0kxudizv0xf	r4wwu0h2xhc	5	\N	\N	\N
+0kxudizv0xf	h2owc9efe7d	6	\N	\N	\N
+0kxudizv0xf	h0ax2mnno9e	7	\N	\N	\N
+bztjip2msxq	r4wwu0h2xhc	6	\N	\N	\N
+bztjip2msxq	h2owc9efe7d	7	\N	\N	\N
+bztjip2msxq	h0ax2mnno9e	8	\N	\N	\N
+oyw4y44yqgd	r4wwu0h2xhc	7	\N	\N	\N
+oyw4y44yqgd	h2owc9efe7d	8	\N	\N	\N
+oyw4y44yqgd	h0ax2mnno9e	9	\N	\N	\N
+dohzvch4noi	r4wwu0h2xhc	8	\N	\N	\N
+dohzvch4noi	h2owc9efe7d	9	\N	\N	\N
+dohzvch4noi	h0ax2mnno9e	10	\N	\N	\N
+9znhwv6jh2d	r4wwu0h2xhc	9	\N	\N	\N
+9znhwv6jh2d	h2owc9efe7d	10	\N	\N	\N
+9znhwv6jh2d	h0ax2mnno9e	11	\N	\N	\N
+r4wwu0h2xhc	r4wwu0h2xhc	0	f	properties	\N
+mr7dvvk94ts	r4wwu0h2xhc	1	\N	\N	4
+7qdtw3aqf8f	r4wwu0h2xhc	10	\N	\N	\N
+7qdtw3aqf8f	h2owc9efe7d	11	\N	\N	\N
+7qdtw3aqf8f	h0ax2mnno9e	12	\N	\N	\N
+x74knwfm0hx	r4wwu0h2xhc	11	\N	\N	\N
+x74knwfm0hx	h2owc9efe7d	12	\N	\N	\N
+x74knwfm0hx	h0ax2mnno9e	13	\N	\N	\N
+i5ep94ei4hn	r4wwu0h2xhc	12	\N	\N	\N
+i5ep94ei4hn	h2owc9efe7d	13	\N	\N	\N
+i5ep94ei4hn	h0ax2mnno9e	14	\N	\N	\N
+ugc9ztt4hb4	r4wwu0h2xhc	13	\N	\N	\N
+ugc9ztt4hb4	h2owc9efe7d	14	\N	\N	\N
+ugc9ztt4hb4	h0ax2mnno9e	15	\N	\N	\N
+ao2a67rjlld	r4wwu0h2xhc	14	\N	\N	\N
+ao2a67rjlld	h2owc9efe7d	15	\N	\N	\N
+ao2a67rjlld	h0ax2mnno9e	16	\N	\N	\N
+bwbd6lebhkb	r4wwu0h2xhc	15	\N	\N	\N
+bwbd6lebhkb	h2owc9efe7d	16	\N	\N	\N
+bwbd6lebhkb	h0ax2mnno9e	17	\N	\N	\N
+m8tbcrs4z9t	r4wwu0h2xhc	16	\N	\N	\N
+m8tbcrs4z9t	h2owc9efe7d	17	\N	\N	\N
+m8tbcrs4z9t	h0ax2mnno9e	18	\N	\N	\N
+q4dinm52meb	r4wwu0h2xhc	17	\N	\N	\N
+q4dinm52meb	h2owc9efe7d	18	\N	\N	\N
+q4dinm52meb	h0ax2mnno9e	19	\N	\N	\N
+vs0l89adzhc	r4wwu0h2xhc	18	\N	\N	\N
+vs0l89adzhc	h2owc9efe7d	19	\N	\N	\N
+vs0l89adzhc	h0ax2mnno9e	20	\N	\N	\N
+493pimn830r	r4wwu0h2xhc	19	\N	\N	\N
+493pimn830r	h2owc9efe7d	20	\N	\N	\N
+493pimn830r	h0ax2mnno9e	21	\N	\N	\N
+nocobase-admin-menu	r4wwu0h2xhc	20	\N	\N	\N
+nocobase-admin-menu	h2owc9efe7d	21	\N	\N	\N
+nocobase-admin-menu	h0ax2mnno9e	22	\N	\N	\N
+jybbjrsdqyi	jybbjrsdqyi	0	f	properties	\N
+trkntmt0j43	jybbjrsdqyi	1	\N	\N	1
+x34msmoy2z7	x34msmoy2z7	0	f	properties	\N
+jybbjrsdqyi	x34msmoy2z7	1	\N	\N	1
+trkntmt0j43	x34msmoy2z7	2	\N	\N	1
+mr7dvvk94ts	jybbjrsdqyi	2	\N	\N	\N
+mr7dvvk94ts	x34msmoy2z7	3	\N	\N	\N
+imo18or3xxo	trkntmt0j43	2	\N	\N	\N
+imo18or3xxo	jybbjrsdqyi	3	\N	\N	\N
+imo18or3xxo	x34msmoy2z7	4	\N	\N	\N
+q5no45c40c6	trkntmt0j43	3	\N	\N	\N
+q5no45c40c6	jybbjrsdqyi	4	\N	\N	\N
+q5no45c40c6	x34msmoy2z7	5	\N	\N	\N
+zy4jidwmnvw	trkntmt0j43	4	\N	\N	\N
+zy4jidwmnvw	jybbjrsdqyi	5	\N	\N	\N
+zy4jidwmnvw	x34msmoy2z7	6	\N	\N	\N
+0kxudizv0xf	trkntmt0j43	5	\N	\N	\N
+0kxudizv0xf	jybbjrsdqyi	6	\N	\N	\N
+0kxudizv0xf	x34msmoy2z7	7	\N	\N	\N
+bztjip2msxq	trkntmt0j43	6	\N	\N	\N
+bztjip2msxq	jybbjrsdqyi	7	\N	\N	\N
+bztjip2msxq	x34msmoy2z7	8	\N	\N	\N
+oyw4y44yqgd	trkntmt0j43	7	\N	\N	\N
+oyw4y44yqgd	jybbjrsdqyi	8	\N	\N	\N
+oyw4y44yqgd	x34msmoy2z7	9	\N	\N	\N
+dohzvch4noi	trkntmt0j43	8	\N	\N	\N
+dohzvch4noi	jybbjrsdqyi	9	\N	\N	\N
+dohzvch4noi	x34msmoy2z7	10	\N	\N	\N
+9znhwv6jh2d	trkntmt0j43	9	\N	\N	\N
+9znhwv6jh2d	jybbjrsdqyi	10	\N	\N	\N
+9znhwv6jh2d	x34msmoy2z7	11	\N	\N	\N
+7qdtw3aqf8f	trkntmt0j43	10	\N	\N	\N
+7qdtw3aqf8f	jybbjrsdqyi	11	\N	\N	\N
+7qdtw3aqf8f	x34msmoy2z7	12	\N	\N	\N
+x74knwfm0hx	trkntmt0j43	11	\N	\N	\N
+x74knwfm0hx	jybbjrsdqyi	12	\N	\N	\N
+x74knwfm0hx	x34msmoy2z7	13	\N	\N	\N
+i5ep94ei4hn	trkntmt0j43	12	\N	\N	\N
+i5ep94ei4hn	jybbjrsdqyi	13	\N	\N	\N
+i5ep94ei4hn	x34msmoy2z7	14	\N	\N	\N
+ugc9ztt4hb4	trkntmt0j43	13	\N	\N	\N
+ugc9ztt4hb4	jybbjrsdqyi	14	\N	\N	\N
+ugc9ztt4hb4	x34msmoy2z7	15	\N	\N	\N
+ao2a67rjlld	trkntmt0j43	14	\N	\N	\N
+ao2a67rjlld	jybbjrsdqyi	15	\N	\N	\N
+ao2a67rjlld	x34msmoy2z7	16	\N	\N	\N
+bwbd6lebhkb	trkntmt0j43	15	\N	\N	\N
+bwbd6lebhkb	jybbjrsdqyi	16	\N	\N	\N
+bwbd6lebhkb	x34msmoy2z7	17	\N	\N	\N
+m8tbcrs4z9t	trkntmt0j43	16	\N	\N	\N
+m8tbcrs4z9t	jybbjrsdqyi	17	\N	\N	\N
+m8tbcrs4z9t	x34msmoy2z7	18	\N	\N	\N
+q4dinm52meb	trkntmt0j43	17	\N	\N	\N
+q4dinm52meb	jybbjrsdqyi	18	\N	\N	\N
+q4dinm52meb	x34msmoy2z7	19	\N	\N	\N
+vs0l89adzhc	trkntmt0j43	18	\N	\N	\N
+vs0l89adzhc	jybbjrsdqyi	19	\N	\N	\N
+vs0l89adzhc	x34msmoy2z7	20	\N	\N	\N
+493pimn830r	trkntmt0j43	19	\N	\N	\N
+493pimn830r	jybbjrsdqyi	20	\N	\N	\N
+493pimn830r	x34msmoy2z7	21	\N	\N	\N
+nocobase-admin-menu	trkntmt0j43	20	\N	\N	\N
+nocobase-admin-menu	jybbjrsdqyi	21	\N	\N	\N
+nocobase-admin-menu	x34msmoy2z7	22	\N	\N	\N
+trkntmt0j43	trkntmt0j43	0	f	properties	\N
+mr7dvvk94ts	trkntmt0j43	1	\N	\N	5
+q99h3pa86a9	q99h3pa86a9	0	f	properties	\N
+qa9xun5vwcj	q99h3pa86a9	1	\N	\N	1
+2w9s2xktcaq	2w9s2xktcaq	0	f	properties	\N
+q99h3pa86a9	2w9s2xktcaq	1	\N	\N	1
+qa9xun5vwcj	2w9s2xktcaq	2	\N	\N	1
+mr7dvvk94ts	q99h3pa86a9	2	\N	\N	\N
+mr7dvvk94ts	2w9s2xktcaq	3	\N	\N	\N
+imo18or3xxo	qa9xun5vwcj	2	\N	\N	\N
+imo18or3xxo	q99h3pa86a9	3	\N	\N	\N
+imo18or3xxo	2w9s2xktcaq	4	\N	\N	\N
+q5no45c40c6	qa9xun5vwcj	3	\N	\N	\N
+q5no45c40c6	q99h3pa86a9	4	\N	\N	\N
+q5no45c40c6	2w9s2xktcaq	5	\N	\N	\N
+zy4jidwmnvw	qa9xun5vwcj	4	\N	\N	\N
+zy4jidwmnvw	q99h3pa86a9	5	\N	\N	\N
+zy4jidwmnvw	2w9s2xktcaq	6	\N	\N	\N
+0kxudizv0xf	qa9xun5vwcj	5	\N	\N	\N
+0kxudizv0xf	q99h3pa86a9	6	\N	\N	\N
+0kxudizv0xf	2w9s2xktcaq	7	\N	\N	\N
+bztjip2msxq	qa9xun5vwcj	6	\N	\N	\N
+bztjip2msxq	q99h3pa86a9	7	\N	\N	\N
+bztjip2msxq	2w9s2xktcaq	8	\N	\N	\N
+oyw4y44yqgd	qa9xun5vwcj	7	\N	\N	\N
+oyw4y44yqgd	q99h3pa86a9	8	\N	\N	\N
+oyw4y44yqgd	2w9s2xktcaq	9	\N	\N	\N
+dohzvch4noi	qa9xun5vwcj	8	\N	\N	\N
+dohzvch4noi	q99h3pa86a9	9	\N	\N	\N
+dohzvch4noi	2w9s2xktcaq	10	\N	\N	\N
+9znhwv6jh2d	qa9xun5vwcj	9	\N	\N	\N
+9znhwv6jh2d	q99h3pa86a9	10	\N	\N	\N
+9znhwv6jh2d	2w9s2xktcaq	11	\N	\N	\N
+qa9xun5vwcj	qa9xun5vwcj	0	f	properties	\N
+mr7dvvk94ts	qa9xun5vwcj	1	\N	\N	6
+7qdtw3aqf8f	qa9xun5vwcj	10	\N	\N	\N
+7qdtw3aqf8f	q99h3pa86a9	11	\N	\N	\N
+7qdtw3aqf8f	2w9s2xktcaq	12	\N	\N	\N
+x74knwfm0hx	qa9xun5vwcj	11	\N	\N	\N
+x74knwfm0hx	q99h3pa86a9	12	\N	\N	\N
+x74knwfm0hx	2w9s2xktcaq	13	\N	\N	\N
+i5ep94ei4hn	qa9xun5vwcj	12	\N	\N	\N
+i5ep94ei4hn	q99h3pa86a9	13	\N	\N	\N
+i5ep94ei4hn	2w9s2xktcaq	14	\N	\N	\N
+ugc9ztt4hb4	qa9xun5vwcj	13	\N	\N	\N
+ugc9ztt4hb4	q99h3pa86a9	14	\N	\N	\N
+ugc9ztt4hb4	2w9s2xktcaq	15	\N	\N	\N
+ao2a67rjlld	qa9xun5vwcj	14	\N	\N	\N
+ao2a67rjlld	q99h3pa86a9	15	\N	\N	\N
+ao2a67rjlld	2w9s2xktcaq	16	\N	\N	\N
+bwbd6lebhkb	qa9xun5vwcj	15	\N	\N	\N
+bwbd6lebhkb	q99h3pa86a9	16	\N	\N	\N
+bwbd6lebhkb	2w9s2xktcaq	17	\N	\N	\N
+m8tbcrs4z9t	qa9xun5vwcj	16	\N	\N	\N
+m8tbcrs4z9t	q99h3pa86a9	17	\N	\N	\N
+m8tbcrs4z9t	2w9s2xktcaq	18	\N	\N	\N
+q4dinm52meb	qa9xun5vwcj	17	\N	\N	\N
+q4dinm52meb	q99h3pa86a9	18	\N	\N	\N
+q4dinm52meb	2w9s2xktcaq	19	\N	\N	\N
+vs0l89adzhc	qa9xun5vwcj	18	\N	\N	\N
+vs0l89adzhc	q99h3pa86a9	19	\N	\N	\N
+vs0l89adzhc	2w9s2xktcaq	20	\N	\N	\N
+493pimn830r	qa9xun5vwcj	19	\N	\N	\N
+493pimn830r	q99h3pa86a9	20	\N	\N	\N
+493pimn830r	2w9s2xktcaq	21	\N	\N	\N
+nocobase-admin-menu	qa9xun5vwcj	20	\N	\N	\N
+nocobase-admin-menu	q99h3pa86a9	21	\N	\N	\N
+nocobase-admin-menu	2w9s2xktcaq	22	\N	\N	\N
+zfyh24viwdy	zfyh24viwdy	0	f	properties	\N
+e218oz4chyl	zfyh24viwdy	1	\N	\N	1
+3h2a3ty94tj	3h2a3ty94tj	0	f	properties	\N
+zfyh24viwdy	3h2a3ty94tj	1	\N	\N	1
+e218oz4chyl	3h2a3ty94tj	2	\N	\N	1
+mr7dvvk94ts	zfyh24viwdy	2	\N	\N	\N
+mr7dvvk94ts	3h2a3ty94tj	3	\N	\N	\N
+imo18or3xxo	e218oz4chyl	2	\N	\N	\N
+imo18or3xxo	zfyh24viwdy	3	\N	\N	\N
+imo18or3xxo	3h2a3ty94tj	4	\N	\N	\N
+q5no45c40c6	e218oz4chyl	3	\N	\N	\N
+q5no45c40c6	zfyh24viwdy	4	\N	\N	\N
+q5no45c40c6	3h2a3ty94tj	5	\N	\N	\N
+zy4jidwmnvw	e218oz4chyl	4	\N	\N	\N
+zy4jidwmnvw	zfyh24viwdy	5	\N	\N	\N
+zy4jidwmnvw	3h2a3ty94tj	6	\N	\N	\N
+0kxudizv0xf	e218oz4chyl	5	\N	\N	\N
+0kxudizv0xf	zfyh24viwdy	6	\N	\N	\N
+0kxudizv0xf	3h2a3ty94tj	7	\N	\N	\N
+bztjip2msxq	e218oz4chyl	6	\N	\N	\N
+bztjip2msxq	zfyh24viwdy	7	\N	\N	\N
+bztjip2msxq	3h2a3ty94tj	8	\N	\N	\N
+oyw4y44yqgd	e218oz4chyl	7	\N	\N	\N
+oyw4y44yqgd	zfyh24viwdy	8	\N	\N	\N
+oyw4y44yqgd	3h2a3ty94tj	9	\N	\N	\N
+dohzvch4noi	e218oz4chyl	8	\N	\N	\N
+dohzvch4noi	zfyh24viwdy	9	\N	\N	\N
+dohzvch4noi	3h2a3ty94tj	10	\N	\N	\N
+9znhwv6jh2d	e218oz4chyl	9	\N	\N	\N
+9znhwv6jh2d	zfyh24viwdy	10	\N	\N	\N
+9znhwv6jh2d	3h2a3ty94tj	11	\N	\N	\N
+7qdtw3aqf8f	e218oz4chyl	10	\N	\N	\N
+7qdtw3aqf8f	zfyh24viwdy	11	\N	\N	\N
+7qdtw3aqf8f	3h2a3ty94tj	12	\N	\N	\N
+x74knwfm0hx	e218oz4chyl	11	\N	\N	\N
+x74knwfm0hx	zfyh24viwdy	12	\N	\N	\N
+x74knwfm0hx	3h2a3ty94tj	13	\N	\N	\N
+i5ep94ei4hn	e218oz4chyl	12	\N	\N	\N
+i5ep94ei4hn	zfyh24viwdy	13	\N	\N	\N
+i5ep94ei4hn	3h2a3ty94tj	14	\N	\N	\N
+ugc9ztt4hb4	e218oz4chyl	13	\N	\N	\N
+ugc9ztt4hb4	zfyh24viwdy	14	\N	\N	\N
+ugc9ztt4hb4	3h2a3ty94tj	15	\N	\N	\N
+ao2a67rjlld	e218oz4chyl	14	\N	\N	\N
+ao2a67rjlld	zfyh24viwdy	15	\N	\N	\N
+ao2a67rjlld	3h2a3ty94tj	16	\N	\N	\N
+bwbd6lebhkb	e218oz4chyl	15	\N	\N	\N
+bwbd6lebhkb	zfyh24viwdy	16	\N	\N	\N
+bwbd6lebhkb	3h2a3ty94tj	17	\N	\N	\N
+m8tbcrs4z9t	e218oz4chyl	16	\N	\N	\N
+m8tbcrs4z9t	zfyh24viwdy	17	\N	\N	\N
+m8tbcrs4z9t	3h2a3ty94tj	18	\N	\N	\N
+q4dinm52meb	e218oz4chyl	17	\N	\N	\N
+q4dinm52meb	zfyh24viwdy	18	\N	\N	\N
+q4dinm52meb	3h2a3ty94tj	19	\N	\N	\N
+vs0l89adzhc	e218oz4chyl	18	\N	\N	\N
+vs0l89adzhc	zfyh24viwdy	19	\N	\N	\N
+vs0l89adzhc	3h2a3ty94tj	20	\N	\N	\N
+493pimn830r	e218oz4chyl	19	\N	\N	\N
+493pimn830r	zfyh24viwdy	20	\N	\N	\N
+493pimn830r	3h2a3ty94tj	21	\N	\N	\N
+nocobase-admin-menu	e218oz4chyl	20	\N	\N	\N
+nocobase-admin-menu	zfyh24viwdy	21	\N	\N	\N
+nocobase-admin-menu	3h2a3ty94tj	22	\N	\N	\N
+e218oz4chyl	e218oz4chyl	0	f	properties	\N
+mr7dvvk94ts	e218oz4chyl	1	\N	\N	7
+dqzfsmyk8ay	dqzfsmyk8ay	0	f	properties	\N
+5dqm9vvouxz	dqzfsmyk8ay	1	\N	\N	1
+b33sc3cahsg	b33sc3cahsg	0	f	properties	\N
+dqzfsmyk8ay	b33sc3cahsg	1	\N	\N	1
+5dqm9vvouxz	b33sc3cahsg	2	\N	\N	1
+mr7dvvk94ts	dqzfsmyk8ay	2	\N	\N	\N
+mr7dvvk94ts	b33sc3cahsg	3	\N	\N	\N
+imo18or3xxo	5dqm9vvouxz	2	\N	\N	\N
+imo18or3xxo	dqzfsmyk8ay	3	\N	\N	\N
+imo18or3xxo	b33sc3cahsg	4	\N	\N	\N
+q5no45c40c6	5dqm9vvouxz	3	\N	\N	\N
+q5no45c40c6	dqzfsmyk8ay	4	\N	\N	\N
+q5no45c40c6	b33sc3cahsg	5	\N	\N	\N
+zy4jidwmnvw	5dqm9vvouxz	4	\N	\N	\N
+zy4jidwmnvw	dqzfsmyk8ay	5	\N	\N	\N
+zy4jidwmnvw	b33sc3cahsg	6	\N	\N	\N
+0kxudizv0xf	5dqm9vvouxz	5	\N	\N	\N
+0kxudizv0xf	dqzfsmyk8ay	6	\N	\N	\N
+0kxudizv0xf	b33sc3cahsg	7	\N	\N	\N
+bztjip2msxq	5dqm9vvouxz	6	\N	\N	\N
+bztjip2msxq	dqzfsmyk8ay	7	\N	\N	\N
+bztjip2msxq	b33sc3cahsg	8	\N	\N	\N
+oyw4y44yqgd	5dqm9vvouxz	7	\N	\N	\N
+oyw4y44yqgd	dqzfsmyk8ay	8	\N	\N	\N
+oyw4y44yqgd	b33sc3cahsg	9	\N	\N	\N
+dohzvch4noi	5dqm9vvouxz	8	\N	\N	\N
+dohzvch4noi	dqzfsmyk8ay	9	\N	\N	\N
+dohzvch4noi	b33sc3cahsg	10	\N	\N	\N
+9znhwv6jh2d	5dqm9vvouxz	9	\N	\N	\N
+9znhwv6jh2d	dqzfsmyk8ay	10	\N	\N	\N
+9znhwv6jh2d	b33sc3cahsg	11	\N	\N	\N
+5dqm9vvouxz	5dqm9vvouxz	0	f	properties	\N
+mr7dvvk94ts	5dqm9vvouxz	1	\N	\N	8
+7qdtw3aqf8f	5dqm9vvouxz	10	\N	\N	\N
+7qdtw3aqf8f	dqzfsmyk8ay	11	\N	\N	\N
+7qdtw3aqf8f	b33sc3cahsg	12	\N	\N	\N
+x74knwfm0hx	5dqm9vvouxz	11	\N	\N	\N
+x74knwfm0hx	dqzfsmyk8ay	12	\N	\N	\N
+x74knwfm0hx	b33sc3cahsg	13	\N	\N	\N
+i5ep94ei4hn	5dqm9vvouxz	12	\N	\N	\N
+i5ep94ei4hn	dqzfsmyk8ay	13	\N	\N	\N
+i5ep94ei4hn	b33sc3cahsg	14	\N	\N	\N
+ugc9ztt4hb4	5dqm9vvouxz	13	\N	\N	\N
+ugc9ztt4hb4	dqzfsmyk8ay	14	\N	\N	\N
+ugc9ztt4hb4	b33sc3cahsg	15	\N	\N	\N
+ao2a67rjlld	5dqm9vvouxz	14	\N	\N	\N
+ao2a67rjlld	dqzfsmyk8ay	15	\N	\N	\N
+ao2a67rjlld	b33sc3cahsg	16	\N	\N	\N
+bwbd6lebhkb	5dqm9vvouxz	15	\N	\N	\N
+bwbd6lebhkb	dqzfsmyk8ay	16	\N	\N	\N
+bwbd6lebhkb	b33sc3cahsg	17	\N	\N	\N
+m8tbcrs4z9t	5dqm9vvouxz	16	\N	\N	\N
+m8tbcrs4z9t	dqzfsmyk8ay	17	\N	\N	\N
+m8tbcrs4z9t	b33sc3cahsg	18	\N	\N	\N
+q4dinm52meb	5dqm9vvouxz	17	\N	\N	\N
+q4dinm52meb	dqzfsmyk8ay	18	\N	\N	\N
+q4dinm52meb	b33sc3cahsg	19	\N	\N	\N
+vs0l89adzhc	5dqm9vvouxz	18	\N	\N	\N
+vs0l89adzhc	dqzfsmyk8ay	19	\N	\N	\N
+vs0l89adzhc	b33sc3cahsg	20	\N	\N	\N
+493pimn830r	5dqm9vvouxz	19	\N	\N	\N
+493pimn830r	dqzfsmyk8ay	20	\N	\N	\N
+493pimn830r	b33sc3cahsg	21	\N	\N	\N
+nocobase-admin-menu	5dqm9vvouxz	20	\N	\N	\N
+nocobase-admin-menu	dqzfsmyk8ay	21	\N	\N	\N
+nocobase-admin-menu	b33sc3cahsg	22	\N	\N	\N
+tdkqbjvhskr	tdkqbjvhskr	0	f	properties	\N
+bj7d5uc6lnd	tdkqbjvhskr	1	\N	\N	1
+0u09lqdoyvt	0u09lqdoyvt	0	f	properties	\N
+tdkqbjvhskr	0u09lqdoyvt	1	\N	\N	1
+bj7d5uc6lnd	0u09lqdoyvt	2	\N	\N	1
+mr7dvvk94ts	tdkqbjvhskr	2	\N	\N	\N
+mr7dvvk94ts	0u09lqdoyvt	3	\N	\N	\N
+imo18or3xxo	bj7d5uc6lnd	2	\N	\N	\N
+imo18or3xxo	tdkqbjvhskr	3	\N	\N	\N
+imo18or3xxo	0u09lqdoyvt	4	\N	\N	\N
+q5no45c40c6	bj7d5uc6lnd	3	\N	\N	\N
+q5no45c40c6	tdkqbjvhskr	4	\N	\N	\N
+q5no45c40c6	0u09lqdoyvt	5	\N	\N	\N
+zy4jidwmnvw	bj7d5uc6lnd	4	\N	\N	\N
+zy4jidwmnvw	tdkqbjvhskr	5	\N	\N	\N
+zy4jidwmnvw	0u09lqdoyvt	6	\N	\N	\N
+0kxudizv0xf	bj7d5uc6lnd	5	\N	\N	\N
+0kxudizv0xf	tdkqbjvhskr	6	\N	\N	\N
+0kxudizv0xf	0u09lqdoyvt	7	\N	\N	\N
+bztjip2msxq	bj7d5uc6lnd	6	\N	\N	\N
+bztjip2msxq	tdkqbjvhskr	7	\N	\N	\N
+bztjip2msxq	0u09lqdoyvt	8	\N	\N	\N
+oyw4y44yqgd	bj7d5uc6lnd	7	\N	\N	\N
+oyw4y44yqgd	tdkqbjvhskr	8	\N	\N	\N
+oyw4y44yqgd	0u09lqdoyvt	9	\N	\N	\N
+dohzvch4noi	bj7d5uc6lnd	8	\N	\N	\N
+dohzvch4noi	tdkqbjvhskr	9	\N	\N	\N
+dohzvch4noi	0u09lqdoyvt	10	\N	\N	\N
+9znhwv6jh2d	bj7d5uc6lnd	9	\N	\N	\N
+9znhwv6jh2d	tdkqbjvhskr	10	\N	\N	\N
+9znhwv6jh2d	0u09lqdoyvt	11	\N	\N	\N
+7qdtw3aqf8f	bj7d5uc6lnd	10	\N	\N	\N
+7qdtw3aqf8f	tdkqbjvhskr	11	\N	\N	\N
+7qdtw3aqf8f	0u09lqdoyvt	12	\N	\N	\N
+x74knwfm0hx	bj7d5uc6lnd	11	\N	\N	\N
+x74knwfm0hx	tdkqbjvhskr	12	\N	\N	\N
+x74knwfm0hx	0u09lqdoyvt	13	\N	\N	\N
+i5ep94ei4hn	bj7d5uc6lnd	12	\N	\N	\N
+i5ep94ei4hn	tdkqbjvhskr	13	\N	\N	\N
+i5ep94ei4hn	0u09lqdoyvt	14	\N	\N	\N
+ugc9ztt4hb4	bj7d5uc6lnd	13	\N	\N	\N
+ugc9ztt4hb4	tdkqbjvhskr	14	\N	\N	\N
+ugc9ztt4hb4	0u09lqdoyvt	15	\N	\N	\N
+ao2a67rjlld	bj7d5uc6lnd	14	\N	\N	\N
+ao2a67rjlld	tdkqbjvhskr	15	\N	\N	\N
+ao2a67rjlld	0u09lqdoyvt	16	\N	\N	\N
+bwbd6lebhkb	bj7d5uc6lnd	15	\N	\N	\N
+bwbd6lebhkb	tdkqbjvhskr	16	\N	\N	\N
+bwbd6lebhkb	0u09lqdoyvt	17	\N	\N	\N
+m8tbcrs4z9t	bj7d5uc6lnd	16	\N	\N	\N
+m8tbcrs4z9t	tdkqbjvhskr	17	\N	\N	\N
+m8tbcrs4z9t	0u09lqdoyvt	18	\N	\N	\N
+q4dinm52meb	bj7d5uc6lnd	17	\N	\N	\N
+q4dinm52meb	tdkqbjvhskr	18	\N	\N	\N
+q4dinm52meb	0u09lqdoyvt	19	\N	\N	\N
+vs0l89adzhc	bj7d5uc6lnd	18	\N	\N	\N
+vs0l89adzhc	tdkqbjvhskr	19	\N	\N	\N
+vs0l89adzhc	0u09lqdoyvt	20	\N	\N	\N
+493pimn830r	bj7d5uc6lnd	19	\N	\N	\N
+493pimn830r	tdkqbjvhskr	20	\N	\N	\N
+493pimn830r	0u09lqdoyvt	21	\N	\N	\N
+nocobase-admin-menu	bj7d5uc6lnd	20	\N	\N	\N
+nocobase-admin-menu	tdkqbjvhskr	21	\N	\N	\N
+nocobase-admin-menu	0u09lqdoyvt	22	\N	\N	\N
+bj7d5uc6lnd	bj7d5uc6lnd	0	f	properties	\N
+mr7dvvk94ts	bj7d5uc6lnd	1	\N	\N	9
+3o26e8k5cba	3o26e8k5cba	0	f	properties	\N
+imo18or3xxo	3o26e8k5cba	2	\N	\N	\N
+q5no45c40c6	3o26e8k5cba	3	\N	\N	\N
+zy4jidwmnvw	3o26e8k5cba	4	\N	\N	\N
+0kxudizv0xf	3o26e8k5cba	5	\N	\N	\N
+bztjip2msxq	3o26e8k5cba	6	\N	\N	\N
+oyw4y44yqgd	3o26e8k5cba	7	\N	\N	\N
+dohzvch4noi	3o26e8k5cba	8	\N	\N	\N
+9znhwv6jh2d	3o26e8k5cba	9	\N	\N	\N
+7qdtw3aqf8f	3o26e8k5cba	10	\N	\N	\N
+x74knwfm0hx	3o26e8k5cba	11	\N	\N	\N
+i5ep94ei4hn	3o26e8k5cba	12	\N	\N	\N
+ugc9ztt4hb4	3o26e8k5cba	13	\N	\N	\N
+ao2a67rjlld	3o26e8k5cba	14	\N	\N	\N
+bwbd6lebhkb	3o26e8k5cba	15	\N	\N	\N
+m8tbcrs4z9t	3o26e8k5cba	16	\N	\N	\N
+q4dinm52meb	3o26e8k5cba	17	\N	\N	\N
+vs0l89adzhc	3o26e8k5cba	18	\N	\N	\N
+493pimn830r	3o26e8k5cba	19	\N	\N	\N
+nocobase-admin-menu	3o26e8k5cba	20	\N	\N	\N
+9xqwn851uzs	3o26e8k5cba	1	\N	\N	1
+ioq8ld31vte	ioq8ld31vte	0	f	properties	\N
+cm22blbci2c	ioq8ld31vte	1	\N	\N	1
+ojgs7eoz5hg	ojgs7eoz5hg	0	f	properties	\N
+ioq8ld31vte	ojgs7eoz5hg	1	\N	\N	1
+cm22blbci2c	ojgs7eoz5hg	2	\N	\N	1
+y05re45hs3a	ioq8ld31vte	2	\N	\N	\N
+y05re45hs3a	ojgs7eoz5hg	3	\N	\N	\N
+dsptk8t0mbr	cm22blbci2c	2	\N	\N	\N
+dsptk8t0mbr	ioq8ld31vte	3	\N	\N	\N
+dsptk8t0mbr	ojgs7eoz5hg	4	\N	\N	\N
+7qih7hq26ge	cm22blbci2c	3	\N	\N	\N
+7qih7hq26ge	ioq8ld31vte	4	\N	\N	\N
+7qih7hq26ge	ojgs7eoz5hg	5	\N	\N	\N
+m9ru2u1mst5	cm22blbci2c	4	\N	\N	\N
+m9ru2u1mst5	ioq8ld31vte	5	\N	\N	\N
+m9ru2u1mst5	ojgs7eoz5hg	6	\N	\N	\N
+t5a2xk7thpn	cm22blbci2c	5	\N	\N	\N
+t5a2xk7thpn	ioq8ld31vte	6	\N	\N	\N
+t5a2xk7thpn	ojgs7eoz5hg	7	\N	\N	\N
+ra6axo18rlo	cm22blbci2c	6	\N	\N	\N
+ra6axo18rlo	ioq8ld31vte	7	\N	\N	\N
+ra6axo18rlo	ojgs7eoz5hg	8	\N	\N	\N
+7peksipcht7	cm22blbci2c	7	\N	\N	\N
+7peksipcht7	ioq8ld31vte	8	\N	\N	\N
+7peksipcht7	ojgs7eoz5hg	9	\N	\N	\N
+vxyfqljr7j6	cm22blbci2c	8	\N	\N	\N
+vxyfqljr7j6	ioq8ld31vte	9	\N	\N	\N
+vxyfqljr7j6	ojgs7eoz5hg	10	\N	\N	\N
+v0xzwwlb3u7	cm22blbci2c	9	\N	\N	\N
+v0xzwwlb3u7	ioq8ld31vte	10	\N	\N	\N
+v0xzwwlb3u7	ojgs7eoz5hg	11	\N	\N	\N
+eajx55rxxy3	cm22blbci2c	10	\N	\N	\N
+eajx55rxxy3	ioq8ld31vte	11	\N	\N	\N
+eajx55rxxy3	ojgs7eoz5hg	12	\N	\N	\N
+8kxzcotfeb3	cm22blbci2c	11	\N	\N	\N
+8kxzcotfeb3	ioq8ld31vte	12	\N	\N	\N
+8kxzcotfeb3	ojgs7eoz5hg	13	\N	\N	\N
+5z0xpoxz87w	cm22blbci2c	12	\N	\N	\N
+5z0xpoxz87w	ioq8ld31vte	13	\N	\N	\N
+5z0xpoxz87w	ojgs7eoz5hg	14	\N	\N	\N
+o9klwv4nzei	cm22blbci2c	13	\N	\N	\N
+o9klwv4nzei	ioq8ld31vte	14	\N	\N	\N
+o9klwv4nzei	ojgs7eoz5hg	15	\N	\N	\N
+ozzmhtdpth4	cm22blbci2c	14	\N	\N	\N
+ozzmhtdpth4	ioq8ld31vte	15	\N	\N	\N
+ozzmhtdpth4	ojgs7eoz5hg	16	\N	\N	\N
+b8mogqkr3um	cm22blbci2c	15	\N	\N	\N
+b8mogqkr3um	ioq8ld31vte	16	\N	\N	\N
+b8mogqkr3um	ojgs7eoz5hg	17	\N	\N	\N
+b56io1plq44	cm22blbci2c	16	\N	\N	\N
+b56io1plq44	ioq8ld31vte	17	\N	\N	\N
+b56io1plq44	ojgs7eoz5hg	18	\N	\N	\N
+13qbrfhlbny	cm22blbci2c	17	\N	\N	\N
+13qbrfhlbny	ioq8ld31vte	18	\N	\N	\N
+13qbrfhlbny	ojgs7eoz5hg	19	\N	\N	\N
+oqsecaif6am	cm22blbci2c	18	\N	\N	\N
+oqsecaif6am	ioq8ld31vte	19	\N	\N	\N
+oqsecaif6am	ojgs7eoz5hg	20	\N	\N	\N
+63aby9t5qmb	cm22blbci2c	19	\N	\N	\N
+63aby9t5qmb	ioq8ld31vte	20	\N	\N	\N
+63aby9t5qmb	ojgs7eoz5hg	21	\N	\N	\N
+mwrnryoju9y	cm22blbci2c	20	\N	\N	\N
+mwrnryoju9y	ioq8ld31vte	21	\N	\N	\N
+mwrnryoju9y	ojgs7eoz5hg	22	\N	\N	\N
+nocobase-admin-menu	cm22blbci2c	21	\N	\N	\N
+nocobase-admin-menu	ioq8ld31vte	22	\N	\N	\N
+nocobase-admin-menu	ojgs7eoz5hg	23	\N	\N	\N
+cm22blbci2c	cm22blbci2c	0	f	properties	\N
+y05re45hs3a	cm22blbci2c	1	\N	\N	6
+fe7kgdo55ax	ssd1y8mk1mx	2	\N	\N	\N
+hmft2ujv1uf	ssd1y8mk1mx	3	\N	\N	\N
+nocobase-admin-menu	ssd1y8mk1mx	4	\N	\N	\N
+ssd1y8mk1mx	ssd1y8mk1mx	0	f	properties	\N
+rnko20ymzdm	rnko20ymzdm	0	f	properties	\N
+52h8j6knyh0	rnko20ymzdm	1	\N	\N	1
+f70h0f0jiha	f70h0f0jiha	0	f	properties	\N
+52h8j6knyh0	f70h0f0jiha	1	\N	\N	2
+0f0yp3ro5dp	0f0yp3ro5dp	0	f	properties	\N
+f70h0f0jiha	0f0yp3ro5dp	1	\N	\N	1
+52h8j6knyh0	0f0yp3ro5dp	2	\N	\N	1
+ugkql0r3ggt	ugkql0r3ggt	0	f	properties	\N
+0f0yp3ro5dp	ugkql0r3ggt	1	\N	\N	1
+f70h0f0jiha	ugkql0r3ggt	2	\N	\N	1
+52h8j6knyh0	ugkql0r3ggt	3	\N	\N	1
+a61oc4tl7m1	a61oc4tl7m1	0	f	properties	\N
+0f0yp3ro5dp	a61oc4tl7m1	1	\N	\N	2
+f70h0f0jiha	a61oc4tl7m1	2	\N	\N	2
+52h8j6knyh0	a61oc4tl7m1	3	\N	\N	2
+fe7kgdo55ax	f8feuhfiywv	2	\N	\N	\N
+hmft2ujv1uf	f8feuhfiywv	3	\N	\N	\N
+nocobase-admin-menu	f8feuhfiywv	4	\N	\N	\N
+f8feuhfiywv	f8feuhfiywv	0	f	properties	\N
+5v81x55p2nk	rnko20ymzdm	2	\N	\N	\N
+5v81x55p2nk	f70h0f0jiha	2	\N	\N	\N
+5v81x55p2nk	0f0yp3ro5dp	3	\N	\N	\N
+5v81x55p2nk	ugkql0r3ggt	4	\N	\N	\N
+5v81x55p2nk	a61oc4tl7m1	4	\N	\N	\N
+52h8j6knyh0	52h8j6knyh0	0	f	properties	\N
+5v81x55p2nk	52h8j6knyh0	1	\N	\N	1
+9bxpugcgkui	52h8j6knyh0	2	\N	\N	\N
+9bxpugcgkui	rnko20ymzdm	3	\N	\N	\N
+9bxpugcgkui	f70h0f0jiha	3	\N	\N	\N
+9bxpugcgkui	0f0yp3ro5dp	4	\N	\N	\N
+9bxpugcgkui	ugkql0r3ggt	5	\N	\N	\N
+9bxpugcgkui	a61oc4tl7m1	5	\N	\N	\N
+7poa6levyva	5v81x55p2nk	2	\N	\N	\N
+7poa6levyva	52h8j6knyh0	3	\N	\N	\N
+7poa6levyva	rnko20ymzdm	4	\N	\N	\N
+7poa6levyva	f70h0f0jiha	4	\N	\N	\N
+7poa6levyva	0f0yp3ro5dp	5	\N	\N	\N
+7poa6levyva	ugkql0r3ggt	6	\N	\N	\N
+7poa6levyva	a61oc4tl7m1	6	\N	\N	\N
+fe7kgdo55ax	5v81x55p2nk	3	\N	\N	\N
+fe7kgdo55ax	52h8j6knyh0	4	\N	\N	\N
+fe7kgdo55ax	rnko20ymzdm	5	\N	\N	\N
+fe7kgdo55ax	f70h0f0jiha	5	\N	\N	\N
+fe7kgdo55ax	0f0yp3ro5dp	6	\N	\N	\N
+fe7kgdo55ax	ugkql0r3ggt	7	\N	\N	\N
+fe7kgdo55ax	a61oc4tl7m1	7	\N	\N	\N
+hmft2ujv1uf	5v81x55p2nk	4	\N	\N	\N
+hmft2ujv1uf	52h8j6knyh0	5	\N	\N	\N
+hmft2ujv1uf	rnko20ymzdm	6	\N	\N	\N
+hmft2ujv1uf	f70h0f0jiha	6	\N	\N	\N
+hmft2ujv1uf	0f0yp3ro5dp	7	\N	\N	\N
+hmft2ujv1uf	ugkql0r3ggt	8	\N	\N	\N
+hmft2ujv1uf	a61oc4tl7m1	8	\N	\N	\N
+nocobase-admin-menu	5v81x55p2nk	5	\N	\N	\N
+nocobase-admin-menu	52h8j6knyh0	6	\N	\N	\N
+nocobase-admin-menu	rnko20ymzdm	7	\N	\N	\N
+nocobase-admin-menu	f70h0f0jiha	7	\N	\N	\N
+nocobase-admin-menu	0f0yp3ro5dp	8	\N	\N	\N
+nocobase-admin-menu	ugkql0r3ggt	9	\N	\N	\N
+nocobase-admin-menu	a61oc4tl7m1	9	\N	\N	\N
+5v81x55p2nk	5v81x55p2nk	0	f	properties	\N
+9bxpugcgkui	5v81x55p2nk	1	\N	\N	2
+am9f5xsj7ms	am9f5xsj7ms	0	f	properties	\N
+x4src7kopyo	am9f5xsj7ms	1	\N	\N	1
+j9dtajdmaoa	j9dtajdmaoa	0	f	properties	\N
+am9f5xsj7ms	j9dtajdmaoa	1	\N	\N	1
+x4src7kopyo	j9dtajdmaoa	2	\N	\N	1
+ugkql0r3ggt	am9f5xsj7ms	2	\N	\N	\N
+ugkql0r3ggt	j9dtajdmaoa	3	\N	\N	\N
+0f0yp3ro5dp	x4src7kopyo	2	\N	\N	\N
+0f0yp3ro5dp	am9f5xsj7ms	3	\N	\N	\N
+0f0yp3ro5dp	j9dtajdmaoa	4	\N	\N	\N
+f70h0f0jiha	x4src7kopyo	3	\N	\N	\N
+f70h0f0jiha	am9f5xsj7ms	4	\N	\N	\N
+f70h0f0jiha	j9dtajdmaoa	5	\N	\N	\N
+52h8j6knyh0	x4src7kopyo	4	\N	\N	\N
+52h8j6knyh0	am9f5xsj7ms	5	\N	\N	\N
+52h8j6knyh0	j9dtajdmaoa	6	\N	\N	\N
+5v81x55p2nk	x4src7kopyo	5	\N	\N	\N
+5v81x55p2nk	am9f5xsj7ms	6	\N	\N	\N
+5v81x55p2nk	j9dtajdmaoa	7	\N	\N	\N
+9bxpugcgkui	x4src7kopyo	6	\N	\N	\N
+9bxpugcgkui	am9f5xsj7ms	7	\N	\N	\N
+9bxpugcgkui	j9dtajdmaoa	8	\N	\N	\N
+7poa6levyva	x4src7kopyo	7	\N	\N	\N
+7poa6levyva	am9f5xsj7ms	8	\N	\N	\N
+7poa6levyva	j9dtajdmaoa	9	\N	\N	\N
+fe7kgdo55ax	x4src7kopyo	8	\N	\N	\N
+fe7kgdo55ax	am9f5xsj7ms	9	\N	\N	\N
+fe7kgdo55ax	j9dtajdmaoa	10	\N	\N	\N
+hmft2ujv1uf	x4src7kopyo	9	\N	\N	\N
+hmft2ujv1uf	am9f5xsj7ms	10	\N	\N	\N
+hmft2ujv1uf	j9dtajdmaoa	11	\N	\N	\N
+nocobase-admin-menu	x4src7kopyo	10	\N	\N	\N
+nocobase-admin-menu	am9f5xsj7ms	11	\N	\N	\N
+nocobase-admin-menu	j9dtajdmaoa	12	\N	\N	\N
+x4src7kopyo	x4src7kopyo	0	f	properties	\N
+ugkql0r3ggt	x4src7kopyo	1	\N	\N	1
+0f0yp3ro5dp	l8by3cc8sei	2	\N	\N	\N
+f70h0f0jiha	l8by3cc8sei	3	\N	\N	\N
+52h8j6knyh0	l8by3cc8sei	4	\N	\N	\N
+5v81x55p2nk	l8by3cc8sei	5	\N	\N	\N
+9bxpugcgkui	l8by3cc8sei	6	\N	\N	\N
+7poa6levyva	l8by3cc8sei	7	\N	\N	\N
+fe7kgdo55ax	l8by3cc8sei	8	\N	\N	\N
+l8by3cc8sei	l8by3cc8sei	0	f	properties	\N
+ugkql0r3ggt	l8by3cc8sei	1	\N	\N	2
+ge2jd4uyinh	ge2jd4uyinh	0	f	properties	\N
+hmft2ujv1uf	l8by3cc8sei	9	\N	\N	\N
+nocobase-admin-menu	l8by3cc8sei	10	\N	\N	\N
+q3szmzf1eqa	q3szmzf1eqa	0	f	properties	\N
+ugkql0r3ggt	q3szmzf1eqa	1	\N	\N	4
+0f0yp3ro5dp	7guv5eckse5	2	\N	\N	\N
+f70h0f0jiha	7guv5eckse5	3	\N	\N	\N
+52h8j6knyh0	7guv5eckse5	4	\N	\N	\N
+5v81x55p2nk	7guv5eckse5	5	\N	\N	\N
+9bxpugcgkui	7guv5eckse5	6	\N	\N	\N
+7poa6levyva	7guv5eckse5	7	\N	\N	\N
+fe7kgdo55ax	7guv5eckse5	8	\N	\N	\N
+hmft2ujv1uf	7guv5eckse5	9	\N	\N	\N
+nocobase-admin-menu	7guv5eckse5	10	\N	\N	\N
+7guv5eckse5	7guv5eckse5	0	f	properties	\N
+ugkql0r3ggt	7guv5eckse5	1	\N	\N	3
+0f0yp3ro5dp	q3szmzf1eqa	2	\N	\N	\N
+f70h0f0jiha	q3szmzf1eqa	3	\N	\N	\N
+52h8j6knyh0	q3szmzf1eqa	4	\N	\N	\N
+5v81x55p2nk	q3szmzf1eqa	5	\N	\N	\N
+9bxpugcgkui	q3szmzf1eqa	6	\N	\N	\N
+7poa6levyva	q3szmzf1eqa	7	\N	\N	\N
+fe7kgdo55ax	q3szmzf1eqa	8	\N	\N	\N
+hmft2ujv1uf	q3szmzf1eqa	9	\N	\N	\N
+nocobase-admin-menu	q3szmzf1eqa	10	\N	\N	\N
+w75rqpzvfdq	w75rqpzvfdq	0	f	properties	\N
+pxsyhrbz249	ge2jd4uyinh	1	\N	\N	1
+ugkql0r3ggt	pxsyhrbz249	2	\N	\N	\N
+ugkql0r3ggt	ge2jd4uyinh	3	\N	\N	\N
+x4src7kopyo	ge2jd4uyinh	2	\N	\N	\N
+0f0yp3ro5dp	pxsyhrbz249	3	\N	\N	\N
+0f0yp3ro5dp	ge2jd4uyinh	4	\N	\N	\N
+f70h0f0jiha	pxsyhrbz249	4	\N	\N	\N
+f70h0f0jiha	ge2jd4uyinh	5	\N	\N	\N
+52h8j6knyh0	pxsyhrbz249	5	\N	\N	\N
+52h8j6knyh0	ge2jd4uyinh	6	\N	\N	\N
+5v81x55p2nk	pxsyhrbz249	6	\N	\N	\N
+5v81x55p2nk	ge2jd4uyinh	7	\N	\N	\N
+9bxpugcgkui	pxsyhrbz249	7	\N	\N	\N
+9bxpugcgkui	ge2jd4uyinh	8	\N	\N	\N
+7poa6levyva	pxsyhrbz249	8	\N	\N	\N
+7poa6levyva	ge2jd4uyinh	9	\N	\N	\N
+fe7kgdo55ax	pxsyhrbz249	9	\N	\N	\N
+fe7kgdo55ax	ge2jd4uyinh	10	\N	\N	\N
+hmft2ujv1uf	pxsyhrbz249	10	\N	\N	\N
+hmft2ujv1uf	ge2jd4uyinh	11	\N	\N	\N
+nocobase-admin-menu	pxsyhrbz249	11	\N	\N	\N
+nocobase-admin-menu	ge2jd4uyinh	12	\N	\N	\N
+pxsyhrbz249	pxsyhrbz249	0	f	properties	\N
+x4src7kopyo	pxsyhrbz249	1	\N	\N	2
+68fxhhuy71v	68fxhhuy71v	0	f	properties	\N
+iipcd9rycsd	iipcd9rycsd	0	f	properties	\N
+w75rqpzvfdq	68fxhhuy71v	1	\N	\N	1
+ugkql0r3ggt	w75rqpzvfdq	2	\N	\N	\N
+ugkql0r3ggt	68fxhhuy71v	3	\N	\N	\N
+x4src7kopyo	68fxhhuy71v	2	\N	\N	\N
+0f0yp3ro5dp	w75rqpzvfdq	3	\N	\N	\N
+0f0yp3ro5dp	68fxhhuy71v	4	\N	\N	\N
+f70h0f0jiha	w75rqpzvfdq	4	\N	\N	\N
+f70h0f0jiha	68fxhhuy71v	5	\N	\N	\N
+52h8j6knyh0	w75rqpzvfdq	5	\N	\N	\N
+52h8j6knyh0	68fxhhuy71v	6	\N	\N	\N
+5v81x55p2nk	w75rqpzvfdq	6	\N	\N	\N
+5v81x55p2nk	68fxhhuy71v	7	\N	\N	\N
+9bxpugcgkui	w75rqpzvfdq	7	\N	\N	\N
+9bxpugcgkui	68fxhhuy71v	8	\N	\N	\N
+7poa6levyva	w75rqpzvfdq	8	\N	\N	\N
+7poa6levyva	68fxhhuy71v	9	\N	\N	\N
+x4src7kopyo	w75rqpzvfdq	1	\N	\N	3
+fe7kgdo55ax	w75rqpzvfdq	9	\N	\N	\N
+fe7kgdo55ax	68fxhhuy71v	10	\N	\N	\N
+hmft2ujv1uf	w75rqpzvfdq	10	\N	\N	\N
+hmft2ujv1uf	68fxhhuy71v	11	\N	\N	\N
+nocobase-admin-menu	w75rqpzvfdq	11	\N	\N	\N
+nocobase-admin-menu	68fxhhuy71v	12	\N	\N	\N
+1w4nstqxr2n	iipcd9rycsd	1	\N	\N	1
+ugkql0r3ggt	1w4nstqxr2n	2	\N	\N	\N
+ugkql0r3ggt	iipcd9rycsd	3	\N	\N	\N
+x4src7kopyo	iipcd9rycsd	2	\N	\N	\N
+0f0yp3ro5dp	1w4nstqxr2n	3	\N	\N	\N
+0f0yp3ro5dp	iipcd9rycsd	4	\N	\N	\N
+f70h0f0jiha	1w4nstqxr2n	4	\N	\N	\N
+f70h0f0jiha	iipcd9rycsd	5	\N	\N	\N
+52h8j6knyh0	1w4nstqxr2n	5	\N	\N	\N
+52h8j6knyh0	iipcd9rycsd	6	\N	\N	\N
+5v81x55p2nk	1w4nstqxr2n	6	\N	\N	\N
+5v81x55p2nk	iipcd9rycsd	7	\N	\N	\N
+9bxpugcgkui	1w4nstqxr2n	7	\N	\N	\N
+9bxpugcgkui	iipcd9rycsd	8	\N	\N	\N
+7poa6levyva	1w4nstqxr2n	8	\N	\N	\N
+7poa6levyva	iipcd9rycsd	9	\N	\N	\N
+fe7kgdo55ax	1w4nstqxr2n	9	\N	\N	\N
+fe7kgdo55ax	iipcd9rycsd	10	\N	\N	\N
+hmft2ujv1uf	1w4nstqxr2n	10	\N	\N	\N
+hmft2ujv1uf	iipcd9rycsd	11	\N	\N	\N
+nocobase-admin-menu	1w4nstqxr2n	11	\N	\N	\N
+nocobase-admin-menu	iipcd9rycsd	12	\N	\N	\N
+1w4nstqxr2n	1w4nstqxr2n	0	f	properties	\N
+x4src7kopyo	1w4nstqxr2n	1	\N	\N	4
+7poa6levyva	wabcyx326vn	2	\N	\N	\N
+pde5ayqzqo1	p2fd2nllyzz	1	\N	\N	3
+x3fc9scqc79	x3fc9scqc79	0	f	properties	\N
+fe7kgdo55ax	xq16274v512	2	\N	\N	\N
+fe7kgdo55ax	wabcyx326vn	3	\N	\N	\N
+wabcyx326vn	wabcyx326vn	0	f	properties	\N
+xq16274v512	wabcyx326vn	1	\N	\N	1
+hmft2ujv1uf	xq16274v512	3	\N	\N	\N
+hmft2ujv1uf	wabcyx326vn	4	\N	\N	\N
+nocobase-admin-menu	xq16274v512	4	\N	\N	\N
+nocobase-admin-menu	wabcyx326vn	5	\N	\N	\N
+xq16274v512	xq16274v512	0	f	properties	\N
+fe7kgdo55ax	x3fc9scqc79	2	\N	\N	\N
+hmft2ujv1uf	x3fc9scqc79	3	\N	\N	\N
+nocobase-admin-menu	x3fc9scqc79	4	\N	\N	\N
+vvnjfeman6s	vvnjfeman6s	0	f	properties	\N
+tl0outhgcgx	vvnjfeman6s	1	\N	\N	1
+fe7kgdo55ax	yklcecblv53	2	\N	\N	\N
+hmft2ujv1uf	yklcecblv53	3	\N	\N	\N
+nocobase-admin-menu	yklcecblv53	4	\N	\N	\N
+yklcecblv53	yklcecblv53	0	f	properties	\N
+tl0outhgcgx	tl0outhgcgx	0	f	properties	\N
+yivjshzifwl	pde5ayqzqo1	1	\N	\N	6
+d56je1k3zqr	d56je1k3zqr	0	f	properties	\N
+zkxpp9dciks	d56je1k3zqr	1	\N	\N	1
+pu169zvh60m	pu169zvh60m	0	f	properties	\N
+d56je1k3zqr	pu169zvh60m	1	\N	\N	1
+zkxpp9dciks	pu169zvh60m	2	\N	\N	1
+1u4agf34j24	1u4agf34j24	0	f	properties	\N
+nrjlwkyfth3	1u4agf34j24	1	\N	\N	1
+ap4tz1vugqh	ap4tz1vugqh	0	f	properties	\N
+1u4agf34j24	ap4tz1vugqh	1	\N	\N	1
+nrjlwkyfth3	ap4tz1vugqh	2	\N	\N	1
+pu169zvh60m	1u4agf34j24	2	\N	\N	\N
+pu169zvh60m	ap4tz1vugqh	3	\N	\N	\N
+d56je1k3zqr	nrjlwkyfth3	2	\N	\N	\N
+d56je1k3zqr	1u4agf34j24	3	\N	\N	\N
+d56je1k3zqr	ap4tz1vugqh	4	\N	\N	\N
+zkxpp9dciks	nrjlwkyfth3	3	\N	\N	\N
+zkxpp9dciks	1u4agf34j24	4	\N	\N	\N
+zkxpp9dciks	ap4tz1vugqh	5	\N	\N	\N
+nrjlwkyfth3	nrjlwkyfth3	0	f	properties	\N
+pu169zvh60m	nrjlwkyfth3	1	\N	\N	1
+zkxpp9dciks	zkxpp9dciks	0	f	properties	\N
+kec946p29nh	kec946p29nh	0	f	properties	\N
+xxrv6yw7ug9	xxrv6yw7ug9	0	f	properties	\N
+ni9s0jfe89u	xxrv6yw7ug9	1	\N	\N	1
+vugxsjmnyiz	vugxsjmnyiz	0	f	properties	\N
+xxrv6yw7ug9	vugxsjmnyiz	1	\N	\N	1
+ni9s0jfe89u	vugxsjmnyiz	2	\N	\N	1
+pu169zvh60m	xxrv6yw7ug9	2	\N	\N	\N
+pu169zvh60m	vugxsjmnyiz	3	\N	\N	\N
+d56je1k3zqr	ni9s0jfe89u	2	\N	\N	\N
+d56je1k3zqr	xxrv6yw7ug9	3	\N	\N	\N
+d56je1k3zqr	vugxsjmnyiz	4	\N	\N	\N
+zkxpp9dciks	ni9s0jfe89u	3	\N	\N	\N
+zkxpp9dciks	xxrv6yw7ug9	4	\N	\N	\N
+zkxpp9dciks	vugxsjmnyiz	5	\N	\N	\N
+ni9s0jfe89u	ni9s0jfe89u	0	f	properties	\N
+pu169zvh60m	ni9s0jfe89u	1	\N	\N	2
+37z9mqnsbzi	37z9mqnsbzi	0	f	properties	\N
+37z9mqnsbzi	d56je1k3zqr	2	\N	\N	\N
+37z9mqnsbzi	pu169zvh60m	3	\N	\N	\N
+37z9mqnsbzi	nrjlwkyfth3	4	\N	\N	\N
+37z9mqnsbzi	1u4agf34j24	5	\N	\N	\N
+37z9mqnsbzi	ap4tz1vugqh	6	\N	\N	\N
+37z9mqnsbzi	ni9s0jfe89u	4	\N	\N	\N
+37z9mqnsbzi	xxrv6yw7ug9	5	\N	\N	\N
+37z9mqnsbzi	vugxsjmnyiz	6	\N	\N	\N
+kec946p29nh	zkxpp9dciks	2	\N	\N	\N
+kec946p29nh	d56je1k3zqr	3	\N	\N	\N
+kec946p29nh	pu169zvh60m	4	\N	\N	\N
+kec946p29nh	nrjlwkyfth3	5	\N	\N	\N
+kec946p29nh	1u4agf34j24	6	\N	\N	\N
+kec946p29nh	ap4tz1vugqh	7	\N	\N	\N
+kec946p29nh	ni9s0jfe89u	5	\N	\N	\N
+kec946p29nh	xxrv6yw7ug9	6	\N	\N	\N
+kec946p29nh	vugxsjmnyiz	7	\N	\N	\N
+37z9mqnsbzi	zkxpp9dciks	1	\N	\N	1
+7poa6levyva	37z9mqnsbzi	2	\N	\N	\N
+7poa6levyva	zkxpp9dciks	3	\N	\N	\N
+7poa6levyva	d56je1k3zqr	4	\N	\N	\N
+7poa6levyva	pu169zvh60m	5	\N	\N	\N
+7poa6levyva	nrjlwkyfth3	6	\N	\N	\N
+7poa6levyva	1u4agf34j24	7	\N	\N	\N
+7poa6levyva	ap4tz1vugqh	8	\N	\N	\N
+7poa6levyva	ni9s0jfe89u	6	\N	\N	\N
+7poa6levyva	xxrv6yw7ug9	7	\N	\N	\N
+7poa6levyva	vugxsjmnyiz	8	\N	\N	\N
+fe7kgdo55ax	kec946p29nh	2	\N	\N	\N
+fe7kgdo55ax	37z9mqnsbzi	3	\N	\N	\N
+fe7kgdo55ax	zkxpp9dciks	4	\N	\N	\N
+fe7kgdo55ax	d56je1k3zqr	5	\N	\N	\N
+fe7kgdo55ax	pu169zvh60m	6	\N	\N	\N
+fe7kgdo55ax	nrjlwkyfth3	7	\N	\N	\N
+fe7kgdo55ax	1u4agf34j24	8	\N	\N	\N
+fe7kgdo55ax	ap4tz1vugqh	9	\N	\N	\N
+fe7kgdo55ax	ni9s0jfe89u	7	\N	\N	\N
+fe7kgdo55ax	xxrv6yw7ug9	8	\N	\N	\N
+fe7kgdo55ax	vugxsjmnyiz	9	\N	\N	\N
+hmft2ujv1uf	kec946p29nh	3	\N	\N	\N
+hmft2ujv1uf	37z9mqnsbzi	4	\N	\N	\N
+hmft2ujv1uf	zkxpp9dciks	5	\N	\N	\N
+hmft2ujv1uf	d56je1k3zqr	6	\N	\N	\N
+hmft2ujv1uf	pu169zvh60m	7	\N	\N	\N
+hmft2ujv1uf	nrjlwkyfth3	8	\N	\N	\N
+hmft2ujv1uf	1u4agf34j24	9	\N	\N	\N
+hmft2ujv1uf	ap4tz1vugqh	10	\N	\N	\N
+hmft2ujv1uf	ni9s0jfe89u	8	\N	\N	\N
+hmft2ujv1uf	xxrv6yw7ug9	9	\N	\N	\N
+hmft2ujv1uf	vugxsjmnyiz	10	\N	\N	\N
+nocobase-admin-menu	kec946p29nh	4	\N	\N	\N
+nocobase-admin-menu	37z9mqnsbzi	5	\N	\N	\N
+nocobase-admin-menu	zkxpp9dciks	6	\N	\N	\N
+nocobase-admin-menu	d56je1k3zqr	7	\N	\N	\N
+nocobase-admin-menu	pu169zvh60m	8	\N	\N	\N
+nocobase-admin-menu	nrjlwkyfth3	9	\N	\N	\N
+7poa6levyva	kec946p29nh	1	\N	\N	1
+kec946p29nh	37z9mqnsbzi	1	\N	\N	2
+nocobase-admin-menu	1u4agf34j24	10	\N	\N	\N
+nocobase-admin-menu	ap4tz1vugqh	11	\N	\N	\N
+nocobase-admin-menu	ni9s0jfe89u	9	\N	\N	\N
+nocobase-admin-menu	xxrv6yw7ug9	10	\N	\N	\N
+nocobase-admin-menu	vugxsjmnyiz	11	\N	\N	\N
+7poa6levyva	oq5d1lxpmfu	1	\N	\N	7
+7poa6levyva	5po28o9th2g	1	\N	\N	5
+7poa6levyva	s41jwc7ushc	1	\N	\N	6
+7poa6levyva	r1jfuy0x2g2	1	\N	\N	25
+7poa6levyva	gwkooqabv4x	1	\N	\N	17
+7poa6levyva	9cnsplg5f8i	1	\N	\N	22
+7poa6levyva	ris4kebta55	1	\N	\N	16
+7poa6levyva	unis1bj47de	1	\N	\N	13
+7poa6levyva	qxskufg0hv4	1	\N	\N	14
+7poa6levyva	pkcprxz6rfy	1	\N	\N	15
+7poa6levyva	mupdgh8dhyb	1	\N	\N	19
+7poa6levyva	9bxpugcgkui	1	\N	\N	20
+7poa6levyva	ssd1y8mk1mx	1	\N	\N	23
+7poa6levyva	f8feuhfiywv	1	\N	\N	24
+7poa6levyva	xq16274v512	1	\N	\N	29
+7poa6levyva	x3fc9scqc79	1	\N	\N	30
+7poa6levyva	yklcecblv53	1	\N	\N	31
+waxys3iyxy9	vvnjfeman6s	2	\N	\N	\N
+qoeo1gjqrv7	qoeo1gjqrv7	0	f	properties	\N
+waxys3iyxy9	tl0outhgcgx	1	\N	\N	1
+kec946p29nh	tl0outhgcgx	2	\N	\N	\N
+kec946p29nh	vvnjfeman6s	3	\N	\N	\N
+7poa6levyva	waxys3iyxy9	2	\N	\N	\N
+7poa6levyva	tl0outhgcgx	3	\N	\N	\N
+7poa6levyva	vvnjfeman6s	4	\N	\N	\N
+fe7kgdo55ax	waxys3iyxy9	3	\N	\N	\N
+fe7kgdo55ax	tl0outhgcgx	4	\N	\N	\N
+fe7kgdo55ax	vvnjfeman6s	5	\N	\N	\N
+hmft2ujv1uf	waxys3iyxy9	4	\N	\N	\N
+hmft2ujv1uf	tl0outhgcgx	5	\N	\N	\N
+hmft2ujv1uf	vvnjfeman6s	6	\N	\N	\N
+nocobase-admin-menu	waxys3iyxy9	5	\N	\N	\N
+nocobase-admin-menu	tl0outhgcgx	6	\N	\N	\N
+nocobase-admin-menu	vvnjfeman6s	7	\N	\N	\N
+waxys3iyxy9	waxys3iyxy9	0	f	properties	\N
+kec946p29nh	waxys3iyxy9	1	\N	\N	1
+lvn71fru6iw	lvn71fru6iw	0	f	properties	\N
+qoeo1gjqrv7	lvn71fru6iw	1	\N	\N	1
+qlpok27amsj	qlpok27amsj	0	f	properties	\N
+lvn71fru6iw	qlpok27amsj	1	\N	\N	1
+qoeo1gjqrv7	qlpok27amsj	2	\N	\N	1
+w4ciktesp5j	qoeo1gjqrv7	11	\N	\N	\N
+w4ciktesp5j	lvn71fru6iw	12	\N	\N	\N
+w4ciktesp5j	qlpok27amsj	13	\N	\N	\N
+tg2hn64ei8t	qoeo1gjqrv7	12	\N	\N	\N
+tg2hn64ei8t	lvn71fru6iw	13	\N	\N	\N
+tg2hn64ei8t	qlpok27amsj	14	\N	\N	\N
+44890jxlzup	qoeo1gjqrv7	13	\N	\N	\N
+44890jxlzup	lvn71fru6iw	14	\N	\N	\N
+44890jxlzup	qlpok27amsj	15	\N	\N	\N
+xa635tbvi5c	qoeo1gjqrv7	14	\N	\N	\N
+xa635tbvi5c	lvn71fru6iw	15	\N	\N	\N
+xa635tbvi5c	qlpok27amsj	16	\N	\N	\N
+46p5wcng6sm	qoeo1gjqrv7	8	\N	\N	\N
+46p5wcng6sm	lvn71fru6iw	9	\N	\N	\N
+46p5wcng6sm	qlpok27amsj	10	\N	\N	\N
+r3e9s9hvz53	qoeo1gjqrv7	9	\N	\N	\N
+r3e9s9hvz53	lvn71fru6iw	10	\N	\N	\N
+r3e9s9hvz53	qlpok27amsj	11	\N	\N	\N
+ylyr9dd0a50	qoeo1gjqrv7	10	\N	\N	\N
+ylyr9dd0a50	lvn71fru6iw	11	\N	\N	\N
+ylyr9dd0a50	qlpok27amsj	12	\N	\N	\N
+4dgysxrfq7o	qoeo1gjqrv7	15	\N	\N	\N
+4dgysxrfq7o	lvn71fru6iw	16	\N	\N	\N
+4dgysxrfq7o	qlpok27amsj	17	\N	\N	\N
+sf8fl742bgm	qoeo1gjqrv7	16	\N	\N	\N
+sf8fl742bgm	lvn71fru6iw	17	\N	\N	\N
+sf8fl742bgm	qlpok27amsj	18	\N	\N	\N
+sptin92gm5m	qoeo1gjqrv7	17	\N	\N	\N
+sptin92gm5m	lvn71fru6iw	18	\N	\N	\N
+sptin92gm5m	qlpok27amsj	19	\N	\N	\N
+i0lnhtci4u6	qoeo1gjqrv7	18	\N	\N	\N
+i0lnhtci4u6	lvn71fru6iw	19	\N	\N	\N
+i0lnhtci4u6	qlpok27amsj	20	\N	\N	\N
+swxvjglsevf	qoeo1gjqrv7	19	\N	\N	\N
+swxvjglsevf	lvn71fru6iw	20	\N	\N	\N
+swxvjglsevf	qlpok27amsj	21	\N	\N	\N
+nocobase-admin-menu	qoeo1gjqrv7	20	\N	\N	\N
+nocobase-admin-menu	lvn71fru6iw	21	\N	\N	\N
+nocobase-admin-menu	qlpok27amsj	22	\N	\N	\N
+h0tf2zekdwj	lvn71fru6iw	2	\N	\N	\N
+h0tf2zekdwj	qlpok27amsj	3	\N	\N	\N
+f4amot355dj	qoeo1gjqrv7	2	\N	\N	\N
+f4amot355dj	lvn71fru6iw	3	\N	\N	\N
+f4amot355dj	qlpok27amsj	4	\N	\N	\N
+iam40dae216	qoeo1gjqrv7	3	\N	\N	\N
+iam40dae216	lvn71fru6iw	4	\N	\N	\N
+iam40dae216	qlpok27amsj	5	\N	\N	\N
+szg62voxazi	qoeo1gjqrv7	4	\N	\N	\N
+szg62voxazi	lvn71fru6iw	5	\N	\N	\N
+szg62voxazi	qlpok27amsj	6	\N	\N	\N
+jkiooahp540	qoeo1gjqrv7	5	\N	\N	\N
+jkiooahp540	lvn71fru6iw	6	\N	\N	\N
+jkiooahp540	qlpok27amsj	7	\N	\N	\N
+ndgk36ztoyy	qoeo1gjqrv7	6	\N	\N	\N
+ndgk36ztoyy	lvn71fru6iw	7	\N	\N	\N
+ndgk36ztoyy	qlpok27amsj	8	\N	\N	\N
+a62axznlu5x	qoeo1gjqrv7	7	\N	\N	\N
+a62axznlu5x	lvn71fru6iw	8	\N	\N	\N
+a62axznlu5x	qlpok27amsj	9	\N	\N	\N
+h0tf2zekdwj	qoeo1gjqrv7	1	\N	\N	5
+8974fc201bl	8974fc201bl	0	f	properties	\N
+7o0raci3dyn	8974fc201bl	1	\N	\N	1
+37z9mqnsbzi	8974fc201bl	2	\N	\N	\N
+kec946p29nh	7o0raci3dyn	2	\N	\N	\N
+kec946p29nh	8974fc201bl	3	\N	\N	\N
+7poa6levyva	7o0raci3dyn	3	\N	\N	\N
+7poa6levyva	8974fc201bl	4	\N	\N	\N
+fe7kgdo55ax	7o0raci3dyn	4	\N	\N	\N
+fe7kgdo55ax	8974fc201bl	5	\N	\N	\N
+hmft2ujv1uf	7o0raci3dyn	5	\N	\N	\N
+hmft2ujv1uf	8974fc201bl	6	\N	\N	\N
+nocobase-admin-menu	7o0raci3dyn	6	\N	\N	\N
+nocobase-admin-menu	8974fc201bl	7	\N	\N	\N
+7o0raci3dyn	7o0raci3dyn	0	f	properties	\N
+37z9mqnsbzi	7o0raci3dyn	1	\N	\N	2
 \.
 
 
 --
--- TOC entry 3948 (class 0 OID 292823)
--- Dependencies: 291
+-- TOC entry 3971 (class 0 OID 398402)
+-- Dependencies: 295
 -- Data for Name: uiSchemas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -13168,16 +15151,14 @@ pih9m66uox0	1q06k9gio15	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 96x36oteery	fund_id	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.fund_id","x-component-props":{"fieldNames":{"value":"id","label":"id"}},"x-app-version":"1.3.52"}
 g1zqulbaq33	lohgfrxkrn8	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
 svu377s09m8	createdAt	{"x-uid":"svu377s09m8","name":"createdAt","_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"projects.createdAt","x-component":"CollectionField","x-component-props":{"dateFormat":"MMMM Do YYYY","showTime":false},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
-natitkej0fr	feq3s45vdjj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+f8feuhfiywv	vzalufg5uj4	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 fu4hqwdhjna	ua1vwt915j0	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 rgikecs0vb3	9r1dp9d3rlk	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"CardItem","x-settings":"blockSettings:image","x-app-version":"1.3.52"}
 0p09a8u5xr9	landing	{"_isJSONSchemaObject":true,"version":"2.0","x-component":"Landing","x-app-version":"1.3.52"}
-55y05lnguuw	carousel	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Carousel","x-use-component-props":"useCarouselBlockProps","x-app-version":"1.3.52"}
 ycph2iwspsy	op533frw76t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 z8sfah8xqx2	awu0ue4yidj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 dtwqv1j8ahg	images_attach	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.images_attach","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.52"}
-vsj0dfm9bdq	y1robtrtpag	{"x-uid":"vsj0dfm9bdq","name":"y1robtrtpag","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"CardItem","x-settings":"blockSettings:carousel","x-decorator-props":{"carousel":{"height":350,"objectFit":"cover"}},"x-app-version":"1.3.52"}
-c0fmoqtflrf	vpbzvgn9cwd	{"x-uid":"c0fmoqtflrf","name":"vpbzvgn9cwd","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-component-props":{"width":50}}
+rnko20ymzdm	actionBar	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"list:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":"var(--nb-spacing)"}},"x-app-version":"1.3.52"}
 5po28o9th2g	9fviq2pm5md	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 4xrh6k2pmoo	f9eqtqefd3t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 xzo61aenrhv	p7v5lm31wcf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
@@ -13188,27 +15169,188 @@ xt3d9e6vpx3	page	{"x-uid":"xt3d9e6vpx3","name":"page","_isJSONSchemaObject":true
 6gy09u6gkvr	b1mae2da89r	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Filter\\") }}","x-action":"filter","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:filter","x-component":"Filter.Action","x-use-component-props":"useFilterActionProps","x-component-props":{"icon":"FilterOutlined"},"x-align":"left","x-app-version":"1.3.52"}
 s41jwc7ushc	gqlhz16n5je	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 tavzpgzflnv	xjp2f8pugvx	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
-fe7kgdo55ax	page	{"x-uid":"fe7kgdo55ax","name":"page","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page","x-app-version":"1.3.52","x-component-props":{"disablePageHeader":true}}
 hmft2ujv1uf	5ddwiuc4980	{"x-uid":"hmft2ujv1uf","name":"5ddwiuc4980","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết dự án","x-component":"Menu.Item","x-decorator":"ACLMenuItemProvider","x-component-props":{"hidden":true},"x-server-hooks":[{"type":"onSelfCreate","method":"bindMenuToRole"},{"type":"onSelfSave","method":"extractTextToLocale"}],"x-app-version":"1.3.52"}
 7poa6levyva	ml05bw54cfa	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"page:addBlock","x-app-version":"1.3.52"}
 6qulve4ybk4	28ipw0hnn0f	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 4ryyxzuq87v	k0fmx8fwpy6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 zrm37tg78ob	images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.images","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.52"}
 cbhgjqiskk5	3hw8ivc03z8	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
-luu86la6tb1	qxcfk8yu3bp	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"projects:view","x-decorator":"DetailsBlockProvider","x-use-decorator-props":"useDetailsWithPaginationDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"projects","readPretty":true,"action":"list","params":{"pageSize":1}},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:detailsWithPagination","x-component":"CardItem","x-app-version":"1.3.52"}
-lc1jm6dpsrp	gk9liex2luk	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Details","x-read-pretty":true,"x-use-component-props":"useDetailsWithPaginationProps","x-app-version":"1.3.52"}
-wrrgz9e3y2l	mgl4dyf2wv7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"details:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":24}},"x-app-version":"1.3.52"}
-xaiv6bxfonx	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"details:configureFields","x-app-version":"1.3.52"}
-u5xpd0w3jh3	pagination	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Pagination","x-use-component-props":"useDetailsPaginationProps","x-app-version":"1.3.52"}
-a6osakgoyy3	col_8s9uh5v6rci	{"x-uid":"a6osakgoyy3","name":"col_8s9uh5v6rci","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
+f70h0f0jiha	list	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-component":"List","x-use-component-props":"useListBlockProps","x-app-version":"1.3.52"}
+4jc43siezjp	10piaxniyaf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+0f0yp3ro5dp	item	{"_isJSONSchemaObject":true,"version":"2.0","type":"object","x-component":"List.Item","x-read-pretty":true,"x-use-component-props":"useListItemProps","x-app-version":"1.3.52"}
 oq5d1lxpmfu	gl4xiqu0c66	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
-qos4gy0bday	ujrjmya3bl2	{"x-uid":"qos4gy0bday","name":"ujrjmya3bl2","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Detail","x-action":"customize:link","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:link","x-component":"Action.Link","x-use-component-props":"useLinkActionProps","x-designer-props":{"linkageAction":true},"x-component-props":{"iconColor":"#1677FF","danger":false,"url":"admin/hmft2ujv1uf","params":[{"name":"id","value":"{{$nRecord.id}}"}]}}
+3p9f7asal9h	lv5n4euwvqr	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+fe7kgdo55ax	page	{"x-uid":"fe7kgdo55ax","name":"page","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page","x-app-version":"1.3.52","x-component-props":{"disablePageHeader":true}}
+p2fd2nllyzz	s0fp6p9ut2y	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":1,"x-app-version":"1.3.52"}
+0ddzjfp9gg6	gs0mbkzv0y7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+387jrys6pj9	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.sub_title","x-component-props":{},"x-app-version":"1.3.52"}
+unis1bj47de	grgfquq7p3t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+gwkooqabv4x	lq1p6lf0d2p	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+ugkql0r3ggt	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"details:configureFields","x-app-version":"1.3.52"}
+a61oc4tl7m1	actionBar	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-align":"left","x-initializer":"list:configureItemActions","x-component":"ActionBar","x-use-component-props":"useListActionBarProps","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.52"}
+jibscsx0dfw	qendcaq0u1t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+jmayzuhpdzl	prnc93evei0	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+v0hdkdeyzrd	jaen61nqaow	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"projects:view","x-decorator":"DetailsBlockProvider","x-use-decorator-props":"useDetailsWithPaginationDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"projects","readPretty":true,"action":"list","params":{"pageSize":1}},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:detailsWithPagination","x-component":"CardItem","x-app-version":"1.3.52"}
+fg366x2n25f	j86wvwfhduz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Details","x-read-pretty":true,"x-use-component-props":"useDetailsWithPaginationProps","x-app-version":"1.3.52"}
+g3wb17ry7i2	oq6rze1evpb	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"details:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":24}},"x-app-version":"1.3.52"}
+2yh8xonuy9p	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"details:configureFields","x-app-version":"1.3.52"}
+d7ss6dyrft2	pagination	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Pagination","x-use-component-props":"useDetailsPaginationProps","x-app-version":"1.3.52"}
+5ra7uzzi0b0	1lgpznm7vxs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+lrpe7x7uska	7dkt6pm4cm4	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+cnt5l2vyvus	id	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.id","x-component-props":{},"x-read-pretty":true,"x-app-version":"1.3.52"}
+4rfztuqwvcn	xyl7qe8x7cv	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+em6cpoit5dn	9dib8x7ltsg	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+9ha55op1k8z	name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.name","x-component-props":{},"x-app-version":"1.3.52"}
+mgxem84qs7g	ld6p1cwd79d	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+wtx7vw7yz0x	zt3daum6tb5	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+ris4kebta55	rk3lj3o34vz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+y5v7ivsb3ot	total_amount	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.total_amount","x-component-props":{},"x-app-version":"1.3.52"}
+lt4x5i1gin9	udtyrkucgkd	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+ksp2jvw2zju	oc9mp8epqj9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+qlix4l9q49g	construction_site	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.construction_site","x-component-props":{},"x-app-version":"1.3.52"}
+5n3prf95enu	iius52f8mo5	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+77znodag4w0	images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"proposes.images","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.52"}
+p352d38u95n	9l7fhv0zb93	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+p62fqqqtc8f	1kldb9are0i	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+1oeceyajjp1	images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.images","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.52"}
+lzuobjmh9nr	lrxdgyheuht	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+nk5b4nu4r4m	03zr42jo35m	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+pai6scdjeqt	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.sub_title","x-component-props":{},"x-app-version":"1.3.52"}
+qos4gy0bday	ujrjmya3bl2	{"x-uid":"qos4gy0bday","name":"ujrjmya3bl2","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Detail","x-action":"customize:link","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:link","x-component":"Action.Link","x-use-component-props":"useLinkActionProps","x-designer-props":{"linkageAction":true},"x-component-props":{"iconColor":"#1677FF","danger":false,"url":"admin/hmft2ujv1uf","params":[{"name":"id","value":"{{$nRecord.id}}"},{"name":"fundId","value":"{{$nRecord.fund_id.id}}"}]}}
+vww45l1kt1c	38aixf9l925	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+vvnjfeman6s	carousel	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Carousel","x-use-component-props":"useCarouselBlockProps","x-app-version":"1.3.52"}
+krq5msd3dso	images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"proposes.images","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.52"}
+x4src7kopyo	w1f7gliwtyn	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+l8by3cc8sei	km2jizghjxq	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+9cnsplg5f8i	72v0eueipj3	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+5v81x55p2nk	col_uoqwlaeflf6	{"x-uid":"5v81x55p2nk","name":"col_uoqwlaeflf6","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":"49.87"}}
+am9f5xsj7ms	ijylqzp134z	{"x-uid":"am9f5xsj7ms","name":"ijylqzp134z","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-component-props":{"width":25}}
+ge2jd4uyinh	amount	{"x-uid":"ge2jd4uyinh","name":"amount","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.amount","x-component-props":{},"x-app-version":"1.3.52","x-decorator-props":{"showTitle":false}}
+w55w350cfun	3vsdfowi9jd	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+xzjgh6n1pxo	wo541gsgl4h	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+q25ez0sddx0	description	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.description","x-component-props":{},"x-app-version":"1.3.52"}
+h0ax2mnno9e	transaction_code	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.transaction_code","x-component-props":{},"x-app-version":"1.3.52"}
+trkntmt0j43	qjd9o8evo8m	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+jybbjrsdqyi	dbkfz7epzpo	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+x34msmoy2z7	from_account_no	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_account_no","x-component-props":{},"x-app-version":"1.3.52"}
+qa9xun5vwcj	c9w73iph2a7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+q99h3pa86a9	t1bh4pgoa16	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+2w9s2xktcaq	from_account_name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_account_name","x-component-props":{},"x-app-version":"1.3.52"}
+e218oz4chyl	v5fi4kywdvu	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+zfyh24viwdy	nzl26bt6tc2	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+3h2a3ty94tj	from_bank_name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_bank_name","x-component-props":{},"x-app-version":"1.3.52"}
+5dqm9vvouxz	4pq40frfpa6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+dqzfsmyk8ay	i0aoc76mym6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+b33sc3cahsg	user	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.user","x-component-props":{"fieldNames":{"value":"id","label":"id"}},"x-app-version":"1.3.52"}
+bj7d5uc6lnd	5o2kdgwdq98	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+tdkqbjvhskr	j8g2cmfwto7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+0u09lqdoyvt	fund	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.fund","x-component-props":{"fieldNames":{"value":"id","label":"id"}},"x-app-version":"1.3.52"}
+3o26e8k5cba	bganen032st	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Submit\\") }}","x-action":"submit","x-component":"Action","x-use-component-props":"useUpdateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:updateSubmit","x-component-props":{"type":"primary","htmlType":"submit"},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.52"}
+eoz95qtwix6	eoz95qtwix6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"projects:view","x-decorator":"DetailsBlockProvider","x-use-decorator-props":"useDetailsWithPaginationDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"projects","readPretty":true,"action":"list","params":{"pageSize":1}},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:detailsWithPagination","x-component":"CardItem","x-app-version":"1.3.52","x-index":0}
+2h7gnmez0eb	j86wvwfhduz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Details","x-read-pretty":true,"x-use-component-props":"useDetailsWithPaginationProps","x-app-version":"1.3.52","x-index":1}
+kye7kplejx4	oq6rze1evpb	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"details:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":24}},"x-app-version":"1.3.52","x-index":1}
+pv8ilcp4ez0	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"details:configureFields","x-app-version":"1.3.52","x-index":2}
+mo9367563k2	1lgpznm7vxs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52","x-index":1}
+hk90w8ktd8b	7dkt6pm4cm4	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-index":1}
+fetusergrtk	id	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.id","x-component-props":{},"x-read-pretty":true,"x-app-version":"1.3.52","x-index":1}
+8avia19u880	xyl7qe8x7cv	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52","x-index":2}
+hwi0frrc1o1	9dib8x7ltsg	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-index":1}
+u1nyxe00lc6	name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.name","x-component-props":{},"x-app-version":"1.3.52","x-index":1}
+rxmunii1ry1	ld6p1cwd79d	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52","x-index":3}
+5i5wcujn2r0	zt3daum6tb5	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-index":1}
+6ajwqegl8fu	total_amount	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.total_amount","x-component-props":{},"x-app-version":"1.3.52","x-index":1}
+eg8g77o8vr3	udtyrkucgkd	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52","x-index":4}
+pfrp5as10jq	oc9mp8epqj9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-index":1}
+m6euh07s1zs	construction_site	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.construction_site","x-component-props":{},"x-app-version":"1.3.52","x-index":1}
+gltkn1uzhh9	qendcaq0u1t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52","x-index":5}
+yivjshzifwl	9cpz8awc0fu	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+0czsrowjaug	1kldb9are0i	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-index":1}
+7guv5eckse5	3gve41npdh6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+tjpv9f744r6	images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.images","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.52","x-index":1}
+ll2so9vdgu3	lrxdgyheuht	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52","x-index":6}
+0jqiruu9vf6	03zr42jo35m	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-index":1}
+b6910vi3jym	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.sub_title","x-component-props":{},"x-app-version":"1.3.52","x-index":1}
+quxuyp8dl2x	pagination	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Pagination","x-use-component-props":"useDetailsPaginationProps","x-app-version":"1.3.52","x-index":3}
+q3szmzf1eqa	cmft0hwzk3f	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+68fxhhuy71v	from_account_name	{"x-uid":"68fxhhuy71v","name":"from_account_name","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_account_name","x-component-props":{},"x-app-version":"1.3.52","x-decorator-props":{"showTitle":false}}
+iipcd9rycsd	from_bank_name	{"x-uid":"iipcd9rycsd","name":"from_bank_name","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_bank_name","x-component-props":{},"x-app-version":"1.3.52","x-decorator-props":{"showTitle":false},"description":""}
+pxsyhrbz249	col_7rm6cpurb8p	{"x-uid":"pxsyhrbz249","name":"col_7rm6cpurb8p","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":25}}
+w75rqpzvfdq	col_tee1znazv4f	{"x-uid":"w75rqpzvfdq","name":"col_tee1znazv4f","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":2,"x-component-props":{"width":25}}
+1w4nstqxr2n	col_5qtmgj1qg1n	{"x-uid":"1w4nstqxr2n","name":"col_5qtmgj1qg1n","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":3,"x-component-props":{"width":25}}
+pbpsju21w1y	fromxe1ognk	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Refresh\\") }}","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined"},"x-align":"right","type":"void","x-app-version":"1.3.52"}
+j0x0k0rv3yw	z0rr8522rdf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+hupe35j3waf	wdcjw5oonnf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+i5ep94ei4hn	74v0up0r5vs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Actions\\") }}","x-decorator":"TableV2.Column.ActionBar","x-component":"TableV2.Column","x-toolbar":"TableColumnSchemaToolbar","x-initializer":"table:configureItemActions","x-settings":"fieldSettings:TableColumn","x-toolbar-props":{"initializer":"table:configureItemActions"},"x-action-column":"actions","x-app-version":"1.3.52"}
+x74knwfm0hx	luf7vtkqq1b	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DndContext","x-component":"Space","x-component-props":{"split":"|"},"x-app-version":"1.3.52"}
+7qdtw3aqf8f	3um9q5ispqm	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Edit\\") }}","x-action":"update","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:edit","x-component":"Action.Link","x-component-props":{"openMode":"drawer","icon":"EditOutlined"},"x-action-context":{"dataSource":"main","collection":"transactions"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
+9znhwv6jh2d	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Edit record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"}}
+dohzvch4noi	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab"}
+oyw4y44yqgd	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Edit\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{}}
+bztjip2msxq	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock"}
+oekbnvx2n7m	w5sg29xsuwg	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Delete\\") }}","x-action":"destroy","x-component":"Action.Link","x-use-component-props":"useDestroyActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:delete","x-component-props":{"icon":"DeleteOutlined","confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"refreshDataBlockRequest":true},"x-action-settings":{"triggerWorkflows":[]},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"type":"void"}
+cm22blbci2c	3n6konsxrcv	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+ioq8ld31vte	ujdem34nq3l	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+ojgs7eoz5hg	fund_id	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.fund_id","x-component-props":{"fieldNames":{"value":"id","label":"id"}},"x-app-version":"1.3.52"}
+qxskufg0hv4	jgngp3286ie	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+swpktoj72vi	gf7pul5epv8	{"x-uid":"swpktoj72vi","name":"gf7pul5epv8","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52","x-component-props":{"width":"50.13"}}
+j9dtajdmaoa	createdAt	{"x-uid":"j9dtajdmaoa","name":"createdAt","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.createdAt","x-component-props":{"dateFormat":"DD/MM/YYYY","showTime":true,"timeFormat":"h:mm a"},"x-read-pretty":true,"x-app-version":"1.3.52","x-decorator-props":{"showTitle":false}}
+abxv8689kv3	ho0c7mbjda1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
+2lzmasj4pju	project_id	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"funds.project_id","x-component":"CollectionField","x-component-props":{},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
+ssd1y8mk1mx	9879c23cj0s	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+r1jfuy0x2g2	ihoxsztugt7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+mupdgh8dhyb	pfoxy9zmkx7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+swbgm59qce3	ufrasmewkf9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+pkcprxz6rfy	lzsv1w75i9y	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+9bxpugcgkui	s13ehtexjiz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+lhbk1av87n1	zc7kwh6kagc	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+0kxudizv0xf	klwlhf63eyz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+zy4jidwmnvw	cea73ch8trk	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+q5no45c40c6	g42m4asqz7s	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action-props":{"skipScopeCheck":false},"x-acl-action":"transactions:update","x-decorator":"FormBlockProvider","x-use-decorator-props":"useEditFormBlockDecoratorProps","x-decorator-props":{"action":"get","dataSource":"main","collection":"transactions"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:editForm","x-component":"CardItem","x-app-version":"1.3.52"}
+imo18or3xxo	eiyx95gi2ex	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"FormV2","x-use-component-props":"useEditFormBlockProps","x-app-version":"1.3.52"}
+mr7dvvk94ts	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"form:configureFields","x-app-version":"1.3.52"}
+9xqwn851uzs	vlamjp62x2t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"editForm:configureActions","x-component":"ActionBar","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.52"}
+h6z84g2plev	pgqgrxu3saz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+fj7mqkmuy05	id	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.id","x-component-props":{},"x-read-pretty":true,"x-app-version":"1.3.52"}
+7mxt8s0yifl	qwzluez9x09	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+z3izb1wk1tb	8j5opzefy68	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+r46d3k59dyb	amount	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.amount","x-component-props":{},"x-app-version":"1.3.52"}
+vkwm4wpz1us	7b3laozce26	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+0i6xo0z7gmw	aejmv2c9ff7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+ktueizjrxpb	description	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.description","x-component-props":{},"x-app-version":"1.3.52"}
+r4wwu0h2xhc	nhia9ko11ng	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+h2owc9efe7d	q9ogag58p1b	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+52h8j6knyh0	bkswmhrdrp3	{"x-uid":"52h8j6knyh0","name":"bkswmhrdrp3","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"transactions:view","x-decorator":"List.Decorator","x-use-decorator-props":"useListBlockDecoratorProps","x-decorator-props":{"collection":"transactions","dataSource":"main","readPretty":true,"action":"list","params":{"pageSize":10,"filter":{"$and":[{"fund_id":{"$eq":"{{$nURLSearchParams.fundId}}"}}]},"sort":["-createdAt"]},"runWhenParamsChanged":true,"rowKey":"id"},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:list","x-app-version":"1.3.52","x-component-props":{"heightMode":"specifyValue","height":500}}
+83dc85bfozz	159taitaspr	{"x-uid":"83dc85bfozz","name":"159taitaspr","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-settings":"blockSettings:markdown","x-decorator":"CardItem","x-decorator-props":{"name":"markdown","engine":"string"},"x-component":"Markdown.Void","x-editable":false,"x-component-props":{"content":"### Thông tin chi tiết\\n\\nTheo lãnh đạo xã Trà Tập, đợt mưa trước đó đã gây sạt lở ta-luy dương sau trường. Do đó, chính quyền địa phương đã cho đóng cửa điểm trường trên, dời lớp học về điểm trường cũ (bằng gỗ), chờ phương án xây dựng kè phía sau. Tuy nhiên, đợt mưa này tiếp tục gây sạt lở khiến điểm trường bị sập.\\n\\nĐược biết, điểm trường Răng Chuối mới khánh thành hồi tháng 9 với tổng kinh phí xây dựng hơn 1,4 tỉ đồng, do một nhà tài trợ tại TP HCM hỗ trợ toàn bộ chi phí.\\n\\nCông trình có tổng diện tích gần 200m², tường xây kiên cố, 2 phòng học, 1 phòng ở tập thể, bếp ăn, khu vệ sinh, sân chơi, tường rào.\\n\\nĐiểm trường có 35 học sinh mầm non và tiểu học. Ngôi trường mới đưa vào sử dụng thay thế điểm trường tạm vốn đã xuống cấp.\\n\\nNgoài điểm trường Răng Chuối bị thiệt hại, tại huyện Nam Trà My những ngày qua trời mưa lớn kéo dài khiến nhiều điểm sạt lở tuyến đường bị đứt gãy, hư hỏng nặng.\\n\\nHuyện Nam Trà My đã chỉ đạo các địa phương cắm biển báo nguy hiểm và cắm biển cấm xe tải trọng lớn, chỉ đạo đơn vị duy tu bảo vệ kè tạm để đảm bảo giao thông xe tải nhỏ và xe ô tô con lưu thông.\\n","heightMode":"specifyValue","height":500},"x-app-version":"1.3.52"}
+c7cl1yivppx	oedwk0ldjd7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+x3fc9scqc79	d8w7evisb3h	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+xq16274v512	igkl4sy4f7u	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+wabcyx326vn	kwy8e9sly34	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+d56je1k3zqr	header picker	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"HeaderPickerBlock","x-app-version":"1.3.52"}
+pu169zvh60m	fields	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"info:configureFields","x-app-version":"1.3.52"}
+nrjlwkyfth3	wsvomijvhkd	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-collection-field":"name","x-component":"Grid.Row","x-app-version":"1.3.52"}
+yklcecblv53	o4dtetanwcx	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+tl0outhgcgx	flredz4yslg	{"x-uid":"tl0outhgcgx","name":"flredz4yslg","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-component":"FormItem","x-settings":"blockSettings:carousel","x-toolbar":"BlockSchemaToolbar","x-decorator-props":{"carousel":{"autoplay":true,"objectFit":"cover","height":400},"rowKey":"id","runWhenParamsChanged":true,"readPretty":true,"dataSource":"main","collection":"projects","action":"list","params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]},"appends":["images"]}},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
+1u4agf34j24	d5bdg6hxrlx	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+ni9s0jfe89u	si801o2gevr	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-collection-field":"sub_title","x-component":"Grid.Row","x-app-version":"1.3.52"}
+xxrv6yw7ug9	837ziej2csh	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+ap4tz1vugqh	name	{"x-uid":"ap4tz1vugqh","name":"name","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"InfoField","x-component-props":{"name":"name","headerType":"h3"},"x-settings":"fieldSettings:component:header picker","x-decorator":"FormItem","x-app-version":"1.3.52","x-async":false,"x-index":1}
+kec946p29nh	row_p4eq918bc0z	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":0}
+waxys3iyxy9	col_3w44pzjzeam	{"x-uid":"waxys3iyxy9","name":"col_3w44pzjzeam","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":0,"x-component-props":{"width":50}}
+37z9mqnsbzi	jad4cmvf89j	{"x-uid":"37z9mqnsbzi","name":"jad4cmvf89j","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-component-props":{"width":50}}
+pde5ayqzqo1	col_odcegh5w9pb	{"x-uid":"pde5ayqzqo1","name":"col_odcegh5w9pb","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":100}}
+zkxpp9dciks	9kxc1ow3e5f	{"x-uid":"zkxpp9dciks","name":"9kxc1ow3e5f","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-decorator-props":{"header picker":{"height":350},"dataSource":"main","collection":"projects","action":"list","headertype":{"height":345},"params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]}}},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:header picker","x-designer":"FormV2.Designer","x-component-props":{"useConfigureFields":true},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
+vugxsjmnyiz	sub_title	{"x-uid":"vugxsjmnyiz","name":"sub_title","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"InfoField","x-component-props":{"name":"sub_title","headerType":"p"},"x-settings":"fieldSettings:component:header picker","x-decorator":"FormItem","x-app-version":"1.3.52","x-async":false,"x-index":1}
+7o0raci3dyn	323ub6uje4i	{"x-uid":"7o0raci3dyn","name":"323ub6uje4i","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-component":"CardItem","x-settings":"blockSettings:progress","x-toolbar":"BlockSchemaToolbar","x-decorator-props":{"progress":{},"rowKey":"id","runWhenParamsChanged":true,"readPretty":true,"dataSource":"main","collection":"funds","action":"list","params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.fundId}}"}}]}}},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.52"}
+qoeo1gjqrv7	kw16xww70r9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+lvn71fru6iw	bl20ycxnjuz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+qlpok27amsj	current_amount	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"funds.current_amount","x-component-props":{},"x-app-version":"1.3.52"}
+8974fc201bl	progress	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Progress","x-use-component-props":"useProgressBlockProps","x-app-version":"1.3.52"}
 \.
 
 
 --
--- TOC entry 3949 (class 0 OID 292829)
--- Dependencies: 292
+-- TOC entry 3972 (class 0 OID 398408)
+-- Dependencies: 296
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -13218,8 +15360,8 @@ COPY public.users (id, "createdAt", "updatedAt", nickname, username, email, phon
 
 
 --
--- TOC entry 3950 (class 0 OID 292835)
--- Dependencies: 293
+-- TOC entry 3973 (class 0 OID 398414)
+-- Dependencies: 297
 -- Data for Name: usersAuthenticators; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -13228,8 +15370,8 @@ COPY public."usersAuthenticators" ("createdAt", "updatedAt", authenticator, "use
 
 
 --
--- TOC entry 3952 (class 0 OID 292844)
--- Dependencies: 295
+-- TOC entry 3975 (class 0 OID 398423)
+-- Dependencies: 299
 -- Data for Name: users_jobs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -13238,8 +15380,8 @@ COPY public.users_jobs (id, "createdAt", "updatedAt", "jobId", "userId", "execut
 
 
 --
--- TOC entry 3954 (class 0 OID 292850)
--- Dependencies: 297
+-- TOC entry 3977 (class 0 OID 398429)
+-- Dependencies: 301
 -- Data for Name: verifications; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -13248,8 +15390,8 @@ COPY public.verifications (id, "createdAt", "updatedAt", type, receiver, status,
 
 
 --
--- TOC entry 3955 (class 0 OID 292856)
--- Dependencies: 298
+-- TOC entry 3978 (class 0 OID 398435)
+-- Dependencies: 302
 -- Data for Name: verifications_providers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -13258,21 +15400,21 @@ COPY public.verifications_providers (id, "createdAt", "updatedAt", title, type, 
 
 
 --
--- TOC entry 3956 (class 0 OID 292861)
--- Dependencies: 299
+-- TOC entry 3979 (class 0 OID 398440)
+-- Dependencies: 303
 -- Data for Name: workflows; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.workflows (id, "createdAt", "updatedAt", key, title, enabled, description, type, "triggerTitle", config, executed, "allExecuted", current, sync, options) FROM stdin;
 12	2024-11-23 08:33:04.685+00	2024-11-23 09:09:45.259+00	okdlz4mlk8m	Pre-Delete Project	t	\N	collection	\N	{"mode": 2, "appends": ["fund_id"], "changed": ["is_deleted"], "condition": {"$and": [{"fund_id": {"current_amount": {"$gt": 0}}}, {"is_deleted": {"$eq": 0}}]}, "collection": "projects"}	3	3	t	f	{}
 11	2024-11-23 07:06:06.908+00	2024-11-23 08:55:36.67+00	iib4y9voya1	Pre-Delete Project	f	\N	collection	\N	{"mode": 2, "appends": ["updatedBy", "fund_id", "createdBy"], "changed": ["is_deleted"], "condition": {"$and": [{"fund_id": {"current_amount": {"$eq": 0}}}]}, "collection": "projects"}	6	6	t	f	{"deleteExecutionOnStatus": []}
-22	2024-11-23 11:49:01.633+00	2024-11-24 02:43:58.374+00	07lrf76z5ab	Approve Propose	t	\N	collection	\N	{"mode": 2, "appends": ["createdBy"], "changed": ["status"], "condition": {"$and": []}, "collection": "proposes"}	8	8	t	f	{}
+22	2024-11-23 11:49:01.633+00	2024-11-29 20:13:20.423+00	07lrf76z5ab	Approve Propose	t	\N	collection	\N	{"mode": 2, "appends": ["createdBy"], "changed": ["status"], "condition": {"$and": []}, "collection": "proposes"}	9	9	t	f	{}
 \.
 
 
 --
--- TOC entry 4011 (class 0 OID 0)
--- Dependencies: 219
+-- TOC entry 4033 (class 0 OID 0)
+-- Dependencies: 216
 -- Name: apiKeys_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13280,17 +15422,17 @@ SELECT pg_catalog.setval('public."apiKeys_id_seq"', 1, false);
 
 
 --
--- TOC entry 4012 (class 0 OID 0)
--- Dependencies: 221
+-- TOC entry 4034 (class 0 OID 0)
+-- Dependencies: 218
 -- Name: applicationPlugins_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."applicationPlugins_id_seq"', 65, true);
+SELECT pg_catalog.setval('public."applicationPlugins_id_seq"', 69, true);
 
 
 --
--- TOC entry 4013 (class 0 OID 0)
--- Dependencies: 223
+-- TOC entry 4035 (class 0 OID 0)
+-- Dependencies: 220
 -- Name: applicationVersion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13298,17 +15440,17 @@ SELECT pg_catalog.setval('public."applicationVersion_id_seq"', 1, true);
 
 
 --
--- TOC entry 4014 (class 0 OID 0)
--- Dependencies: 225
+-- TOC entry 4036 (class 0 OID 0)
+-- Dependencies: 222
 -- Name: attachments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.attachments_id_seq', 19, true);
+SELECT pg_catalog.setval('public.attachments_id_seq', 24, true);
 
 
 --
--- TOC entry 4015 (class 0 OID 0)
--- Dependencies: 227
+-- TOC entry 4037 (class 0 OID 0)
+-- Dependencies: 224
 -- Name: authenticators_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13316,8 +15458,8 @@ SELECT pg_catalog.setval('public.authenticators_id_seq', 1, true);
 
 
 --
--- TOC entry 4016 (class 0 OID 0)
--- Dependencies: 230
+-- TOC entry 4038 (class 0 OID 0)
+-- Dependencies: 227
 -- Name: collectionCategories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13325,8 +15467,8 @@ SELECT pg_catalog.setval('public."collectionCategories_id_seq"', 1, false);
 
 
 --
--- TOC entry 4017 (class 0 OID 0)
--- Dependencies: 241
+-- TOC entry 4039 (class 0 OID 0)
+-- Dependencies: 238
 -- Name: dataSourcesRolesResourcesActions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13334,8 +15476,8 @@ SELECT pg_catalog.setval('public."dataSourcesRolesResourcesActions_id_seq"', 1, 
 
 
 --
--- TOC entry 4018 (class 0 OID 0)
--- Dependencies: 243
+-- TOC entry 4040 (class 0 OID 0)
+-- Dependencies: 240
 -- Name: dataSourcesRolesResourcesScopes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13343,8 +15485,8 @@ SELECT pg_catalog.setval('public."dataSourcesRolesResourcesScopes_id_seq"', 2, t
 
 
 --
--- TOC entry 4019 (class 0 OID 0)
--- Dependencies: 244
+-- TOC entry 4041 (class 0 OID 0)
+-- Dependencies: 241
 -- Name: dataSourcesRolesResources_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13352,17 +15494,17 @@ SELECT pg_catalog.setval('public."dataSourcesRolesResources_id_seq"', 1, false);
 
 
 --
--- TOC entry 4020 (class 0 OID 0)
--- Dependencies: 246
+-- TOC entry 4042 (class 0 OID 0)
+-- Dependencies: 243
 -- Name: executions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.executions_id_seq', 32, true);
+SELECT pg_catalog.setval('public.executions_id_seq', 33, true);
 
 
 --
--- TOC entry 4021 (class 0 OID 0)
--- Dependencies: 249
+-- TOC entry 4043 (class 0 OID 0)
+-- Dependencies: 246
 -- Name: flow_nodes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13370,17 +15512,17 @@ SELECT pg_catalog.setval('public.flow_nodes_id_seq', 71, true);
 
 
 --
--- TOC entry 4022 (class 0 OID 0)
--- Dependencies: 251
+-- TOC entry 4044 (class 0 OID 0)
+-- Dependencies: 248
 -- Name: funds_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.funds_id_seq', 24, true);
+SELECT pg_catalog.setval('public.funds_id_seq', 25, true);
 
 
 --
--- TOC entry 4023 (class 0 OID 0)
--- Dependencies: 253
+-- TOC entry 4045 (class 0 OID 0)
+-- Dependencies: 250
 -- Name: hello_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13388,8 +15530,8 @@ SELECT pg_catalog.setval('public.hello_id_seq', 1, false);
 
 
 --
--- TOC entry 4024 (class 0 OID 0)
--- Dependencies: 216
+-- TOC entry 4046 (class 0 OID 0)
+-- Dependencies: 253
 -- Name: images_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13397,35 +15539,35 @@ SELECT pg_catalog.setval('public.images_id_seq', 1, false);
 
 
 --
--- TOC entry 4025 (class 0 OID 0)
--- Dependencies: 256
+-- TOC entry 4047 (class 0 OID 0)
+-- Dependencies: 255
 -- Name: jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.jobs_id_seq', 99, true);
+SELECT pg_catalog.setval('public.jobs_id_seq', 103, true);
 
 
 --
--- TOC entry 4026 (class 0 OID 0)
--- Dependencies: 259
+-- TOC entry 4048 (class 0 OID 0)
+-- Dependencies: 260
 -- Name: projects_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.projects_id_seq', 26, true);
+SELECT pg_catalog.setval('public.projects_id_seq', 27, true);
 
 
 --
--- TOC entry 4027 (class 0 OID 0)
--- Dependencies: 261
+-- TOC entry 4049 (class 0 OID 0)
+-- Dependencies: 262
 -- Name: proposes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.proposes_id_seq', 22, true);
+SELECT pg_catalog.setval('public.proposes_id_seq', 23, true);
 
 
 --
--- TOC entry 4028 (class 0 OID 0)
--- Dependencies: 265
+-- TOC entry 4050 (class 0 OID 0)
+-- Dependencies: 266
 -- Name: rolesResourcesActions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13433,8 +15575,8 @@ SELECT pg_catalog.setval('public."rolesResourcesActions_id_seq"', 1, false);
 
 
 --
--- TOC entry 4029 (class 0 OID 0)
--- Dependencies: 267
+-- TOC entry 4051 (class 0 OID 0)
+-- Dependencies: 268
 -- Name: rolesResourcesScopes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13442,8 +15584,8 @@ SELECT pg_catalog.setval('public."rolesResourcesScopes_id_seq"', 1, false);
 
 
 --
--- TOC entry 4030 (class 0 OID 0)
--- Dependencies: 268
+-- TOC entry 4052 (class 0 OID 0)
+-- Dependencies: 269
 -- Name: rolesResources_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13451,8 +15593,8 @@ SELECT pg_catalog.setval('public."rolesResources_id_seq"', 1, false);
 
 
 --
--- TOC entry 4031 (class 0 OID 0)
--- Dependencies: 272
+-- TOC entry 4053 (class 0 OID 0)
+-- Dependencies: 273
 -- Name: sequences_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13460,8 +15602,8 @@ SELECT pg_catalog.setval('public.sequences_id_seq', 1, false);
 
 
 --
--- TOC entry 4032 (class 0 OID 0)
--- Dependencies: 274
+-- TOC entry 4054 (class 0 OID 0)
+-- Dependencies: 275
 -- Name: storages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13469,8 +15611,8 @@ SELECT pg_catalog.setval('public.storages_id_seq', 1, true);
 
 
 --
--- TOC entry 4033 (class 0 OID 0)
--- Dependencies: 275
+-- TOC entry 4055 (class 0 OID 0)
+-- Dependencies: 276
 -- Name: student_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13478,8 +15620,8 @@ SELECT pg_catalog.setval('public.student_id_seq', 1, false);
 
 
 --
--- TOC entry 4034 (class 0 OID 0)
--- Dependencies: 277
+-- TOC entry 4056 (class 0 OID 0)
+-- Dependencies: 278
 -- Name: systemSettings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13487,8 +15629,8 @@ SELECT pg_catalog.setval('public."systemSettings_id_seq"', 1, true);
 
 
 --
--- TOC entry 4035 (class 0 OID 0)
--- Dependencies: 279
+-- TOC entry 4057 (class 0 OID 0)
+-- Dependencies: 280
 -- Name: t_587vrvz0gcb_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13496,8 +15638,8 @@ SELECT pg_catalog.setval('public.t_587vrvz0gcb_id_seq', 2, true);
 
 
 --
--- TOC entry 4036 (class 0 OID 0)
--- Dependencies: 282
+-- TOC entry 4058 (class 0 OID 0)
+-- Dependencies: 286
 -- Name: themeConfig_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13505,8 +15647,8 @@ SELECT pg_catalog.setval('public."themeConfig_id_seq"', 5, true);
 
 
 --
--- TOC entry 4037 (class 0 OID 0)
--- Dependencies: 284
+-- TOC entry 4059 (class 0 OID 0)
+-- Dependencies: 288
 -- Name: tokenBlacklist_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13514,17 +15656,17 @@ SELECT pg_catalog.setval('public."tokenBlacklist_id_seq"', 1, false);
 
 
 --
--- TOC entry 4038 (class 0 OID 0)
--- Dependencies: 286
+-- TOC entry 4060 (class 0 OID 0)
+-- Dependencies: 290
 -- Name: transactions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.transactions_id_seq', 1, true);
+SELECT pg_catalog.setval('public.transactions_id_seq', 4, true);
 
 
 --
--- TOC entry 4039 (class 0 OID 0)
--- Dependencies: 288
+-- TOC entry 4061 (class 0 OID 0)
+-- Dependencies: 292
 -- Name: uiSchemaServerHooks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13532,8 +15674,8 @@ SELECT pg_catalog.setval('public."uiSchemaServerHooks_id_seq"', 1, false);
 
 
 --
--- TOC entry 4040 (class 0 OID 0)
--- Dependencies: 294
+-- TOC entry 4062 (class 0 OID 0)
+-- Dependencies: 298
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13541,8 +15683,8 @@ SELECT pg_catalog.setval('public.users_id_seq', 1, true);
 
 
 --
--- TOC entry 4041 (class 0 OID 0)
--- Dependencies: 296
+-- TOC entry 4063 (class 0 OID 0)
+-- Dependencies: 300
 -- Name: users_jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13550,8 +15692,8 @@ SELECT pg_catalog.setval('public.users_jobs_id_seq', 1, false);
 
 
 --
--- TOC entry 4042 (class 0 OID 0)
--- Dependencies: 300
+-- TOC entry 4064 (class 0 OID 0)
+-- Dependencies: 304
 -- Name: workflows_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -13559,7 +15701,7 @@ SELECT pg_catalog.setval('public.workflows_id_seq', 22, true);
 
 
 --
--- TOC entry 3538 (class 2606 OID 292905)
+-- TOC entry 3550 (class 2606 OID 398485)
 -- Name: apiKeys apiKeys_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13568,7 +15710,7 @@ ALTER TABLE ONLY public."apiKeys"
 
 
 --
--- TOC entry 3541 (class 2606 OID 292907)
+-- TOC entry 3553 (class 2606 OID 398487)
 -- Name: applicationPlugins applicationPlugins_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13577,7 +15719,7 @@ ALTER TABLE ONLY public."applicationPlugins"
 
 
 --
--- TOC entry 3543 (class 2606 OID 292909)
+-- TOC entry 3555 (class 2606 OID 398489)
 -- Name: applicationPlugins applicationPlugins_packageName_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13586,7 +15728,7 @@ ALTER TABLE ONLY public."applicationPlugins"
 
 
 --
--- TOC entry 3545 (class 2606 OID 292911)
+-- TOC entry 3557 (class 2606 OID 398491)
 -- Name: applicationPlugins applicationPlugins_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13595,7 +15737,7 @@ ALTER TABLE ONLY public."applicationPlugins"
 
 
 --
--- TOC entry 3547 (class 2606 OID 292913)
+-- TOC entry 3559 (class 2606 OID 398493)
 -- Name: applicationVersion applicationVersion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13604,7 +15746,7 @@ ALTER TABLE ONLY public."applicationVersion"
 
 
 --
--- TOC entry 3550 (class 2606 OID 292915)
+-- TOC entry 3562 (class 2606 OID 398495)
 -- Name: attachments attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13613,7 +15755,7 @@ ALTER TABLE ONLY public.attachments
 
 
 --
--- TOC entry 3554 (class 2606 OID 292917)
+-- TOC entry 3566 (class 2606 OID 398497)
 -- Name: authenticators authenticators_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13622,7 +15764,7 @@ ALTER TABLE ONLY public.authenticators
 
 
 --
--- TOC entry 3556 (class 2606 OID 292919)
+-- TOC entry 3568 (class 2606 OID 398499)
 -- Name: authenticators authenticators_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13631,7 +15773,7 @@ ALTER TABLE ONLY public.authenticators
 
 
 --
--- TOC entry 3558 (class 2606 OID 292921)
+-- TOC entry 3570 (class 2606 OID 398501)
 -- Name: chinaRegions chinaRegions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13640,7 +15782,7 @@ ALTER TABLE ONLY public."chinaRegions"
 
 
 --
--- TOC entry 3561 (class 2606 OID 292923)
+-- TOC entry 3573 (class 2606 OID 398503)
 -- Name: collectionCategories collectionCategories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13649,7 +15791,7 @@ ALTER TABLE ONLY public."collectionCategories"
 
 
 --
--- TOC entry 3563 (class 2606 OID 292925)
+-- TOC entry 3575 (class 2606 OID 398505)
 -- Name: collectionCategory collectionCategory_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13658,7 +15800,7 @@ ALTER TABLE ONLY public."collectionCategory"
 
 
 --
--- TOC entry 3566 (class 2606 OID 292927)
+-- TOC entry 3578 (class 2606 OID 398507)
 -- Name: collections collections_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13667,7 +15809,7 @@ ALTER TABLE ONLY public.collections
 
 
 --
--- TOC entry 3568 (class 2606 OID 292929)
+-- TOC entry 3580 (class 2606 OID 398509)
 -- Name: collections collections_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13676,7 +15818,7 @@ ALTER TABLE ONLY public.collections
 
 
 --
--- TOC entry 3572 (class 2606 OID 292931)
+-- TOC entry 3584 (class 2606 OID 398511)
 -- Name: customRequestsRoles customRequestsRoles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13685,7 +15827,7 @@ ALTER TABLE ONLY public."customRequestsRoles"
 
 
 --
--- TOC entry 3570 (class 2606 OID 292933)
+-- TOC entry 3582 (class 2606 OID 398513)
 -- Name: customRequests customRequests_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13694,7 +15836,7 @@ ALTER TABLE ONLY public."customRequests"
 
 
 --
--- TOC entry 3577 (class 2606 OID 292935)
+-- TOC entry 3589 (class 2606 OID 398515)
 -- Name: dataSourcesCollections dataSourcesCollections_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13703,7 +15845,7 @@ ALTER TABLE ONLY public."dataSourcesCollections"
 
 
 --
--- TOC entry 3581 (class 2606 OID 292937)
+-- TOC entry 3593 (class 2606 OID 398517)
 -- Name: dataSourcesFields dataSourcesFields_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13712,7 +15854,7 @@ ALTER TABLE ONLY public."dataSourcesFields"
 
 
 --
--- TOC entry 3594 (class 2606 OID 292939)
+-- TOC entry 3606 (class 2606 OID 398519)
 -- Name: dataSourcesRolesResourcesActions dataSourcesRolesResourcesActions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13721,7 +15863,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResourcesActions"
 
 
 --
--- TOC entry 3598 (class 2606 OID 292941)
+-- TOC entry 3610 (class 2606 OID 398521)
 -- Name: dataSourcesRolesResourcesScopes dataSourcesRolesResourcesScopes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13730,7 +15872,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResourcesScopes"
 
 
 --
--- TOC entry 3590 (class 2606 OID 292943)
+-- TOC entry 3602 (class 2606 OID 398523)
 -- Name: dataSourcesRolesResources dataSourcesRolesResources_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13739,7 +15881,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResources"
 
 
 --
--- TOC entry 3586 (class 2606 OID 292945)
+-- TOC entry 3598 (class 2606 OID 398525)
 -- Name: dataSourcesRoles dataSourcesRoles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13748,7 +15890,7 @@ ALTER TABLE ONLY public."dataSourcesRoles"
 
 
 --
--- TOC entry 3575 (class 2606 OID 292947)
+-- TOC entry 3587 (class 2606 OID 398527)
 -- Name: dataSources dataSources_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13757,7 +15899,7 @@ ALTER TABLE ONLY public."dataSources"
 
 
 --
--- TOC entry 3601 (class 2606 OID 292949)
+-- TOC entry 3613 (class 2606 OID 398529)
 -- Name: executions executions_eventKey_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13766,7 +15908,7 @@ ALTER TABLE ONLY public.executions
 
 
 --
--- TOC entry 3603 (class 2606 OID 292951)
+-- TOC entry 3615 (class 2606 OID 398531)
 -- Name: executions executions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13775,7 +15917,7 @@ ALTER TABLE ONLY public.executions
 
 
 --
--- TOC entry 3608 (class 2606 OID 292953)
+-- TOC entry 3620 (class 2606 OID 398533)
 -- Name: fields fields_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13784,7 +15926,7 @@ ALTER TABLE ONLY public.fields
 
 
 --
--- TOC entry 3612 (class 2606 OID 292955)
+-- TOC entry 3624 (class 2606 OID 398535)
 -- Name: flow_nodes flow_nodes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13793,7 +15935,7 @@ ALTER TABLE ONLY public.flow_nodes
 
 
 --
--- TOC entry 3617 (class 2606 OID 292957)
+-- TOC entry 3629 (class 2606 OID 398537)
 -- Name: funds funds_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13802,7 +15944,7 @@ ALTER TABLE ONLY public.funds
 
 
 --
--- TOC entry 3621 (class 2606 OID 292959)
+-- TOC entry 3633 (class 2606 OID 398539)
 -- Name: hello hello_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13811,7 +15953,7 @@ ALTER TABLE ONLY public.hello
 
 
 --
--- TOC entry 3623 (class 2606 OID 292961)
+-- TOC entry 3635 (class 2606 OID 398541)
 -- Name: iframeHtml iframeHtml_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13820,7 +15962,7 @@ ALTER TABLE ONLY public."iframeHtml"
 
 
 --
--- TOC entry 3628 (class 2606 OID 292963)
+-- TOC entry 3640 (class 2606 OID 398543)
 -- Name: jobs jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13829,7 +15971,25 @@ ALTER TABLE ONLY public.jobs
 
 
 --
--- TOC entry 3631 (class 2606 OID 292965)
+-- TOC entry 3643 (class 2606 OID 398545)
+-- Name: kafka_configs kafka_configs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.kafka_configs
+    ADD CONSTRAINT kafka_configs_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3645 (class 2606 OID 398547)
+-- Name: kafka_topics kafka_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.kafka_topics
+    ADD CONSTRAINT kafka_topics_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3647 (class 2606 OID 398549)
 -- Name: migrations migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13838,7 +15998,7 @@ ALTER TABLE ONLY public.migrations
 
 
 --
--- TOC entry 3633 (class 2606 OID 292967)
+-- TOC entry 3649 (class 2606 OID 398551)
 -- Name: projects projects_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13847,7 +16007,7 @@ ALTER TABLE ONLY public.projects
 
 
 --
--- TOC entry 3636 (class 2606 OID 292969)
+-- TOC entry 3652 (class 2606 OID 398553)
 -- Name: proposes proposes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13856,7 +16016,7 @@ ALTER TABLE ONLY public.proposes
 
 
 --
--- TOC entry 3646 (class 2606 OID 292971)
+-- TOC entry 3662 (class 2606 OID 398555)
 -- Name: rolesResourcesActions rolesResourcesActions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13865,7 +16025,7 @@ ALTER TABLE ONLY public."rolesResourcesActions"
 
 
 --
--- TOC entry 3650 (class 2606 OID 292973)
+-- TOC entry 3666 (class 2606 OID 398557)
 -- Name: rolesResourcesScopes rolesResourcesScopes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13874,7 +16034,7 @@ ALTER TABLE ONLY public."rolesResourcesScopes"
 
 
 --
--- TOC entry 3643 (class 2606 OID 292975)
+-- TOC entry 3659 (class 2606 OID 398559)
 -- Name: rolesResources rolesResources_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13883,7 +16043,7 @@ ALTER TABLE ONLY public."rolesResources"
 
 
 --
--- TOC entry 3652 (class 2606 OID 292977)
+-- TOC entry 3668 (class 2606 OID 398561)
 -- Name: rolesUischemas rolesUischemas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13892,7 +16052,7 @@ ALTER TABLE ONLY public."rolesUischemas"
 
 
 --
--- TOC entry 3655 (class 2606 OID 292979)
+-- TOC entry 3671 (class 2606 OID 398563)
 -- Name: rolesUsers rolesUsers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13901,7 +16061,7 @@ ALTER TABLE ONLY public."rolesUsers"
 
 
 --
--- TOC entry 3639 (class 2606 OID 292981)
+-- TOC entry 3655 (class 2606 OID 398565)
 -- Name: roles roles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13910,7 +16070,7 @@ ALTER TABLE ONLY public.roles
 
 
 --
--- TOC entry 3641 (class 2606 OID 292983)
+-- TOC entry 3657 (class 2606 OID 398567)
 -- Name: roles roles_title_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13919,7 +16079,7 @@ ALTER TABLE ONLY public.roles
 
 
 --
--- TOC entry 3658 (class 2606 OID 292985)
+-- TOC entry 3674 (class 2606 OID 398569)
 -- Name: sequences sequences_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13928,7 +16088,7 @@ ALTER TABLE ONLY public.sequences
 
 
 --
--- TOC entry 3660 (class 2606 OID 292987)
+-- TOC entry 3676 (class 2606 OID 398571)
 -- Name: storages storages_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13937,7 +16097,7 @@ ALTER TABLE ONLY public.storages
 
 
 --
--- TOC entry 3662 (class 2606 OID 292989)
+-- TOC entry 3678 (class 2606 OID 398573)
 -- Name: storages storages_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13946,7 +16106,7 @@ ALTER TABLE ONLY public.storages
 
 
 --
--- TOC entry 3664 (class 2606 OID 292991)
+-- TOC entry 3680 (class 2606 OID 398575)
 -- Name: systemSettings systemSettings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13955,7 +16115,7 @@ ALTER TABLE ONLY public."systemSettings"
 
 
 --
--- TOC entry 3667 (class 2606 OID 292993)
+-- TOC entry 3683 (class 2606 OID 398577)
 -- Name: t_587vrvz0gcb t_587vrvz0gcb_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13964,7 +16124,7 @@ ALTER TABLE ONLY public.t_587vrvz0gcb
 
 
 --
--- TOC entry 3728 (class 2606 OID 293111)
+-- TOC entry 3686 (class 2606 OID 398579)
 -- Name: t_bzkvdw2a767 t_bzkvdw2a767_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13973,7 +16133,16 @@ ALTER TABLE ONLY public.t_bzkvdw2a767
 
 
 --
--- TOC entry 3670 (class 2606 OID 292995)
+-- TOC entry 3689 (class 2606 OID 398581)
+-- Name: t_ncaek4uddrw t_ncaek4uddrw_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.t_ncaek4uddrw
+    ADD CONSTRAINT t_ncaek4uddrw_pkey PRIMARY KEY (f_j72jrq1b0nw, f_9k9506pi4rq);
+
+
+--
+-- TOC entry 3692 (class 2606 OID 398583)
 -- Name: t_s9b2jhcxq9q t_s9b2jhcxq9q_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13982,7 +16151,7 @@ ALTER TABLE ONLY public.t_s9b2jhcxq9q
 
 
 --
--- TOC entry 3672 (class 2606 OID 292997)
+-- TOC entry 3694 (class 2606 OID 398585)
 -- Name: themeConfig themeConfig_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13991,7 +16160,7 @@ ALTER TABLE ONLY public."themeConfig"
 
 
 --
--- TOC entry 3674 (class 2606 OID 292999)
+-- TOC entry 3696 (class 2606 OID 398587)
 -- Name: tokenBlacklist tokenBlacklist_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14000,7 +16169,7 @@ ALTER TABLE ONLY public."tokenBlacklist"
 
 
 --
--- TOC entry 3680 (class 2606 OID 293001)
+-- TOC entry 3702 (class 2606 OID 398589)
 -- Name: transactions transactions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14009,7 +16178,7 @@ ALTER TABLE ONLY public.transactions
 
 
 --
--- TOC entry 3684 (class 2606 OID 293003)
+-- TOC entry 3706 (class 2606 OID 398591)
 -- Name: uiSchemaServerHooks uiSchemaServerHooks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14018,7 +16187,7 @@ ALTER TABLE ONLY public."uiSchemaServerHooks"
 
 
 --
--- TOC entry 3687 (class 2606 OID 293005)
+-- TOC entry 3709 (class 2606 OID 398593)
 -- Name: uiSchemaTemplates uiSchemaTemplates_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14027,7 +16196,7 @@ ALTER TABLE ONLY public."uiSchemaTemplates"
 
 
 --
--- TOC entry 3690 (class 2606 OID 293007)
+-- TOC entry 3712 (class 2606 OID 398595)
 -- Name: uiSchemaTreePath uiSchemaTreePath_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14036,7 +16205,7 @@ ALTER TABLE ONLY public."uiSchemaTreePath"
 
 
 --
--- TOC entry 3693 (class 2606 OID 293009)
+-- TOC entry 3715 (class 2606 OID 398597)
 -- Name: uiSchemas uiSchemas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14045,7 +16214,7 @@ ALTER TABLE ONLY public."uiSchemas"
 
 
 --
--- TOC entry 3706 (class 2606 OID 293011)
+-- TOC entry 3728 (class 2606 OID 398599)
 -- Name: usersAuthenticators usersAuthenticators_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14054,7 +16223,7 @@ ALTER TABLE ONLY public."usersAuthenticators"
 
 
 --
--- TOC entry 3696 (class 2606 OID 293013)
+-- TOC entry 3718 (class 2606 OID 398601)
 -- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14063,7 +16232,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3711 (class 2606 OID 293015)
+-- TOC entry 3733 (class 2606 OID 398603)
 -- Name: users_jobs users_jobs_jobId_userId_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14072,7 +16241,7 @@ ALTER TABLE ONLY public.users_jobs
 
 
 --
--- TOC entry 3715 (class 2606 OID 293017)
+-- TOC entry 3737 (class 2606 OID 398605)
 -- Name: users_jobs users_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14081,7 +16250,7 @@ ALTER TABLE ONLY public.users_jobs
 
 
 --
--- TOC entry 3698 (class 2606 OID 293019)
+-- TOC entry 3720 (class 2606 OID 398607)
 -- Name: users users_phone_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14090,7 +16259,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3700 (class 2606 OID 293021)
+-- TOC entry 3722 (class 2606 OID 398609)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14099,7 +16268,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3702 (class 2606 OID 293023)
+-- TOC entry 3724 (class 2606 OID 398611)
 -- Name: users users_resetToken_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14108,7 +16277,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3704 (class 2606 OID 293025)
+-- TOC entry 3726 (class 2606 OID 398613)
 -- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14117,7 +16286,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3719 (class 2606 OID 293027)
+-- TOC entry 3741 (class 2606 OID 398615)
 -- Name: verifications verifications_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14126,7 +16295,7 @@ ALTER TABLE ONLY public.verifications
 
 
 --
--- TOC entry 3722 (class 2606 OID 293029)
+-- TOC entry 3744 (class 2606 OID 398617)
 -- Name: verifications_providers verifications_providers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14135,7 +16304,7 @@ ALTER TABLE ONLY public.verifications_providers
 
 
 --
--- TOC entry 3725 (class 2606 OID 293031)
+-- TOC entry 3747 (class 2606 OID 398619)
 -- Name: workflows workflows_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -14144,7 +16313,7 @@ ALTER TABLE ONLY public.workflows
 
 
 --
--- TOC entry 3539 (class 1259 OID 293032)
+-- TOC entry 3551 (class 1259 OID 398620)
 -- Name: api_keys_role_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14152,7 +16321,7 @@ CREATE INDEX api_keys_role_name ON public."apiKeys" USING btree ("roleName");
 
 
 --
--- TOC entry 3548 (class 1259 OID 293033)
+-- TOC entry 3560 (class 1259 OID 398621)
 -- Name: attachments_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14160,7 +16329,7 @@ CREATE INDEX attachments_created_by_id ON public.attachments USING btree ("creat
 
 
 --
--- TOC entry 3551 (class 1259 OID 293034)
+-- TOC entry 3563 (class 1259 OID 398622)
 -- Name: attachments_storage_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14168,7 +16337,7 @@ CREATE INDEX attachments_storage_id ON public.attachments USING btree ("storageI
 
 
 --
--- TOC entry 3552 (class 1259 OID 293035)
+-- TOC entry 3564 (class 1259 OID 398623)
 -- Name: authenticators_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14176,7 +16345,7 @@ CREATE INDEX authenticators_created_by_id ON public.authenticators USING btree (
 
 
 --
--- TOC entry 3559 (class 1259 OID 293036)
+-- TOC entry 3571 (class 1259 OID 398624)
 -- Name: china_regions_parent_code; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14184,7 +16353,7 @@ CREATE INDEX china_regions_parent_code ON public."chinaRegions" USING btree ("pa
 
 
 --
--- TOC entry 3564 (class 1259 OID 293037)
+-- TOC entry 3576 (class 1259 OID 398625)
 -- Name: collection_category_category_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14192,7 +16361,7 @@ CREATE INDEX collection_category_category_id ON public."collectionCategory" USIN
 
 
 --
--- TOC entry 3573 (class 1259 OID 293038)
+-- TOC entry 3585 (class 1259 OID 398626)
 -- Name: custom_requests_roles_role_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14200,7 +16369,7 @@ CREATE INDEX custom_requests_roles_role_name ON public."customRequestsRoles" USI
 
 
 --
--- TOC entry 3578 (class 1259 OID 293039)
+-- TOC entry 3590 (class 1259 OID 398627)
 -- Name: data_sources_collections_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14208,7 +16377,7 @@ CREATE INDEX data_sources_collections_data_source_key ON public."dataSourcesColl
 
 
 --
--- TOC entry 3579 (class 1259 OID 293040)
+-- TOC entry 3591 (class 1259 OID 398628)
 -- Name: data_sources_collections_name_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14216,7 +16385,7 @@ CREATE UNIQUE INDEX data_sources_collections_name_data_source_key ON public."dat
 
 
 --
--- TOC entry 3582 (class 1259 OID 293041)
+-- TOC entry 3594 (class 1259 OID 398629)
 -- Name: data_sources_fields_collection_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14224,7 +16393,7 @@ CREATE INDEX data_sources_fields_collection_key ON public."dataSourcesFields" US
 
 
 --
--- TOC entry 3583 (class 1259 OID 293042)
+-- TOC entry 3595 (class 1259 OID 398630)
 -- Name: data_sources_fields_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14232,7 +16401,7 @@ CREATE INDEX data_sources_fields_data_source_key ON public."dataSourcesFields" U
 
 
 --
--- TOC entry 3584 (class 1259 OID 293043)
+-- TOC entry 3596 (class 1259 OID 398631)
 -- Name: data_sources_fields_name_collection_name_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14240,7 +16409,7 @@ CREATE UNIQUE INDEX data_sources_fields_name_collection_name_data_source_key ON 
 
 
 --
--- TOC entry 3587 (class 1259 OID 293044)
+-- TOC entry 3599 (class 1259 OID 398632)
 -- Name: data_sources_roles_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14248,7 +16417,7 @@ CREATE INDEX data_sources_roles_data_source_key ON public."dataSourcesRoles" USI
 
 
 --
--- TOC entry 3595 (class 1259 OID 293045)
+-- TOC entry 3607 (class 1259 OID 398633)
 -- Name: data_sources_roles_resources_actions_roles_resource_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14256,7 +16425,7 @@ CREATE INDEX data_sources_roles_resources_actions_roles_resource_id ON public."d
 
 
 --
--- TOC entry 3596 (class 1259 OID 293046)
+-- TOC entry 3608 (class 1259 OID 398634)
 -- Name: data_sources_roles_resources_actions_scope_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14264,7 +16433,7 @@ CREATE INDEX data_sources_roles_resources_actions_scope_id ON public."dataSource
 
 
 --
--- TOC entry 3591 (class 1259 OID 293047)
+-- TOC entry 3603 (class 1259 OID 398635)
 -- Name: data_sources_roles_resources_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14272,7 +16441,7 @@ CREATE INDEX data_sources_roles_resources_data_source_key ON public."dataSources
 
 
 --
--- TOC entry 3592 (class 1259 OID 293048)
+-- TOC entry 3604 (class 1259 OID 398636)
 -- Name: data_sources_roles_resources_role_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14280,7 +16449,7 @@ CREATE INDEX data_sources_roles_resources_role_name ON public."dataSourcesRolesR
 
 
 --
--- TOC entry 3599 (class 1259 OID 293049)
+-- TOC entry 3611 (class 1259 OID 398637)
 -- Name: data_sources_roles_resources_scopes_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14288,7 +16457,7 @@ CREATE INDEX data_sources_roles_resources_scopes_data_source_key ON public."data
 
 
 --
--- TOC entry 3588 (class 1259 OID 293050)
+-- TOC entry 3600 (class 1259 OID 398638)
 -- Name: data_sources_roles_role_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14296,7 +16465,7 @@ CREATE INDEX data_sources_roles_role_name ON public."dataSourcesRoles" USING btr
 
 
 --
--- TOC entry 3604 (class 1259 OID 293051)
+-- TOC entry 3616 (class 1259 OID 398639)
 -- Name: executions_workflow_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14304,7 +16473,7 @@ CREATE INDEX executions_workflow_id ON public.executions USING btree ("workflowI
 
 
 --
--- TOC entry 3605 (class 1259 OID 293052)
+-- TOC entry 3617 (class 1259 OID 398640)
 -- Name: fields_collection_name_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14312,7 +16481,7 @@ CREATE UNIQUE INDEX fields_collection_name_name ON public.fields USING btree ("c
 
 
 --
--- TOC entry 3606 (class 1259 OID 293053)
+-- TOC entry 3618 (class 1259 OID 398641)
 -- Name: fields_parent_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14320,7 +16489,7 @@ CREATE INDEX fields_parent_key ON public.fields USING btree ("parentKey");
 
 
 --
--- TOC entry 3609 (class 1259 OID 293054)
+-- TOC entry 3621 (class 1259 OID 398642)
 -- Name: fields_reverse_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14328,7 +16497,7 @@ CREATE INDEX fields_reverse_key ON public.fields USING btree ("reverseKey");
 
 
 --
--- TOC entry 3610 (class 1259 OID 293055)
+-- TOC entry 3622 (class 1259 OID 398643)
 -- Name: flow_nodes_downstream_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14336,7 +16505,7 @@ CREATE INDEX flow_nodes_downstream_id ON public.flow_nodes USING btree ("downstr
 
 
 --
--- TOC entry 3613 (class 1259 OID 293056)
+-- TOC entry 3625 (class 1259 OID 398644)
 -- Name: flow_nodes_upstream_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14344,7 +16513,7 @@ CREATE INDEX flow_nodes_upstream_id ON public.flow_nodes USING btree ("upstreamI
 
 
 --
--- TOC entry 3614 (class 1259 OID 293057)
+-- TOC entry 3626 (class 1259 OID 398645)
 -- Name: flow_nodes_workflow_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14352,7 +16521,7 @@ CREATE INDEX flow_nodes_workflow_id ON public.flow_nodes USING btree ("workflowI
 
 
 --
--- TOC entry 3615 (class 1259 OID 293058)
+-- TOC entry 3627 (class 1259 OID 398646)
 -- Name: funds_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14360,7 +16529,7 @@ CREATE INDEX funds_created_by_id ON public.funds USING btree ("createdById");
 
 
 --
--- TOC entry 3618 (class 1259 OID 293059)
+-- TOC entry 3630 (class 1259 OID 398647)
 -- Name: funds_project_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14368,7 +16537,7 @@ CREATE INDEX funds_project_id ON public.funds USING btree (project_id);
 
 
 --
--- TOC entry 3619 (class 1259 OID 293060)
+-- TOC entry 3631 (class 1259 OID 398648)
 -- Name: funds_updated_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14376,7 +16545,7 @@ CREATE INDEX funds_updated_by_id ON public.funds USING btree ("updatedById");
 
 
 --
--- TOC entry 3624 (class 1259 OID 293061)
+-- TOC entry 3636 (class 1259 OID 398649)
 -- Name: iframe_html_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14384,7 +16553,7 @@ CREATE INDEX iframe_html_created_by_id ON public."iframeHtml" USING btree ("crea
 
 
 --
--- TOC entry 3625 (class 1259 OID 293062)
+-- TOC entry 3637 (class 1259 OID 398650)
 -- Name: jobs_execution_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14392,7 +16561,7 @@ CREATE INDEX jobs_execution_id ON public.jobs USING btree ("executionId");
 
 
 --
--- TOC entry 3626 (class 1259 OID 293063)
+-- TOC entry 3638 (class 1259 OID 398651)
 -- Name: jobs_node_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14400,7 +16569,7 @@ CREATE INDEX jobs_node_id ON public.jobs USING btree ("nodeId");
 
 
 --
--- TOC entry 3629 (class 1259 OID 293064)
+-- TOC entry 3641 (class 1259 OID 398652)
 -- Name: jobs_upstream_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14408,7 +16577,7 @@ CREATE INDEX jobs_upstream_id ON public.jobs USING btree ("upstreamId");
 
 
 --
--- TOC entry 3634 (class 1259 OID 293065)
+-- TOC entry 3650 (class 1259 OID 398653)
 -- Name: proposes_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14416,7 +16585,7 @@ CREATE INDEX proposes_created_by_id ON public.proposes USING btree ("createdById
 
 
 --
--- TOC entry 3637 (class 1259 OID 293066)
+-- TOC entry 3653 (class 1259 OID 398654)
 -- Name: proposes_updated_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14424,7 +16593,7 @@ CREATE INDEX proposes_updated_by_id ON public.proposes USING btree ("updatedById
 
 
 --
--- TOC entry 3647 (class 1259 OID 293067)
+-- TOC entry 3663 (class 1259 OID 398655)
 -- Name: roles_resources_actions_roles_resource_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14432,7 +16601,7 @@ CREATE INDEX roles_resources_actions_roles_resource_id ON public."rolesResources
 
 
 --
--- TOC entry 3648 (class 1259 OID 293068)
+-- TOC entry 3664 (class 1259 OID 398656)
 -- Name: roles_resources_actions_scope_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14440,7 +16609,7 @@ CREATE INDEX roles_resources_actions_scope_id ON public."rolesResourcesActions" 
 
 
 --
--- TOC entry 3644 (class 1259 OID 293069)
+-- TOC entry 3660 (class 1259 OID 398657)
 -- Name: roles_resources_role_name_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14448,7 +16617,7 @@ CREATE UNIQUE INDEX roles_resources_role_name_name ON public."rolesResources" US
 
 
 --
--- TOC entry 3653 (class 1259 OID 293070)
+-- TOC entry 3669 (class 1259 OID 398658)
 -- Name: roles_uischemas_ui_schema_x_uid; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14456,7 +16625,7 @@ CREATE INDEX roles_uischemas_ui_schema_x_uid ON public."rolesUischemas" USING bt
 
 
 --
--- TOC entry 3656 (class 1259 OID 293071)
+-- TOC entry 3672 (class 1259 OID 398659)
 -- Name: roles_users_user_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14464,7 +16633,7 @@ CREATE INDEX roles_users_user_id ON public."rolesUsers" USING btree ("userId");
 
 
 --
--- TOC entry 3665 (class 1259 OID 293072)
+-- TOC entry 3681 (class 1259 OID 398660)
 -- Name: system_settings_logo_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14472,7 +16641,7 @@ CREATE INDEX system_settings_logo_id ON public."systemSettings" USING btree ("lo
 
 
 --
--- TOC entry 3726 (class 1259 OID 293112)
+-- TOC entry 3684 (class 1259 OID 398661)
 -- Name: t_bzkvdw2a767_f_qxu5av3g0sx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14480,7 +16649,15 @@ CREATE INDEX t_bzkvdw2a767_f_qxu5av3g0sx ON public.t_bzkvdw2a767 USING btree (f_
 
 
 --
--- TOC entry 3668 (class 1259 OID 293073)
+-- TOC entry 3687 (class 1259 OID 398662)
+-- Name: t_ncaek4uddrw_f_9k9506pi4rq; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX t_ncaek4uddrw_f_9k9506pi4rq ON public.t_ncaek4uddrw USING btree (f_9k9506pi4rq);
+
+
+--
+-- TOC entry 3690 (class 1259 OID 398663)
 -- Name: t_s9b2jhcxq9q_f_8o3qqdvq8bk; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14488,7 +16665,7 @@ CREATE INDEX t_s9b2jhcxq9q_f_8o3qqdvq8bk ON public.t_s9b2jhcxq9q USING btree (f_
 
 
 --
--- TOC entry 3675 (class 1259 OID 293074)
+-- TOC entry 3697 (class 1259 OID 398664)
 -- Name: token_blacklist_token; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14496,7 +16673,7 @@ CREATE INDEX token_blacklist_token ON public."tokenBlacklist" USING btree (token
 
 
 --
--- TOC entry 3676 (class 1259 OID 293075)
+-- TOC entry 3698 (class 1259 OID 398665)
 -- Name: transactions_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14504,7 +16681,7 @@ CREATE INDEX transactions_created_by_id ON public.transactions USING btree ("cre
 
 
 --
--- TOC entry 3677 (class 1259 OID 293076)
+-- TOC entry 3699 (class 1259 OID 398666)
 -- Name: transactions_f_e47my4oktv2; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14512,7 +16689,7 @@ CREATE INDEX transactions_f_e47my4oktv2 ON public.transactions USING btree (f_e4
 
 
 --
--- TOC entry 3678 (class 1259 OID 293077)
+-- TOC entry 3700 (class 1259 OID 398667)
 -- Name: transactions_fund_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14520,7 +16697,7 @@ CREATE INDEX transactions_fund_id ON public.transactions USING btree (fund_id);
 
 
 --
--- TOC entry 3681 (class 1259 OID 293078)
+-- TOC entry 3703 (class 1259 OID 398668)
 -- Name: transactions_updated_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14528,7 +16705,7 @@ CREATE INDEX transactions_updated_by_id ON public.transactions USING btree ("upd
 
 
 --
--- TOC entry 3682 (class 1259 OID 293079)
+-- TOC entry 3704 (class 1259 OID 398669)
 -- Name: transactions_user_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14536,7 +16713,7 @@ CREATE INDEX transactions_user_id ON public.transactions USING btree (user_id);
 
 
 --
--- TOC entry 3685 (class 1259 OID 293080)
+-- TOC entry 3707 (class 1259 OID 398670)
 -- Name: ui_schema_server_hooks_uid; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14544,7 +16721,7 @@ CREATE INDEX ui_schema_server_hooks_uid ON public."uiSchemaServerHooks" USING bt
 
 
 --
--- TOC entry 3688 (class 1259 OID 293081)
+-- TOC entry 3710 (class 1259 OID 398671)
 -- Name: ui_schema_templates_uid; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14552,7 +16729,7 @@ CREATE INDEX ui_schema_templates_uid ON public."uiSchemaTemplates" USING btree (
 
 
 --
--- TOC entry 3691 (class 1259 OID 293082)
+-- TOC entry 3713 (class 1259 OID 398672)
 -- Name: ui_schema_tree_path_descendant; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14560,7 +16737,7 @@ CREATE INDEX ui_schema_tree_path_descendant ON public."uiSchemaTreePath" USING b
 
 
 --
--- TOC entry 3707 (class 1259 OID 293083)
+-- TOC entry 3729 (class 1259 OID 398673)
 -- Name: users_authenticators_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14568,7 +16745,7 @@ CREATE INDEX users_authenticators_created_by_id ON public."usersAuthenticators" 
 
 
 --
--- TOC entry 3708 (class 1259 OID 293084)
+-- TOC entry 3730 (class 1259 OID 398674)
 -- Name: users_authenticators_user_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14576,7 +16753,7 @@ CREATE INDEX users_authenticators_user_id ON public."usersAuthenticators" USING 
 
 
 --
--- TOC entry 3694 (class 1259 OID 293085)
+-- TOC entry 3716 (class 1259 OID 398675)
 -- Name: users_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14584,7 +16761,7 @@ CREATE INDEX users_created_by_id ON public.users USING btree ("createdById");
 
 
 --
--- TOC entry 3709 (class 1259 OID 293086)
+-- TOC entry 3731 (class 1259 OID 398676)
 -- Name: users_jobs_execution_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14592,7 +16769,7 @@ CREATE INDEX users_jobs_execution_id ON public.users_jobs USING btree ("executio
 
 
 --
--- TOC entry 3712 (class 1259 OID 293087)
+-- TOC entry 3734 (class 1259 OID 398677)
 -- Name: users_jobs_job_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14600,7 +16777,7 @@ CREATE INDEX users_jobs_job_id ON public.users_jobs USING btree ("jobId");
 
 
 --
--- TOC entry 3713 (class 1259 OID 293088)
+-- TOC entry 3735 (class 1259 OID 398678)
 -- Name: users_jobs_node_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14608,7 +16785,7 @@ CREATE INDEX users_jobs_node_id ON public.users_jobs USING btree ("nodeId");
 
 
 --
--- TOC entry 3716 (class 1259 OID 293089)
+-- TOC entry 3738 (class 1259 OID 398679)
 -- Name: users_jobs_user_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14616,7 +16793,7 @@ CREATE INDEX users_jobs_user_id ON public.users_jobs USING btree ("userId");
 
 
 --
--- TOC entry 3717 (class 1259 OID 293090)
+-- TOC entry 3739 (class 1259 OID 398680)
 -- Name: users_jobs_workflow_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14624,7 +16801,7 @@ CREATE INDEX users_jobs_workflow_id ON public.users_jobs USING btree ("workflowI
 
 
 --
--- TOC entry 3720 (class 1259 OID 293091)
+-- TOC entry 3742 (class 1259 OID 398681)
 -- Name: verifications_provider_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -14632,14 +16809,14 @@ CREATE INDEX verifications_provider_id ON public.verifications USING btree ("pro
 
 
 --
--- TOC entry 3723 (class 1259 OID 293092)
+-- TOC entry 3745 (class 1259 OID 398682)
 -- Name: workflows_key_current; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX workflows_key_current ON public.workflows USING btree (key, current);
 
 
--- Completed on 2024-11-27 16:13:48 UTC
+-- Completed on 2024-12-01 05:12:21 UTC
 
 --
 -- PostgreSQL database dump complete
