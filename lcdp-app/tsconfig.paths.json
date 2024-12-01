@@ -4,6 +4,15 @@
       "@@/*": [
         ".dumi/tmp/*"
       ],
+      "@olp-dtu-2024/button-action-nocobase/client": [
+        "packages/plugins/@olp-dtu-2024/button-action-nocobase/src/client"
+      ],
+      "@olp-dtu-2024/button-action-nocobase/package.json": [
+        "packages/plugins/@olp-dtu-2024/button-action-nocobase/package.json"
+      ],
+      "@olp-dtu-2024/button-action-nocobase": [
+        "packages/plugins/@olp-dtu-2024/button-action-nocobase/src"
+      ],
       "@olp-dtu-2024/carousel-nocobase/client": [
         "packages/plugins/@olp-dtu-2024/carousel-nocobase/src/client"
       ],
