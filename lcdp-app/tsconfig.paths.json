@@ -4,6 +4,33 @@
       "@@/*": [
         ".dumi/tmp/*"
       ],
+      "@olp-dtu-2024/button-action-nocobase/client": [
+        "packages/plugins/@olp-dtu-2024/button-action-nocobase/src/client"
+      ],
+      "@olp-dtu-2024/button-action-nocobase/package.json": [
+        "packages/plugins/@olp-dtu-2024/button-action-nocobase/package.json"
+      ],
+      "@olp-dtu-2024/button-action-nocobase": [
+        "packages/plugins/@olp-dtu-2024/button-action-nocobase/src"
+      ],
+      "@olp-dtu-2024/carousel-nocobase/client": [
+        "packages/plugins/@olp-dtu-2024/carousel-nocobase/src/client"
+      ],
+      "@olp-dtu-2024/carousel-nocobase/package.json": [
+        "packages/plugins/@olp-dtu-2024/carousel-nocobase/package.json"
+      ],
+      "@olp-dtu-2024/carousel-nocobase": [
+        "packages/plugins/@olp-dtu-2024/carousel-nocobase/src"
+      ],
+      "@olp-dtu-2024/header-picker-nocobase/client": [
+        "packages/plugins/@olp-dtu-2024/header-picker-nocobase/src/client"
+      ],
+      "@olp-dtu-2024/header-picker-nocobase/package.json": [
+        "packages/plugins/@olp-dtu-2024/header-picker-nocobase/package.json"
+      ],
+      "@olp-dtu-2024/header-picker-nocobase": [
+        "packages/plugins/@olp-dtu-2024/header-picker-nocobase/src"
+      ],
       "@olp-dtu-2024/kafka-nocobase/client": [
         "packages/plugins/@olp-dtu-2024/kafka-nocobase/src/client"
       ],
@@ -22,14 +49,14 @@
       "@olp-dtu-2024/landing-page": [
         "packages/plugins/@olp-dtu-2024/landing-page/src"
       ],
-      "@olp-dtu-2024/landing-project/client": [
-        "packages/plugins/@olp-dtu-2024/landing-project/src/client"
+      "@olp-dtu-2024/progress-nocobase/client": [
+        "packages/plugins/@olp-dtu-2024/progress-nocobase/src/client"
       ],
-      "@olp-dtu-2024/landing-project/package.json": [
-        "packages/plugins/@olp-dtu-2024/landing-project/package.json"
+      "@olp-dtu-2024/progress-nocobase/package.json": [
+        "packages/plugins/@olp-dtu-2024/progress-nocobase/package.json"
       ],
-      "@olp-dtu-2024/landing-project": [
-        "packages/plugins/@olp-dtu-2024/landing-project/src"
+      "@olp-dtu-2024/progress-nocobase": [
+        "packages/plugins/@olp-dtu-2024/progress-nocobase/src"
       ],
       "@olp-dtu-2024/qr-donate/client": [
         "packages/plugins/@olp-dtu-2024/qr-donate/src/client"

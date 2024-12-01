@@ -1,6 +1,6 @@
 networks:
   olp-dtu-2024-network:
-    name: "olp-dtu-2024-network"
+    name: 'olp-dtu-2024-network'
     driver: bridge
     ipam:
       driver: default
@@ -26,7 +26,7 @@ services:
       - '5439:5432'
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+      test: ['CMD', 'pg_isready', '-U', 'postgres']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -49,7 +49,7 @@ services:
       - redis-data:/bitnami/redis
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD", "redis-cli", "--raw", "ping" ]
+      test: ['CMD', 'redis-cli', '--raw', 'ping']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -63,7 +63,7 @@ services:
 
   zookeeper:
     image: 'bitnami/zookeeper:latest'
-    container_name: "zookeeper-olp-dtu-2024"
+    container_name: 'zookeeper-olp-dtu-2024'
     ports:
       - 2181:2181
     volumes:
@@ -75,7 +75,7 @@ services:
 
   kafka:
     image: bitnami/kafka:latest
-    container_name: "kafka-olp-dtu-2024"
+    container_name: 'kafka-olp-dtu-2024'
     ports:
       - 9092:9092
       - 9093:9093
@@ -114,15 +114,15 @@ services:
     networks:
       - olp-dtu-2024-network
 
-  transaction-service:
-    build:
-      context: ../transaction-service
-      dockerfile: Dockerfile
-    container_name: transaction-service
-    ports:
-      - '3027:3027'
-    networks:
-      - olp-dtu-2024-network
+  # transaction-service:
+  #   build:
+  #     context: ../transaction-service
+  #     dockerfile: Dockerfile
+  #   container_name: transaction-service
+  #   ports:
+  #     - '3027:3027'
+  #   networks:
+  #     - olp-dtu-2024-network
 
 volumes:
   postgres-data-be:
