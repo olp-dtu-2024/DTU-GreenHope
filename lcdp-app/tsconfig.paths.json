@@ -58,14 +58,14 @@
       "@olp-dtu-2024/progress-nocobase": [
         "packages/plugins/@olp-dtu-2024/progress-nocobase/src"
       ],
-      "@olp-dtu-2024/qr-donate/client": [
-        "packages/plugins/@olp-dtu-2024/qr-donate/src/client"
+      "@olp-dtu-2024/vietqr-nocobase/client": [
+        "packages/plugins/@olp-dtu-2024/vietqr-nocobase/src/client"
       ],
-      "@olp-dtu-2024/qr-donate/package.json": [
-        "packages/plugins/@olp-dtu-2024/qr-donate/package.json"
+      "@olp-dtu-2024/vietqr-nocobase/package.json": [
+        "packages/plugins/@olp-dtu-2024/vietqr-nocobase/package.json"
       ],
-      "@olp-dtu-2024/qr-donate": [
-        "packages/plugins/@olp-dtu-2024/qr-donate/src"
+      "@olp-dtu-2024/vietqr-nocobase": [
+        "packages/plugins/@olp-dtu-2024/vietqr-nocobase/src"
       ]
     }
   }
