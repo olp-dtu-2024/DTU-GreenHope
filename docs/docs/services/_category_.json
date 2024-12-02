@@ -1,0 +1,8 @@
+{
+  "label": "Các Service Của Hệ Thống",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Các service chính của hệ thống - cung cấp các dịch vụ cơ bản cho hệ thống"
+  }
+}
