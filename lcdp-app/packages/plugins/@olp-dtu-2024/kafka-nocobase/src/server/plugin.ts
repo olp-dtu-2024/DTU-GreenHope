@@ -1,17 +1,26 @@
 import { InstallOptions, Plugin } from '@nocobase/server';
 import { Kafka, Producer, Consumer } from 'kafkajs';
 import { KafkaEventListener } from './eventListener';
+import PluginWorkflowServer, {
+  CustomFunction,
+  InstructionInterface,
+  Trigger,
+  WorkflowModel,
+} from '@nocobase/plugin-workflow';
+import { Registry } from '@nocobase/utils';
+import KafkaTrigger from './triggers/KafkaTrigger';
 
-export class KafkaNocobaseServer extends Plugin {
+export class KafkaNocobaseServer extends PluginWorkflowServer {
   kafka: Kafka;
   producer: Producer;
   consumer: Consumer;
   private eventListener: KafkaEventListener;
 
   async load() {
-    const db = this.db;
+    const { db } = this;
     const tableKafkaTopicName = 'kafka_topics';
     const tableKafkaConfigName = 'kafka_configs';
+
     const tableKafkaConfigExists = await db.sequelize
       .getQueryInterface()
       .showAllTables()
@@ -268,6 +277,24 @@ export class KafkaNocobaseServer extends Plugin {
     this.app.context.kafkaEmit = this.eventListener.emit.bind(
       this.eventListener
     );
+    await this.app.pm.get('workflow').load();
+    this.registerTrigger('kafka', KafkaTrigger);
+    await this.db.getRepository('workflows').update({
+      filter: {},
+      values: {
+        options: {
+          triggers: [
+            {
+              type: 'kafka',
+              title: KafkaTrigger.Title || 'Kafka trigger',
+              description:
+                KafkaTrigger.Description || 'Trigger workflow on Kafka events',
+              schema: KafkaTrigger.schema,
+            },
+          ],
+        },
+      },
+    });
   }
 
   async afterEnable() {

@@ -10,3 +10,5 @@ export function useT() {
 export function tStr(key: string) {
   return `{{t(${JSON.stringify(key)}, { ns: ['${pkg.name}', 'client'], nsMode: 'fallback' })}}`;
 }
+
+export const NAMESPACE = 'workflow';
