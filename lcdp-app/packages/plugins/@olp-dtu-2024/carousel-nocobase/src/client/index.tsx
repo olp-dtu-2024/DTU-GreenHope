@@ -20,7 +20,6 @@ export class CarouselNocobaseClient extends Plugin {
    */
   async load() {
     this.app.addScopes({
-      // useInfoProps,
       useBlockScopeDecoratorProps,
       useCarouselBlockProps,
     });
