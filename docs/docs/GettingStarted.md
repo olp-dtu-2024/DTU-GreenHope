@@ -1,5 +1,4 @@
-# Trang chủ
-![s](../resources/greenhope.png)
+# Tổng quan
 > *"🤝 Kết nối yêu thương, kiến tạo tương lai bền vững 🌿"*
 ## 🍀 Greenhope
 - GREENHOPE (Hy vọng xanh) là một nền tảng tiên tiến phát triển dựa trên LCDP trong cuộc thi [Phần Mềm Nguồn Mở-Olympic Tin học Sinh viên Việt Nam 2024](https://www.olp.vn/procon-pmmn/ph%E1%BA%A7n-m%E1%BB%81m-ngu%E1%BB%93n-m%E1%BB%9F)
