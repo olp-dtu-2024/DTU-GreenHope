@@ -1,6 +1,7 @@
-import { Plugin } from '@nocobase/client';
+import PluginWorkflowClient from '@nocobase/plugin-workflow';
+import KafkaTrigger from './triggers/kafkaTrigger';
 
-export class KafkaNocobaseClient extends Plugin {
+export class KafkaNocobaseClient extends PluginWorkflowClient {
   async afterAdd() {
     // await this.app.pm.add()
   }
@@ -9,12 +10,7 @@ export class KafkaNocobaseClient extends Plugin {
 
   // You can get and modify the app instance here
   async load() {
-    console.log(this.app);
-    // this.app.addComponents({})
-    // this.app.addScopes({})
-    // this.app.addProvider()
-    // this.app.addProviders()
-    // this.app.router.add()
+    this.registerTrigger('kafka', KafkaTrigger);
   }
 }
 

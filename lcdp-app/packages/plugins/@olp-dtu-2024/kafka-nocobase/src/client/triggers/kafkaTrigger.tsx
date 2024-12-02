@@ -33,22 +33,22 @@ const COLLECTION_TRIGGER_MODE = {
 };
 
 const collectionModeOptions = [
-  // {
-  //   label: `{{t("After record added", { ns: "${NAMESPACE}" })}}`,
-  //   value: COLLECTION_TRIGGER_MODE.CREATED,
-  // },
-  // {
-  //   label: `{{t("After record updated", { ns: "${NAMESPACE}" })}}`,
-  //   value: COLLECTION_TRIGGER_MODE.UPDATED,
-  // },
-  // {
-  //   label: `{{t("After record added or updated", { ns: "${NAMESPACE}" })}}`,
-  //   value: COLLECTION_TRIGGER_MODE.SAVED,
-  // },
-  // {
-  //   label: `{{t("After record deleted", { ns: "${NAMESPACE}" })}}`,
-  //   value: COLLECTION_TRIGGER_MODE.DELETED,
-  // },
+  {
+    label: `{{t("After record added", { ns: "${NAMESPACE}" })}}`,
+    value: COLLECTION_TRIGGER_MODE.CREATED,
+  },
+  {
+    label: `{{t("After record updated", { ns: "${NAMESPACE}" })}}`,
+    value: COLLECTION_TRIGGER_MODE.UPDATED,
+  },
+  {
+    label: `{{t("After record added or updated", { ns: "${NAMESPACE}" })}}`,
+    value: COLLECTION_TRIGGER_MODE.SAVED,
+  },
+  {
+    label: `{{t("After record deleted", { ns: "${NAMESPACE}" })}}`,
+    value: COLLECTION_TRIGGER_MODE.DELETED,
+  },
 ];
 
 function useVariables(config, options) {
@@ -83,6 +83,8 @@ function useVariables(config, options) {
 }
 
 export default class extends Trigger {
+  on() {}
+  off() {}
   title = `{{t("Kafka event", { ns: "${NAMESPACE}" })}}`;
   description = `{{t('Triggered when a Kafka event occurs.', { ns: "${NAMESPACE}" })}}`;
   fieldset = {
