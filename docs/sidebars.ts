@@ -5,26 +5,26 @@ const sidebars: SidebarsConfig = {
     {
       type: 'doc',
       id: 'intro',
-      label: 'Giới thiệu',
+      label: 'Giới thiệu  🚀',
     },
     {
       type: 'doc',
       id: 'GettingStarted',
-      label: 'Tổng quan',
+      label: 'Tổng quan 📝',
     },
     {
       type: 'doc',
       id: 'Installation',
-      label: 'Hướng dẫn cài đặt',
+      label: 'Hướng dẫn cài đặt 🛠️',
     },
     {
       type: 'doc',
       id: 'Architecture',
-      label: 'Kiến trúc phần mềm',
+      label: 'Kiến trúc phần mềm 🏗️',
     },
     {
       type: 'category',
-      label: 'Các service của hệ thống',
+      label: 'Các service của hệ thống 📐',
       items: [
         'services/capcha-service',
         'services/lcdp-service',
@@ -34,7 +34,7 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'Plugin của dự án',
+      label: 'Plugin của dự án 🔌',
       items: [
         'plugin/carousel-nocobase',
         'plugin/kafka-nocobase',
@@ -46,7 +46,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'doc',
       id: 'LICENSE',
-      label: 'LICENSE',
+      label: 'LICENSE 📜',
     },
   ],
 };

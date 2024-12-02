@@ -56,9 +56,13 @@
 Ứng dụng này hướng tới các mục tiêu như hỗ trợ tìm kiếm và cứu nạn, cung cấp báo cáo thiệt hại chính xác, giám sát tiến độ tái thiết, và tạo ra hệ thống phối hợp minh bạch giữa các bên liên quan. Các tính năng thông minh giúp tự động hóa việc đánh giá và phân bổ nguồn lực, đồng thời tăng cường khả năng tương tác với cộng đồng. Trong tương lai, ứng dụng kỳ vọng sẽ mở rộng ra toàn cầu, tích hợp AI và dữ liệu lớn, dự báo thảm họa, và xây dựng một hệ sinh thái bền vững để giúp các khu vực phục hồi nhanh chóng và hiệu quả sau mỗi thảm họa.
 
 Nhờ vào việc ứng dụng các công nghệ hiện đại, hệ thống này không chỉ cải thiện công tác cứu trợ mà còn tạo điều kiện cho việc tái thiết bền vững, đồng thời hỗ trợ sự phát triển ổn định của các cộng đồng sau thảm họa.
-### 💡Nhà phát triển
+## 💡Nhà phát triển
 📧 Email: minhtuanledng@gmail.com
+
 📱 Hotline: +84 889 001 505
+
 ### 📝 License
-Dự án này được cấp phép theo các điều khoản của giấy phép GPL V3 [License](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENCE)
+Dự án này được cấp phép theo các điều khoản của giấy phép [GPL V3 License](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENCE)
+
+
 

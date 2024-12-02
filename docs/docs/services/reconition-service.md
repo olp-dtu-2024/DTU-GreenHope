@@ -1,5 +1,5 @@
 # 🤖 Recognition Services
-Recognition Service là một dịch vụ được sử dụng để nhận dạng hoặc phân tích thông tin từ dữ liệu đầu vào, thường là các loại dữ liệu không có cấu trúc như hình ảnh, âm thanh, video hoặc văn bản. Các dịch vụ nhận dạng có thể bao gồm nhận dạng hình ảnh (image recognition), nhận dạng giọng nói (speech recognition), nhận dạng văn bản (OCR), nhận dạng hành động (gesture recognition), nhận dạng khuôn mặt (face recognition).
+**Recognition Service là một dịch vụ được sử dụng để nhận dạng hoặc phân tích thông tin từ dữ liệu đầu vào, thường là các loại dữ liệu không có cấu trúc như hình ảnh, âm thanh, video hoặc văn bản. Các dịch vụ nhận dạng có thể bao gồm nhận dạng hình ảnh (image recognition), nhận dạng giọng nói (speech recognition), nhận dạng văn bản (OCR), nhận dạng hành động (gesture recognition), nhận dạng khuôn mặt (face recognition).**
 ## Các Loại Recognition Services
 - Face Recognition (Nhận Dạng Khuôn Mặt)
 - Speech Recognition (Nhận Dạng Giọng Nói)

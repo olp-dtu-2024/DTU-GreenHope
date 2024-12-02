@@ -1,8 +1,8 @@
 # ✅ Captcha service
-Captcha service sẽ giải captcha phục vụ cho transaction service, bằng python, ONNX (Open Neural Network Exchange).
+**Captcha service sẽ giải captcha phục vụ cho transaction service, bằng python, ONNX (Open Neural Network Exchange).**
 
 ## Kiến Trúc của Captcha Service
-Captcha service có thể được xây dựng dưới dạng một dịch vụ độc lập hoặc là một phần của ứng dụng web hiện tại. Kiến trúc của Captcha service thường bao gồm các thành phần sau:
+**`Captcha service`** có thể được xây dựng dưới dạng một dịch vụ độc lập hoặc là một phần của ứng dụng web hiện tại. Kiến trúc của Captcha service thường bao gồm các thành phần sau:
 
 
 - Captcha Generation: Khi người dùng truy cập trang yêu cầu xác minh CAPTCHA (ví dụ, form đăng nhập, đăng ký, hay thanh toán), server sẽ tạo ra một thử thách CAPTCHA (hình ảnh, câu hỏi, v.v.) và gửi nó đến client (trình duyệt của người dùng).

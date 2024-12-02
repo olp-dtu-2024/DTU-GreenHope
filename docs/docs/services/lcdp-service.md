@@ -1,5 +1,5 @@
 # 📱 LCDP service 
-LCDP là một nền tảng cho phép phát triển ứng dụng phần mềm với rất ít mã nguồn, chủ yếu thông qua các giao diện đồ họa, kéo và thả (drag-and-drop), và các công cụ hỗ trợ khác. Các nền tảng này giúp giảm thiểu sự phụ thuộc vào lập trình viên và cho phép người dùng (bao gồm cả người không chuyên về lập trình) tạo ra các ứng dụng mà không cần phải viết mã quá phức tạp.
+**LCDP là một nền tảng cho phép phát triển ứng dụng phần mềm với rất ít mã nguồn, chủ yếu thông qua các giao diện đồ họa, kéo và thả (drag-and-drop), và các công cụ hỗ trợ khác. Các nền tảng này giúp giảm thiểu sự phụ thuộc vào lập trình viên và cho phép người dùng (bao gồm cả người không chuyên về lập trình) tạo ra các ứng dụng mà không cần phải viết mã quá phức tạp.**
 ##  Cách hoạt động của LCDP:
 - Giao diện đồ họa kéo-thả
 - Quy trình tự động hóa
