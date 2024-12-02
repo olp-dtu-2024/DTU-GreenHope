@@ -1,57 +1,69 @@
 # VietQR NocoBase Plugin
 
-## Giới Thiệu
+## 🌟 Giới Thiệu
 
-Thư viện `@olp-dtu-2024/vietqr-nocobase` là một gói tiện ích plugin cho nền tảng `NocoBase` tích hợp VietQR API, giúp dễ dàng sinh mã QR thanh toán cho các ứng dụng từ thiện và gây quỹ tại Việt Nam.
+`@olp-dtu-2024/vietqr-nocobase` là một plugin cho nền tảng NocoBase, tích hợp VietQR API, giúp dễ dàng sinh mã QR thanh toán
 
-Plugin phục vụ cho cuộc thi Mã Nguồn Mở năm 2024
+### 🏆 Bối Cảnh
+Plugin được phát triển như một phần của cuộc thi Mã Nguồn Mở năm 2024.
 
-## Tính Năng
+## ✨ Tính Năng
 
-- Tích hợp trực tiếp với VietQR API
-- Sinh mã QR thanh toán nhanh chóng
-- Hỗ trợ đa ngân hàng
-- Tùy chỉnh thông tin thanh toán linh hoạt
-- Xuất mã QR dưới nhiều định dạng (PNG, SVG)
+- 🏦 Tích hợp trực tiếp với VietQR API
+- ⚡ Sinh mã QR thanh toán nhanh chóng
+- 🌐 Hỗ trợ đa ngân hàng
+- 🔧 Tùy chỉnh thông tin thanh toán linh hoạt
+- 📄 Xuất mã QR dưới nhiều định dạng (PNG, SVG)
 
-## Cài Đặt
+## 🚀 Cài Đặt
 
-Sử dụng npm:
+### Sử Dụng npm:
 
 ```bash
 npm install @olp-dtu-2024/vietqr-nocobase
 ```
 
-Hoặc yarn:
+### Sử Dụng Yarn:
 
 ```bash
 yarn add @olp-dtu-2024/vietqr-nocobase
 ```
 
-## Yêu Cầu Tiên Quyết
+## 📋 Yêu Cầu Tiên Quyết
 
 - Node.js version 18.x trở lên
+- NocoBase phiên bản 1.x
+- Kết nối internet ổn định
 
-## Tác Giả
+## 👥 Tác Giả
 
 - Lê Minh Tuấn
 - Trần Nguyễn Duy Khánh
 
+## 📄 Giấy Phép
 
-## Giấy Phép
+Dự án được phân phối dưới giấy phép **GNU General Public License v3.0**
 
-Chi tiết giấy phép sẽ được cập nhật.
+## 🤝 Đóng Góp
 
-## Đóng Góp
+Chúng tôi rất hoan nghênh các đóng góp từ cộng đồng! Vui lòng:
 
-Chúng tôi rất hoan nghênh các đóng góp! Vui lòng tạo issue hoặc pull request tại [GitHub Repository](https://github.com/auroraphtgrp01/DTU-GreenHope)
+- Tạo issue để báo cáo lỗi
+- Gửi pull request để đề xuất cải tiến
+- Truy cập GitHub Repository của chúng tôi để biết thêm chi tiết
 
-## Vấn Đề Và Hỗ Trợ
+## 🆘 Hỗ Trợ
 
-Nếu gặp bất kỳ vấn đề nào, vui lòng mở issue tại GitHub repository của chúng tôi.
+Nếu gặp bất kỳ vấn đề nào, vui lòng:
+- Mở issue tại GitHub repository
+- Liên hệ trực tiếp với nhóm phát triển
 
-## Lưu Ý
+## ⚠️ Lưu Ý
 
 - Đảm bảo tuân thủ quy định pháp luật về thanh toán điện tử
 - Kiểm tra kết nối mạng trước khi sử dụng
 - Bảo mật thông tin tài khoản ngân hàng
+
+---
+
+**Được phát triển với ❤️ bởi Nhóm DTU-GreenHope**
