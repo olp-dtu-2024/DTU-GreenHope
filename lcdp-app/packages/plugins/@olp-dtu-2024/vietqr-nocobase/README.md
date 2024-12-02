@@ -1,8 +1,8 @@
-# QR-Donate
+# VietQR NocoBase Plugin
 
 ## Giới Thiệu
 
-Thư viện `@olp-dtu-2024/qr-donate` là một gói tiện ích plugin cho nền tảng `NocoBase` tích hợp VietQR API, giúp dễ dàng sinh mã QR thanh toán cho các ứng dụng từ thiện và gây quỹ tại Việt Nam.
+Thư viện `@olp-dtu-2024/vietqr-nocobase` là một gói tiện ích plugin cho nền tảng `NocoBase` tích hợp VietQR API, giúp dễ dàng sinh mã QR thanh toán cho các ứng dụng từ thiện và gây quỹ tại Việt Nam.
 
 Plugin phục vụ cho cuộc thi Mã Nguồn Mở năm 2024
 
@@ -19,13 +19,13 @@ Plugin phục vụ cho cuộc thi Mã Nguồn Mở năm 2024
 Sử dụng npm:
 
 ```bash
-npm install @olp-dtu-2024/qr-donate
+npm install @olp-dtu-2024/vietqr-nocobase
 ```
 
 Hoặc yarn:
 
 ```bash
-yarn add @olp-dtu-2024/qr-donate
+yarn add @olp-dtu-2024/vietqr-nocobase
 ```
 
 ## Yêu Cầu Tiên Quyết
