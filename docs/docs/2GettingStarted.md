@@ -1,13 +1,13 @@
-# Getting Started
-![s](../resources/greenhope.jpg)
-
-## Greenhope
+# Trang chủ
+![s](../resources/greenhope.png)
+> *"🤝 Kết nối yêu thương, kiến tạo tương lai bền vững 🌿"*
+## 🍀 Greenhope
 - GREENHOPE (Hy vọng xanh) là một nền tảng tiên tiến phát triển dựa trên LCDP trong cuộc thi [Phần Mềm Nguồn Mở-Olympic Tin học Sinh viên Việt Nam 2024](https://www.olp.vn/procon-pmmn/ph%E1%BA%A7n-m%E1%BB%81m-ngu%E1%BB%93n-m%E1%BB%9F)
  nhằm hỗ trợ sau thiên tai, được thiết kế để kết nối cộng đồng, quản lý cứu trợ và mang lại hy vọng mới cho những vùng bị ảnh hưởng bởi thiên tai.
 - Cung cấp một hệ thống toàn diện nhằm đảm bảo sự minh bạch, hiệu quả, là một giải phá p dài hạn cho cộng đồng, không ngừng cải tiến các công nghệ để góp phần ủng hộ cộng đồng vượt qua những vấn nạn về thiên tai trong cuộc sống hiện nay.
 ## Các chức năng chính của dự án
 - 🔍Tìm kiếm và cứu nạn
-- ❤️‍🩹Đánh giá thiệt hại và hỗ trợ tái thiết thảm họa
+- ❤️‍🩹Đánh giá thiệt hại và hỗ trợ tái thiết sau thảm họa
 - 🫶Kết nối giữa các tổ chức cứu trợ, cộng đồng
 ## Tổng quan hệ thống
 | Công nghệ | Chức năng | Ưu điểm |
@@ -54,7 +54,9 @@
 - Mô hình kinh tế tuần hoàn
 - Đảm bảo tính linh hoạt và đổi mới 
 ### 🌿 Kỳ vọng tương lai
-Xây dựng một hệ thống không chỉ phục vụ mục tiêu cứu trợ khẩn cấp mà còn hướng đến mục tiêu phát triển bền vững, hỗ trợ các cộng đồng phục hồi và phát triển mạnh mẽ trong dài hạn. Với sự kết hợp của công nghệ AI, các nền tảng hỗ trợ cộng đồng và quản lý nguồn lực, hệ thống sẽ không ngừng cải tiến và mở rộng, đồng thời giảm thiểu tác động tiêu cực và thúc đẩy sự công bằng xã hội trong mọi hoạt động cứu trợ và tái thiết.
+Ứng dụng này hướng tới các mục tiêu như hỗ trợ tìm kiếm và cứu nạn, cung cấp báo cáo thiệt hại chính xác, giám sát tiến độ tái thiết, và tạo ra hệ thống phối hợp minh bạch giữa các bên liên quan. Các tính năng thông minh giúp tự động hóa việc đánh giá và phân bổ nguồn lực, đồng thời tăng cường khả năng tương tác với cộng đồng. Trong tương lai, ứng dụng kỳ vọng sẽ mở rộng ra toàn cầu, tích hợp AI và dữ liệu lớn, dự báo thảm họa, và xây dựng một hệ sinh thái bền vững để giúp các khu vực phục hồi nhanh chóng và hiệu quả sau mỗi thảm họa.
+
+Nhờ vào việc ứng dụng các công nghệ hiện đại, hệ thống này không chỉ cải thiện công tác cứu trợ mà còn tạo điều kiện cho việc tái thiết bền vững, đồng thời hỗ trợ sự phát triển ổn định của các cộng đồng sau thảm họa.
 ### 💡Nhà phát triển
 📧 Email: minhtuanledng@gmail.com
 📱 Hotline: +84 889 001 505
