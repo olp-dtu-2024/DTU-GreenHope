@@ -34,6 +34,23 @@ const sidebars: SidebarsConfig = {
         'services/congratulations',
       ],
     },
+    {
+      type: 'category',
+      label: 'Plugin của dự án',
+      items: [
+        'services/create-a-page',
+        'services/create-a-document',
+        'services/create-a-blog-post',
+        'services/markdown-features',
+        'services/deploy-your-site',
+        'services/congratulations',
+      ],
+    },
+    {
+      type: 'doc',
+      id: 'LICENSE',
+      label: 'LICENSE',
+    },
   ],
 };
 
