@@ -1,14 +1,46 @@
 {
-  "name": "@olp-dtu-2024/solidity-editor-nocobase",
-  "version": "0.1.0",
+  "name": "@dtu-olp-2024/solidity-editor-nocobase",
+  "version": "1.0.0",
+  "license": "GPL-3.0",
   "main": "dist/server/index.js",
-  "dependencies": {
+  "files": [
+    "dist",
+    "dist/node_modules",
+    "README.md",
+    "LICENSE",
+    "package.json",
+    "server.js",
+    "server.d.ts",
+    "client.js",
+    "client.d.ts",
+    "CHANGELOG.md"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olp-dtu-2024/DTU-GreenHope"
+  },
+  "keywords": [
+    "plugin",
+    "nocobase",
+    "dtu",
+    "greenhope",
+    "solidity-editor"
+  ],
+  "description": "A NocoBase plugin for Solidity code editor. Built for the DTU GreenHope project.",
+  "displayName": "Solidity Editor Plugin - DTU GreenHope 2024",
+  "peerDependencies": {
+    "@nocobase/client": "1.x",
+    "@nocobase/server": "1.x",
+    "@nocobase/test": "1.x",
+    "react": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
     "@uiw/codemirror-theme-tokyo-night": "^4.23.6",
     "@uiw/react-codemirror": "^4.23.6"
-  },
-  "peerDependencies": {
-    "@nocobase/client": "1.5.0-alpha.5",
-    "@nocobase/server": "1.5.0-alpha.5",
-    "@nocobase/test": "1.5.0-alpha.5"
   }
 }

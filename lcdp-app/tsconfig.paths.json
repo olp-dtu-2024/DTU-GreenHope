@@ -31,13 +31,13 @@
       "@dtu-olp-2024/kafka-nocobase": [
         "packages/plugins/@dtu-olp-2024/kafka-nocobase/src"
       ],
-      "@olp-dtu-2024/landing-page/client": [
+      "@dtu-olp-2024/landing-page/client": [
         "packages/plugins/@dtu-olp-2024/landing-page/src/client"
       ],
-      "@olp-dtu-2024/landing-page/package.json": [
+      "@dtu-olp-2024/landing-page/package.json": [
         "packages/plugins/@dtu-olp-2024/landing-page/package.json"
       ],
-      "@olp-dtu-2024/landing-page": [
+      "@dtu-olp-2024/landing-page": [
         "packages/plugins/@dtu-olp-2024/landing-page/src"
       ],
       "@dtu-olp-2024/progress-nocobase/client": [
@@ -58,13 +58,13 @@
       "@dtu-olp-2024/rich-block-nocobase": [
         "packages/plugins/@dtu-olp-2024/rich-block-nocobase/src"
       ],
-      "@olp-dtu-2024/solidity-editor-nocobase/client": [
+      "@dtu-olp-2024/solidity-editor-nocobase/client": [
         "packages/plugins/@dtu-olp-2024/solidity-editor-nocobase/src/client"
       ],
-      "@olp-dtu-2024/solidity-editor-nocobase/package.json": [
+      "@dtu-olp-2024/solidity-editor-nocobase/package.json": [
         "packages/plugins/@dtu-olp-2024/solidity-editor-nocobase/package.json"
       ],
-      "@olp-dtu-2024/solidity-editor-nocobase": [
+      "@dtu-olp-2024/solidity-editor-nocobase": [
         "packages/plugins/@dtu-olp-2024/solidity-editor-nocobase/src"
       ],
       "@dtu-olp-2024/vietqr-nocobase/client": [
