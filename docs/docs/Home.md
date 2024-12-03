@@ -1,17 +1,17 @@
-# Giới thiệu về dự án 🚀
+# Tổng quan
 
 ![s](../resources/greenhope.png)
 
 > *"🤝 Kết nối yêu thương, kiến tạo tương lai bền vững 🌿"*
 Ứng dụng hỗ trợ tái thiết và đánh giá thiệt hại sau thảm họa.
 
-Mục tiêu của dự án  là phát triển một hệ thống dựa trên `nền tảng LCDP` ứng dụng công nghệ trí tuệ nhân tạo để hỗ trợ tìm kiếm người mất tích, đánh giá thiệt hại và quản lý tái thiết sau thảm họa.
+Mục tiêu của dự án  là phát triển một hệ thống dựa trên nền tảng LCDP ứng dụng công nghệ trí tuệ nhân tạo để hỗ trợ tìm kiếm người mất tích, đánh giá thiệt hại và quản lý tái thiết sau thảm họa.
 
 Dự án được thực hiện trong cuộc thi [ Phần Mềm Nguồn Mở-Olympic Tin học Sinh viên Việt Nam 2024](https://www.olp.vn/procon-pmmn/ph%E1%BA%A7n-m%E1%BB%81m-ngu%E1%BB%93n-m%E1%BB%9F)
-. Được open source theo giấy phép [GNU General Public License](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENCE)  v3.0 bởi đội tác giả DTU_DZ.
+. Được open source theo giấy phép GNU General Public [License](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENCE)  v3.0 bởi đội tác giả DTU_DZ.
 
-**`GREENHOPE`** Là hệ thống "tái thiết và Đánh giá Hậu quả thảm họa sử dụng Công nghệ AI" là một ứng dụng tiên tiến được phát triển nhằm hỗ trợ cứu nạn và tái thiết sau thảm họa. Hệ thống tích hợp công nghệ drone và bản đồ vệ tinh để tìm kiếm và cứu nạn, giúp xác định vị trí những người mất tích trong các khu vực bị ảnh hưởng. Đặc biệt, công nghệ AI sẽ phân tích hình ảnh từ drone hoặc vệ tinh để đánh giá thiệt hại và cung cấp các báo cáo chi tiết. Bên cạnh đó, nền tảng này còn hỗ trợ tái thiết cơ sở hạ tầng sau thảm họa, kết nối cộng đồng và các tổ chức tài trợ, giám sát tiến độ và quản lý quá trình tái thiết, từ đó tạo ra những giải pháp hiệu quả cho công tác cứu trợ và phục hồi.
-Mục đích của dự án là phát triển một hệ thống dựa trên `nền tảng LCDP` ứng dụng công nghệ trí tuệ nhân tạo để hỗ trợ tìm kiếm người mất tích, đánh giá thiệt hại và quản lý tái thiết sau thảm họa.
+GREENHOPE Là hệ thống "tái thiết và Đánh giá Hậu quả thảm họa sử dụng Công nghệ AI" là một ứng dụng tiên tiến được phát triển nhằm hỗ trợ cứu nạn và tái thiết sau thảm họa. Hệ thống tích hợp công nghệ drone và bản đồ vệ tinh để tìm kiếm và cứu nạn, giúp xác định vị trí những người mất tích trong các khu vực bị ảnh hưởng. Đặc biệt, công nghệ AI sẽ phân tích hình ảnh từ drone hoặc vệ tinh để đánh giá thiệt hại và cung cấp các báo cáo chi tiết. Bên cạnh đó, nền tảng này còn hỗ trợ tái thiết cơ sở hạ tầng sau thảm họa, kết nối cộng đồng và các tổ chức tài trợ, giám sát tiến độ và quản lý quá trình tái thiết, từ đó tạo ra những giải pháp hiệu quả cho công tác cứu trợ và phục hồi.
+Mục đích của dự án là phát triển một hệ thống dựa trên nền tảng LCDP ứng dụng công nghệ trí tuệ nhân tạo để hỗ trợ tìm kiếm người mất tích, đánh giá thiệt hại và quản lý tái thiết sau thảm họa.
 
 ## 📂 Chức Năng Chính
 - ❤️‍🩹 Hỗ trợ tìm kiếm và cứu nạn 
@@ -46,3 +46,6 @@ Các tổ chức cung cấp công nghệ và giải pháp phần mềm: Các cô
 
 ### 📝 License
 Dự án này được cấp phép theo các điều khoản của giấy phép [GPL V3 License](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENCE)
+
+
+
