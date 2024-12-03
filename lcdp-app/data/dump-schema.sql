@@ -5,7 +5,7 @@
 -- Dumped from database version 17.0
 -- Dumped by pg_dump version 17.0
 
--- Started on 2024-12-03 06:45:27 UTC
+-- Started on 2024-12-03 07:25:03 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -2627,6 +2627,7 @@ COPY public."applicationPlugins" (id, "createdAt", "updatedAt", name, "packageNa
 69	2024-11-30 13:23:30.877+00	2024-11-30 13:25:57.597+00	@olp-dtu-2024/progress-nocobase	@olp-dtu-2024/progress-nocobase	0.1.0	t	t	\N	\N
 70	2024-12-02 08:59:41.591+00	2024-12-02 09:05:39.412+00	@olp-dtu-2024/vietqr-nocobase	@olp-dtu-2024/vietqr-nocobase	0.1.0	t	t	\N	\N
 71	2024-12-02 09:23:16.33+00	2024-12-02 09:24:09.411+00	@olp-dtu-2024/rich-block-nocobase	@olp-dtu-2024/rich-block-nocobase	0.1.0	t	t	\N	\N
+72	2024-12-03 07:20:00.277+00	2024-12-03 07:21:50.847+00	@olp-dtu-2024/solidity-editor-nocobase	@olp-dtu-2024/solidity-editor-nocobase	0.1.0	t	t	\N	\N
 \.
 
 
@@ -6699,6 +6700,8 @@ COPY public."rolesUischemas" ("createdAt", "updatedAt", "roleName", "uiSchemaXUi
 2024-12-02 09:40:04.632+00	2024-12-02 09:40:04.632+00	member	3j7ljl34j1r
 2024-12-03 05:37:18.118+00	2024-12-03 05:37:18.118+00	admin	rjd0phm5uy7
 2024-12-03 05:37:18.125+00	2024-12-03 05:37:18.125+00	member	rjd0phm5uy7
+2024-12-03 06:58:27.741+00	2024-12-03 06:58:27.741+00	admin	kschs4oi12g
+2024-12-03 06:58:27.753+00	2024-12-03 06:58:27.753+00	member	kschs4oi12g
 \.
 
 
@@ -17081,6 +17084,18 @@ hmft2ujv1uf	vido4fqv4xo	9	\N	\N	\N
 nsueicidb31	vido4fqv4xo	10	\N	\N	\N
 nocobase-admin-menu	vido4fqv4xo	11	\N	\N	\N
 a61oc4tl7m1	vido4fqv4xo	1	\N	\N	1
+crdk37w2fib	crdk37w2fib	0	t	properties	\N
+kschs4oi12g	crdk37w2fib	1	\N	\N	1
+q3eeonxucli	q3eeonxucli	0	f	properties	\N
+crdk37w2fib	q3eeonxucli	1	\N	\N	1
+kschs4oi12g	q3eeonxucli	2	\N	\N	1
+nsueicidb31	crdk37w2fib	2	\N	\N	\N
+nsueicidb31	q3eeonxucli	3	\N	\N	\N
+nocobase-admin-menu	kschs4oi12g	2	\N	\N	\N
+nocobase-admin-menu	crdk37w2fib	3	\N	\N	\N
+nocobase-admin-menu	q3eeonxucli	4	\N	\N	\N
+kschs4oi12g	kschs4oi12g	0	f	properties	\N
+nsueicidb31	kschs4oi12g	1	\N	\N	9
 \.
 
 
@@ -17802,6 +17817,9 @@ wjqoqlum3pi	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-co
 xrntr4vttfp	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Add new\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{},"x-app-version":"1.3.52"}
 fbc7deaj741	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:addNew:addBlock","x-app-version":"1.3.52"}
 vido4fqv4xo	pbq85w5ms4h	{"x-uid":"vido4fqv4xo","name":"pbq85w5ms4h","_isJSONSchemaObject":true,"version":"2.0","title":"Refetch Transaction","x-component":"CustomRequestAction","x-action":"customize:table:request","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:customRequest","x-decorator":"CustomRequestAction.Decorator","x-action-settings":{"onSuccess":{"manualClose":false,"redirecting":false,"successMessage":"{{t(\\"Request success\\")}}"}},"type":"void","x-app-version":"1.3.52","x-component-props":{"iconColor":"#1677FF","danger":false,"confirm":{}},"x-response-type":"json"}
+kschs4oi12g	1jz5e4lhqhc	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Smart Contract ","x-component":"Menu.Item","x-decorator":"ACLMenuItemProvider","x-component-props":{"icon":"openaioutlined"},"x-server-hooks":[{"type":"onSelfCreate","method":"bindMenuToRole"},{"type":"onSelfSave","method":"extractTextToLocale"}]}
+q3eeonxucli	lymuobpx84s	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"page:addBlock"}
+crdk37w2fib	page	{"x-uid":"crdk37w2fib","name":"page","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page","x-component-props":{"disablePageHeader":true}}
 \.
 
 
@@ -17886,7 +17904,7 @@ SELECT pg_catalog.setval('public."apiKeys_id_seq"', 1, false);
 -- Name: applicationPlugins_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."applicationPlugins_id_seq"', 71, true);
+SELECT pg_catalog.setval('public."applicationPlugins_id_seq"', 72, true);
 
 
 --
@@ -19284,7 +19302,7 @@ CREATE INDEX verifications_provider_id ON public.verifications USING btree ("pro
 CREATE UNIQUE INDEX workflows_key_current ON public.workflows USING btree (key, current);
 
 
--- Completed on 2024-12-03 06:45:27 UTC
+-- Completed on 2024-12-03 07:25:03 UTC
 
 --
 -- PostgreSQL database dump complete

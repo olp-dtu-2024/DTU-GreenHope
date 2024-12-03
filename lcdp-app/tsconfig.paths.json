@@ -58,6 +58,15 @@
       "@olp-dtu-2024/rich-block-nocobase": [
         "packages/plugins/@olp-dtu-2024/rich-block-nocobase/src"
       ],
+      "@olp-dtu-2024/solidity-editor-nocobase/client": [
+        "packages/plugins/@olp-dtu-2024/solidity-editor-nocobase/src/client"
+      ],
+      "@olp-dtu-2024/solidity-editor-nocobase/package.json": [
+        "packages/plugins/@olp-dtu-2024/solidity-editor-nocobase/package.json"
+      ],
+      "@olp-dtu-2024/solidity-editor-nocobase": [
+        "packages/plugins/@olp-dtu-2024/solidity-editor-nocobase/src"
+      ],
       "@olp-dtu-2024/vietqr-nocobase/client": [
         "packages/plugins/@olp-dtu-2024/vietqr-nocobase/src/client"
       ],
