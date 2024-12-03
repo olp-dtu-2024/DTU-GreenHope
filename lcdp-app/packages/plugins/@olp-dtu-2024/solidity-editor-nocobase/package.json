@@ -2,10 +2,13 @@
   "name": "@olp-dtu-2024/solidity-editor-nocobase",
   "version": "0.1.0",
   "main": "dist/server/index.js",
-  "dependencies": {},
+  "dependencies": {
+    "@uiw/codemirror-theme-tokyo-night": "^4.23.6",
+    "@uiw/react-codemirror": "^4.23.6"
+  },
   "peerDependencies": {
-    "@nocobase/client": "1.x",
-    "@nocobase/server": "1.x",
-    "@nocobase/test": "1.x"
+    "@nocobase/client": "1.5.0-alpha.5",
+    "@nocobase/server": "1.5.0-alpha.5",
+    "@nocobase/test": "1.5.0-alpha.5"
   }
 }
