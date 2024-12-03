@@ -1,5 +1,7 @@
 import { Producer, Consumer } from 'kafkajs';
 import { ALL_TOPICS } from './constants';
+import { topicHandlers } from './handler';
+import Application, { DefaultContext, DefaultState } from '@nocobase/server';
 
 export class KafkaEventListener {
   private producer: Producer;
@@ -10,25 +12,30 @@ export class KafkaEventListener {
     this.consumer = consumer;
   }
 
-  async initializeTopics(topics: string[]) {
+  async initializeTopics(
+    topics: string[],
+    appInstance: Application<DefaultState, DefaultContext>
+  ) {
     try {
       await this.consumer.subscribe({ topics: topics });
 
       await this.consumer.run({
         eachMessage: async ({ topic, partition, message }) => {
           try {
-            // const handler = topicHandlers[topic];
-            if (true) {
-              const messageValue = message.value
-                ? Buffer.from(message.value).toString('utf8')
-                : null;
-              console.log(messageValue);
-              const parsedMessage = messageValue
-                ? JSON.parse(messageValue)
-                : null;
-              // await handler(parsedMessage);
-            } else {
-              console.warn(`No handler found for topic: ${topic}`);
+            const handler = topicHandlers[topic];
+            const messageValue = message.value
+              ? Buffer.from(message.value).toString('utf8')
+              : null;
+            console.log(`Received message: ${messageValue}`);
+            console.log(messageValue);
+            if (messageValue) {
+              try {
+                const parsedMessage = JSON.parse(messageValue);
+                await handler(parsedMessage, appInstance);
+                console.log('Parsed message:', parsedMessage);
+              } catch (jsonError) {
+                console.error('Error parsing JSON:', jsonError);
+              }
             }
           } catch (error) {
             console.error(

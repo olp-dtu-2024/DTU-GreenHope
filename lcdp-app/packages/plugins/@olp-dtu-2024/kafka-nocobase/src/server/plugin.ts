@@ -264,7 +264,7 @@ export class KafkaNocobaseServer extends Plugin {
     this.consumer = this.kafka.consumer({ groupId: kafkaConfigs?.group_id });
     await Promise.all([this.producer.connect(), this.consumer.connect()]);
     this.eventListener = new KafkaEventListener(this.producer, this.consumer);
-    await this.eventListener.initializeTopics(topics);
+    await this.eventListener.initializeTopics(topics, this.app);
     this.app.context.kafkaEmit = this.eventListener.emit.bind(
       this.eventListener
     );
