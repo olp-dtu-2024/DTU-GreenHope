@@ -1,0 +1,6 @@
+# .npmignore
+*
+!dist
+!dist/node_modules
+!package.json
+!README.md

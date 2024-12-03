@@ -15,18 +15,18 @@ networks:
 services:
   postgres:
     image: bitnami/postgresql:latest
-    container_name: postgres-5439
+    container_name: postgres-5439-olp-dtu-2024
     volumes:
-      - postgres-data-be:/bitnami/postgresql
+      - postgres-data-be:/bitnami/postgresql # Fix volume path for bitnami image
     environment:
-      - POSTGRES_USER=${POSTGRES_USER:-postgres}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
-      - POSTGRES_DB=${POSTGRES_DB:-olp-2024}
+      - POSTGRESQL_USERNAME=postgres # Bitnami specific env
+      - POSTGRESQL_PASSWORD=postgres
+      - POSTGRESQL_DATABASE=nocobase
     ports:
       - '5439:5432'
     restart: unless-stopped
     healthcheck:
-      test: ['CMD', 'pg_isready', '-U', 'postgres']
+      test: [ 'CMD', 'pg_isready', '-U', 'postgres' ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -39,7 +39,7 @@ services:
       - olp-dtu-2024-network
 
   redis:
-    container_name: redis-6444
+    container_name: redis-6444-olp-dtu-2024
     image: bitnami/redis:latest
     ports:
       - '6444:6379'
@@ -49,7 +49,7 @@ services:
       - redis-data:/bitnami/redis
     restart: unless-stopped
     healthcheck:
-      test: ['CMD', 'redis-cli', '--raw', 'ping']
+      test: [ 'CMD', 'redis-cli', '--raw', 'ping' ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -104,15 +104,15 @@ services:
           memory: 1G
           cpus: '1'
 
-  captcha-service:
-    build:
-      context: ../captcha-service
-      dockerfile: Dockerfile
-    container_name: captcha-service
-    ports:
-      - '1234:1234'
-    networks:
-      - olp-dtu-2024-network
+  # captcha-service:
+  #   build:
+  #     context: ../captcha-service
+  #     dockerfile: Dockerfile
+  #   container_name: captcha-service
+  #   ports:
+  #     - '1234:1234'
+  #   networks:
+  #     - olp-dtu-2024-network
 
   # transaction-service:
   #   build:
@@ -123,6 +123,27 @@ services:
   #     - '3027:3027'
   #   networks:
   #     - olp-dtu-2024-network
+
+  lcdp-app:
+    container_name: lcdp-app-olp-dtu-2024
+    image: nocobase/nocobase:latest
+    networks:
+      - olp-dtu-2024-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - APP_KEY=your-secret-key
+      - DB_DIALECT=postgres
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=nocobase
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    volumes:
+      - ../lcdp-app/storage:/app/nocobase/storage
+    ports:
+      - '12000:80'
 
 volumes:
   postgres-data-be:
