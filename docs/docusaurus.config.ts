@@ -20,7 +20,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          editUrl: 'https://github.com',
+          editUrl: 'https://github.com/olp-dtu-2024/DTU-GreenHope',
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -38,7 +38,7 @@ const config: Config = {
       },
       items: [
         {
-          href: 'https://github.com',
+          href: 'https://github.com/olp-dtu-2024/DTU-GreenHope',
           label: 'GitHub',
           position: 'right',
         },
