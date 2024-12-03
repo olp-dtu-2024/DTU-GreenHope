@@ -4,3 +4,8 @@
 !package.json
 !README.md
 !LICENSE
+!server.js
+!server.d.ts
+!client.js
+!client.d.ts
+!CHANGELOG.md
