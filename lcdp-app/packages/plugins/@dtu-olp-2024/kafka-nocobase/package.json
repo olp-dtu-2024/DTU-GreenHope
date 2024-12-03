@@ -29,7 +29,7 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "description": "Kafka plugin for Nocobase - DTU GreenHope",
+  "description": "A NocoBase plugin for Apache Kafka integration, supporting message publishing, topic management, and event-driven workflows. Built for the DTU GreenHope project.",
   "displayName": "Kafka Plugin - DTU GreenHope 2024",
   "repository": {
     "type": "git",

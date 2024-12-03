@@ -2,7 +2,7 @@
 
 ## 🌟 Giới Thiệu
 
-`@olp-dtu-2024/progress-nocobase` là một plugin cho nền tảng NocoBase, tích hợp Progress Bar giúp đơn giản hóa việc hiển thị tiến độ dưới dạng thanh tiến trình trong ứng dụng NocoBase của bạn.
+`@dtu-olp-2024/progress-nocobase` là một plugin cho nền tảng NocoBase, tích hợp Progress Bar giúp đơn giản hóa việc hiển thị tiến độ dưới dạng thanh tiến trình trong ứng dụng NocoBase của bạn.
 
 ### 🏆 Bối Cảnh
 Plugin được phát triển như một phần của cuộc thi Mã Nguồn Mở năm 2024.
@@ -19,13 +19,13 @@ Plugin được phát triển như một phần của cuộc thi Mã Nguồn M�
 ### Sử Dụng npm:
 
 ```bash
-npm install @olp-dtu-2024/progress-nocobase
+npm install @dtu-olp-2024/progress-nocobase
 ```
 
 ### Sử Dụng Yarn:
 
 ```bash
-yarn add @olp-dtu-2024/progress-nocobase
+yarn add @dtu-olp-2024/progress-nocobase
 ```
 
 ## 📋 Yêu Cầu Tiên Quyết
