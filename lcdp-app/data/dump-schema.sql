@@ -5,7 +5,7 @@
 -- Dumped from database version 17.0
 -- Dumped by pg_dump version 17.0
 
--- Started on 2024-12-03 05:40:27 UTC
+-- Started on 2024-12-03 06:45:27 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -6105,6 +6105,8 @@ COPY public."customRequests" ("createdAt", "updatedAt", key, options) FROM stdin
 2024-11-23 06:53:08.205+00	2024-11-23 06:53:08.205+00	czjegm2lg25	\N
 2024-11-23 07:22:48.57+00	2024-11-23 07:22:48.57+00	gp09x5o5sjp	\N
 2024-11-25 07:06:57.65+00	2024-11-25 07:06:57.65+00	jcne950cz9g	\N
+2024-12-03 06:42:52.781+00	2024-12-03 06:42:52.781+00	18qyb25j3gb	\N
+2024-12-03 06:41:44.034+00	2024-12-03 06:44:13.628+00	vido4fqv4xo	{"method":"GET","headers":[],"params":[],"responseType":"json","url":"localhost:3000/admin","data":null,"collectionName":"transactions","dataSourceKey":"main"}
 \.
 
 
@@ -6245,6 +6247,9 @@ COPY public.executions (id, "createdAt", "updatedAt", key, "eventKey", context, 
 41	2024-12-02 10:58:56.51+00	2024-12-02 10:58:56.954+00	n8zu6rytx8d	fa91ba5d-60d3-4089-a6ca-922f587c68ba	{"data":{"createdAt":"2024-12-02T10:58:56.440Z","updatedAt":"2024-12-02T10:58:56.440Z","id":38,"name":"Xây dựng cầu Phong Châu đứt gãy do bão Yagi","total_amount":1,"construction_site":"1","is_deleted":0,"sub_title":"1","description":"<p>1</p>","createdById":1,"updatedById":1,"fund_id":null,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"cb9f202d91599a21382c42be46ee032487d7ad26dd17d17f3b827a8cb07174f8","appLang":null,"resetToken":null,"systemSettings":{"themeId":5},"createdAt":"2024-11-22T08:42:38.679Z","updatedAt":"2024-11-25T06:09:25.389Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"cb9f202d91599a21382c42be46ee032487d7ad26dd17d17f3b827a8cb07174f8","appLang":null,"resetToken":null,"systemSettings":{"themeId":5},"createdAt":"2024-11-22T08:42:38.679Z","updatedAt":"2024-11-25T06:09:25.389Z","sort":1,"createdById":null,"updatedById":null},"images":[]}}	1	23
 42	2024-12-02 10:59:19.169+00	2024-12-02 10:59:19.614+00	n8zu6rytx8d	3c3887f1-6747-4e2e-9d35-bc31e48dfebc	{"data":{"createdAt":"2024-12-02T10:59:19.099Z","updatedAt":"2024-12-02T10:59:19.099Z","id":39,"name":"Đổ sập nhà dân sau rung chấn ở Đắk Lắk, Gia Lai","total_amount":1,"construction_site":"1","is_deleted":0,"sub_title":"1","description":"<p>1</p>","createdById":1,"updatedById":1,"fund_id":null,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"cb9f202d91599a21382c42be46ee032487d7ad26dd17d17f3b827a8cb07174f8","appLang":null,"resetToken":null,"systemSettings":{"themeId":5},"createdAt":"2024-11-22T08:42:38.679Z","updatedAt":"2024-11-25T06:09:25.389Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"cb9f202d91599a21382c42be46ee032487d7ad26dd17d17f3b827a8cb07174f8","appLang":null,"resetToken":null,"systemSettings":{"themeId":5},"createdAt":"2024-11-22T08:42:38.679Z","updatedAt":"2024-11-25T06:09:25.389Z","sort":1,"createdById":null,"updatedById":null},"images":[]}}	1	23
 43	2024-12-02 10:59:30.108+00	2024-12-02 10:59:30.524+00	n8zu6rytx8d	6748c5e7-00a4-4bbc-81f4-18b7a721d90e	{"data":{"createdAt":"2024-12-02T10:59:30.042Z","updatedAt":"2024-12-02T10:59:30.042Z","id":40,"name":"Hư hại công trình cầu đường ở Điện Biên sau sạt lỡ đất","total_amount":1,"construction_site":"1","is_deleted":0,"sub_title":"1","description":"<p>1</p>","createdById":1,"updatedById":1,"fund_id":null,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"cb9f202d91599a21382c42be46ee032487d7ad26dd17d17f3b827a8cb07174f8","appLang":null,"resetToken":null,"systemSettings":{"themeId":5},"createdAt":"2024-11-22T08:42:38.679Z","updatedAt":"2024-11-25T06:09:25.389Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"cb9f202d91599a21382c42be46ee032487d7ad26dd17d17f3b827a8cb07174f8","appLang":null,"resetToken":null,"systemSettings":{"themeId":5},"createdAt":"2024-11-22T08:42:38.679Z","updatedAt":"2024-11-25T06:09:25.389Z","sort":1,"createdById":null,"updatedById":null},"images":[]}}	1	23
+44	2024-12-03 06:27:07.665+00	2024-12-03 06:27:07.903+00	11tekrcogw2	ae7f6274-8d36-488b-95fc-982036a360b9	{"data":{"is_deleted":0,"id":13,"transaction_code":"FD564546575758","amount":4200000,"description":"LE MINH TUAN - CHUYEN TIEN","from_account_no":"5536457585","from_account_name":"LE MINH TUAN","from_bank_name":"TPBANK","fund_id":1,"updatedAt":"2024-12-03T06:27:07.591Z","createdAt":"2024-12-03T06:27:07.591Z","createdById":null,"updatedById":null,"user_id":null}}	1	25
+45	2024-12-03 06:27:22.855+00	2024-12-03 06:27:23.078+00	11tekrcogw2	cdd9719b-8c5e-4a94-bef5-9ea5c5f202c4	{"data":{"is_deleted":0,"id":14,"transaction_code":"FD564546575758","amount":4200000,"description":"LE MINH TUAN - CHUYEN TIEN","from_account_no":"5536457585","from_account_name":"LE MINH TUAN","from_bank_name":"TPBANK","fund_id":1,"updatedAt":"2024-12-03T06:27:22.792Z","createdAt":"2024-12-03T06:27:22.792Z","createdById":null,"updatedById":null,"user_id":null}}	1	25
+46	2024-12-03 06:41:16.315+00	2024-12-03 06:41:16.521+00	11tekrcogw2	e444ec51-1181-46da-a8b1-4a94b608dcc3	{"data":{"is_deleted":0,"id":15,"amount":0,"from_bank_name":"2312","fund_id":33,"transaction_code":"12321","from_account_no":"123123213","description":"123123","from_account_name":"1233","user_id":null,"updatedAt":"2024-12-03T06:41:16.253Z","createdAt":"2024-12-03T06:41:16.253Z","createdById":1,"updatedById":1}}	1	25
 \.
 
 
@@ -6365,6 +6370,7 @@ COPY public.flow_nodes (id, "createdAt", "updatedAt", key, title, "upstreamId", 
 68	2024-11-23 11:49:01.785+00	2024-11-23 11:49:36.487+00	purpjsbvaog	Create fund	67	\N	71	create	{"usingAssignFormSchema":true,"assignFormSchema":{"_isJSONSchemaObject":true,"version":"2.0","name":"2fcwh8d0l3c","type":"void","x-component":"Grid","x-initializer":"assignFieldValuesForm:configureFields","properties":{"2ltibv1bx5v":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","properties":{"s7kkrfihznn":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","properties":{"name":{"_isJSONSchemaObject":true,"version":"2.0","type":"string","name":"name","title":"Name","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"AssignedField","x-decorator":"FormItem","x-collection-field":"funds.name","x-index":0},"fhtouzmspla":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","properties":{"6n02063v8qx":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","properties":{"project_id":{"_isJSONSchemaObject":true,"version":"2.0","type":"string","name":"project_id","title":"Project Id","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"AssignedField","x-decorator":"FormItem","x-collection-field":"funds.project_id"}},"name":"6n02063v8qx"}},"name":"fhtouzmspla","x-index":1}},"name":"s7kkrfihznn"}},"name":"2ltibv1bx5v"},"52ts0a2g245":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","properties":{"6buhul8vdyy":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","properties":{"target_amount":{"_isJSONSchemaObject":true,"version":"2.0","type":"string","name":"target_amount","title":"Target Amount","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"AssignedField","x-decorator":"FormItem","x-collection-field":"funds.target_amount"}},"name":"6buhul8vdyy"}},"name":"52ts0a2g245"},"pgy6guxls8j":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","properties":{"r70ysqihrv6":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","properties":{"current_amount":{"_isJSONSchemaObject":true,"version":"2.0","type":"string","name":"current_amount","title":"Current Amount","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"AssignedField","x-decorator":"FormItem","x-collection-field":"funds.current_amount"}},"name":"r70ysqihrv6"}},"name":"pgy6guxls8j"}}},"params":{"appends":[],"values":{"name":"{{$jobsMapByNodeKey.mf435tyq0zj.name}}","project_id":"{{$jobsMapByNodeKey.mf435tyq0zj.id}}","target_amount":"{{$jobsMapByNodeKey.mf435tyq0zj.total_amount}}","current_amount":0}},"collection":"funds"}	22
 72	2024-12-02 10:22:32.525+00	2024-12-02 10:26:21.656+00	wc5hw1w6bld	Create fund	\N	\N	73	create	{"usingAssignFormSchema":true,"assignFormSchema":{"_isJSONSchemaObject":true,"version":"2.0","name":"ep092rfwvwl","type":"void","x-component":"Grid","x-initializer":"assignFieldValuesForm:configureFields","properties":{"dfqjfl3fcug":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","properties":{"82bwytsofez":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","properties":{"project_id":{"_isJSONSchemaObject":true,"version":"2.0","type":"string","name":"project_id","title":"Project Id","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"AssignedField","x-decorator":"FormItem","x-collection-field":"funds.project_id"}},"name":"82bwytsofez"}},"name":"dfqjfl3fcug"},"rcycyayatem":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","properties":{"a7k4r6yhorl":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","properties":{"name":{"_isJSONSchemaObject":true,"version":"2.0","type":"string","name":"name","title":"Name","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"AssignedField","x-decorator":"FormItem","x-collection-field":"funds.name"}},"name":"a7k4r6yhorl"}},"name":"rcycyayatem"},"kcdmoi61237":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","properties":{"tlaj6bm88ux":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","properties":{"target_amount":{"_isJSONSchemaObject":true,"version":"2.0","type":"string","name":"target_amount","title":"Target Amount","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"AssignedField","x-decorator":"FormItem","x-collection-field":"funds.target_amount"}},"name":"tlaj6bm88ux"}},"name":"kcdmoi61237"},"cr48wtfa4w1":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","properties":{"vfrz9zk4zrp":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","properties":{"current_amount":{"_isJSONSchemaObject":true,"version":"2.0","type":"string","name":"current_amount","title":"Current Amount","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"AssignedField","x-decorator":"FormItem","x-collection-field":"funds.current_amount"}},"name":"vfrz9zk4zrp"}},"name":"cr48wtfa4w1"}}},"params":{"values":{"project_id":"{{$context.data.id}}","name":"{{$context.data.name}}","target_amount":"{{$context.data.total_amount}}","current_amount":0},"appends":["createdBy","updatedBy"]},"collection":"funds"}	23
 73	2024-12-02 10:26:21.606+00	2024-12-02 10:32:10.097+00	idjf8ocdmfd	HTTP request	72	\N	\N	request	{"method":"POST","contentType":"application/json","headers":[],"params":[],"data":{"fund_id":"{{$jobsMapByNodeKey.wc5hw1w6bld.id}}","fund_name":"{{$jobsMapByNodeKey.wc5hw1w6bld.name}}","user_id":""},"url":"http://localhost:13000/api/qr-donate"}	23
+76	2024-12-03 06:26:34.441+00	2024-12-03 06:26:51.513+00	355lggsbukj	Query record	\N	\N	\N	query	{"multiple":true,"collection":"transactions","params":{"filter":{"$and":[]},"sort":[],"page":1,"pageSize":20,"appends":[]},"failOnEmpty":true}	25
 \.
 
 
@@ -6503,6 +6509,7 @@ COPY public.jobs (id, "createdAt", "updatedAt", "executionId", "nodeId", "nodeKe
 77	2024-11-23 12:00:20.053+00	2024-11-23 12:00:20.053+00	27	67	mf435tyq0zj	76	1	{"createdAt":"2024-11-23T12:00:19.989Z","updatedAt":"2024-11-23T12:00:19.989Z","id":18,"name":"fterterargaed","construction_site":"yy364yt","actual_expenditures":null,"total_amount":0,"is_deleted":0,"createdById":null,"updatedById":null,"createdBy":null,"fund_id":null}
 78	2024-11-23 12:00:20.157+00	2024-11-23 12:00:20.157+00	27	68	purpjsbvaog	77	1	{"is_deleted":0,"id":19,"name":"fterterargaed","project_id":18,"target_amount":0,"current_amount":0,"updatedAt":"2024-11-23T12:00:20.108Z","createdAt":"2024-11-23T12:00:20.108Z","createdById":null,"updatedById":null,"description":null,"qr_code_url":null}
 94	2024-11-24 02:36:51.342+00	2024-11-24 02:36:51.342+00	31	68	purpjsbvaog	93	1	{"is_deleted":0,"id":23,"name":"AAAA","project_id":22,"target_amount":0,"current_amount":0,"updatedAt":"2024-11-24T02:36:51.286Z","createdAt":"2024-11-24T02:36:51.286Z","createdById":null,"updatedById":null,"description":null,"qr_code_url":null}
+124	2024-12-03 06:27:07.849+00	2024-12-03 06:27:07.849+00	44	76	355lggsbukj	\N	1	[{"createdAt":"2024-12-03T06:23:32.318Z","updatedAt":"2024-12-03T06:23:32.318Z","transaction_code":"FD564546575758","amount":4200000,"description":"LE MINH TUAN - CHUYEN TIEN","from_account_no":"5536457585","from_account_name":"LE MINH TUAN","from_bank_name":"TPBANK","id":12,"user_id":null,"fund_id":1,"is_deleted":0,"createdById":null,"updatedById":null},{"createdAt":"2024-12-03T06:27:07.591Z","updatedAt":"2024-12-03T06:27:07.591Z","transaction_code":"FD564546575758","amount":4200000,"description":"LE MINH TUAN - CHUYEN TIEN","from_account_no":"5536457585","from_account_name":"LE MINH TUAN","from_bank_name":"TPBANK","id":13,"user_id":null,"fund_id":1,"is_deleted":0,"createdById":null,"updatedById":null}]
 79	2024-11-23 12:00:20.205+00	2024-11-23 12:00:20.328+00	27	71	dryirmt6df0	78	1	{"status":200,"statusText":"OK","headers":{"x-powered-by":"Express","vary":"Origin, Accept-Encoding","access-control-allow-credentials":"true","x-request-id":"9881c653-d635-42a5-a9fd-15b1132c8949","content-type":"application/json; charset=utf-8","content-length":"225","date":"Sat, 23 Nov 2024 12:00:20 GMT","connection":"close","x-real-url":"http://127.0.0.1:13001/api/qr-donate"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":55},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":19,\\"fund_name\\":\\"fterterargaed\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=fterterargaed","meta":{"fund_id":19,"fund_name":"fterterargaed","user_id":null}}}
 80	2024-11-23 12:01:26.113+00	2024-11-23 12:01:26.113+00	28	66	dl3c184o658	\N	1	true
 81	2024-11-23 12:01:26.223+00	2024-11-23 12:01:26.223+00	28	67	mf435tyq0zj	80	1	{"createdAt":"2024-11-23T12:01:26.167Z","updatedAt":"2024-11-23T12:01:26.167Z","id":19,"name":"sdegrgre","construction_site":"erfgfedfg","actual_expenditures":null,"total_amount":0,"is_deleted":0,"createdById":null,"updatedById":null,"createdBy":null,"fund_id":null}
@@ -6547,6 +6554,8 @@ COPY public.jobs (id, "createdAt", "updatedAt", "executionId", "nodeId", "nodeKe
 121	2024-12-02 10:59:19.445+00	2024-12-02 10:59:19.56+00	42	73	idjf8ocdmfd	120	1	{"status":200,"statusText":"OK","headers":{"x-powered-by":"Express","vary":"Origin, Accept-Encoding","access-control-allow-credentials":"true","x-request-id":"39eb9b2e-b0f8-4909-8441-d8c5cead89e7","content-type":"application/json; charset=utf-8","content-length":"420","date":"Mon, 02 Dec 2024 10:59:19 GMT","connection":"close","x-real-url":"http://127.0.0.1:13001/api/qr-donate"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":105},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":34,\\"fund_name\\":\\"Đổ sập nhà dân sau rung chấn ở Đắk Lắk, Gia Lai\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20%C4%90%E1%BB%95%20s%E1%BA%ADp%20nh%C3%A0%20d%C3%A2n%20sau%20rung%20ch%E1%BA%A5n%20%E1%BB%9F%20%C4%90%E1%BA%AFk%20L%E1%BA%AFk%2C%20Gia%20Lai","meta":{"fund_id":34,"fund_name":"Đổ sập nhà dân sau rung chấn ở Đắk Lắk, Gia Lai","user_id":null}}}
 122	2024-12-02 10:59:30.307+00	2024-12-02 10:59:30.307+00	43	72	wc5hw1w6bld	\N	1	{"createdAt":"2024-12-02T10:59:30.258Z","updatedAt":"2024-12-02T10:59:30.258Z","name":"Hư hại công trình cầu đường ở Điện Biên sau sạt lỡ đất","target_amount":1,"current_amount":0,"description":null,"project_id":40,"id":35,"is_deleted":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null}
 123	2024-12-02 10:59:30.354+00	2024-12-02 10:59:30.472+00	43	73	idjf8ocdmfd	122	1	{"status":200,"statusText":"OK","headers":{"x-powered-by":"Express","vary":"Origin, Accept-Encoding","access-control-allow-credentials":"true","x-request-id":"134b3358-8413-407f-a7a8-2e45a475b761","content-type":"application/json; charset=utf-8","content-length":"478","date":"Mon, 02 Dec 2024 10:59:30 GMT","connection":"close","x-real-url":"http://127.0.0.1:13001/api/qr-donate"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":120},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":35,\\"fund_name\\":\\"Hư hại công trình cầu đường ở Điện Biên sau sạt lỡ đất\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20H%C6%B0%20h%E1%BA%A1i%20c%C3%B4ng%20tr%C3%ACnh%20c%E1%BA%A7u%20%C4%91%C6%B0%E1%BB%9Dng%20%E1%BB%9F%20%C4%90i%E1%BB%87n%20Bi%C3%AAn%20sau%20s%E1%BA%A1t%20l%E1%BB%A1%20%C4%91%E1%BA%A5t","meta":{"fund_id":35,"fund_name":"Hư hại công trình cầu đường ở Điện Biên sau sạt lỡ đất","user_id":null}}}
+125	2024-12-03 06:27:23.03+00	2024-12-03 06:27:23.03+00	45	76	355lggsbukj	\N	1	[{"createdAt":"2024-12-03T06:23:32.318Z","updatedAt":"2024-12-03T06:23:32.318Z","transaction_code":"FD564546575758","amount":4200000,"description":"LE MINH TUAN - CHUYEN TIEN","from_account_no":"5536457585","from_account_name":"LE MINH TUAN","from_bank_name":"TPBANK","id":12,"user_id":null,"fund_id":1,"is_deleted":0,"createdById":null,"updatedById":null},{"createdAt":"2024-12-03T06:27:07.591Z","updatedAt":"2024-12-03T06:27:07.591Z","transaction_code":"FD564546575758","amount":4200000,"description":"LE MINH TUAN - CHUYEN TIEN","from_account_no":"5536457585","from_account_name":"LE MINH TUAN","from_bank_name":"TPBANK","id":13,"user_id":null,"fund_id":1,"is_deleted":0,"createdById":null,"updatedById":null},{"createdAt":"2024-12-03T06:27:22.792Z","updatedAt":"2024-12-03T06:27:22.792Z","transaction_code":"FD564546575758","amount":4200000,"description":"LE MINH TUAN - CHUYEN TIEN","from_account_no":"5536457585","from_account_name":"LE MINH TUAN","from_bank_name":"TPBANK","id":14,"user_id":null,"fund_id":1,"is_deleted":0,"createdById":null,"updatedById":null}]
+126	2024-12-03 06:41:16.476+00	2024-12-03 06:41:16.476+00	46	76	355lggsbukj	\N	1	[{"createdAt":"2024-12-03T06:23:32.318Z","updatedAt":"2024-12-03T06:23:32.318Z","transaction_code":"FD564546575758","amount":4200000,"description":"LE MINH TUAN - CHUYEN TIEN","from_account_no":"5536457585","from_account_name":"LE MINH TUAN","from_bank_name":"TPBANK","id":12,"user_id":null,"fund_id":1,"is_deleted":0,"createdById":null,"updatedById":null},{"createdAt":"2024-12-03T06:27:07.591Z","updatedAt":"2024-12-03T06:27:07.591Z","transaction_code":"FD564546575758","amount":4200000,"description":"LE MINH TUAN - CHUYEN TIEN","from_account_no":"5536457585","from_account_name":"LE MINH TUAN","from_bank_name":"TPBANK","id":13,"user_id":null,"fund_id":1,"is_deleted":0,"createdById":null,"updatedById":null},{"createdAt":"2024-12-03T06:27:22.792Z","updatedAt":"2024-12-03T06:27:22.792Z","transaction_code":"FD564546575758","amount":4200000,"description":"LE MINH TUAN - CHUYEN TIEN","from_account_no":"5536457585","from_account_name":"LE MINH TUAN","from_bank_name":"TPBANK","id":14,"user_id":null,"fund_id":1,"is_deleted":0,"createdById":null,"updatedById":null},{"createdAt":"2024-12-03T06:41:16.253Z","updatedAt":"2024-12-03T06:41:16.253Z","transaction_code":"12321","amount":0,"description":"123123","from_account_no":"123123213","from_account_name":"1233","from_bank_name":"2312","id":15,"user_id":null,"fund_id":33,"is_deleted":0,"createdById":1,"updatedById":1}]
 \.
 
 
@@ -6557,6 +6566,7 @@ COPY public.jobs (id, "createdAt", "updatedAt", "executionId", "nodeId", "nodeKe
 --
 
 COPY public.kafka_configs (id, "createdAt", "updatedAt", group_id, client_id) FROM stdin;
+9ee0103d-57bf-4de8-b709-1baf819c04f4	2024-12-03 05:43:24.13+00	2024-12-03 05:43:24.13+00	nocobase_lcdp	nocobase_lcdp
 \.
 
 
@@ -6567,6 +6577,8 @@ COPY public.kafka_configs (id, "createdAt", "updatedAt", group_id, client_id) FR
 --
 
 COPY public.kafka_topics (id, "createdAt", "updatedAt", broker_host, topic_name, type) FROM stdin;
+8df3733d-a4b7-43be-a11c-948aba6eb992	2024-12-03 05:42:52.888+00	2024-12-03 05:42:52.888+00	localhost:9092	refetchTransaction	producer
+8d38226a-8d39-4381-88ea-897a6bcb5a22	2024-12-03 05:43:16.55+00	2024-12-03 05:43:16.55+00	localhost:9092	transactionResponse	consumer
 \.
 
 
@@ -6838,10 +6850,10 @@ COPY public."tokenBlacklist" (id, "createdAt", "updatedAt", token, expiration) F
 --
 
 COPY public.transactions ("createdAt", "updatedAt", id, "createdById", "updatedById", transaction_code, amount, description, from_account_no, from_account_name, from_bank_name, f_e47my4oktv2, user_id, fund_id, is_deleted) FROM stdin;
-2024-12-02 11:04:40.688+00	2024-12-02 11:04:40.688+00	5	1	1	FD564546575758	42000000000	\N	5536457585	LE MINH TUAN	TPBANK - Ngân hàng Thương mại Cổ phần Tiên Phong	\N	\N	33	0
-2024-12-02 11:13:51.883+00	2024-12-02 11:13:51.883+00	6	1	1	FD564546571256	78405000000	\N	45476710555	TRAN NGUYEN DUY KHANH	VCB - Ngân hàng ngoại thương Việt Nam	\N	\N	33	0
-2024-12-02 11:16:07.841+00	2024-12-02 11:16:07.841+00	7	1	1	FD564500275409	2000000000	\N	1017142459	MAI THI THUY NHUNG	MB Bank - Ngân hàng Quân đội Việt Nam	\N	\N	34	0
-2024-12-02 11:17:38.8+00	2024-12-02 11:17:38.8+00	8	1	1	FD000006575758	78800000000	\N	23587345546547	TRAN NGUYEN DUY QUOC	MOMO	\N	\N	35	0
+2024-12-03 06:23:32.318+00	2024-12-03 06:23:32.318+00	12	\N	\N	FD564546575758	4200000	LE MINH TUAN - CHUYEN TIEN	5536457585	LE MINH TUAN	TPBANK	\N	\N	1	0
+2024-12-03 06:27:07.591+00	2024-12-03 06:27:07.591+00	13	\N	\N	FD564546575758	4200000	LE MINH TUAN - CHUYEN TIEN	5536457585	LE MINH TUAN	TPBANK	\N	\N	1	0
+2024-12-03 06:27:22.792+00	2024-12-03 06:27:22.792+00	14	\N	\N	FD564546575758	4200000	LE MINH TUAN - CHUYEN TIEN	5536457585	LE MINH TUAN	TPBANK	\N	\N	1	0
+2024-12-03 06:41:16.253+00	2024-12-03 06:41:16.253+00	15	1	1	12321	0	123123	123123213	1233	2312	\N	\N	33	0
 \.
 
 
@@ -16977,6 +16989,98 @@ rjd0phm5uy7	xu6q93fecns	17	\N	\N	\N
 nsueicidb31	xu6q93fecns	18	\N	\N	\N
 nocobase-admin-menu	xu6q93fecns	19	\N	\N	\N
 jjr1bqsdoa1	xu6q93fecns	1	\N	\N	1
+bx15mjygllp	bx15mjygllp	0	f	properties	\N
+ao2a67rjlld	bx15mjygllp	2	\N	\N	\N
+bwbd6lebhkb	bx15mjygllp	3	\N	\N	\N
+m8tbcrs4z9t	bx15mjygllp	4	\N	\N	\N
+q4dinm52meb	bx15mjygllp	5	\N	\N	\N
+vs0l89adzhc	bx15mjygllp	6	\N	\N	\N
+493pimn830r	bx15mjygllp	7	\N	\N	\N
+nsueicidb31	bx15mjygllp	8	\N	\N	\N
+nocobase-admin-menu	bx15mjygllp	9	\N	\N	\N
+yc5x6qvg4mh	bx15mjygllp	1	\N	\N	4
+40rr39tseqm	40rr39tseqm	0	f	properties	\N
+8flzjvptxn5	8flzjvptxn5	0	f	properties	\N
+ao2a67rjlld	8flzjvptxn5	2	\N	\N	\N
+bwbd6lebhkb	8flzjvptxn5	3	\N	\N	\N
+m8tbcrs4z9t	8flzjvptxn5	4	\N	\N	\N
+q4dinm52meb	8flzjvptxn5	5	\N	\N	\N
+vs0l89adzhc	8flzjvptxn5	6	\N	\N	\N
+493pimn830r	8flzjvptxn5	7	\N	\N	\N
+nsueicidb31	8flzjvptxn5	8	\N	\N	\N
+nocobase-admin-menu	8flzjvptxn5	9	\N	\N	\N
+yc5x6qvg4mh	8flzjvptxn5	1	\N	\N	5
+rnko20ymzdm	40rr39tseqm	1	\N	\N	2
+lunrm35djet	lunrm35djet	0	f	properties	\N
+40rr39tseqm	lunrm35djet	1	\N	\N	1
+wjqoqlum3pi	wjqoqlum3pi	0	f	properties	\N
+lunrm35djet	wjqoqlum3pi	1	\N	\N	1
+40rr39tseqm	wjqoqlum3pi	2	\N	\N	1
+xrntr4vttfp	xrntr4vttfp	0	f	properties	\N
+wjqoqlum3pi	xrntr4vttfp	1	\N	\N	1
+lunrm35djet	xrntr4vttfp	2	\N	\N	1
+40rr39tseqm	xrntr4vttfp	3	\N	\N	1
+fbc7deaj741	fbc7deaj741	0	f	properties	\N
+xrntr4vttfp	fbc7deaj741	1	\N	\N	1
+wjqoqlum3pi	fbc7deaj741	2	\N	\N	1
+lunrm35djet	fbc7deaj741	3	\N	\N	1
+40rr39tseqm	fbc7deaj741	4	\N	\N	1
+rnko20ymzdm	lunrm35djet	2	\N	\N	\N
+rnko20ymzdm	wjqoqlum3pi	3	\N	\N	\N
+rnko20ymzdm	xrntr4vttfp	4	\N	\N	\N
+rnko20ymzdm	fbc7deaj741	5	\N	\N	\N
+52h8j6knyh0	40rr39tseqm	2	\N	\N	\N
+52h8j6knyh0	lunrm35djet	3	\N	\N	\N
+52h8j6knyh0	wjqoqlum3pi	4	\N	\N	\N
+52h8j6knyh0	xrntr4vttfp	5	\N	\N	\N
+52h8j6knyh0	fbc7deaj741	6	\N	\N	\N
+5v81x55p2nk	40rr39tseqm	3	\N	\N	\N
+5v81x55p2nk	lunrm35djet	4	\N	\N	\N
+5v81x55p2nk	wjqoqlum3pi	5	\N	\N	\N
+5v81x55p2nk	xrntr4vttfp	6	\N	\N	\N
+5v81x55p2nk	fbc7deaj741	7	\N	\N	\N
+9bxpugcgkui	40rr39tseqm	4	\N	\N	\N
+9bxpugcgkui	lunrm35djet	5	\N	\N	\N
+9bxpugcgkui	wjqoqlum3pi	6	\N	\N	\N
+9bxpugcgkui	xrntr4vttfp	7	\N	\N	\N
+9bxpugcgkui	fbc7deaj741	8	\N	\N	\N
+7poa6levyva	40rr39tseqm	5	\N	\N	\N
+7poa6levyva	lunrm35djet	6	\N	\N	\N
+7poa6levyva	wjqoqlum3pi	7	\N	\N	\N
+7poa6levyva	xrntr4vttfp	8	\N	\N	\N
+7poa6levyva	fbc7deaj741	9	\N	\N	\N
+fe7kgdo55ax	40rr39tseqm	6	\N	\N	\N
+fe7kgdo55ax	lunrm35djet	7	\N	\N	\N
+fe7kgdo55ax	wjqoqlum3pi	8	\N	\N	\N
+fe7kgdo55ax	xrntr4vttfp	9	\N	\N	\N
+fe7kgdo55ax	fbc7deaj741	10	\N	\N	\N
+hmft2ujv1uf	40rr39tseqm	7	\N	\N	\N
+hmft2ujv1uf	lunrm35djet	8	\N	\N	\N
+hmft2ujv1uf	wjqoqlum3pi	9	\N	\N	\N
+hmft2ujv1uf	xrntr4vttfp	10	\N	\N	\N
+hmft2ujv1uf	fbc7deaj741	11	\N	\N	\N
+nsueicidb31	40rr39tseqm	8	\N	\N	\N
+nsueicidb31	lunrm35djet	9	\N	\N	\N
+nsueicidb31	wjqoqlum3pi	10	\N	\N	\N
+nsueicidb31	xrntr4vttfp	11	\N	\N	\N
+nsueicidb31	fbc7deaj741	12	\N	\N	\N
+nocobase-admin-menu	40rr39tseqm	9	\N	\N	\N
+nocobase-admin-menu	lunrm35djet	10	\N	\N	\N
+nocobase-admin-menu	wjqoqlum3pi	11	\N	\N	\N
+nocobase-admin-menu	xrntr4vttfp	12	\N	\N	\N
+nocobase-admin-menu	fbc7deaj741	13	\N	\N	\N
+vido4fqv4xo	vido4fqv4xo	0	f	properties	\N
+0f0yp3ro5dp	vido4fqv4xo	2	\N	\N	\N
+f70h0f0jiha	vido4fqv4xo	3	\N	\N	\N
+52h8j6knyh0	vido4fqv4xo	4	\N	\N	\N
+5v81x55p2nk	vido4fqv4xo	5	\N	\N	\N
+9bxpugcgkui	vido4fqv4xo	6	\N	\N	\N
+7poa6levyva	vido4fqv4xo	7	\N	\N	\N
+fe7kgdo55ax	vido4fqv4xo	8	\N	\N	\N
+hmft2ujv1uf	vido4fqv4xo	9	\N	\N	\N
+nsueicidb31	vido4fqv4xo	10	\N	\N	\N
+nocobase-admin-menu	vido4fqv4xo	11	\N	\N	\N
+a61oc4tl7m1	vido4fqv4xo	1	\N	\N	1
 \.
 
 
@@ -17690,6 +17794,14 @@ colhu4pgk51	7m4tfgk0pn1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 321iv2r4gu4	9o8m57tr500	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 osko1m4gkdr	type	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"kafka_topics.type","x-component-props":{"style":{"width":"100%"}},"x-app-version":"1.3.52"}
 xu6q93fecns	mg5zz2mfusr	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Submit\\") }}","x-action":"submit","x-component":"Action","x-use-component-props":"useCreateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:createSubmit","x-component-props":{"type":"primary","htmlType":"submit"},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.52"}
+bx15mjygllp	6lseiqefw7n	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Refresh\\") }}","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined"},"x-align":"right","type":"void","x-app-version":"1.3.52"}
+8flzjvptxn5	kp83sxnzzbr	{"x-uid":"8flzjvptxn5","name":"kp83sxnzzbr","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Link\\") }}","x-action":"customize:link","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:link","x-component":"Action","x-use-component-props":"useLinkActionProps","x-align":"right","x-app-version":"1.3.52","x-component-props":{"url":"/admin/2003","params":[]}}
+40rr39tseqm	fdmfoxfnfpc	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-action":"create","x-acl-action":"create","title":"{{t('Add new')}}","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:addNew","x-component":"Action","x-decorator":"ACLActionProvider","x-component-props":{"openMode":"drawer","type":"primary","component":"CreateRecordAction","icon":"PlusOutlined"},"x-action-context":{"dataSource":"main","collection":"transactions"},"x-align":"right","x-acl-action-props":{"skipScopeCheck":true},"x-app-version":"1.3.52"}
+lunrm35djet	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Add record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"},"x-app-version":"1.3.52"}
+wjqoqlum3pi	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab","x-initializer-props":{"gridInitializer":"popup:addNew:addBlock"},"x-app-version":"1.3.52"}
+xrntr4vttfp	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Add new\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{},"x-app-version":"1.3.52"}
+fbc7deaj741	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:addNew:addBlock","x-app-version":"1.3.52"}
+vido4fqv4xo	pbq85w5ms4h	{"x-uid":"vido4fqv4xo","name":"pbq85w5ms4h","_isJSONSchemaObject":true,"version":"2.0","title":"Refetch Transaction","x-component":"CustomRequestAction","x-action":"customize:table:request","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:customRequest","x-decorator":"CustomRequestAction.Decorator","x-action-settings":{"onSuccess":{"manualClose":false,"redirecting":false,"successMessage":"{{t(\\"Request success\\")}}"}},"type":"void","x-app-version":"1.3.52","x-component-props":{"iconColor":"#1677FF","danger":false,"confirm":{}},"x-response-type":"json"}
 \.
 
 
@@ -17755,6 +17867,7 @@ COPY public.workflows (id, "createdAt", "updatedAt", key, title, enabled, descri
 11	2024-11-23 07:06:06.908+00	2024-11-23 08:55:36.67+00	iib4y9voya1	Pre-Delete Project	f	\N	collection	\N	{"mode": 2, "appends": ["updatedBy", "fund_id", "createdBy"], "changed": ["is_deleted"], "condition": {"$and": [{"fund_id": {"current_amount": {"$eq": 0}}}]}, "collection": "projects"}	6	6	t	f	{"deleteExecutionOnStatus": []}
 22	2024-11-23 11:49:01.633+00	2024-11-29 20:13:20.423+00	07lrf76z5ab	Approve Propose	t	\N	collection	\N	{"mode": 2, "appends": ["createdBy"], "changed": ["status"], "condition": {"$and": []}, "collection": "proposes"}	9	9	t	f	{}
 23	2024-12-02 10:20:33.626+00	2024-12-02 10:59:30.153+00	n8zu6rytx8d	Create project	t	\N	collection	\N	{"mode": 1, "appends": ["fund_id", "createdBy", "updatedBy", "images"], "condition": {"$and": []}, "collection": "projects"}	10	10	t	f	{"deleteExecutionOnStatus": []}
+25	2024-12-03 06:24:41.508+00	2024-12-03 06:41:16.362+00	11tekrcogw2	On Kafka Event Transaction	t	\N	collection	\N	{"mode": 3, "appends": [], "changed": [], "condition": {"$and": []}, "collection": "transactions"}	3	3	t	f	{"deleteExecutionOnStatus": []}
 \.
 
 
@@ -17845,7 +17958,7 @@ SELECT pg_catalog.setval('public."dataSourcesRolesResources_id_seq"', 1, false);
 -- Name: executions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.executions_id_seq', 43, true);
+SELECT pg_catalog.setval('public.executions_id_seq', 46, true);
 
 
 --
@@ -17854,7 +17967,7 @@ SELECT pg_catalog.setval('public.executions_id_seq', 43, true);
 -- Name: flow_nodes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.flow_nodes_id_seq', 74, true);
+SELECT pg_catalog.setval('public.flow_nodes_id_seq', 76, true);
 
 
 --
@@ -17890,7 +18003,7 @@ SELECT pg_catalog.setval('public.images_id_seq', 1, false);
 -- Name: jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.jobs_id_seq', 123, true);
+SELECT pg_catalog.setval('public.jobs_id_seq', 126, true);
 
 
 --
@@ -18007,7 +18120,7 @@ SELECT pg_catalog.setval('public."tokenBlacklist_id_seq"', 1, false);
 -- Name: transactions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.transactions_id_seq', 8, true);
+SELECT pg_catalog.setval('public.transactions_id_seq', 15, true);
 
 
 --
@@ -18043,7 +18156,7 @@ SELECT pg_catalog.setval('public.users_jobs_id_seq', 1, false);
 -- Name: workflows_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.workflows_id_seq', 24, true);
+SELECT pg_catalog.setval('public.workflows_id_seq', 25, true);
 
 
 --
@@ -19171,7 +19284,7 @@ CREATE INDEX verifications_provider_id ON public.verifications USING btree ("pro
 CREATE UNIQUE INDEX workflows_key_current ON public.workflows USING btree (key, current);
 
 
--- Completed on 2024-12-03 05:40:27 UTC
+-- Completed on 2024-12-03 06:45:27 UTC
 
 --
 -- PostgreSQL database dump complete
