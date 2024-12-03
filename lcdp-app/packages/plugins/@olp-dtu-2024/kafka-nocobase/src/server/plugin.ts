@@ -1,14 +1,28 @@
 import { InstallOptions, Plugin } from '@nocobase/server';
 import { Kafka, Producer, Consumer } from 'kafkajs';
 import { KafkaEventListener } from './eventListener';
+import Router from 'koa-router';
 
 export class KafkaNocobaseServer extends Plugin {
   kafka: Kafka;
   producer: Producer;
   consumer: Consumer;
   private eventListener: KafkaEventListener;
+  private router: Router<any, any>;
+
+  async afterAdd() {
+    this.router = new Router();
+  }
+
+  async beforeLoad() {
+    this.app.use(this.router.routes());
+  }
 
   async load() {
+    this.router.post('/api/admin/kafka/emit', async (ctx) => {
+      console.log('ctx.request.body', ctx.request.body);
+      return ctx.request.body;
+    });
     const db = this.db;
     const tableKafkaTopicName = 'kafka_topics';
     const tableKafkaConfigName = 'kafka_configs';
