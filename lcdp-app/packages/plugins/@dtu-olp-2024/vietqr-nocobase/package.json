@@ -1,19 +1,29 @@
 {
   "name": "@dtu-olp-2024/vietqr-nocobase",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "GPL-3.0",
   "main": "dist/server/index.js",
-  "dependencies": {
-    "koa-router": "^13.0.1"
-  },
   "peerDependencies": {
     "@nocobase/client": "1.x",
     "@nocobase/server": "1.x",
     "@nocobase/test": "1.x"
   },
   "devDependencies": {
-    "@types/koa-router": "^7.4.8"
+    "@types/koa-router": "^7.4.8",
+    "koa-router": "^13.0.1"
   },
+  "files": [
+    "dist",
+    "dist/node_modules",
+    "README.md",
+    "LICENSE",
+    "package.json",
+    "server.js",
+    "server.d.ts",
+    "client.js",
+    "client.d.ts",
+    "CHANGELOG.md"
+  ],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -21,5 +31,14 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/olp-dtu-2024/DTU-GreenHope"
-  }
+  },
+  "description": "A NocoBase plugin for VietQR integration, supporting QR code generation and scanning. Built for the DTU GreenHope project.",
+  "displayName": "VietQR Plugin - DTU GreenHope 2024",
+  "keywords": [
+    "plugin",
+    "nocobase",
+    "dtu",
+    "greenhope",
+    "vietqr"
+  ]
 }
