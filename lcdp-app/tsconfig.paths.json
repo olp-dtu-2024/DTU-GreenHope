@@ -4,68 +4,77 @@
       "@@/*": [
         ".dumi/tmp/*"
       ],
-      "@olp-dtu-2024/button-action-nocobase/client": [
-        "packages/plugins/@olp-dtu-2024/button-action-nocobase/src/client"
+      "@dtu-olp-2024/button-action-nocobase/client": [
+        "packages/plugins/@dtu-olp-2024/button-action-nocobase/src/client"
       ],
-      "@olp-dtu-2024/button-action-nocobase/package.json": [
-        "packages/plugins/@olp-dtu-2024/button-action-nocobase/package.json"
+      "@dtu-olp-2024/button-action-nocobase/package.json": [
+        "packages/plugins/@dtu-olp-2024/button-action-nocobase/package.json"
       ],
-      "@olp-dtu-2024/button-action-nocobase": [
-        "packages/plugins/@olp-dtu-2024/button-action-nocobase/src"
+      "@dtu-olp-2024/button-action-nocobase": [
+        "packages/plugins/@dtu-olp-2024/button-action-nocobase/src"
       ],
-      "@olp-dtu-2024/carousel-nocobase/client": [
-        "packages/plugins/@olp-dtu-2024/carousel-nocobase/src/client"
+      "@dtu-olp-2024/carousel-nocobase/client": [
+        "packages/plugins/@dtu-olp-2024/carousel-nocobase/src/client"
       ],
-      "@olp-dtu-2024/carousel-nocobase/package.json": [
-        "packages/plugins/@olp-dtu-2024/carousel-nocobase/package.json"
+      "@dtu-olp-2024/carousel-nocobase/package.json": [
+        "packages/plugins/@dtu-olp-2024/carousel-nocobase/package.json"
       ],
-      "@olp-dtu-2024/carousel-nocobase": [
-        "packages/plugins/@olp-dtu-2024/carousel-nocobase/src"
+      "@dtu-olp-2024/carousel-nocobase": [
+        "packages/plugins/@dtu-olp-2024/carousel-nocobase/src"
       ],
-      "@olp-dtu-2024/kafka-nocobase/client": [
-        "packages/plugins/@olp-dtu-2024/kafka-nocobase/src/client"
+      "@dtu-olp-2024/kafka-nocobase/client": [
+        "packages/plugins/@dtu-olp-2024/kafka-nocobase/src/client"
       ],
-      "@olp-dtu-2024/kafka-nocobase/package.json": [
-        "packages/plugins/@olp-dtu-2024/kafka-nocobase/package.json"
+      "@dtu-olp-2024/kafka-nocobase/package.json": [
+        "packages/plugins/@dtu-olp-2024/kafka-nocobase/package.json"
       ],
-      "@olp-dtu-2024/kafka-nocobase": [
-        "packages/plugins/@olp-dtu-2024/kafka-nocobase/src"
+      "@dtu-olp-2024/kafka-nocobase": [
+        "packages/plugins/@dtu-olp-2024/kafka-nocobase/src"
       ],
-      "@olp-dtu-2024/landing-page/client": [
-        "packages/plugins/@olp-dtu-2024/landing-page/src/client"
+      "@dtu-olp-2024/landing-page/client": [
+        "packages/plugins/@dtu-olp-2024/landing-page/src/client"
       ],
-      "@olp-dtu-2024/landing-page/package.json": [
-        "packages/plugins/@olp-dtu-2024/landing-page/package.json"
+      "@dtu-olp-2024/landing-page/package.json": [
+        "packages/plugins/@dtu-olp-2024/landing-page/package.json"
       ],
-      "@olp-dtu-2024/landing-page": [
-        "packages/plugins/@olp-dtu-2024/landing-page/src"
+      "@dtu-olp-2024/landing-page": [
+        "packages/plugins/@dtu-olp-2024/landing-page/src"
       ],
-      "@olp-dtu-2024/progress-nocobase/client": [
-        "packages/plugins/@olp-dtu-2024/progress-nocobase/src/client"
+      "@dtu-olp-2024/progress-nocobase/client": [
+        "packages/plugins/@dtu-olp-2024/progress-nocobase/src/client"
       ],
-      "@olp-dtu-2024/progress-nocobase/package.json": [
-        "packages/plugins/@olp-dtu-2024/progress-nocobase/package.json"
+      "@dtu-olp-2024/progress-nocobase/package.json": [
+        "packages/plugins/@dtu-olp-2024/progress-nocobase/package.json"
       ],
-      "@olp-dtu-2024/progress-nocobase": [
-        "packages/plugins/@olp-dtu-2024/progress-nocobase/src"
+      "@dtu-olp-2024/progress-nocobase": [
+        "packages/plugins/@dtu-olp-2024/progress-nocobase/src"
       ],
-      "@olp-dtu-2024/rich-block-nocobase/client": [
-        "packages/plugins/@olp-dtu-2024/rich-block-nocobase/src/client"
+      "@dtu-olp-2024/rich-block-nocobase/client": [
+        "packages/plugins/@dtu-olp-2024/rich-block-nocobase/src/client"
       ],
-      "@olp-dtu-2024/rich-block-nocobase/package.json": [
-        "packages/plugins/@olp-dtu-2024/rich-block-nocobase/package.json"
+      "@dtu-olp-2024/rich-block-nocobase/package.json": [
+        "packages/plugins/@dtu-olp-2024/rich-block-nocobase/package.json"
       ],
-      "@olp-dtu-2024/rich-block-nocobase": [
-        "packages/plugins/@olp-dtu-2024/rich-block-nocobase/src"
+      "@dtu-olp-2024/rich-block-nocobase": [
+        "packages/plugins/@dtu-olp-2024/rich-block-nocobase/src"
       ],
-      "@olp-dtu-2024/vietqr-nocobase/client": [
-        "packages/plugins/@olp-dtu-2024/vietqr-nocobase/src/client"
+      "@dtu-olp-2024/solidity-editor-nocobase/client": [
+        "packages/plugins/@dtu-olp-2024/solidity-editor-nocobase/src/client"
       ],
-      "@olp-dtu-2024/vietqr-nocobase/package.json": [
-        "packages/plugins/@olp-dtu-2024/vietqr-nocobase/package.json"
+      "@dtu-olp-2024/solidity-editor-nocobase/package.json": [
+        "packages/plugins/@dtu-olp-2024/solidity-editor-nocobase/package.json"
       ],
-      "@olp-dtu-2024/vietqr-nocobase": [
-        "packages/plugins/@olp-dtu-2024/vietqr-nocobase/src"
+      "@dtu-olp-2024/solidity-editor-nocobase": [
+        "packages/plugins/@dtu-olp-2024/solidity-editor-nocobase/src"
+      ],
+      "@dtu-olp-2024/vietqr-nocobase/client": [
+        "packages/plugins/@dtu-olp-2024/vietqr-nocobase/src/client"
+      ],
+      "@dtu-olp-2024/vietqr-nocobase/package.json": [
+        "packages/plugins/@dtu-olp-2024/vietqr-nocobase/package.json"
+      ],
+      "@dtu-olp-2024/vietqr-nocobase": [
+        "packages/plugins/@dtu-olp-2024/vietqr-nocobase/src"
       ]
     }
   }

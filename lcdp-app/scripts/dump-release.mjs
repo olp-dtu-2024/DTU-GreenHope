@@ -17,8 +17,8 @@ import {
 const __filename = fileURLToPath(
   import.meta.url);
 const __dirname = dirname(__filename);
-const dataDir = path.join(__dirname, '../data');
-const outputFile = path.join(dataDir, 'dump-schema.sql');
+const dataDir = path.join(__dirname, '../release/database');
+const outputFile = path.join(dataDir, 'dump.sql');
 
 async function dumpDatabase() {
   try {
@@ -26,7 +26,7 @@ async function dumpDatabase() {
       recursive: true
     });
 
-    const command = `docker exec -e PGPASSWORD=${process.env.DB_PASSWORD} postgres-5439-olp-dtu-2024 pg_dump -v -c --if-exists -F p -U ${process.env.DB_USER} -d ${process.env.DB_DATABASE}`;
+    const command = `docker exec -e PGPASSWORD=${process.env.DB_PASSWORD} postgres-5439-olp-dtu-2024 pg_dump -v -c --if-exists -F p -U ${process.env.DB_USER} -d nocobase`;
 
     const outputStream = fs.createWriteStream(outputFile);
 

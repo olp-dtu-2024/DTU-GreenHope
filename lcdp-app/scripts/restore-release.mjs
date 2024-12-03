@@ -7,7 +7,7 @@ import fs from 'fs';
 dotenv.config();
 
 const restoreDatabaseDocker = async () => {
-  const dumpFile = 'data/dump-schema.sql';
+  const dumpFile = 'release/database/dump.sql';
 
   if (!fs.existsSync(dumpFile)) {
     throw new Error('Dump file does not exist.');
@@ -15,7 +15,7 @@ const restoreDatabaseDocker = async () => {
 
   const containerName = process.env.DB_CONTAINER || 'postgres-5439-olp-dtu-2024';
   const dbUser = process.env.DB_USER || 'postgres';
-  const dbDatabase = process.env.DB_DATABASE || 'postgres';
+  const dbDatabase = 'nocobase';
   const dbPassword = process.env.DB_PASSWORD || 'postgres';
 
   const command = `docker exec -i -e PGPASSWORD=${dbPassword} ${containerName} psql -U ${dbUser} -d ${dbDatabase} < ${dumpFile}`;

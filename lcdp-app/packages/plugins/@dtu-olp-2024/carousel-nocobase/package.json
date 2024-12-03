@@ -1,0 +1,40 @@
+{
+  "name": "@dtu-olp-2024/carousel-nocobase",
+  "version": "1.0.1",
+  "license": "GPL-3.0",
+  "main": "dist/server/index.js",
+  "peerDependencies": {
+    "@nocobase/client": "1.x",
+    "@nocobase/server": "1.x",
+    "@nocobase/test": "1.x"
+  },
+  "files": [
+    "dist",
+    "dist/node_modules",
+    "README.md",
+    "LICENSE",
+    "package.json",
+    "server.js",
+    "server.d.ts",
+    "client.js",
+    "client.d.ts",
+    "CHANGELOG.md"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olp-dtu-2024/DTU-GreenHope"
+  },
+  "displayName": "Carousel Plugin - DTU GreenHope 2024",
+  "description": "A NocoBase plugin for carousel view display. Built for the DTU GreenHope project.",
+  "keywords": [
+    "plugin",
+    "nocobase",
+    "dtu",
+    "greenhope",
+    "carousel"
+  ]
+}
