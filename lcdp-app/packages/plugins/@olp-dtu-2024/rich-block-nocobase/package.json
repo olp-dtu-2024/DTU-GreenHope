@@ -1,10 +1,9 @@
 {
-  "name": "@olp-dtu-2024/qr-donate",
+  "name": "@olp-dtu-2024/rich-block-nocobase",
   "version": "1.0.0",
   "main": "dist/server/index.js",
   "dependencies": {
-    "@types/koa-router": "^7.4.8",
-    "koa-router": "^13.0.1"
+    "@formily/react": "^2.3.2"
   },
   "peerDependencies": {
     "@nocobase/client": "1.x",

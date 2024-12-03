@@ -1,38 +1,39 @@
-# Kafka NocoBase Plugin
+# VietQR NocoBase Plugin
 
 ## 🌟 Giới Thiệu
 
-`@olp-dtu-2024/kafka-nocobase` là một plugin cho nền tảng NocoBase, tích hợp KafkaJS giúp đơn giản hóa việc xử lý các sự kiện và giao tiếp message trong ứng dụng NocoBase của bạn.
+`@olp-dtu-2024/vietqr-nocobase` là một plugin cho nền tảng NocoBase, tích hợp VietQR API, giúp dễ dàng sinh mã QR thanh toán
 
 ### 🏆 Bối Cảnh
 Plugin được phát triển như một phần của cuộc thi Mã Nguồn Mở năm 2024.
 
 ## ✨ Tính Năng
 
-- 🔗 Tích hợp dễ dàng KafkaJS với NocoBase
-- 📩 Hỗ trợ gửi và nhận message từ các Kafka topic
-- 🔧 Quản lý kết nối Kafka hiệu quả
-- 🌐 Tương thích với phiên bản NocoBase 1.x
+- 🏦 Tích hợp trực tiếp với VietQR API
+- ⚡ Sinh mã QR thanh toán nhanh chóng
+- 🌐 Hỗ trợ đa ngân hàng
+- 🔧 Tùy chỉnh thông tin thanh toán linh hoạt
+- 📄 Xuất mã QR dưới nhiều định dạng (PNG, SVG)
 
 ## 🚀 Cài Đặt
 
 ### Sử Dụng npm:
 
 ```bash
-npm install @olp-dtu-2024/kafka-nocobase
+npm install @olp-dtu-2024/vietqr-nocobase
 ```
 
 ### Sử Dụng Yarn:
 
 ```bash
-yarn add @olp-dtu-2024/kafka-nocobase
+yarn add @olp-dtu-2024/vietqr-nocobase
 ```
 
 ## 📋 Yêu Cầu Tiên Quyết
 
 - Node.js version 18.x trở lên
 - NocoBase phiên bản 1.x
-- KafkaJS phiên bản 2.2.4 trở lên
+- Kết nối internet ổn định
 
 ## 👥 Tác Giả
 
@@ -59,9 +60,9 @@ Nếu gặp bất kỳ vấn đề nào, vui lòng:
 
 ## ⚠️ Lưu Ý
 
-- Đảm bảo kết nối mạng ổn định
-- Kiểm tra cấu hình Kafka trước khi sử dụng
-- Tuân thủ best practices về message queue
+- Đảm bảo tuân thủ quy định pháp luật về thanh toán điện tử
+- Kiểm tra kết nối mạng trước khi sử dụng
+- Bảo mật thông tin tài khoản ngân hàng
 
 ---
 
