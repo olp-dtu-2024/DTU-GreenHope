@@ -1,50 +1,67 @@
-# Carousel Nocobase Plugin
+# Carousel NocoBase Plugin
 
-## Giới Thiệu
+## 🌟 Giới Thiệu
 
-Thư viện `@olp-dtu-2024/carousel-nocobase` là một gói tích hợp Carousel với NocoBase, giúp đơn giản hóa việc hiển thị các hình ảnh dưới dạng carousel trong ứng dụng NocoBase của bạn.
+`@olp-dtu-2024/carousel-nocobase` là một plugin cho nền tảng NocoBase, cung cấp trải nghiệm hiển thị hình ảnh linh hoạt với Carousel dựa trên Ant Design (antd). Plugin giúp người dùng dễ dàng tạo và quản lý các slide show một cách trực quan và nhanh chóng.
 
-Plugin phục vụ cho cuộc thi Mã Nguồn Mở năm 2024
+### 🏆 Bối Cảnh
+Plugin được phát triển như một phần của cuộc thi Mã Nguồn Mở năm 2024.
 
-## Tính Năng
+## ✨ Tính Năng
 
-- Tích hợp dễ dàng Ant Design Carousel với NocoBase
-- Hỗ trợ hiển thị hình ảnh từ các nguồn dữ liệu khác nhau
-- Quản lý và tùy chỉnh carousel hiệu quả
-- Tương thích với phiên bản NocoBase 1.x
+- 🖼️ Tích hợp dễ dàng Ant Design Carousel với NocoBase
+- 🔀 Hỗ trợ hiển thị hình ảnh từ các nguồn dữ liệu khác nhau
+- 🔧 Quản lý và tùy chỉnh carousel hiệu quả
+- 🔗 Tương thích với phiên bản NocoBase 1.x
 
-## Cài Đặt
+## 🚀 Cài Đặt
 
-Sử dụng npm:
+### Sử Dụng npm:
 
 ```bash
 npm install @olp-dtu-2024/carousel-nocobase
 ```
 
-Hoặc yarn:
+### Sử Dụng Yarn:
 
 ```bash
 yarn add @olp-dtu-2024/carousel-nocobase
 ```
 
-## Yêu Cầu Tiên Quyết
+## 📋 Yêu Cầu Tiên Quyết
 
+- Node.js version 18.x trở lên
 - NocoBase phiên bản 1.x
 - Ant Design phiên bản 4.x trở lên
 
-## Tác Giả
+## 👥 Tác Giả
 
 - Lê Minh Tuấn
 - Trần Nguyễn Duy Khánh
 
-## Giấy Phép
+## 📄 Giấy Phép
 
-GNU General Public License v3.0
+Dự án được phân phối dưới giấy phép **GNU General Public License v3.0**
 
-## Đóng Góp
+## 🤝 Đóng Góp
 
-Chúng tôi rất hoan nghênh các đóng góp! Vui lòng tạo issue hoặc pull request tại [GitHub Repository](https://github.com/auroraphtgrp01/DTU-GreenHope)
+Chúng tôi rất hoan nghênh các đóng góp từ cộng đồng! Vui lòng:
 
-## Vấn Đề Và Hỗ Trợ
+- Tạo issue để báo cáo lỗi
+- Gửi pull request để đề xuất cải tiến
+- Truy cập GitHub Repository của chúng tôi để biết thêm chi tiết
 
-Nếu gặp bất kỳ vấn đề nào, vui lòng mở issue tại GitHub repository của chúng tôi.
+## 🆘 Hỗ Trợ
+
+Nếu gặp bất kỳ vấn đề nào, vui lòng:
+- Mở issue tại GitHub repository
+- Liên hệ trực tiếp với nhóm phát triển
+
+## ⚠️ Lưu Ý
+
+- Đảm bảo tương thích với phiên bản NocoBase hiện tại
+- Kiểm tra kết nối và cấu hình trước khi sử dụng
+
+---
+
+**Được phát triển với ❤️ bởi Nhóm DTU-GreenHope**

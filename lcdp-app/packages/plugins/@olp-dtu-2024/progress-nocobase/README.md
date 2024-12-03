@@ -1,47 +1,49 @@
 # Progress NocoBase Plugin
 
-## Giới Thiệu
+## 🌟 Giới Thiệu
 
-Thư viện `@olp-dtu-2024/progress-nocobase` là một gói tích hợp Progress Bar với NocoBase, giúp đơn giản hóa việc hiển thị tiến độ dưới dạng thanh tiến trình trong ứng dụng NocoBase của bạn.
+`@olp-dtu-2024/progress-nocobase` là một plugin cho nền tảng NocoBase, tích hợp Progress Bar giúp đơn giản hóa việc hiển thị tiến độ dưới dạng thanh tiến trình trong ứng dụng NocoBase của bạn.
 
-Plugin này được phát triển đặc biệt cho cuộc thi Mã Nguồn Mở năm 2024.
+### 🏆 Bối Cảnh
+Plugin được phát triển như một phần của cuộc thi Mã Nguồn Mở năm 2024.
 
-## Tính Năng
+## ✨ Tính Năng
 
-- **Tích hợp dễ dàng**: Tích hợp liền mạch Ant Design Progress với NocoBase
-- **Tùy chỉnh giao diện**: Điều chỉnh màu sắc và kiểu dáng thanh tiến trình
-- **Tự động tính toán**: Tự động xác định phần trăm hoàn thành
-- **Tương thích**: Hoàn toàn tương thích với phiên bản NocoBase 1.x
+- 🔗 Tích hợp dễ dàng Ant Design Progress với NocoBase
+- 🎨 Tùy chỉnh giao diện và màu sắc thanh tiến trình
+- 🧮 Tự động tính toán phần trăm hoàn thành
+- 🌐 Tương thích với phiên bản NocoBase 1.x
 
-## Cài Đặt
+## 🚀 Cài Đặt
 
-Bạn có thể cài đặt plugin bằng npm hoặc yarn:
+### Sử Dụng npm:
 
-### Sử dụng npm:
 ```bash
 npm install @olp-dtu-2024/progress-nocobase
 ```
 
-### Sử dụng yarn:
+### Sử Dụng Yarn:
+
 ```bash
 yarn add @olp-dtu-2024/progress-nocobase
 ```
 
-## Yêu Cầu Tiên Quyết
+## 📋 Yêu Cầu Tiên Quyết
 
+- Node.js version 18.x trở lên
 - NocoBase phiên bản 1.x
 - Ant Design phiên bản 4.x trở lên
 
-## Tác Giả
+## 👥 Tác Giả
 
 - Lê Minh Tuấn
 - Trần Nguyễn Duy Khánh
 
-## Giấy Phép
+## 📄 Giấy Phép
 
 Dự án được phân phối dưới giấy phép **GNU General Public License v3.0**
 
-## Đóng Góp
+## 🤝 Đóng Góp
 
 Chúng tôi rất hoan nghênh các đóng góp từ cộng đồng! Vui lòng:
 
@@ -49,10 +51,19 @@ Chúng tôi rất hoan nghênh các đóng góp từ cộng đồng! Vui lòng:
 - Gửi pull request để đề xuất cải tiến
 - Truy cập GitHub Repository của chúng tôi để biết thêm chi tiết
 
-## Hỗ Trợ
+## 🆘 Hỗ Trợ
 
-Nếu gặp bất kỳ vấn đề nào trong quá trình sử dụng, vui lòng:
-
+Nếu gặp bất kỳ vấn đề nào, vui lòng:
 - Mở issue tại GitHub repository
-- Liên hệ trực tiếp với các tác giả
-- Cung cấp thông tin chi tiết để chúng tôi có thể hỗ trợ bạn tốt nhất
+- Liên hệ trực tiếp với nhóm phát triển
+- Cung cấp thông tin chi tiết để chúng tôi hỗ trợ tốt nhất
+
+## ⚠️ Lưu Ý
+
+- Kiểm tra tương thích với phiên bản NocoBase
+- Đảm bảo cấu hình phù hợp
+- Theo dõi các bản cập nhật mới
+
+---
+
+**Được phát triển với ❤️ bởi Nhóm DTU-GreenHope**
