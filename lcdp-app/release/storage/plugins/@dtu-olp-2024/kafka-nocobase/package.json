@@ -1,0 +1,45 @@
+{
+  "name": "@dtu-olp-2024/kafka-nocobase",
+  "version": "1.1.8",
+  "license": "GPL-3.0",
+  "main": "dist/server/index.js",
+  "devDependencies": {
+    "@types/koa-router": "^7.4.8",
+    "kafkajs": "^2.2.4",
+    "koa-router": "^13.0.1"
+  },
+  "files": [
+    "dist",
+    "dist/node_modules",
+    "README.md",
+    "LICENSE",
+    "package.json",
+    "server.js",
+    "server.d.ts",
+    "client.js",
+    "client.d.ts",
+    "CHANGELOG.md"
+  ],
+  "peerDependencies": {
+    "@nocobase/client": "1.x",
+    "@nocobase/server": "1.x",
+    "@nocobase/test": "1.x"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "description": "Kafka plugin for Nocobase - DTU GreenHope",
+  "displayName": "Kafka Plugin - DTU GreenHope 2024",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olp-dtu-2024/DTU-GreenHope"
+  },
+  "keywords": [
+    "kafka",
+    "plugin",
+    "nocobase",
+    "dtu",
+    "greenhope"
+  ]
+}

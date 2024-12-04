@@ -1,0 +1,40 @@
+{
+  "name": "@dtu-olp-2024/progress-nocobase",
+  "version": "1.0.1",
+  "license": "GPL-3.0",
+  "main": "dist/server/index.js",
+  "peerDependencies": {
+    "@nocobase/client": "1.x",
+    "@nocobase/server": "1.x",
+    "@nocobase/test": "1.x"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olp-dtu-2024/DTU-GreenHope"
+  },
+  "displayName": "Progress Bar Plugin - DTU GreenHope 2024",
+  "description": "A NocoBase plugin for progress bar visualization, supporting progress tracking, percentage completion, and task management. Built for the DTU GreenHope project.",
+  "keywords": [
+    "plugin",
+    "nocobase",
+    "dtu",
+    "greenhope",
+    "progress-bar"
+  ],
+  "files": [
+    "dist",
+    "dist/node_modules",
+    "README.md",
+    "LICENSE",
+    "package.json",
+    "server.js",
+    "server.d.ts",
+    "client.js",
+    "client.d.ts",
+    "CHANGELOG.md"
+  ]
+}
