@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import {
   exec
 } from 'child_process';
@@ -25,8 +24,10 @@ async function dumpDatabase() {
     await mkdir(dataDir, {
       recursive: true
     });
+    const dbUser = 'postgres';
+    const dbPassword = 'postgres';
 
-    const command = `docker exec -e PGPASSWORD=${process.env.DB_PASSWORD} postgres-5439-olp-dtu-2024 pg_dump -v -c --if-exists -F p -U ${process.env.DB_USER} -d nocobase`;
+    const command = `docker exec -e PGPASSWORD=${dbPassword} postgres-5439-olp-dtu-2024 pg_dump -v -c --if-exists -F p -U ${dbUser} -d nocobase`;
 
     const outputStream = fs.createWriteStream(outputFile);
 
