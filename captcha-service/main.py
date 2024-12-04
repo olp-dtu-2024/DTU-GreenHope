@@ -7,6 +7,9 @@ import cv2
 import sys
 import typing
 import numpy as np
+import platform
+from urllib.parse import unquote
+import os
 
 from inferenceModel import OnnxInferenceModel
 from text_utils import ctc_decoder
@@ -15,8 +18,11 @@ from fastapi.staticfiles import StaticFiles
 
 
 app = FastAPI(title="main app")
-templates = Jinja2Templates(directory=sys.path[0] + "\\ui")
-system("title " + "Decaptcha")
+templates = Jinja2Templates(directory=os.path.join(sys.path[0], "ui"))
+
+# Only set title on Windows
+if platform.system() == "Windows":
+    system("title " + "Decaptcha")
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -91,16 +97,15 @@ def regex(html, reg, flags=re.MULTILINE):
 
 models = {}
 if __name__ == "__main__":
-    from urllib.parse import unquote
     from configs import BaseModelConfigs
     import sys
     import os
-    folder = sys.path[0] + "/model/"
+    folder = os.path.join(sys.path[0], "model")
     folders = [x[0] for x in os.walk(folder)]
     folders.remove(folder)
     for folder in folders:
-        configs = BaseModelConfigs.load(folder + "/configs.yaml")
+        configs = BaseModelConfigs.load(os.path.join(folder, "configs.yaml"))
         model = ImageToWordModel(model_path=folder, char_list=configs.vocab)
-        models[str(configs.width)+"_" + str(configs.height)] = model
+        models[f"{configs.width}_{configs.height}"] = model
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=1234)
