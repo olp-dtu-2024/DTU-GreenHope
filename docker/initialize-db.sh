@@ -1,4 +1,5 @@
 #!/bin/bash
+chmod +x initialize-db.sh
 set -e
 
 export PGPASSWORD="$POSTGRESQL_PASSWORD"
