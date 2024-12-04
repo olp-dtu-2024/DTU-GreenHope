@@ -1,10 +1,7 @@
 import {
   exec
 } from 'child_process';
-import dotenv from 'dotenv';
 import fs from 'fs';
-
-dotenv.config();
 
 const restoreDatabaseDocker = async () => {
   const dumpFile = 'release/database/dump.sql';
@@ -13,10 +10,10 @@ const restoreDatabaseDocker = async () => {
     throw new Error('Dump file does not exist.');
   }
 
-  const containerName = process.env.DB_CONTAINER || 'postgres-5439-olp-dtu-2024';
-  const dbUser = process.env.DB_USER || 'postgres';
+  const containerName = 'postgres-5439-olp-dtu-2024';
+  const dbUser = 'postgres';
   const dbDatabase = 'nocobase';
-  const dbPassword = process.env.DB_PASSWORD || 'postgres';
+  const dbPassword = 'postgres';
 
   const command = `docker exec -i -e PGPASSWORD=${dbPassword} ${containerName} psql -U ${dbUser} -d ${dbDatabase} < ${dumpFile}`;
   console.log(`Executing: ${command}`);

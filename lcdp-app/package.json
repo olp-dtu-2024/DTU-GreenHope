@@ -23,9 +23,7 @@
     "postinstall": "nocobase postinstall",
     "lint": "eslint .",
     "lcdp:dump": "node ./scripts/dump.mjs",
-    "lcdp:restore": "node ./scripts/restore.mjs",
-    "release:dump": "node ./scripts/dump-release.mjs",
-    "release:restore": "node ./scripts/restore-release.mjs"
+    "lcdp:restore": "node ./scripts/restore.mjs"
   },
   "resolutions": {
     "cytoscape": "3.28.0",

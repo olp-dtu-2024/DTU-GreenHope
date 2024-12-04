@@ -141,7 +141,7 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=postgres
     volumes:
-      - ../lcdp-app/release/storage:/app/nocobase/storage
+      - ../release/storage:/app/nocobase/storage
     ports:
       - '12000:80'
 

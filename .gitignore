@@ -38,5 +38,7 @@ lerna-debug.log*
 .data
 /files
 /ormconfig.json
+/release/storage/.pm2
+/release/storage/gateway.sock
 
 
