@@ -46,15 +46,15 @@ export abstract class Gate {
         type: payments
       })
     )
-    console.log('fundId', this.config.fundId);
 
-    const exitsTransaction = await this.databaseService.client.transaction.findMany({
-      select: {
-        transactionId: true
-      }
-    })
+    // const exitsTransaction = await this.databaseService.client.transaction.findMany({
+    //   select: {
+    //     transactionId: true
+    //   }
+    // })
 
-    const newPayments = payments.filter((payment) => !this.isExists(payment, exitsTransaction))
+    // const newPayments = payments.filter((payment) => !this.isExists(payment, exitsTransaction))
+     const newPayments = payments
     let replaceDateTimeNewPayments = newPayments.map((payment) => ({
       ...payment,
       date: this.replaceDateTodayAndNoTime(payment.date)
@@ -79,35 +79,35 @@ export abstract class Gate {
       }
     })
 
-    await Promise.all([
-      result.receiverTransaction.map(async (transaction) => {
-        return await this.databaseService.client.transaction.create({
-          data: {
-            amount: transaction.receiveAmount,
-            description: transaction.description,
-            transactionId: transaction.transaction_id,
-            direction: ETransactionDirection.INCOMING,
-            createdAt: transaction.date,
-            fundId: this.config.fundId,
-            transactionDateTime: transaction.date
-          }
-        })
-      }),
+    // await Promise.all([
+    //   result.receiverTransaction.map(async (transaction) => {
+    //     return await this.databaseService.client.transaction.create({
+    //       data: {
+    //         amount: transaction.receiveAmount,
+    //         description: transaction.description,
+    //         transactionId: transaction.transaction_id,
+    //         direction: ETransactionDirection.INCOMING,
+    //         createdAt: transaction.date,
+    //         fundId: this.config.fundId,
+    //         transactionDateTime: transaction.date
+    //       }
+    //     })
+    //   }),
 
-      result.transferTransaction.map(async (transaction) => {
-        return await this.databaseService.client.transaction.create({
-          data: {
-            amount: transaction.transferAmount,
-            description: transaction.description,
-            transactionId: transaction.transaction_id,
-            direction: ETransactionDirection.OUTCOMING,
-            createdAt: transaction.date,
-            fundId: this.config.fundId,
-            transactionDateTime: transaction.date
-          }
-        })
-      })
-    ])
+    //   result.transferTransaction.map(async (transaction) => {
+    //     return await this.databaseService.client.transaction.create({
+    //       data: {
+    //         amount: transaction.transferAmount,
+    //         description: transaction.description,
+    //         transactionId: transaction.transaction_id,
+    //         direction: ETransactionDirection.OUTCOMING,
+    //         createdAt: transaction.date,
+    //         fundId: this.config.fundId,
+    //         transactionDateTime: transaction.date
+    //       }
+    //     })
+    //   })
+    // ])
 
     return result
   }

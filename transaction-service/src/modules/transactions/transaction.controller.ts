@@ -16,7 +16,7 @@ export class TransactionController {
 
   @MessagePattern('refetchTransactionByFundId')
   async refetchTransactionByFundId(@Payload() data: { fundId: string }) {
-    const fundId = JSON.parse(JSON.stringify(data)).fundId
+    const fundId = '1'
     return this.transactionService.refetchTransactionByFundId(fundId);
   }
 }
