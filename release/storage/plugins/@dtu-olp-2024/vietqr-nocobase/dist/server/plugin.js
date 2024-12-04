@@ -62,9 +62,9 @@ class QrDonateServer extends import_server.Plugin {
           };
           return;
         }
-        const bank_code = process.env.BANK_CODE;
-        const account_no = process.env.ACCOUNT_NO;
-        const template_id = process.env.TEMPLATE_ID;
+        const bank_code = "970436";
+        const account_no = "1017142420";
+        const template_id = "FFiaBLN";
         const qrContent = `https://img.vietqr.io/image/${bank_code}-${account_no}-${template_id}.jpg?addInfo=${encodeURIComponent(
           "Dong gop quy " + fund_name
         )}`;
