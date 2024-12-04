@@ -32,25 +32,68 @@ __export(handler_exports, {
 module.exports = __toCommonJS(handler_exports);
 class MessageHandlers {
   static async transactionResponse(message, appInstance) {
+    var _a;
     const data = message == null ? void 0 : message.data;
+    const transferTransaction = (data == null ? void 0 : data.transferTransaction) ?? [];
+    const receiverTransaction = (data == null ? void 0 : data.receiverTransaction) ?? [];
     const transactionRepository = await appInstance.db.getRepository("transactions");
-    const transaction = await Promise.all(
-      data.map(async (transactionData) => {
+    const existingTransferTransactions = await transactionRepository.find({
+      where: {
+        transaction_code: transferTransaction.map(
+          (item) => item.transaction_id
+        )
+      }
+    });
+    const existingReceiverTransactions = await transactionRepository.find({
+      where: {
+        transaction_code: receiverTransaction.map(
+          (item) => item.transaction_id
+        )
+      }
+    });
+    const newTransferTransactions = transferTransaction.filter(
+      (transaction) => !existingTransferTransactions.some(
+        (existing) => existing.transaction_code === transaction.transaction_id
+      )
+    );
+    const newReceiverTransactions = receiverTransaction.filter(
+      (transaction) => !existingReceiverTransactions.some(
+        (existing) => existing.transaction_code === transaction.transaction_id
+      )
+    );
+    await Promise.all([
+      newTransferTransactions == null ? void 0 : newTransferTransactions.map(async (transactionData) => {
         const transactionRecord = await transactionRepository.create({
           values: {
-            transaction_code: transactionData.transaction_code,
-            amount: transactionData.amount,
+            transaction_code: transactionData.transaction_id,
+            amount: transactionData.transferAmount,
             description: transactionData.description,
-            from_account_no: transactionData.from_account_no,
-            from_account_name: transactionData.from_account_name,
-            from_bank_name: transactionData.from_bank_name,
+            from_account_no: transactionData.accountNo,
+            from_account_name: transactionData.benAccountName,
+            from_bank_name: transactionData.bankName,
+            fund_id: transactionData.fund_id
+          }
+        });
+        return transactionRecord;
+      }),
+      newReceiverTransactions == null ? void 0 : newReceiverTransactions.map(async (transactionData) => {
+        const transactionRecord = await transactionRepository.create({
+          values: {
+            transaction_code: transactionData.transaction_id,
+            amount: transactionData.receiveAmount,
+            description: transactionData.description,
+            from_account_no: transactionData.accountNo,
+            from_account_name: transactionData.benAccountName,
+            from_bank_name: transactionData.bankName,
             fund_id: transactionData.fund_id
           }
         });
         return transactionRecord;
       })
-    );
-    console.log("Transaction response:", transaction);
+    ]);
+    console.log("New Transfer Transactions:", newTransferTransactions);
+    console.log("New Receiver Transactions:", newReceiverTransactions);
+    console.log("Transaction response:", (_a = message == null ? void 0 : message.data) == null ? void 0 : _a.transferTransaction);
     return { status: "processed", message: "Hello received" };
   }
 }

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.8] - 2024-03-20
+
+### Fixed
+- Handle production dependencies
+- Update plugin flow
+- Handle event listeners
+
 ## [1.1.4] - 2024-03-20
 
 ### Fixed
