@@ -6,10 +6,6 @@ COPY package.json yarn.lock ./
 
 RUN yarn install --network-timeout 1000000
 
-COPY prisma ./prisma
-
-RUN npx prisma generate
-
 COPY . .
 
 RUN yarn build
