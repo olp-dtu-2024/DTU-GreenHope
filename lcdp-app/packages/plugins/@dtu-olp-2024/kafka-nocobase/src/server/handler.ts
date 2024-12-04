@@ -80,8 +80,28 @@ export class MessageHandlers {
 
     return { status: 'processed', message: 'Hello received' };
   }
+
+  static async compileResponse(
+    message: any,
+    appInstance: Application<DefaultState, DefaultContext>
+  ) {
+    const smartContractRepo =
+      await appInstance.db.getRepository('smart_contracts');
+    console.log('smartContractRepo:', message);
+
+    const contractId = '1a4ba23b-b875-45fe-b23b-de6512377bb1';
+
+    const contractUpdate = await smartContractRepo.findById(contractId);
+
+    contractUpdate.abi = message?.data?.abi;
+    contractUpdate.bytecode = message?.data?.bytecode;
+
+    await contractUpdate.save();
+    console.log('Compile response:', message);
+  }
 }
 
 export const topicHandlers = {
   transactionResponse: MessageHandlers.transactionResponse,
+  compileResponse: MessageHandlers.compileResponse,
 };

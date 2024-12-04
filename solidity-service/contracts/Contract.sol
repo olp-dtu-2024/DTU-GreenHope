@@ -1,32 +1,34 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.28;
 
-contract TransactionManager {
-  struct Transaction {
-    string transaction_code;
-    uint256 amount;
-    string direction;
-    uint256 datetime;
-  }
+// Uncomment this line to use console.log
+// import "hardhat/console.sol";
 
-  Transaction[] public transactions;
+contract Lock {
+    uint public unlockTime;
+    address payable public owner;
 
-  function createTransaction(
-    string memory _transaction_code,
-    uint256 _amount,
-    string memory _direction
-  ) public {
-    transactions.push(
-      Transaction({
-        transaction_code: _transaction_code,
-        amount: _amount,
-        direction: _direction,
-        datetime: block.timestamp
-      })
-    );
-  }
+    event Withdrawal(uint amount, uint when);
 
-  function getAllTransactions() public view returns (Transaction[] memory) {
-    return transactions;
-  }
+    constructor(uint _unlockTime) payable {
+        require(
+            block.timestamp < _unlockTime,
+            "Unlock time should be in the future"
+        );
+
+        unlockTime = _unlockTime;
+        owner = payable(msg.sender);
+    }
+
+    function withdraw() public {
+        // Uncomment this line, and the import of "hardhat/console.sol", to print a log in your terminal
+        // console.log("Unlock time is %o and block timestamp is %o", unlockTime, block.timestamp);
+
+        require(block.timestamp >= unlockTime, "You can't withdraw yet");
+        require(msg.sender == owner, "You aren't the owner");
+
+        emit Withdrawal(address(this).balance, block.timestamp);
+
+        owner.transfer(address(this).balance);
+    }
 }
