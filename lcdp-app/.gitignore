@@ -18,4 +18,5 @@ docs-dist/
 dist/
 /docker/**/storage
 /storage/.app-dev
-/release/storage
+/release/storage/.pm2
+/release/storage/gateway.sock
