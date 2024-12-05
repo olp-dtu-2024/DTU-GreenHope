@@ -1,6 +1,6 @@
 {
   "name": "@dtu-olp-2024/vietqr-nocobase",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "GPL-3.0",
   "main": "dist/server/index.js",
   "peerDependencies": {

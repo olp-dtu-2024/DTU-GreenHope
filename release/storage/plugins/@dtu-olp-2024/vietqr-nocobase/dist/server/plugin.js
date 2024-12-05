@@ -62,11 +62,11 @@ class QrDonateServer extends import_server.Plugin {
           };
           return;
         }
-        const bank_code = "970436";
-        const account_no = "1017142420";
+        const bank_code = "970422";
+        const account_no = "6098617062003";
         const template_id = "FFiaBLN";
         const qrContent = `https://img.vietqr.io/image/${bank_code}-${account_no}-${template_id}.jpg?addInfo=${encodeURIComponent(
-          "Dong gop quy " + fund_name
+          `GREENHOPE (HY VONG XANH) - MA QUY: ${fund_id}`
         )}`;
         const fund = await this.app.db.getRepository("funds").findById(fund_id);
         fund.qr_code_url = qrContent;
