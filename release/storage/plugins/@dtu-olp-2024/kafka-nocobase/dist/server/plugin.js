@@ -44,19 +44,98 @@ var import_server = require("@nocobase/server");
 var import_kafkajs = require("kafkajs");
 var import_eventListener = require("./eventListener");
 var import_koa_router = __toESM(require("koa-router"));
+var import_solidity = require("./routes/solidity");
+var import_transactions = require("./routes/transactions");
 class KafkaNocobaseServer extends import_server.Plugin {
   kafka;
   producer;
   consumer;
   eventListener;
   router;
+  async load() {
+    await this.initialCollection();
+    await this.initialKafka();
+    await (0, import_solidity.registerSolidityRoutes)(this.app, this.producer);
+    await (0, import_transactions.registerTransactionRoutes)(this.app, this.producer);
+  }
+  async install(options) {
+    const db = this.db;
+    const tableKafkaTopicName = "kafka_topics";
+    const tableKafkaConfigName = "kafka_configs";
+    this.db.collection({
+      name: tableKafkaTopicName,
+      fields: [
+        { type: "uuid", name: "id", primaryKey: true },
+        { type: "string", name: "broker_host", required: true },
+        { type: "string", name: "topic_name", required: true },
+        { type: "string", name: "type", required: true }
+      ]
+    });
+    this.db.collection({
+      name: tableKafkaConfigName,
+      fields: [
+        { type: "uuid", name: "id", primaryKey: true },
+        { type: "string", name: "group_id", required: true },
+        { type: "string", name: "client_id", required: true }
+      ]
+    });
+    await this.db.sync();
+    const hasConfig = await db.getRepository("kafka_configs").count();
+    if (!hasConfig) {
+      await db.getRepository("kafka_configs").create({
+        values: {
+          group_id: "nocobase-group",
+          client_id: "nocobase-client"
+        }
+      });
+    }
+    const hasTopic = await db.getRepository("kafka_topics").count();
+    if (!hasTopic) {
+      await db.getRepository("kafka_topics").create({
+        values: {
+          broker_host: "localhost:9092",
+          topic_name: "nocobase-events",
+          type: "producer"
+        }
+      });
+    }
+    this.app.acl.allow("kafka_topics", "*");
+    this.app.acl.allow("kafka_configs", "*");
+    await this.app.db.sync();
+  }
+  async afterEnable() {
+    try {
+      await this.producer.connect();
+      await this.consumer.connect();
+    } catch (error) {
+      console.error("Kafka reconnection error:", error);
+    }
+  }
+  async afterDisable() {
+    await this.cleanup();
+  }
+  async remove() {
+    await this.cleanup();
+  }
   async afterAdd() {
     this.router = new import_koa_router.default();
   }
   async beforeLoad() {
     this.app.use(this.router.routes());
   }
-  async load() {
+  async cleanup() {
+    var _a, _b;
+    try {
+      await Promise.all(
+        [(_a = this.producer) == null ? void 0 : _a.disconnect(), (_b = this.consumer) == null ? void 0 : _b.disconnect()].filter(
+          Boolean
+        )
+      );
+    } catch (error) {
+      console.error("Error during Kafka cleanup:", error);
+    }
+  }
+  async initialCollection() {
     try {
       const db = this.db;
       const tableKafkaTopicName = "kafka_topics";
@@ -273,6 +352,11 @@ class KafkaNocobaseServer extends import_server.Plugin {
       }
       this.app.acl.allow("kafka_topics", "*");
       this.app.acl.allow("kafka_configs", "*");
+    } catch (error) {
+    }
+  }
+  async initialKafka() {
+    try {
       const kafkaTopics = (await this.db.sequelize.query("SELECT * FROM kafka_topics"))[0];
       const kafkaConfigs = (await this.db.sequelize.query("SELECT * FROM kafka_configs"))[0][0];
       const brokers = kafkaTopics.filter((topic) => topic.broker_host).map((topic) => topic.broker_host);
@@ -280,6 +364,7 @@ class KafkaNocobaseServer extends import_server.Plugin {
       if (!brokers.length || kafkaConfigs === void 0) {
         return console.error("No brokers found");
       }
+      console.warn("Kafka initializing", brokers, kafkaConfigs);
       this.kafka = new import_kafkajs.Kafka({
         clientId: kafkaConfigs == null ? void 0 : kafkaConfigs.client_id,
         brokers,
@@ -289,6 +374,7 @@ class KafkaNocobaseServer extends import_server.Plugin {
         }
       });
       this.producer = this.kafka.producer();
+      console.warn("Kafka initialized");
       this.consumer = this.kafka.consumer({ groupId: kafkaConfigs == null ? void 0 : kafkaConfigs.group_id });
       await Promise.all([this.producer.connect(), this.consumer.connect()]);
       this.eventListener = new import_eventListener.KafkaEventListener(this.producer, this.consumer);
@@ -296,97 +382,7 @@ class KafkaNocobaseServer extends import_server.Plugin {
       this.app.context.kafkaEmit = this.eventListener.emit.bind(
         this.eventListener
       );
-      this.router.post("/api/admin/kafka/send-message", async (ctx) => {
-        try {
-          const { topic_name, data } = ctx.request.body;
-          console.log("Sending message to topic:", ctx.request.body);
-          if (!topic_name || !topic_name) {
-            ctx.status = 400;
-            return ctx.body = {
-              success: false,
-              error: "Topic and message are required"
-            };
-          }
-          await this.producer.send({
-            topic: topic_name,
-            messages: [{ value: JSON.stringify(data) }]
-          });
-        } catch (error) {
-        }
-      });
     } catch (error) {
-      console.error("Error during Kafka initialization:", error);
-    }
-  }
-  async install(options) {
-    const db = this.db;
-    const tableKafkaTopicName = "kafka_topics";
-    const tableKafkaConfigName = "kafka_configs";
-    this.db.collection({
-      name: tableKafkaTopicName,
-      fields: [
-        { type: "uuid", name: "id", primaryKey: true },
-        { type: "string", name: "broker_host", required: true },
-        { type: "string", name: "topic_name", required: true },
-        { type: "string", name: "type", required: true }
-      ]
-    });
-    this.db.collection({
-      name: tableKafkaConfigName,
-      fields: [
-        { type: "uuid", name: "id", primaryKey: true },
-        { type: "string", name: "group_id", required: true },
-        { type: "string", name: "client_id", required: true }
-      ]
-    });
-    await this.db.sync();
-    const hasConfig = await db.getRepository("kafka_configs").count();
-    if (!hasConfig) {
-      await db.getRepository("kafka_configs").create({
-        values: {
-          group_id: "nocobase-group",
-          client_id: "nocobase-client"
-        }
-      });
-    }
-    const hasTopic = await db.getRepository("kafka_topics").count();
-    if (!hasTopic) {
-      await db.getRepository("kafka_topics").create({
-        values: {
-          broker_host: "localhost:9092",
-          topic_name: "nocobase-events",
-          type: "producer"
-        }
-      });
-    }
-    this.app.acl.allow("kafka_topics", "*");
-    this.app.acl.allow("kafka_configs", "*");
-    await this.app.db.sync();
-  }
-  async afterEnable() {
-    try {
-      await this.producer.connect();
-      await this.consumer.connect();
-    } catch (error) {
-      console.error("Kafka reconnection error:", error);
-    }
-  }
-  async afterDisable() {
-    await this.cleanup();
-  }
-  async remove() {
-    await this.cleanup();
-  }
-  async cleanup() {
-    var _a, _b;
-    try {
-      await Promise.all(
-        [(_a = this.producer) == null ? void 0 : _a.disconnect(), (_b = this.consumer) == null ? void 0 : _b.disconnect()].filter(
-          Boolean
-        )
-      );
-    } catch (error) {
-      console.error("Error during Kafka cleanup:", error);
     }
   }
 }

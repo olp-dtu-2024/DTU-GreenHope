@@ -54,6 +54,16 @@ class SolidityEditorNocobaseServer extends import_server.Plugin {
             type: "text",
             name: "script",
             required: true
+          },
+          {
+            type: "json",
+            name: "abi",
+            required: false
+          },
+          {
+            type: "text",
+            name: "bytecode",
+            required: false
           }
         ]
       });
@@ -84,6 +94,28 @@ class SolidityEditorNocobaseServer extends import_server.Plugin {
                 title: "Script",
                 "x-component": "Input",
                 required: true
+              }
+            },
+            {
+              name: "abi",
+              interface: "textarea",
+              type: "json",
+              uiSchema: {
+                type: "json",
+                title: "ABI",
+                "x-component": "Input",
+                required: false
+              }
+            },
+            {
+              name: "bytecode",
+              interface: "textarea",
+              type: "string",
+              uiSchema: {
+                type: "string",
+                title: "Bytecode",
+                "x-component": "Input",
+                required: false
               }
             }
           ],
