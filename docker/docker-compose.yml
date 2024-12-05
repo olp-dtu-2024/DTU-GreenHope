@@ -34,7 +34,7 @@ services:
       - '5439:5432'
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -85,6 +85,13 @@ services:
   kafka:
     image: bitnami/kafka:latest
     container_name: 'kafka-olp-dtu-2024'
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "kafka-topics.sh --list --bootstrap-server localhost:9092" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     ports:
       - 9092:9092
       - 9093:9093
@@ -96,10 +103,10 @@ services:
       - zookeeper
     environment:
       - KAFKA_BROKER_ID=1
-      - KAFKA_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:9093
+      - KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:9093
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092,PLAINTEXT_HOST://localhost:9093
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-olp-dtu-2024:9092,PLAINTEXT_HOST://kafka-olp-dtu-2024:9093
       - KAFKA_RESTART_ATTEMPTS=10
       - KAFKA_RESTART_DELAY=5
       - ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL=0
@@ -128,10 +135,28 @@ services:
       context: ../transaction-service
       dockerfile: Dockerfile
     container_name: transaction-service
+    restart: unless-stopped
     ports:
       - '3027:3027'
     networks:
       - olp-dtu-2024-network
+    environment:
+      - APP_PORT=3027
+      - REDIS_HOST=redis-6444-olp-dtu-2024
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=redis
+      - KAFKA_BROKERS=kafka-olp-dtu-2024:9092
+      - MB_LOGIN_ID=TRANNGUYENDUYKHANH
+      - MB_PASSWORD=Tndk.0905081330
+      - MB_ACCOUNT_ID=6098617062003
+      - CAPTCHA_SERVICE_HOST=http://captcha-service:1234
+    depends_on:
+      redis:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+      captcha-service:
+        condition: service_started
 
   lcdp-app:
     container_name: lcdp-app-olp-dtu-2024
