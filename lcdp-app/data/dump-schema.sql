@@ -5,7 +5,7 @@
 -- Dumped from database version 16.4
 -- Dumped by pg_dump version 16.4
 
--- Started on 2024-12-05 17:35:55 UTC
+-- Started on 2024-12-05 19:18:12 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1566,7 +1566,7 @@ ALTER SEQUENCE public.sequences_id_seq OWNED BY public.sequences.id;
 
 
 --
--- TOC entry 307 (class 1259 OID 18410)
+-- TOC entry 307 (class 1259 OID 18434)
 -- Name: smart_contracts; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1576,7 +1576,8 @@ CREATE TABLE public.smart_contracts (
     "updatedAt" timestamp with time zone NOT NULL,
     script text,
     abi json,
-    bytecode text
+    bytecode text,
+    "contractAddress" text
 );
 
 
@@ -2646,7 +2647,7 @@ COPY public."applicationPlugins" (id, "createdAt", "updatedAt", name, "packageNa
 70	2024-12-02 08:59:41.591+00	2024-12-02 09:05:39.412+00	@olp-dtu-2024/vietqr-nocobase	@olp-dtu-2024/vietqr-nocobase	0.1.0	t	t	\N	\N
 71	2024-12-02 09:23:16.33+00	2024-12-02 09:24:09.411+00	@olp-dtu-2024/rich-block-nocobase	@olp-dtu-2024/rich-block-nocobase	0.1.0	t	t	\N	\N
 72	2024-12-03 07:20:00.277+00	2024-12-03 07:21:50.847+00	@olp-dtu-2024/solidity-editor-nocobase	@olp-dtu-2024/solidity-editor-nocobase	0.1.0	t	t	\N	\N
-73	2024-12-05 17:02:26.946+00	2024-12-05 17:05:49.32+00	@dtu-olp-2024/solidity-editor-nocobase	@dtu-olp-2024/solidity-editor-nocobase	1.0.0	t	t	\N	\N
+73	2024-12-05 17:02:26.946+00	2024-12-05 18:32:53.128+00	@dtu-olp-2024/solidity-editor-nocobase	@dtu-olp-2024/solidity-editor-nocobase	1.0.0	t	t	\N	\N
 74	2024-12-05 17:02:54.279+00	2024-12-05 17:34:45.454+00	@dtu-olp-2024/kafka-nocobase	@dtu-olp-2024/kafka-nocobase	1.2.0	t	t	\N	\N
 \.
 
@@ -6115,7 +6116,7 @@ p2kkcq3rhn8	proposes	Proposes	f	f	{"logging":true,"autoGenId":false,"createdAt":
 zoq5dq360w9	projects	Dự án	f	f	{"logging":true,"autoGenId":false,"createdAt":true,"createdBy":true,"updatedAt":true,"updatedBy":true,"template":"general","view":false,"simplePaginate":true,"schema":"public","filterTargetKey":"id","unavailableActions":[]}	\N	4
 z7a2ikzf0c6	kafka_topics	Kafka Topics	f	f	{"actions":[{"name":"create","type":"create","title":"Create Kafka Topic","viewName":"form"},{"name":"view","type":"view","title":"View","viewName":"form"},{"name":"edit","type":"edit","title":"Edit","viewName":"form"},{"name":"destroy","type":"destroy","title":"Delete"}],"schema":"public"}	\N	7
 wnpw5lzo0se	kafka_configs	Kafka Configs	f	f	{"actions":[{"name":"create","type":"create","title":"Create Kafka Config","viewName":"form"},{"name":"view","type":"view","title":"View","viewName":"form"},{"name":"edit","type":"edit","title":"Edit","viewName":"form"},{"name":"destroy","type":"destroy","title":"Delete"}],"schema":"public"}	\N	8
-27w5505sqb6	smart_contracts	Smart Contracts	f	f	{"actions":[{"name":"create","type":"create","title":"Create Kafka Topic","viewName":"form"},{"name":"view","type":"view","title":"View","viewName":"form"},{"name":"edit","type":"edit","title":"Edit","viewName":"form"},{"name":"destroy","type":"destroy","title":"Delete"}],"schema":"public"}	\N	9
+fcouxhz56sk	smart_contracts	Smart Contracts	f	f	{"actions":[{"name":"create","type":"create","title":"Create Kafka Topic","viewName":"form"},{"name":"view","type":"view","title":"View","viewName":"form"},{"name":"edit","type":"edit","title":"Edit","viewName":"form"},{"name":"destroy","type":"destroy","title":"Delete"}],"schema":"public"}	\N	9
 \.
 
 
@@ -6378,10 +6379,11 @@ wneudei1j9h	id	uuid	input	\N	kafka_configs	\N	\N	{"primaryKey":true,"autoIncreme
 hion733k0k3	group_id	string	input	\N	kafka_configs	\N	\N	{"uiSchema":{"type":"string","title":"Group Id","x-component":"Input","required":true}}	2
 unjp623888f	client_id	string	input	\N	kafka_configs	\N	\N	{"uiSchema":{"type":"string","title":"Client Id","x-component":"Input","required":true}}	3
 ataartdxovv	description	text	richText	\N	projects	\N	\N	{"uiSchema":{"type":"string","x-component":"RichText","title":"Mô tả"}}	14
-zfszl772aaz	id	uuid	input	\N	smart_contracts	\N	\N	{"primaryKey":true,"autoIncrement":false,"uiSchema":{"type":"string","title":"ID","x-component":"Input","required":true}}	1
-mcig1zsnr0s	script	string	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":"string","title":"Script","x-component":"Input","required":true}}	2
-0pnyg0ze1tz	abi	json	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":"json","title":"ABI","x-component":"Input","required":false}}	3
-cxtb97jj09m	bytecode	string	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":"string","title":"Bytecode","x-component":"Input","required":false}}	4
+foqeprcs5gz	id	uuid	input	\N	smart_contracts	\N	\N	{"primaryKey":true,"autoIncrement":false,"uiSchema":{"type":"string","title":"ID","x-component":"Input","required":true}}	1
+gsm7993eh33	script	string	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":"string","title":"Script","x-component":"Input","required":true}}	2
+xy0dxkvhik9	abi	json	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":"json","title":"ABI","x-component":"Input","required":false}}	3
+foelj6ji8oq	bytecode	string	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":"string","title":"Bytecode","x-component":"Input","required":false}}	4
+a84jcmuq8kh	contractAddress	string	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":"string","title":"Contract Address","x-component":"Input","required":false}}	5
 \.
 
 
@@ -6779,13 +6781,14 @@ COPY public.sequences (id, "createdAt", "updatedAt", collection, field, key, cur
 
 
 --
--- TOC entry 3995 (class 0 OID 18410)
+-- TOC entry 3995 (class 0 OID 18434)
 -- Dependencies: 307
 -- Data for Name: smart_contracts; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.smart_contracts (id, "createdAt", "updatedAt", script, abi, bytecode) FROM stdin;
-198d8438-3067-4528-bb43-42dedbd83980	2024-12-05 17:06:46.102+00	2024-12-05 17:32:44.617+00	// SPDX-License-Identifier: UNLICENSED\npragma solidity ^0.8.28;\n\n// Uncomment this line to use console.log\n// import "hardhat/console.sol";\n\ncontract Lock {\n    uint public unlockTime;\n    address payable public owner;\n\n    event Withdrawal(uint amount, uint when);\n\n    constructor(uint _unlockTime) payable {\n        require(\n            block.timestamp < _unlockTime,\n            "Unlock time should be in the future"\n        );\n\n        unlockTime = _unlockTime;\n        owner = payable(msg.sender);\n    }\n\n    function withdraw() public {\n        // Uncomment this line, and the import of "hardhat/console.sol", to print a log in your terminal\n        // console.log("Unlock time is %o and block timestamp is %o", unlockTime, block.timestamp);\n\n        require(block.timestamp >= unlockTime, "You can't withdraw yet");\n        require(msg.sender == owner, "You aren't the owner");\n\n        emit Withdrawal(address(this).balance, block.timestamp);\n\n        owner.transfer(address(this).balance);\n    }\n}	\N	\N
+COPY public.smart_contracts (id, "createdAt", "updatedAt", script, abi, bytecode, "contractAddress") FROM stdin;
+7886a331-7cb3-45d4-a094-2042aa89d1cb	2024-12-05 18:42:46.946+00	2024-12-05 18:43:12.263+00	// SPDX-License-Identifier: MIT\npragma solidity >=0.7.0 <0.9.0;\n\ncontract TransactionManager {\n  struct Transaction {\n    string transaction_code;\n    uint256 amount;\n    string direction;\n    uint256 datetime;\n  }\n\n  Transaction[] public transactions;\n\n  // Hàm mới nhận vào mảng các giao dịch\n  function createTransactions(\n    Transaction[] memory _transactions\n  ) public {\n    for (uint i = 0; i < _transactions.length; i++) {\n      transactions.push(\n        Transaction({\n          transaction_code: _transactions[i].transaction_code,\n          amount: _transactions[i].amount,\n          direction: _transactions[i].direction,\n          datetime: block.timestamp\n        })\n      );\n    }\n  }\n\n  function getAllTransactions() public view returns (Transaction[] memory) {\n    return transactions;\n  }\n}\n	[{"inputs":[{"components":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"internalType":"struct TransactionManager.Transaction[]","name":"_transactions","type":"tuple[]"}],"name":"createTransactions","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getAllTransactions","outputs":[{"components":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"internalType":"struct TransactionManager.Transaction[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"transactions","outputs":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"stateMutability":"view","type":"function"}]	0x6080604052348015600f57600080fd5b50610e108061001f6000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c806327506f53146100465780632ef8e92d146100645780639ace38c214610080575b600080fd5b61004e6100b3565b60405161005b9190610674565b60405180910390f35b61007e600480360381019061007991906109ab565b61024a565b005b61009a600480360381019061009591906109f4565b61034f565b6040516100aa9493929190610a7a565b60405180910390f35b60606000805480602002602001604051908101604052809291908181526020016000905b82821015610241578382906000526020600020906004020160405180608001604052908160008201805461010a90610afc565b80601f016020809104026020016040519081016040528092919081815260200182805461013690610afc565b80156101835780601f1061015857610100808354040283529160200191610183565b820191906000526020600020905b81548152906001019060200180831161016657829003601f168201915b50505050508152602001600182015481526020016002820180546101a690610afc565b80601f01602080910402602001604051908101604052809291908181526020018280546101d290610afc565b801561021f5780601f106101f45761010080835404028352916020019161021f565b820191906000526020600020905b81548152906001019060200180831161020257829003601f168201915b50505050508152602001600382015481525050815260200190600101906100d7565b50505050905090565b60005b815181101561034b576000604051806080016040528084848151811061027657610275610b2d565b5b602002602001015160000151815260200184848151811061029a57610299610b2d565b5b60200260200101516020015181526020018484815181106102be576102bd610b2d565b5b602002602001015160400151815260200142815250908060018154018082558091505060019003906000526020600020906004020160009091909190915060008201518160000190816103119190610d08565b506020820151816001015560408201518160020190816103319190610d08565b50606082015181600301555050808060010191505061024d565b5050565b6000818154811061035f57600080fd5b906000526020600020906004020160009150905080600001805461038290610afc565b80601f01602080910402602001604051908101604052809291908181526020018280546103ae90610afc565b80156103fb5780601f106103d0576101008083540402835291602001916103fb565b820191906000526020600020905b8154815290600101906020018083116103de57829003601f168201915b50505050509080600101549080600201805461041690610afc565b80601f016020809104026020016040519081016040528092919081815260200182805461044290610afc565b801561048f5780601f106104645761010080835404028352916020019161048f565b820191906000526020600020905b81548152906001019060200180831161047257829003601f168201915b5050505050908060030154905084565b600081519050919050565b600082825260208201905092915050565b6000819050602082019050919050565b600081519050919050565b600082825260208201905092915050565b60005b838110156105055780820151818401526020810190506104ea565b60008484015250505050565b6000601f19601f8301169050919050565b600061052d826104cb565b61053781856104d6565b93506105478185602086016104e7565b61055081610511565b840191505092915050565b6000819050919050565b61056e8161055b565b82525050565b600060808301600083015184820360008601526105918282610522565b91505060208301516105a66020860182610565565b50604083015184820360408601526105be8282610522565b91505060608301516105d36060860182610565565b508091505092915050565b60006105ea8383610574565b905092915050565b6000602082019050919050565b600061060a8261049f565b61061481856104aa565b935083602082028501610626856104bb565b8060005b85811015610662578484038952815161064385826105de565b945061064e836105f2565b925060208a0199505060018101905061062a565b50829750879550505050505092915050565b6000602082019050818103600083015261068e81846105ff565b905092915050565b6000604051905090565b600080fd5b600080fd5b600080fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6106e782610511565b810181811067ffffffffffffffff82111715610706576107056106af565b5b80604052505050565b6000610719610696565b905061072582826106de565b919050565b600067ffffffffffffffff821115610745576107446106af565b5b602082029050602081019050919050565b600080fd5b600080fd5b600080fd5b600080fd5b600067ffffffffffffffff821115610785576107846106af565b5b61078e82610511565b9050602081019050919050565b82818337600083830152505050565b60006107bd6107b88461076a565b61070f565b9050828152602081018484840111156107d9576107d8610765565b5b6107e484828561079b565b509392505050565b600082601f830112610801576108006106aa565b5b81356108118482602086016107aa565b91505092915050565b6108238161055b565b811461082e57600080fd5b50565b6000813590506108408161081a565b92915050565b60006080828403121561085c5761085b61075b565b5b610866608061070f565b9050600082013567ffffffffffffffff81111561088657610885610760565b5b610892848285016107ec565b60008301525060206108a684828501610831565b602083015250604082013567ffffffffffffffff8111156108ca576108c9610760565b5b6108d6848285016107ec565b60408301525060606108ea84828501610831565b60608301525092915050565b60006109096109048461072a565b61070f565b9050808382526020820190506020840283018581111561092c5761092b610756565b5b835b8181101561097357803567ffffffffffffffff811115610951576109506106aa565b5b80860161095e8982610846565b8552602085019450505060208101905061092e565b5050509392505050565b600082601f830112610992576109916106aa565b5b81356109a28482602086016108f6565b91505092915050565b6000602082840312156109c1576109c06106a0565b5b600082013567ffffffffffffffff8111156109df576109de6106a5565b5b6109eb8482850161097d565b91505092915050565b600060208284031215610a0a57610a096106a0565b5b6000610a1884828501610831565b91505092915050565b600082825260208201905092915050565b6000610a3d826104cb565b610a478185610a21565b9350610a578185602086016104e7565b610a6081610511565b840191505092915050565b610a748161055b565b82525050565b60006080820190508181036000830152610a948187610a32565b9050610aa36020830186610a6b565b8181036040830152610ab58185610a32565b9050610ac46060830184610a6b565b95945050505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b60006002820490506001821680610b1457607f821691505b602082108103610b2757610b26610acd565b5b50919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b60008190508160005260206000209050919050565b60006020601f8301049050919050565b600082821b905092915050565b600060088302610bbe7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff82610b81565b610bc88683610b81565b95508019841693508086168417925050509392505050565b6000819050919050565b6000610c05610c00610bfb8461055b565b610be0565b61055b565b9050919050565b6000819050919050565b610c1f83610bea565b610c33610c2b82610c0c565b848454610b8e565b825550505050565b600090565b610c48610c3b565b610c53818484610c16565b505050565b5b81811015610c7757610c6c600082610c40565b600181019050610c59565b5050565b601f821115610cbc57610c8d81610b5c565b610c9684610b71565b81016020851015610ca5578190505b610cb9610cb185610b71565b830182610c58565b50505b505050565b600082821c905092915050565b6000610cdf60001984600802610cc1565b1980831691505092915050565b6000610cf88383610cce565b9150826002028217905092915050565b610d11826104cb565b67ffffffffffffffff811115610d2a57610d296106af565b5b610d348254610afc565b610d3f828285610c7b565b600060209050601f831160018114610d725760008415610d60578287015190505b610d6a8582610cec565b865550610dd2565b601f198416610d8086610b5c565b60005b82811015610da857848901518255600182019150602085019450602081019050610d83565b86831015610dc55784890151610dc1601f891682610cce565b8355505b6001600288020188555050505b50505050505056fea2646970667358221220b90d0d7a8cd725b1fc6f568754056e3ede3b10d79135631ec7fbe1e5a63fab3664736f6c634300081c0033	0xD833215cBcc3f914bD1C9ece3EE7BF8B14f841bb
+fbf2c135-2a84-46f7-bd77-e88d8eaabecb	2024-12-05 18:48:20.245+00	2024-12-05 18:48:20.245+00	\n      pragma solidity ^0.8.0;\n\n      contract SimpleStorage {\n          uint256 public storedData;\n\n          function set(uint256 x) public {\n              storedData = x;\n          }\n\n          function get() public view returns (uint256) {\n              return storedData;\n          }\n      }\n        	\N	\N	\N
 \.
 
 
@@ -17229,27 +17232,8 @@ q3eeonxucli	y27y9c459b8	1	\N	\N	2
 nocobase-admin-menu	pv2j6dc89ed	7	\N	\N	\N
 nocobase-admin-menu	wvcbbkit0tz	8	\N	\N	\N
 nocobase-admin-menu	e71hcet1fbg	8	\N	\N	\N
-rckqh6ozn7b	rckqh6ozn7b	0	f	properties	\N
-0ou1ngkhrvc	rckqh6ozn7b	1	\N	\N	1
-e71hcet1fbg	rckqh6ozn7b	2	\N	\N	\N
-pv2j6dc89ed	0ou1ngkhrvc	2	\N	\N	\N
-pv2j6dc89ed	rckqh6ozn7b	3	\N	\N	\N
-z1v6nrraafl	0ou1ngkhrvc	3	\N	\N	\N
-z1v6nrraafl	rckqh6ozn7b	4	\N	\N	\N
-y27y9c459b8	0ou1ngkhrvc	4	\N	\N	\N
-y27y9c459b8	rckqh6ozn7b	5	\N	\N	\N
-q3eeonxucli	0ou1ngkhrvc	5	\N	\N	\N
-q3eeonxucli	rckqh6ozn7b	6	\N	\N	\N
-crdk37w2fib	0ou1ngkhrvc	6	\N	\N	\N
-crdk37w2fib	rckqh6ozn7b	7	\N	\N	\N
-kschs4oi12g	0ou1ngkhrvc	7	\N	\N	\N
-kschs4oi12g	rckqh6ozn7b	8	\N	\N	\N
-nsueicidb31	0ou1ngkhrvc	8	\N	\N	\N
-nsueicidb31	rckqh6ozn7b	9	\N	\N	\N
-nocobase-admin-menu	0ou1ngkhrvc	9	\N	\N	\N
-nocobase-admin-menu	rckqh6ozn7b	10	\N	\N	\N
-0ou1ngkhrvc	0ou1ngkhrvc	0	f	properties	\N
-e71hcet1fbg	0ou1ngkhrvc	1	\N	\N	1
+ix8vitsau4c	ix8vitsau4c	0	f	properties	\N
+e71hcet1fbg	ix8vitsau4c	1	\N	\N	5
 x3olu0mns3s	x3olu0mns3s	0	f	properties	\N
 gb0us11dnkk	x3olu0mns3s	1	\N	\N	1
 e71hcet1fbg	x3olu0mns3s	2	\N	\N	\N
@@ -17333,6 +17317,25 @@ kschs4oi12g	bmrnlumf9wr	7	\N	\N	\N
 nsueicidb31	bmrnlumf9wr	8	\N	\N	\N
 nocobase-admin-menu	bmrnlumf9wr	9	\N	\N	\N
 wvcbbkit0tz	bmrnlumf9wr	1	\N	\N	2
+407ix2kv519	407ix2kv519	0	f	properties	\N
+ix8vitsau4c	407ix2kv519	1	\N	\N	1
+e71hcet1fbg	407ix2kv519	2	\N	\N	\N
+pv2j6dc89ed	ix8vitsau4c	2	\N	\N	\N
+pv2j6dc89ed	407ix2kv519	3	\N	\N	\N
+z1v6nrraafl	ix8vitsau4c	3	\N	\N	\N
+z1v6nrraafl	407ix2kv519	4	\N	\N	\N
+y27y9c459b8	ix8vitsau4c	4	\N	\N	\N
+y27y9c459b8	407ix2kv519	5	\N	\N	\N
+q3eeonxucli	ix8vitsau4c	5	\N	\N	\N
+q3eeonxucli	407ix2kv519	6	\N	\N	\N
+crdk37w2fib	ix8vitsau4c	6	\N	\N	\N
+crdk37w2fib	407ix2kv519	7	\N	\N	\N
+kschs4oi12g	ix8vitsau4c	7	\N	\N	\N
+kschs4oi12g	407ix2kv519	8	\N	\N	\N
+nsueicidb31	ix8vitsau4c	8	\N	\N	\N
+nsueicidb31	407ix2kv519	9	\N	\N	\N
+nocobase-admin-menu	ix8vitsau4c	9	\N	\N	\N
+nocobase-admin-menu	407ix2kv519	10	\N	\N	\N
 \.
 
 
@@ -18066,9 +18069,6 @@ z1v6nrraafl	ex6r2g5k6bu	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 pv2j6dc89ed	vha9knb2aft	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableBlockProvider","x-acl-action":"smart_contracts:list","x-use-decorator-props":"useTableBlockDecoratorProps","x-decorator-props":{"collection":"smart_contracts","dataSource":"main","action":"list","params":{"pageSize":20},"rowKey":"id","showIndex":true,"dragSort":false},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:table","x-component":"CardItem","x-filter-targets":[],"x-app-version":"1.3.52"}
 wvcbbkit0tz	actions	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"table:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":"var(--nb-spacing)"}},"x-app-version":"1.3.52"}
 e71hcet1fbg	zecsa5xp0j7	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-initializer":"table:configureColumns","x-component":"TableV2","x-use-component-props":"useTableBlockProps","x-component-props":{"rowKey":"id","rowSelection":{"type":"checkbox"}},"x-app-version":"1.3.52"}
-0ou1ngkhrvc	94i2nb06may	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
-rckqh6ozn7b	id	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"smart_contracts.id","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
-gb0us11dnkk	2o3iegw9fy0	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
 x3olu0mns3s	script	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"smart_contracts.script","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
 qyisxzvteso	03gabie0ekg	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
 t2vhpki4mno	abi	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"smart_contracts.abi","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
@@ -18076,6 +18076,9 @@ t2vhpki4mno	abi	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field"
 o7ndlkp133j	bytecode	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"smart_contracts.bytecode","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
 x6woolkr0hs	kag567d9gxe	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Delete\\") }}","x-action":"destroy","x-component":"Action","x-use-component-props":"useBulkDestroyActionProps","x-component-props":{"icon":"DeleteOutlined","confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"}},"x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:bulkDelete","x-decorator":"ACLActionProvider","x-acl-action-props":{"skipScopeCheck":true},"x-action-settings":{"triggerWorkflows":[]},"x-acl-action":"smart_contracts:destroy","x-align":"right","type":"void","x-app-version":"1.3.52"}
 bmrnlumf9wr	u1b6g9t3kpo	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Refresh\\") }}","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined"},"x-align":"right","type":"void","x-app-version":"1.3.52"}
+gb0us11dnkk	2o3iegw9fy0	{"x-uid":"gb0us11dnkk","name":"2o3iegw9fy0","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52","x-component-props":{"width":100}}
+ix8vitsau4c	bqq9xsshio9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
+407ix2kv519	contractAddress	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"smart_contracts.contractAddress","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
 \.
 
 
@@ -18831,7 +18834,7 @@ ALTER TABLE ONLY public.sequences
 
 
 --
--- TOC entry 3760 (class 2606 OID 18416)
+-- TOC entry 3760 (class 2606 OID 18440)
 -- Name: smart_contracts smart_contracts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -19568,7 +19571,7 @@ CREATE INDEX verifications_provider_id ON public.verifications USING btree ("pro
 CREATE UNIQUE INDEX workflows_key_current ON public.workflows USING btree (key, current);
 
 
--- Completed on 2024-12-05 17:35:55 UTC
+-- Completed on 2024-12-05 19:18:12 UTC
 
 --
 -- PostgreSQL database dump complete
