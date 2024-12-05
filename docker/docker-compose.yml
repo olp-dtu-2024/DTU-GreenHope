@@ -201,6 +201,16 @@ services:
       - ../release/storage:/app/nocobase/storage
     ports:
       - '12000:80'
+  ganache:
+    container_name: ganache-olp-dtu-2024
+    image: trufflesuite/ganache:latest
+    ports:
+      - "8545:8545"
+    command:
+      - --wallet.deterministic
+      - --accounts=10
+    networks:
+      - olp-dtu-2024-network
 
 volumes:
   postgres-data-be:
