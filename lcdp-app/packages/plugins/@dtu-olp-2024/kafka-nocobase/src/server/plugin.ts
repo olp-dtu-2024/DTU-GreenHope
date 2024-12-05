@@ -2,7 +2,8 @@ import { InstallOptions, Plugin } from '@nocobase/server';
 import { Kafka, Producer, Consumer } from 'kafkajs';
 import { KafkaEventListener } from './eventListener';
 import Router from 'koa-router';
-import { registerSolidityRoutes } from 'packages/plugins/@dtu-olp-2024/kafka-nocobase/src/server/routes/solidity';
+import { registerSolidityRoutes } from './routes/solidity';
+import { registerTransactionRoutes } from './routes/transactions';
 
 export class KafkaNocobaseServer extends Plugin {
   kafka: Kafka;
@@ -15,33 +16,8 @@ export class KafkaNocobaseServer extends Plugin {
     await this.initialCollection();
     await this.initialKafka();
     await registerSolidityRoutes(this.app, this.producer);
-
-    try {
-      this.router.post('/api/admin/kafka/send-message', async (ctx) => {
-        try {
-          const { topic_name, data } = ctx.request.body;
-
-          console.log('Sending message to topic:', ctx.request.body);
-
-          if (!topic_name || !topic_name) {
-            ctx.status = 400;
-            return (ctx.body = {
-              success: false,
-              error: 'Topic and message are required',
-            });
-          }
-
-          await this.producer.send({
-            topic: topic_name,
-            messages: [{ value: JSON.stringify(data) }],
-          });
-        } catch (error) {}
-      });
-    } catch (error) {
-      console.error('Error during Kafka initialization:', error);
-    }
+    await registerTransactionRoutes(this.app, this.producer);
   }
-
   async install(options?: InstallOptions) {
     const db = this.db;
     const tableKafkaTopicName = 'kafka_topics';
@@ -384,7 +360,7 @@ export class KafkaNocobaseServer extends Plugin {
       if (!brokers.length || kafkaConfigs === undefined) {
         return console.error('No brokers found');
       }
-
+      console.warn('Kafka initializing', brokers, kafkaConfigs);
       this.kafka = new Kafka({
         clientId: kafkaConfigs?.client_id,
         brokers: brokers,

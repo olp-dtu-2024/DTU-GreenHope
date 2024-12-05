@@ -82,6 +82,25 @@ export const SolidityEditor = withDynamicSchemaProps(
         message.error('Failed to save');
       }
     };
+
+    const handleCompile = async () => {
+      try {
+        if (currentId === 'default') {
+          message.error('Please save the contract first');
+          return;
+        }
+
+        await api.request({
+          url: 'solidity:compile',
+          method: 'post',
+          data: {
+            contractId: currentId,
+          },
+        });
+      } catch (error) {
+        message.success('Please Wait');
+      }
+    };
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         <div
@@ -109,7 +128,7 @@ export const SolidityEditor = withDynamicSchemaProps(
             <Button type='default' onClick={handleSave}>
               Lưu
             </Button>
-            <Button type='primary' onClick={() => console.log('deploy')}>
+            <Button type='primary' onClick={() => handleCompile()}>
               Triển khai
             </Button>
           </div>
