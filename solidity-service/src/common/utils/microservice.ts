@@ -13,12 +13,12 @@ export async function MicroserviceSetup(app: INestApplication): Promise<void> {
         brokers: [configService.get<string>('KAFKA_BROKERS')],
       },
       consumer: {
-        groupId: kafkaConfig.transactionService.groupId,
+        groupId: kafkaConfig.blockchainService.groupId,
       },
       producer: {
-        createPartitioner: Partitioners.LegacyPartitioner
-      }
-    }
-  })
+        createPartitioner: Partitioners.LegacyPartitioner,
+      },
+    },
+  });
   await app.startAllMicroservices();
 }

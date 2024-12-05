@@ -1,21 +1,21 @@
 export const kafkaTopics = {
-  responseTransactionByFundId: 'responseTransactionByFundId'
-}
+  responseTransactionByFundId: 'responseTransactionByFundId',
+};
 
 export const kafkaServiceName = {
   lcdpService: 'lcdpService',
-  blockchain: 'blockchain'
-}
+  blockchain: 'blockchain',
+};
 
 export const kafkaConfig = {
   lcdpService: {
     name: 'LCDP_SERVICE',
-    clientId: 'lcdp-service',
-    groupId: 'lcdp-consumers',
+    clientId: 'nocobase_lcdp',
+    groupId: 'nocobase_lcdp',
   },
-  transactionService: {
-    name: 'TRANSACTION_SERVICE',
-    clientId: 'transaction-service',
-    groupId: 'transaction-consumers',
-  }
-}
+  blockchainService: {
+    name: 'BLOCKCHAIN_SERVICES',
+    clientId: 'blockchain-service',
+    groupId: 'blockchain-consumers',
+  },
+};

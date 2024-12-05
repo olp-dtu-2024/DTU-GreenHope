@@ -22,11 +22,15 @@ export class QueueProcessoCompileSolidity extends WorkerHost {
 
     try {
       const data = await this.compileService.executeCompile(job?.data.data);
+      console.log('>>> EMIT' );
+
       this.kafkaService.emitEventByKafka(
         'lcdpService',
         'compileResponse',
         data
       );
+      console.log('>>> Success' );
+
       return true;
     } catch (error) {}
   }

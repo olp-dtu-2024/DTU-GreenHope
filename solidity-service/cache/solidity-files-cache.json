@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "E:\\LCDP\\DTU-GreenHope\\solidity-service\\contracts\\Contract.sol": {
-      "lastModificationDate": 1733347177955,
-      "contentHash": "7eee587c347fe6b1de50c96688cb9477",
+      "lastModificationDate": 1733397916444,
+      "contentHash": "327152d5e9ff5cb226de60fc1588c587",
       "sourceName": "contracts/Contract.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -31,10 +31,10 @@
       },
       "imports": [],
       "versionPragmas": [
-        "^0.8.28"
+        "^0.8.0"
       ],
       "artifacts": [
-        "Lock"
+        "SimpleStorage"
       ]
     }
   }

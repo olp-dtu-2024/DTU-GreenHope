@@ -8,12 +8,7 @@ import { CompileModule } from '@/modules/compile/compile.module';
 
 const importVar = [CoreModule, CompileModule];
 
-const providers = [
-  {
-    provide: APP_FILTER,
-    useClass: GlobalExceptionsFilter,
-  },
-];
+const providers = [];
 @Module({
   imports: [...importVar],
   controllers: [AppController],

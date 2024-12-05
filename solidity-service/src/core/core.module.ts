@@ -30,7 +30,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
     KafkaModule,
     QueueRedisModule
   ],
-  providers: [ErrorService],
-  exports: [ErrorService]
+  providers: [],
+  exports: []
 })
 export class CoreModule { }

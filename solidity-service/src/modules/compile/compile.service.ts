@@ -47,7 +47,14 @@ export class CompileService {
       const dataContract = JSON.parse(
         fs.readFileSync(contractJsonPath, 'utf8')
       );
-      return dataContract;
+      if (fs.existsSync(artifactsDir)) {
+        fs.rmSync(artifactsDir, { recursive: true, force: true });
+        console.log('Cleaned up artifacts directory');
+      }
+      return {
+        ...dataContract,
+        contractId,
+      };
     } catch (error) {
       console.error('Error writing contract file:', error);
       throw error;

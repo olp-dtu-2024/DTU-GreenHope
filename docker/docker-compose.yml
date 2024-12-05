@@ -106,7 +106,8 @@ services:
       - KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:9093
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-olp-dtu-2024:9092,PLAINTEXT_HOST://kafka-olp-dtu-2024:9093
+      # - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-olp-dtu-2024:9092,PLAINTEXT_HOST://localhost:9093
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092,PLAINTEXT_HOST://localhost:9093
       - KAFKA_RESTART_ATTEMPTS=10
       - KAFKA_RESTART_DELAY=5
       - ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL=0
@@ -157,6 +158,28 @@ services:
         condition: service_healthy
       captcha-service:
         condition: service_started
+
+  solidity-service:
+    build:
+      context: ../solidity-service
+      dockerfile: Dockerfile
+    container_name: solidity-service
+    restart: unless-stopped
+    ports:
+      - '3029:3029'
+    networks:
+      - olp-dtu-2024-network
+    environment:
+      - APP_PORT=3029
+      - REDIS_HOST=redis-6444-olp-dtu-2024
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=redis
+      - KAFKA_BROKERS=kafka-olp-dtu-2024:9092
+    depends_on:
+      redis:
+        condition: service_started
+      kafka:
+        condition: service_healthy
 
   lcdp-app:
     container_name: lcdp-app-olp-dtu-2024

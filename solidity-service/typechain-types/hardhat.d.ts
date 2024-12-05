@@ -14,44 +14,26 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
-      name: "Lock",
+      name: "SimpleStorage",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Lock__factory>;
-    getContractFactory(
-      name: "TransactionManager",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.TransactionManager__factory>;
+    ): Promise<Contracts.SimpleStorage__factory>;
 
     getContractAt(
-      name: "Lock",
+      name: "SimpleStorage",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.Lock>;
-    getContractAt(
-      name: "TransactionManager",
-      address: string | ethers.Addressable,
-      signer?: ethers.Signer
-    ): Promise<Contracts.TransactionManager>;
+    ): Promise<Contracts.SimpleStorage>;
 
     deployContract(
-      name: "Lock",
+      name: "SimpleStorage",
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.Lock>;
-    deployContract(
-      name: "TransactionManager",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.TransactionManager>;
+    ): Promise<Contracts.SimpleStorage>;
 
     deployContract(
-      name: "Lock",
+      name: "SimpleStorage",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.Lock>;
-    deployContract(
-      name: "TransactionManager",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.TransactionManager>;
+    ): Promise<Contracts.SimpleStorage>;
 
     // default types
     getContractFactory(
