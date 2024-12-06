@@ -9,6 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "docker:build": "docker compose -p dtu-green-hope -f ./docker/docker-compose.yml up --build -d",
+    "docker:release": "docker compose -p dtu-green-hope-production -f ./docker/docker-compose-production.yml up --build -d",
     "git:soft": "git reset --soft HEAD~1",
     "install:app": "cd lcdp-app && yarn install",
     "release:dump": "node ./scripts/dump-release.mjs",
