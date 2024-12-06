@@ -4,7 +4,7 @@ import { KafkaEventListener } from './eventListener';
 import Router from 'koa-router';
 import { registerSolidityRoutes } from './routes/solidity';
 import { registerTransactionRoutes } from './routes/transactions';
-import { registerRecognitionRoutes } from 'packages/plugins/@dtu-olp-2024/kafka-nocobase/src/server/routes/recognition';
+import { registerRecognitionRoutes } from './routes/recognition';
 
 export class KafkaNocobaseServer extends Plugin {
   kafka: Kafka;
