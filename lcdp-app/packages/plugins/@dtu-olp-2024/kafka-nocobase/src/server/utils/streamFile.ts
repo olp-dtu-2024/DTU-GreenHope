@@ -4,7 +4,6 @@ import * as fs from 'fs';
 import crypto from 'crypto';
 import zlib from 'zlib';
 
-// Reduce chunk size to 100KB
 const CHUNK_SIZE = 100 * 1024;
 const MAX_RETRIES = 3;
 

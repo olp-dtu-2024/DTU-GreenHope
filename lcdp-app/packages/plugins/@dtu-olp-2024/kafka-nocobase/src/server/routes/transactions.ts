@@ -41,15 +41,6 @@ export const registerTransactionRoutes = async (
           const { abi, contractAddress, provider } = transactionConfig[0];
 
           const data = await getTransaction({ abi, contractAddress, provider });
-          /*
-[ {
-            "transaction_code": "FT24341733685975",
-            "amount": 5111,
-            "direction": "INCOMING",
-            "datetime": 1733467778
-        },]
-          */
-          // lay db xuong roi check 3 field voi data, tra ve true false
           const DBTransactions = await appInstance.db
             .getRepository('transactions')
             .find();
