@@ -25,13 +25,10 @@ export class KafkaEventListener {
             const messageValue = message.value
               ? Buffer.from(message.value).toString('utf8')
               : null;
-            console.log(`Received message: ${messageValue}`);
-            console.log(messageValue);
             if (messageValue) {
               try {
-                const parsedMessage = JSON.parse(messageValue);
+                const parsedMessage = JSON?.parse(messageValue);
                 await handler(parsedMessage, appInstance);
-                console.log('Parsed message:', parsedMessage);
               } catch (jsonError) {
                 console.error('Error parsing JSON:', jsonError);
               }

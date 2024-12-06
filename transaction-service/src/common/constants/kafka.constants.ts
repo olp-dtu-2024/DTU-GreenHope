@@ -10,8 +10,8 @@ export const kafkaServiceName = {
 export const kafkaConfig = {
   lcdpService: {
     name: 'LCDP_SERVICE',
-    clientId: 'lcdp-service',
-    groupId: 'lcdp-consumers',
+    clientId: 'nocobase_lcdp',
+    groupId: 'nocobase_lcdp',
   },
   transactionService: {
     name: 'TRANSACTION_SERVICE',

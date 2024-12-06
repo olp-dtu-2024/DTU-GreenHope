@@ -67,6 +67,15 @@
       "@dtu-olp-2024/solidity-editor-nocobase": [
         "packages/plugins/@dtu-olp-2024/solidity-editor-nocobase/src"
       ],
+      "@dtu-olp-2024/video-player-nocobase/client": [
+        "packages/plugins/@dtu-olp-2024/video-player-nocobase/src/client"
+      ],
+      "@dtu-olp-2024/video-player-nocobase/package.json": [
+        "packages/plugins/@dtu-olp-2024/video-player-nocobase/package.json"
+      ],
+      "@dtu-olp-2024/video-player-nocobase": [
+        "packages/plugins/@dtu-olp-2024/video-player-nocobase/src"
+      ],
       "@dtu-olp-2024/vietqr-nocobase/client": [
         "packages/plugins/@dtu-olp-2024/vietqr-nocobase/src/client"
       ],
