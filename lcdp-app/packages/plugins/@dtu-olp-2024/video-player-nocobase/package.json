@@ -1,0 +1,14 @@
+{
+  "name": "@dtu-olp-2024/video-player-nocobase",
+  "version": "0.1.0",
+  "main": "dist/server/index.js",
+  "dependencies": {},
+  "peerDependencies": {
+    "@nocobase/client": "1.x",
+    "@nocobase/server": "1.x",
+    "@nocobase/test": "1.x"
+  },
+  "devDependencies": {
+    "artplayer": "^5.2.1",
+  }
+}
