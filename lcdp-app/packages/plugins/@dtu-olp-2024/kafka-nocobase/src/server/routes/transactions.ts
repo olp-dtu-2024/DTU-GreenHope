@@ -50,7 +50,38 @@ export const registerTransactionRoutes = async (
         },]
           */
           // lay db xuong roi check 3 field voi data, tra ve true false
-          ctx.body = data;
+          const DBTransactions = await appInstance.db
+            .getRepository('transactions')
+            .find();
+          const transactionMismatch: any = {};
+          await DBTransactions.map((tx) => {
+            const matchedTransaction = data.find(
+              (d) => d.transaction_code === tx.transaction_code
+            );
+
+            if (matchedTransaction) {
+              if (matchedTransaction.amount !== tx.amount) {
+                transactionMismatch.amount = {
+                  correct: matchedTransaction.amount,
+                  wrong: tx.amount,
+                };
+              } else if (matchedTransaction.direction !== tx.direction) {
+                transactionMismatch.direction = {
+                  correct: matchedTransaction.direction,
+                  wrong: tx.direction,
+                };
+              } else {
+                transactionMismatch.transaction_code = {
+                  correct: matchedTransaction.transaction_code,
+                  wrong: tx.transaction_code,
+                };
+              }
+            }
+          });
+          ctx.body = {
+            status: transactionMismatch.length === 0 ? true : false,
+            transactionMismatch,
+          };
           ctx.status = 200;
         } catch (error) {}
         await next();
