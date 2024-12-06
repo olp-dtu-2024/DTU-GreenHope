@@ -4,6 +4,7 @@ import { KafkaEventListener } from './eventListener';
 import Router from 'koa-router';
 import { registerSolidityRoutes } from './routes/solidity';
 import { registerTransactionRoutes } from './routes/transactions';
+import { registerRecognitionRoutes } from 'packages/plugins/@dtu-olp-2024/kafka-nocobase/src/server/routes/recognition';
 
 export class KafkaNocobaseServer extends Plugin {
   kafka: Kafka;
@@ -15,6 +16,7 @@ export class KafkaNocobaseServer extends Plugin {
   async load() {
     await this.initialCollection();
     await this.initialKafka();
+    await registerRecognitionRoutes(this.app, this.producer);
     await registerSolidityRoutes(this.app, this.producer);
     await registerTransactionRoutes(this.app, this.producer);
   }
