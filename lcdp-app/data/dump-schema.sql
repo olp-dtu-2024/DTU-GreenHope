@@ -5,7 +5,7 @@
 -- Dumped from database version 16.4
 -- Dumped by pg_dump version 16.4
 
--- Started on 2024-12-05 19:18:12 UTC
+-- Started on 2024-12-06 07:15:25 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,6 +19,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 DROP INDEX IF EXISTS public.workflows_key_current;
+DROP INDEX IF EXISTS public.video_storage_id;
 DROP INDEX IF EXISTS public.verifications_provider_id;
 DROP INDEX IF EXISTS public.users_jobs_workflow_id;
 DROP INDEX IF EXISTS public.users_jobs_user_id;
@@ -97,6 +98,7 @@ ALTER TABLE IF EXISTS ONLY public."uiSchemaTreePath" DROP CONSTRAINT IF EXISTS "
 ALTER TABLE IF EXISTS ONLY public."uiSchemaTemplates" DROP CONSTRAINT IF EXISTS "uiSchemaTemplates_pkey";
 ALTER TABLE IF EXISTS ONLY public."uiSchemaServerHooks" DROP CONSTRAINT IF EXISTS "uiSchemaServerHooks_pkey";
 ALTER TABLE IF EXISTS ONLY public.transactions DROP CONSTRAINT IF EXISTS transactions_pkey;
+ALTER TABLE IF EXISTS ONLY public.transactions_config DROP CONSTRAINT IF EXISTS transactions_config_pkey;
 ALTER TABLE IF EXISTS ONLY public."tokenBlacklist" DROP CONSTRAINT IF EXISTS "tokenBlacklist_pkey";
 ALTER TABLE IF EXISTS ONLY public."themeConfig" DROP CONSTRAINT IF EXISTS "themeConfig_pkey";
 ALTER TABLE IF EXISTS ONLY public.t_s9b2jhcxq9q DROP CONSTRAINT IF EXISTS t_s9b2jhcxq9q_pkey;
@@ -150,11 +152,13 @@ ALTER TABLE IF EXISTS ONLY public."applicationPlugins" DROP CONSTRAINT IF EXISTS
 ALTER TABLE IF EXISTS ONLY public."applicationPlugins" DROP CONSTRAINT IF EXISTS "applicationPlugins_packageName_key";
 ALTER TABLE IF EXISTS ONLY public."applicationPlugins" DROP CONSTRAINT IF EXISTS "applicationPlugins_name_key";
 ALTER TABLE IF EXISTS ONLY public."apiKeys" DROP CONSTRAINT IF EXISTS "apiKeys_pkey";
+ALTER TABLE IF EXISTS ONLY public."Video" DROP CONSTRAINT IF EXISTS "Video_pkey";
 ALTER TABLE IF EXISTS ONLY "KafkaTopic"."kafka-topics" DROP CONSTRAINT IF EXISTS "kafka-topics_pkey";
 ALTER TABLE IF EXISTS public.workflows ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public.users_jobs ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public.users ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public."uiSchemaServerHooks" ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE IF EXISTS public.transactions_config ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public.transactions ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public."tokenBlacklist" ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public."themeConfig" ALTER COLUMN id DROP DEFAULT;
@@ -182,6 +186,7 @@ ALTER TABLE IF EXISTS public.attachments ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public."applicationVersion" ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public."applicationPlugins" ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public."apiKeys" ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE IF EXISTS public."Video" ALTER COLUMN id DROP DEFAULT;
 DROP SEQUENCE IF EXISTS public.workflows_id_seq;
 DROP TABLE IF EXISTS public.workflows;
 DROP TABLE IF EXISTS public.verifications_providers;
@@ -197,6 +202,8 @@ DROP TABLE IF EXISTS public."uiSchemaTemplates";
 DROP SEQUENCE IF EXISTS public."uiSchemaServerHooks_id_seq";
 DROP TABLE IF EXISTS public."uiSchemaServerHooks";
 DROP SEQUENCE IF EXISTS public.transactions_id_seq;
+DROP SEQUENCE IF EXISTS public.transactions_config_id_seq;
+DROP TABLE IF EXISTS public.transactions_config;
 DROP TABLE IF EXISTS public.transactions;
 DROP SEQUENCE IF EXISTS public."tokenBlacklist_id_seq";
 DROP TABLE IF EXISTS public."tokenBlacklist";
@@ -273,10 +280,12 @@ DROP SEQUENCE IF EXISTS public."applicationPlugins_id_seq";
 DROP TABLE IF EXISTS public."applicationPlugins";
 DROP SEQUENCE IF EXISTS public."apiKeys_id_seq";
 DROP TABLE IF EXISTS public."apiKeys";
+DROP SEQUENCE IF EXISTS public."Video_id_seq";
+DROP TABLE IF EXISTS public."Video";
 DROP TABLE IF EXISTS "KafkaTopic"."kafka-topics";
 DROP SCHEMA IF EXISTS "KafkaTopic";
 --
--- TOC entry 6 (class 2615 OID 17793)
+-- TOC entry 6 (class 2615 OID 20589)
 -- Name: KafkaTopic; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
@@ -290,7 +299,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 216 (class 1259 OID 17794)
+-- TOC entry 216 (class 1259 OID 20590)
 -- Name: kafka-topics; Type: TABLE; Schema: KafkaTopic; Owner: postgres
 --
 
@@ -307,7 +316,56 @@ CREATE TABLE "KafkaTopic"."kafka-topics" (
 ALTER TABLE "KafkaTopic"."kafka-topics" OWNER TO postgres;
 
 --
--- TOC entry 217 (class 1259 OID 17799)
+-- TOC entry 309 (class 1259 OID 21215)
+-- Name: Video; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Video" (
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    title character varying(255),
+    filename character varying(255),
+    extname character varying(255),
+    size integer,
+    mimetype character varying(255),
+    path character varying(255),
+    url character varying(255),
+    meta jsonb DEFAULT '{}'::jsonb,
+    id bigint NOT NULL,
+    "storageId" bigint,
+    "createdById" bigint,
+    "updatedById" bigint
+);
+
+
+ALTER TABLE public."Video" OWNER TO postgres;
+
+--
+-- TOC entry 308 (class 1259 OID 21214)
+-- Name: Video_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Video_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public."Video_id_seq" OWNER TO postgres;
+
+--
+-- TOC entry 4023 (class 0 OID 0)
+-- Dependencies: 308
+-- Name: Video_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Video_id_seq" OWNED BY public."Video".id;
+
+
+--
+-- TOC entry 217 (class 1259 OID 20595)
 -- Name: apiKeys; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -326,7 +384,7 @@ CREATE TABLE public."apiKeys" (
 ALTER TABLE public."apiKeys" OWNER TO postgres;
 
 --
--- TOC entry 218 (class 1259 OID 17804)
+-- TOC entry 218 (class 1259 OID 20600)
 -- Name: apiKeys_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -341,7 +399,7 @@ CREATE SEQUENCE public."apiKeys_id_seq"
 ALTER SEQUENCE public."apiKeys_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4001 (class 0 OID 0)
+-- TOC entry 4024 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: apiKeys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -350,7 +408,7 @@ ALTER SEQUENCE public."apiKeys_id_seq" OWNED BY public."apiKeys".id;
 
 
 --
--- TOC entry 219 (class 1259 OID 17805)
+-- TOC entry 219 (class 1259 OID 20601)
 -- Name: applicationPlugins; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -371,7 +429,7 @@ CREATE TABLE public."applicationPlugins" (
 ALTER TABLE public."applicationPlugins" OWNER TO postgres;
 
 --
--- TOC entry 220 (class 1259 OID 17810)
+-- TOC entry 220 (class 1259 OID 20606)
 -- Name: applicationPlugins_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -386,7 +444,7 @@ CREATE SEQUENCE public."applicationPlugins_id_seq"
 ALTER SEQUENCE public."applicationPlugins_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4002 (class 0 OID 0)
+-- TOC entry 4025 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: applicationPlugins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -395,7 +453,7 @@ ALTER SEQUENCE public."applicationPlugins_id_seq" OWNED BY public."applicationPl
 
 
 --
--- TOC entry 221 (class 1259 OID 17811)
+-- TOC entry 221 (class 1259 OID 20607)
 -- Name: applicationVersion; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -408,7 +466,7 @@ CREATE TABLE public."applicationVersion" (
 ALTER TABLE public."applicationVersion" OWNER TO postgres;
 
 --
--- TOC entry 222 (class 1259 OID 17814)
+-- TOC entry 222 (class 1259 OID 20610)
 -- Name: applicationVersion_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -423,7 +481,7 @@ CREATE SEQUENCE public."applicationVersion_id_seq"
 ALTER SEQUENCE public."applicationVersion_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4003 (class 0 OID 0)
+-- TOC entry 4026 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: applicationVersion_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -432,7 +490,7 @@ ALTER SEQUENCE public."applicationVersion_id_seq" OWNED BY public."applicationVe
 
 
 --
--- TOC entry 223 (class 1259 OID 17815)
+-- TOC entry 223 (class 1259 OID 20611)
 -- Name: attachments; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -457,7 +515,7 @@ CREATE TABLE public.attachments (
 ALTER TABLE public.attachments OWNER TO postgres;
 
 --
--- TOC entry 4004 (class 0 OID 0)
+-- TOC entry 4027 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: COLUMN attachments.title; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -466,7 +524,7 @@ COMMENT ON COLUMN public.attachments.title IS '用户文件名（不含扩展名
 
 
 --
--- TOC entry 4005 (class 0 OID 0)
+-- TOC entry 4028 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: COLUMN attachments.filename; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -475,7 +533,7 @@ COMMENT ON COLUMN public.attachments.filename IS '系统文件名（含扩展名
 
 
 --
--- TOC entry 4006 (class 0 OID 0)
+-- TOC entry 4029 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: COLUMN attachments.extname; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -484,7 +542,7 @@ COMMENT ON COLUMN public.attachments.extname IS '扩展名（含“.”）';
 
 
 --
--- TOC entry 4007 (class 0 OID 0)
+-- TOC entry 4030 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: COLUMN attachments.size; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -493,7 +551,7 @@ COMMENT ON COLUMN public.attachments.size IS '文件体积（字节）';
 
 
 --
--- TOC entry 4008 (class 0 OID 0)
+-- TOC entry 4031 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: COLUMN attachments.path; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -502,7 +560,7 @@ COMMENT ON COLUMN public.attachments.path IS '相对路径（含“/”前缀）
 
 
 --
--- TOC entry 4009 (class 0 OID 0)
+-- TOC entry 4032 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: COLUMN attachments.meta; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -511,7 +569,7 @@ COMMENT ON COLUMN public.attachments.meta IS '其他文件信息（如图片的�
 
 
 --
--- TOC entry 4010 (class 0 OID 0)
+-- TOC entry 4033 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: COLUMN attachments.url; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -520,7 +578,7 @@ COMMENT ON COLUMN public.attachments.url IS '网络访问地址';
 
 
 --
--- TOC entry 224 (class 1259 OID 17821)
+-- TOC entry 224 (class 1259 OID 20617)
 -- Name: attachments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -535,7 +593,7 @@ CREATE SEQUENCE public.attachments_id_seq
 ALTER SEQUENCE public.attachments_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4011 (class 0 OID 0)
+-- TOC entry 4034 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: attachments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -544,7 +602,7 @@ ALTER SEQUENCE public.attachments_id_seq OWNED BY public.attachments.id;
 
 
 --
--- TOC entry 225 (class 1259 OID 17822)
+-- TOC entry 225 (class 1259 OID 20618)
 -- Name: authenticators; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -567,7 +625,7 @@ CREATE TABLE public.authenticators (
 ALTER TABLE public.authenticators OWNER TO postgres;
 
 --
--- TOC entry 226 (class 1259 OID 17830)
+-- TOC entry 226 (class 1259 OID 20626)
 -- Name: authenticators_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -582,7 +640,7 @@ CREATE SEQUENCE public.authenticators_id_seq
 ALTER SEQUENCE public.authenticators_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4012 (class 0 OID 0)
+-- TOC entry 4035 (class 0 OID 0)
 -- Dependencies: 226
 -- Name: authenticators_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -591,7 +649,7 @@ ALTER SEQUENCE public.authenticators_id_seq OWNED BY public.authenticators.id;
 
 
 --
--- TOC entry 227 (class 1259 OID 17831)
+-- TOC entry 227 (class 1259 OID 20627)
 -- Name: chinaRegions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -608,7 +666,7 @@ CREATE TABLE public."chinaRegions" (
 ALTER TABLE public."chinaRegions" OWNER TO postgres;
 
 --
--- TOC entry 228 (class 1259 OID 17836)
+-- TOC entry 228 (class 1259 OID 20632)
 -- Name: collectionCategories; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -625,7 +683,7 @@ CREATE TABLE public."collectionCategories" (
 ALTER TABLE public."collectionCategories" OWNER TO postgres;
 
 --
--- TOC entry 229 (class 1259 OID 17842)
+-- TOC entry 229 (class 1259 OID 20638)
 -- Name: collectionCategories_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -640,7 +698,7 @@ CREATE SEQUENCE public."collectionCategories_id_seq"
 ALTER SEQUENCE public."collectionCategories_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4013 (class 0 OID 0)
+-- TOC entry 4036 (class 0 OID 0)
 -- Dependencies: 229
 -- Name: collectionCategories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -649,7 +707,7 @@ ALTER SEQUENCE public."collectionCategories_id_seq" OWNED BY public."collectionC
 
 
 --
--- TOC entry 230 (class 1259 OID 17843)
+-- TOC entry 230 (class 1259 OID 20639)
 -- Name: collectionCategory; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -664,7 +722,7 @@ CREATE TABLE public."collectionCategory" (
 ALTER TABLE public."collectionCategory" OWNER TO postgres;
 
 --
--- TOC entry 231 (class 1259 OID 17846)
+-- TOC entry 231 (class 1259 OID 20642)
 -- Name: collections; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -683,7 +741,7 @@ CREATE TABLE public.collections (
 ALTER TABLE public.collections OWNER TO postgres;
 
 --
--- TOC entry 232 (class 1259 OID 17854)
+-- TOC entry 232 (class 1259 OID 20650)
 -- Name: customRequests; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -698,7 +756,7 @@ CREATE TABLE public."customRequests" (
 ALTER TABLE public."customRequests" OWNER TO postgres;
 
 --
--- TOC entry 233 (class 1259 OID 17859)
+-- TOC entry 233 (class 1259 OID 20655)
 -- Name: customRequestsRoles; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -713,7 +771,7 @@ CREATE TABLE public."customRequestsRoles" (
 ALTER TABLE public."customRequestsRoles" OWNER TO postgres;
 
 --
--- TOC entry 234 (class 1259 OID 17864)
+-- TOC entry 234 (class 1259 OID 20660)
 -- Name: dataSources; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -732,7 +790,7 @@ CREATE TABLE public."dataSources" (
 ALTER TABLE public."dataSources" OWNER TO postgres;
 
 --
--- TOC entry 235 (class 1259 OID 17871)
+-- TOC entry 235 (class 1259 OID 20667)
 -- Name: dataSourcesCollections; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -747,7 +805,7 @@ CREATE TABLE public."dataSourcesCollections" (
 ALTER TABLE public."dataSourcesCollections" OWNER TO postgres;
 
 --
--- TOC entry 236 (class 1259 OID 17876)
+-- TOC entry 236 (class 1259 OID 20672)
 -- Name: dataSourcesFields; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -767,7 +825,7 @@ CREATE TABLE public."dataSourcesFields" (
 ALTER TABLE public."dataSourcesFields" OWNER TO postgres;
 
 --
--- TOC entry 237 (class 1259 OID 17882)
+-- TOC entry 237 (class 1259 OID 20678)
 -- Name: dataSourcesRoles; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -782,7 +840,7 @@ CREATE TABLE public."dataSourcesRoles" (
 ALTER TABLE public."dataSourcesRoles" OWNER TO postgres;
 
 --
--- TOC entry 238 (class 1259 OID 17887)
+-- TOC entry 238 (class 1259 OID 20683)
 -- Name: dataSourcesRolesResources; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -800,7 +858,7 @@ CREATE TABLE public."dataSourcesRolesResources" (
 ALTER TABLE public."dataSourcesRolesResources" OWNER TO postgres;
 
 --
--- TOC entry 239 (class 1259 OID 17893)
+-- TOC entry 239 (class 1259 OID 20689)
 -- Name: dataSourcesRolesResourcesActions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -818,7 +876,7 @@ CREATE TABLE public."dataSourcesRolesResourcesActions" (
 ALTER TABLE public."dataSourcesRolesResourcesActions" OWNER TO postgres;
 
 --
--- TOC entry 240 (class 1259 OID 17899)
+-- TOC entry 240 (class 1259 OID 20695)
 -- Name: dataSourcesRolesResourcesActions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -833,7 +891,7 @@ CREATE SEQUENCE public."dataSourcesRolesResourcesActions_id_seq"
 ALTER SEQUENCE public."dataSourcesRolesResourcesActions_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4014 (class 0 OID 0)
+-- TOC entry 4037 (class 0 OID 0)
 -- Dependencies: 240
 -- Name: dataSourcesRolesResourcesActions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -842,7 +900,7 @@ ALTER SEQUENCE public."dataSourcesRolesResourcesActions_id_seq" OWNED BY public.
 
 
 --
--- TOC entry 241 (class 1259 OID 17900)
+-- TOC entry 241 (class 1259 OID 20696)
 -- Name: dataSourcesRolesResourcesScopes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -861,7 +919,7 @@ CREATE TABLE public."dataSourcesRolesResourcesScopes" (
 ALTER TABLE public."dataSourcesRolesResourcesScopes" OWNER TO postgres;
 
 --
--- TOC entry 242 (class 1259 OID 17906)
+-- TOC entry 242 (class 1259 OID 20702)
 -- Name: dataSourcesRolesResourcesScopes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -876,7 +934,7 @@ CREATE SEQUENCE public."dataSourcesRolesResourcesScopes_id_seq"
 ALTER SEQUENCE public."dataSourcesRolesResourcesScopes_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4015 (class 0 OID 0)
+-- TOC entry 4038 (class 0 OID 0)
 -- Dependencies: 242
 -- Name: dataSourcesRolesResourcesScopes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -885,7 +943,7 @@ ALTER SEQUENCE public."dataSourcesRolesResourcesScopes_id_seq" OWNED BY public."
 
 
 --
--- TOC entry 243 (class 1259 OID 17907)
+-- TOC entry 243 (class 1259 OID 20703)
 -- Name: dataSourcesRolesResources_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -900,7 +958,7 @@ CREATE SEQUENCE public."dataSourcesRolesResources_id_seq"
 ALTER SEQUENCE public."dataSourcesRolesResources_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4016 (class 0 OID 0)
+-- TOC entry 4039 (class 0 OID 0)
 -- Dependencies: 243
 -- Name: dataSourcesRolesResources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -909,7 +967,7 @@ ALTER SEQUENCE public."dataSourcesRolesResources_id_seq" OWNED BY public."dataSo
 
 
 --
--- TOC entry 244 (class 1259 OID 17908)
+-- TOC entry 244 (class 1259 OID 20704)
 -- Name: executions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -928,7 +986,7 @@ CREATE TABLE public.executions (
 ALTER TABLE public.executions OWNER TO postgres;
 
 --
--- TOC entry 245 (class 1259 OID 17913)
+-- TOC entry 245 (class 1259 OID 20709)
 -- Name: executions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -943,7 +1001,7 @@ CREATE SEQUENCE public.executions_id_seq
 ALTER SEQUENCE public.executions_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4017 (class 0 OID 0)
+-- TOC entry 4040 (class 0 OID 0)
 -- Dependencies: 245
 -- Name: executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -952,7 +1010,7 @@ ALTER SEQUENCE public.executions_id_seq OWNED BY public.executions.id;
 
 
 --
--- TOC entry 246 (class 1259 OID 17914)
+-- TOC entry 246 (class 1259 OID 20710)
 -- Name: fields; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -973,7 +1031,7 @@ CREATE TABLE public.fields (
 ALTER TABLE public.fields OWNER TO postgres;
 
 --
--- TOC entry 247 (class 1259 OID 17920)
+-- TOC entry 247 (class 1259 OID 20716)
 -- Name: flow_nodes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -995,7 +1053,7 @@ CREATE TABLE public.flow_nodes (
 ALTER TABLE public.flow_nodes OWNER TO postgres;
 
 --
--- TOC entry 248 (class 1259 OID 17926)
+-- TOC entry 248 (class 1259 OID 20722)
 -- Name: flow_nodes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1010,7 +1068,7 @@ CREATE SEQUENCE public.flow_nodes_id_seq
 ALTER SEQUENCE public.flow_nodes_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4018 (class 0 OID 0)
+-- TOC entry 4041 (class 0 OID 0)
 -- Dependencies: 248
 -- Name: flow_nodes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1019,7 +1077,7 @@ ALTER SEQUENCE public.flow_nodes_id_seq OWNED BY public.flow_nodes.id;
 
 
 --
--- TOC entry 249 (class 1259 OID 17927)
+-- TOC entry 249 (class 1259 OID 20723)
 -- Name: funds; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1042,7 +1100,7 @@ CREATE TABLE public.funds (
 ALTER TABLE public.funds OWNER TO postgres;
 
 --
--- TOC entry 250 (class 1259 OID 17933)
+-- TOC entry 250 (class 1259 OID 20729)
 -- Name: funds_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1057,7 +1115,7 @@ CREATE SEQUENCE public.funds_id_seq
 ALTER SEQUENCE public.funds_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4019 (class 0 OID 0)
+-- TOC entry 4042 (class 0 OID 0)
 -- Dependencies: 250
 -- Name: funds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1066,7 +1124,7 @@ ALTER SEQUENCE public.funds_id_seq OWNED BY public.funds.id;
 
 
 --
--- TOC entry 251 (class 1259 OID 17934)
+-- TOC entry 251 (class 1259 OID 20730)
 -- Name: hello; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1081,7 +1139,7 @@ CREATE TABLE public.hello (
 ALTER TABLE public.hello OWNER TO postgres;
 
 --
--- TOC entry 252 (class 1259 OID 17937)
+-- TOC entry 252 (class 1259 OID 20733)
 -- Name: hello_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1096,7 +1154,7 @@ CREATE SEQUENCE public.hello_id_seq
 ALTER SEQUENCE public.hello_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4020 (class 0 OID 0)
+-- TOC entry 4043 (class 0 OID 0)
 -- Dependencies: 252
 -- Name: hello_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1105,7 +1163,7 @@ ALTER SEQUENCE public.hello_id_seq OWNED BY public.hello.id;
 
 
 --
--- TOC entry 253 (class 1259 OID 17938)
+-- TOC entry 253 (class 1259 OID 20734)
 -- Name: iframeHtml; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1122,7 +1180,7 @@ CREATE TABLE public."iframeHtml" (
 ALTER TABLE public."iframeHtml" OWNER TO postgres;
 
 --
--- TOC entry 254 (class 1259 OID 17943)
+-- TOC entry 254 (class 1259 OID 20739)
 -- Name: images; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1140,7 +1198,7 @@ CREATE TABLE public.images (
 ALTER TABLE public.images OWNER TO postgres;
 
 --
--- TOC entry 255 (class 1259 OID 17948)
+-- TOC entry 255 (class 1259 OID 20744)
 -- Name: images_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1155,7 +1213,7 @@ CREATE SEQUENCE public.images_id_seq
 ALTER SEQUENCE public.images_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4021 (class 0 OID 0)
+-- TOC entry 4044 (class 0 OID 0)
 -- Dependencies: 255
 -- Name: images_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1164,7 +1222,7 @@ ALTER SEQUENCE public.images_id_seq OWNED BY public.images.id;
 
 
 --
--- TOC entry 256 (class 1259 OID 17949)
+-- TOC entry 256 (class 1259 OID 20745)
 -- Name: jobs; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1184,7 +1242,7 @@ CREATE TABLE public.jobs (
 ALTER TABLE public.jobs OWNER TO postgres;
 
 --
--- TOC entry 257 (class 1259 OID 17954)
+-- TOC entry 257 (class 1259 OID 20750)
 -- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1199,7 +1257,7 @@ CREATE SEQUENCE public.jobs_id_seq
 ALTER SEQUENCE public.jobs_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4022 (class 0 OID 0)
+-- TOC entry 4045 (class 0 OID 0)
 -- Dependencies: 257
 -- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1208,7 +1266,7 @@ ALTER SEQUENCE public.jobs_id_seq OWNED BY public.jobs.id;
 
 
 --
--- TOC entry 258 (class 1259 OID 17955)
+-- TOC entry 258 (class 1259 OID 20751)
 -- Name: kafka_configs; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1224,7 +1282,7 @@ CREATE TABLE public.kafka_configs (
 ALTER TABLE public.kafka_configs OWNER TO postgres;
 
 --
--- TOC entry 259 (class 1259 OID 17960)
+-- TOC entry 259 (class 1259 OID 20756)
 -- Name: kafka_topics; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1241,7 +1299,7 @@ CREATE TABLE public.kafka_topics (
 ALTER TABLE public.kafka_topics OWNER TO postgres;
 
 --
--- TOC entry 260 (class 1259 OID 17965)
+-- TOC entry 260 (class 1259 OID 20761)
 -- Name: migrations; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1253,7 +1311,7 @@ CREATE TABLE public.migrations (
 ALTER TABLE public.migrations OWNER TO postgres;
 
 --
--- TOC entry 261 (class 1259 OID 17968)
+-- TOC entry 261 (class 1259 OID 20764)
 -- Name: projects; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1275,7 +1333,7 @@ CREATE TABLE public.projects (
 ALTER TABLE public.projects OWNER TO postgres;
 
 --
--- TOC entry 262 (class 1259 OID 17976)
+-- TOC entry 262 (class 1259 OID 20772)
 -- Name: projects_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1290,7 +1348,7 @@ CREATE SEQUENCE public.projects_id_seq
 ALTER SEQUENCE public.projects_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4023 (class 0 OID 0)
+-- TOC entry 4046 (class 0 OID 0)
 -- Dependencies: 262
 -- Name: projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1299,7 +1357,7 @@ ALTER SEQUENCE public.projects_id_seq OWNED BY public.projects.id;
 
 
 --
--- TOC entry 263 (class 1259 OID 17977)
+-- TOC entry 263 (class 1259 OID 20773)
 -- Name: proposes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1320,7 +1378,7 @@ CREATE TABLE public.proposes (
 ALTER TABLE public.proposes OWNER TO postgres;
 
 --
--- TOC entry 264 (class 1259 OID 17984)
+-- TOC entry 264 (class 1259 OID 20780)
 -- Name: proposes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1335,7 +1393,7 @@ CREATE SEQUENCE public.proposes_id_seq
 ALTER SEQUENCE public.proposes_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4024 (class 0 OID 0)
+-- TOC entry 4047 (class 0 OID 0)
 -- Dependencies: 264
 -- Name: proposes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1344,7 +1402,7 @@ ALTER SEQUENCE public.proposes_id_seq OWNED BY public.proposes.id;
 
 
 --
--- TOC entry 265 (class 1259 OID 17985)
+-- TOC entry 265 (class 1259 OID 20781)
 -- Name: roles; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1367,7 +1425,7 @@ CREATE TABLE public.roles (
 ALTER TABLE public.roles OWNER TO postgres;
 
 --
--- TOC entry 266 (class 1259 OID 17993)
+-- TOC entry 266 (class 1259 OID 20789)
 -- Name: rolesResources; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1384,7 +1442,7 @@ CREATE TABLE public."rolesResources" (
 ALTER TABLE public."rolesResources" OWNER TO postgres;
 
 --
--- TOC entry 267 (class 1259 OID 17998)
+-- TOC entry 267 (class 1259 OID 20794)
 -- Name: rolesResourcesActions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1402,7 +1460,7 @@ CREATE TABLE public."rolesResourcesActions" (
 ALTER TABLE public."rolesResourcesActions" OWNER TO postgres;
 
 --
--- TOC entry 268 (class 1259 OID 18004)
+-- TOC entry 268 (class 1259 OID 20800)
 -- Name: rolesResourcesActions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1417,7 +1475,7 @@ CREATE SEQUENCE public."rolesResourcesActions_id_seq"
 ALTER SEQUENCE public."rolesResourcesActions_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4025 (class 0 OID 0)
+-- TOC entry 4048 (class 0 OID 0)
 -- Dependencies: 268
 -- Name: rolesResourcesActions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1426,7 +1484,7 @@ ALTER SEQUENCE public."rolesResourcesActions_id_seq" OWNED BY public."rolesResou
 
 
 --
--- TOC entry 269 (class 1259 OID 18005)
+-- TOC entry 269 (class 1259 OID 20801)
 -- Name: rolesResourcesScopes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1444,7 +1502,7 @@ CREATE TABLE public."rolesResourcesScopes" (
 ALTER TABLE public."rolesResourcesScopes" OWNER TO postgres;
 
 --
--- TOC entry 270 (class 1259 OID 18010)
+-- TOC entry 270 (class 1259 OID 20806)
 -- Name: rolesResourcesScopes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1459,7 +1517,7 @@ CREATE SEQUENCE public."rolesResourcesScopes_id_seq"
 ALTER SEQUENCE public."rolesResourcesScopes_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4026 (class 0 OID 0)
+-- TOC entry 4049 (class 0 OID 0)
 -- Dependencies: 270
 -- Name: rolesResourcesScopes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1468,7 +1526,7 @@ ALTER SEQUENCE public."rolesResourcesScopes_id_seq" OWNED BY public."rolesResour
 
 
 --
--- TOC entry 271 (class 1259 OID 18011)
+-- TOC entry 271 (class 1259 OID 20807)
 -- Name: rolesResources_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1483,7 +1541,7 @@ CREATE SEQUENCE public."rolesResources_id_seq"
 ALTER SEQUENCE public."rolesResources_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4027 (class 0 OID 0)
+-- TOC entry 4050 (class 0 OID 0)
 -- Dependencies: 271
 -- Name: rolesResources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1492,7 +1550,7 @@ ALTER SEQUENCE public."rolesResources_id_seq" OWNED BY public."rolesResources".i
 
 
 --
--- TOC entry 272 (class 1259 OID 18012)
+-- TOC entry 272 (class 1259 OID 20808)
 -- Name: rolesUischemas; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1507,7 +1565,7 @@ CREATE TABLE public."rolesUischemas" (
 ALTER TABLE public."rolesUischemas" OWNER TO postgres;
 
 --
--- TOC entry 273 (class 1259 OID 18017)
+-- TOC entry 273 (class 1259 OID 20813)
 -- Name: rolesUsers; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1523,7 +1581,7 @@ CREATE TABLE public."rolesUsers" (
 ALTER TABLE public."rolesUsers" OWNER TO postgres;
 
 --
--- TOC entry 274 (class 1259 OID 18020)
+-- TOC entry 274 (class 1259 OID 20816)
 -- Name: sequences; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1542,7 +1600,7 @@ CREATE TABLE public.sequences (
 ALTER TABLE public.sequences OWNER TO postgres;
 
 --
--- TOC entry 275 (class 1259 OID 18025)
+-- TOC entry 275 (class 1259 OID 20821)
 -- Name: sequences_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1557,7 +1615,7 @@ CREATE SEQUENCE public.sequences_id_seq
 ALTER SEQUENCE public.sequences_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4028 (class 0 OID 0)
+-- TOC entry 4051 (class 0 OID 0)
 -- Dependencies: 275
 -- Name: sequences_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1566,7 +1624,7 @@ ALTER SEQUENCE public.sequences_id_seq OWNED BY public.sequences.id;
 
 
 --
--- TOC entry 307 (class 1259 OID 18434)
+-- TOC entry 276 (class 1259 OID 20822)
 -- Name: smart_contracts; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1584,7 +1642,7 @@ CREATE TABLE public.smart_contracts (
 ALTER TABLE public.smart_contracts OWNER TO postgres;
 
 --
--- TOC entry 276 (class 1259 OID 18026)
+-- TOC entry 277 (class 1259 OID 20827)
 -- Name: storages; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1607,8 +1665,8 @@ CREATE TABLE public.storages (
 ALTER TABLE public.storages OWNER TO postgres;
 
 --
--- TOC entry 4029 (class 0 OID 0)
--- Dependencies: 276
+-- TOC entry 4052 (class 0 OID 0)
+-- Dependencies: 277
 -- Name: COLUMN storages.title; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1616,8 +1674,8 @@ COMMENT ON COLUMN public.storages.title IS '存储引擎名称';
 
 
 --
--- TOC entry 4030 (class 0 OID 0)
--- Dependencies: 276
+-- TOC entry 4053 (class 0 OID 0)
+-- Dependencies: 277
 -- Name: COLUMN storages.type; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1625,8 +1683,8 @@ COMMENT ON COLUMN public.storages.type IS '类型标识，如 local/ali-oss 等'
 
 
 --
--- TOC entry 4031 (class 0 OID 0)
--- Dependencies: 276
+-- TOC entry 4054 (class 0 OID 0)
+-- Dependencies: 277
 -- Name: COLUMN storages.options; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1634,8 +1692,8 @@ COMMENT ON COLUMN public.storages.options IS '配置项';
 
 
 --
--- TOC entry 4032 (class 0 OID 0)
--- Dependencies: 276
+-- TOC entry 4055 (class 0 OID 0)
+-- Dependencies: 277
 -- Name: COLUMN storages.rules; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1643,8 +1701,8 @@ COMMENT ON COLUMN public.storages.rules IS '文件规则';
 
 
 --
--- TOC entry 4033 (class 0 OID 0)
--- Dependencies: 276
+-- TOC entry 4056 (class 0 OID 0)
+-- Dependencies: 277
 -- Name: COLUMN storages.path; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1652,8 +1710,8 @@ COMMENT ON COLUMN public.storages.path IS '存储相对路径模板';
 
 
 --
--- TOC entry 4034 (class 0 OID 0)
--- Dependencies: 276
+-- TOC entry 4057 (class 0 OID 0)
+-- Dependencies: 277
 -- Name: COLUMN storages."baseUrl"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1661,8 +1719,8 @@ COMMENT ON COLUMN public.storages."baseUrl" IS '访问地址前缀';
 
 
 --
--- TOC entry 4035 (class 0 OID 0)
--- Dependencies: 276
+-- TOC entry 4058 (class 0 OID 0)
+-- Dependencies: 277
 -- Name: COLUMN storages."default"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1670,7 +1728,7 @@ COMMENT ON COLUMN public.storages."default" IS '默认引擎';
 
 
 --
--- TOC entry 277 (class 1259 OID 18037)
+-- TOC entry 278 (class 1259 OID 20838)
 -- Name: storages_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1685,8 +1743,8 @@ CREATE SEQUENCE public.storages_id_seq
 ALTER SEQUENCE public.storages_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4036 (class 0 OID 0)
--- Dependencies: 277
+-- TOC entry 4059 (class 0 OID 0)
+-- Dependencies: 278
 -- Name: storages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1694,7 +1752,7 @@ ALTER SEQUENCE public.storages_id_seq OWNED BY public.storages.id;
 
 
 --
--- TOC entry 278 (class 1259 OID 18038)
+-- TOC entry 279 (class 1259 OID 20839)
 -- Name: student_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1709,7 +1767,7 @@ CREATE SEQUENCE public.student_id_seq
 ALTER SEQUENCE public.student_id_seq OWNER TO postgres;
 
 --
--- TOC entry 279 (class 1259 OID 18039)
+-- TOC entry 280 (class 1259 OID 20840)
 -- Name: systemSettings; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1731,7 +1789,7 @@ CREATE TABLE public."systemSettings" (
 ALTER TABLE public."systemSettings" OWNER TO postgres;
 
 --
--- TOC entry 280 (class 1259 OID 18048)
+-- TOC entry 281 (class 1259 OID 20849)
 -- Name: systemSettings_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1746,8 +1804,8 @@ CREATE SEQUENCE public."systemSettings_id_seq"
 ALTER SEQUENCE public."systemSettings_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4037 (class 0 OID 0)
--- Dependencies: 280
+-- TOC entry 4060 (class 0 OID 0)
+-- Dependencies: 281
 -- Name: systemSettings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1755,7 +1813,7 @@ ALTER SEQUENCE public."systemSettings_id_seq" OWNED BY public."systemSettings".i
 
 
 --
--- TOC entry 281 (class 1259 OID 18049)
+-- TOC entry 282 (class 1259 OID 20850)
 -- Name: t_587vrvz0gcb; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1776,7 +1834,7 @@ CREATE TABLE public.t_587vrvz0gcb (
 ALTER TABLE public.t_587vrvz0gcb OWNER TO postgres;
 
 --
--- TOC entry 282 (class 1259 OID 18057)
+-- TOC entry 283 (class 1259 OID 20858)
 -- Name: t_587vrvz0gcb_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1791,8 +1849,8 @@ CREATE SEQUENCE public.t_587vrvz0gcb_id_seq
 ALTER SEQUENCE public.t_587vrvz0gcb_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4038 (class 0 OID 0)
--- Dependencies: 282
+-- TOC entry 4061 (class 0 OID 0)
+-- Dependencies: 283
 -- Name: t_587vrvz0gcb_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1800,7 +1858,7 @@ ALTER SEQUENCE public.t_587vrvz0gcb_id_seq OWNED BY public.t_587vrvz0gcb.id;
 
 
 --
--- TOC entry 283 (class 1259 OID 18058)
+-- TOC entry 284 (class 1259 OID 20859)
 -- Name: t_b3tiaxzyeu3; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1815,7 +1873,7 @@ CREATE TABLE public.t_b3tiaxzyeu3 (
 ALTER TABLE public.t_b3tiaxzyeu3 OWNER TO postgres;
 
 --
--- TOC entry 284 (class 1259 OID 18061)
+-- TOC entry 285 (class 1259 OID 20862)
 -- Name: t_bzkvdw2a767; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1830,7 +1888,7 @@ CREATE TABLE public.t_bzkvdw2a767 (
 ALTER TABLE public.t_bzkvdw2a767 OWNER TO postgres;
 
 --
--- TOC entry 285 (class 1259 OID 18064)
+-- TOC entry 286 (class 1259 OID 20865)
 -- Name: t_ncaek4uddrw; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1845,7 +1903,7 @@ CREATE TABLE public.t_ncaek4uddrw (
 ALTER TABLE public.t_ncaek4uddrw OWNER TO postgres;
 
 --
--- TOC entry 286 (class 1259 OID 18067)
+-- TOC entry 287 (class 1259 OID 20868)
 -- Name: t_s9b2jhcxq9q; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1860,7 +1918,7 @@ CREATE TABLE public.t_s9b2jhcxq9q (
 ALTER TABLE public.t_s9b2jhcxq9q OWNER TO postgres;
 
 --
--- TOC entry 287 (class 1259 OID 18070)
+-- TOC entry 288 (class 1259 OID 20871)
 -- Name: themeConfig; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1879,7 +1937,7 @@ CREATE TABLE public."themeConfig" (
 ALTER TABLE public."themeConfig" OWNER TO postgres;
 
 --
--- TOC entry 288 (class 1259 OID 18076)
+-- TOC entry 289 (class 1259 OID 20877)
 -- Name: themeConfig_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1894,8 +1952,8 @@ CREATE SEQUENCE public."themeConfig_id_seq"
 ALTER SEQUENCE public."themeConfig_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4039 (class 0 OID 0)
--- Dependencies: 288
+-- TOC entry 4062 (class 0 OID 0)
+-- Dependencies: 289
 -- Name: themeConfig_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1903,7 +1961,7 @@ ALTER SEQUENCE public."themeConfig_id_seq" OWNED BY public."themeConfig".id;
 
 
 --
--- TOC entry 289 (class 1259 OID 18077)
+-- TOC entry 290 (class 1259 OID 20878)
 -- Name: tokenBlacklist; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1919,7 +1977,7 @@ CREATE TABLE public."tokenBlacklist" (
 ALTER TABLE public."tokenBlacklist" OWNER TO postgres;
 
 --
--- TOC entry 290 (class 1259 OID 18080)
+-- TOC entry 291 (class 1259 OID 20881)
 -- Name: tokenBlacklist_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1934,8 +1992,8 @@ CREATE SEQUENCE public."tokenBlacklist_id_seq"
 ALTER SEQUENCE public."tokenBlacklist_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4040 (class 0 OID 0)
--- Dependencies: 290
+-- TOC entry 4063 (class 0 OID 0)
+-- Dependencies: 291
 -- Name: tokenBlacklist_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1943,7 +2001,7 @@ ALTER SEQUENCE public."tokenBlacklist_id_seq" OWNED BY public."tokenBlacklist".i
 
 
 --
--- TOC entry 291 (class 1259 OID 18081)
+-- TOC entry 292 (class 1259 OID 20882)
 -- Name: transactions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1969,7 +2027,51 @@ CREATE TABLE public.transactions (
 ALTER TABLE public.transactions OWNER TO postgres;
 
 --
--- TOC entry 292 (class 1259 OID 18089)
+-- TOC entry 311 (class 1259 OID 21234)
+-- Name: transactions_config; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.transactions_config (
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    id bigint NOT NULL,
+    "createdById" bigint,
+    "updatedById" bigint,
+    "contractAddress" text,
+    private_key text,
+    provider text,
+    abi json
+);
+
+
+ALTER TABLE public.transactions_config OWNER TO postgres;
+
+--
+-- TOC entry 310 (class 1259 OID 21233)
+-- Name: transactions_config_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.transactions_config_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.transactions_config_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4064 (class 0 OID 0)
+-- Dependencies: 310
+-- Name: transactions_config_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.transactions_config_id_seq OWNED BY public.transactions_config.id;
+
+
+--
+-- TOC entry 293 (class 1259 OID 20890)
 -- Name: transactions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1984,8 +2086,8 @@ CREATE SEQUENCE public.transactions_id_seq
 ALTER SEQUENCE public.transactions_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4041 (class 0 OID 0)
--- Dependencies: 292
+-- TOC entry 4065 (class 0 OID 0)
+-- Dependencies: 293
 -- Name: transactions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1993,7 +2095,7 @@ ALTER SEQUENCE public.transactions_id_seq OWNED BY public.transactions.id;
 
 
 --
--- TOC entry 293 (class 1259 OID 18090)
+-- TOC entry 294 (class 1259 OID 20891)
 -- Name: uiSchemaServerHooks; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2011,7 +2113,7 @@ CREATE TABLE public."uiSchemaServerHooks" (
 ALTER TABLE public."uiSchemaServerHooks" OWNER TO postgres;
 
 --
--- TOC entry 294 (class 1259 OID 18095)
+-- TOC entry 295 (class 1259 OID 20896)
 -- Name: uiSchemaServerHooks_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -2026,8 +2128,8 @@ CREATE SEQUENCE public."uiSchemaServerHooks_id_seq"
 ALTER SEQUENCE public."uiSchemaServerHooks_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4042 (class 0 OID 0)
--- Dependencies: 294
+-- TOC entry 4066 (class 0 OID 0)
+-- Dependencies: 295
 -- Name: uiSchemaServerHooks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -2035,7 +2137,7 @@ ALTER SEQUENCE public."uiSchemaServerHooks_id_seq" OWNED BY public."uiSchemaServ
 
 
 --
--- TOC entry 295 (class 1259 OID 18096)
+-- TOC entry 296 (class 1259 OID 20897)
 -- Name: uiSchemaTemplates; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2056,7 +2158,7 @@ CREATE TABLE public."uiSchemaTemplates" (
 ALTER TABLE public."uiSchemaTemplates" OWNER TO postgres;
 
 --
--- TOC entry 296 (class 1259 OID 18101)
+-- TOC entry 297 (class 1259 OID 20902)
 -- Name: uiSchemaTreePath; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2073,8 +2175,8 @@ CREATE TABLE public."uiSchemaTreePath" (
 ALTER TABLE public."uiSchemaTreePath" OWNER TO postgres;
 
 --
--- TOC entry 4043 (class 0 OID 0)
--- Dependencies: 296
+-- TOC entry 4067 (class 0 OID 0)
+-- Dependencies: 297
 -- Name: COLUMN "uiSchemaTreePath".type; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -2082,8 +2184,8 @@ COMMENT ON COLUMN public."uiSchemaTreePath".type IS 'type of node';
 
 
 --
--- TOC entry 4044 (class 0 OID 0)
--- Dependencies: 296
+-- TOC entry 4068 (class 0 OID 0)
+-- Dependencies: 297
 -- Name: COLUMN "uiSchemaTreePath".sort; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -2091,7 +2193,7 @@ COMMENT ON COLUMN public."uiSchemaTreePath".sort IS 'sort of node in adjacency';
 
 
 --
--- TOC entry 297 (class 1259 OID 18106)
+-- TOC entry 298 (class 1259 OID 20907)
 -- Name: uiSchemas; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2105,7 +2207,7 @@ CREATE TABLE public."uiSchemas" (
 ALTER TABLE public."uiSchemas" OWNER TO postgres;
 
 --
--- TOC entry 298 (class 1259 OID 18112)
+-- TOC entry 299 (class 1259 OID 20913)
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2130,7 +2232,7 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
--- TOC entry 299 (class 1259 OID 18118)
+-- TOC entry 300 (class 1259 OID 20919)
 -- Name: usersAuthenticators; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2151,7 +2253,7 @@ CREATE TABLE public."usersAuthenticators" (
 ALTER TABLE public."usersAuthenticators" OWNER TO postgres;
 
 --
--- TOC entry 300 (class 1259 OID 18126)
+-- TOC entry 301 (class 1259 OID 20927)
 -- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -2166,8 +2268,8 @@ CREATE SEQUENCE public.users_id_seq
 ALTER SEQUENCE public.users_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4045 (class 0 OID 0)
--- Dependencies: 300
+-- TOC entry 4069 (class 0 OID 0)
+-- Dependencies: 301
 -- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -2175,7 +2277,7 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- TOC entry 301 (class 1259 OID 18127)
+-- TOC entry 302 (class 1259 OID 20928)
 -- Name: users_jobs; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2196,7 +2298,7 @@ CREATE TABLE public.users_jobs (
 ALTER TABLE public.users_jobs OWNER TO postgres;
 
 --
--- TOC entry 302 (class 1259 OID 18132)
+-- TOC entry 303 (class 1259 OID 20933)
 -- Name: users_jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -2211,8 +2313,8 @@ CREATE SEQUENCE public.users_jobs_id_seq
 ALTER SEQUENCE public.users_jobs_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4046 (class 0 OID 0)
--- Dependencies: 302
+-- TOC entry 4070 (class 0 OID 0)
+-- Dependencies: 303
 -- Name: users_jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -2220,7 +2322,7 @@ ALTER SEQUENCE public.users_jobs_id_seq OWNED BY public.users_jobs.id;
 
 
 --
--- TOC entry 303 (class 1259 OID 18133)
+-- TOC entry 304 (class 1259 OID 20934)
 -- Name: verifications; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2240,7 +2342,7 @@ CREATE TABLE public.verifications (
 ALTER TABLE public.verifications OWNER TO postgres;
 
 --
--- TOC entry 304 (class 1259 OID 18139)
+-- TOC entry 305 (class 1259 OID 20940)
 -- Name: verifications_providers; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2258,7 +2360,7 @@ CREATE TABLE public.verifications_providers (
 ALTER TABLE public.verifications_providers OWNER TO postgres;
 
 --
--- TOC entry 305 (class 1259 OID 18144)
+-- TOC entry 306 (class 1259 OID 20945)
 -- Name: workflows; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2284,7 +2386,7 @@ CREATE TABLE public.workflows (
 ALTER TABLE public.workflows OWNER TO postgres;
 
 --
--- TOC entry 306 (class 1259 OID 18156)
+-- TOC entry 307 (class 1259 OID 20957)
 -- Name: workflows_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -2299,8 +2401,8 @@ CREATE SEQUENCE public.workflows_id_seq
 ALTER SEQUENCE public.workflows_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4047 (class 0 OID 0)
--- Dependencies: 306
+-- TOC entry 4071 (class 0 OID 0)
+-- Dependencies: 307
 -- Name: workflows_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -2308,7 +2410,15 @@ ALTER SEQUENCE public.workflows_id_seq OWNED BY public.workflows.id;
 
 
 --
--- TOC entry 3471 (class 2604 OID 18157)
+-- TOC entry 3569 (class 2604 OID 21219)
+-- Name: Video id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Video" ALTER COLUMN id SET DEFAULT nextval('public."Video_id_seq"'::regclass);
+
+
+--
+-- TOC entry 3481 (class 2604 OID 20958)
 -- Name: apiKeys id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2316,7 +2426,7 @@ ALTER TABLE ONLY public."apiKeys" ALTER COLUMN id SET DEFAULT nextval('public."a
 
 
 --
--- TOC entry 3472 (class 2604 OID 18158)
+-- TOC entry 3482 (class 2604 OID 20959)
 -- Name: applicationPlugins id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2324,7 +2434,7 @@ ALTER TABLE ONLY public."applicationPlugins" ALTER COLUMN id SET DEFAULT nextval
 
 
 --
--- TOC entry 3473 (class 2604 OID 18159)
+-- TOC entry 3483 (class 2604 OID 20960)
 -- Name: applicationVersion id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2332,7 +2442,7 @@ ALTER TABLE ONLY public."applicationVersion" ALTER COLUMN id SET DEFAULT nextval
 
 
 --
--- TOC entry 3474 (class 2604 OID 18160)
+-- TOC entry 3484 (class 2604 OID 20961)
 -- Name: attachments id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2340,7 +2450,7 @@ ALTER TABLE ONLY public.attachments ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 3476 (class 2604 OID 18161)
+-- TOC entry 3486 (class 2604 OID 20962)
 -- Name: authenticators id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2348,7 +2458,7 @@ ALTER TABLE ONLY public.authenticators ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
--- TOC entry 3480 (class 2604 OID 18162)
+-- TOC entry 3490 (class 2604 OID 20963)
 -- Name: collectionCategories id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2356,7 +2466,7 @@ ALTER TABLE ONLY public."collectionCategories" ALTER COLUMN id SET DEFAULT nextv
 
 
 --
--- TOC entry 3488 (class 2604 OID 18163)
+-- TOC entry 3498 (class 2604 OID 20964)
 -- Name: dataSourcesRolesResources id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2364,7 +2474,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResources" ALTER COLUMN id SET DEFAULT 
 
 
 --
--- TOC entry 3490 (class 2604 OID 18164)
+-- TOC entry 3500 (class 2604 OID 20965)
 -- Name: dataSourcesRolesResourcesActions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2372,7 +2482,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResourcesActions" ALTER COLUMN id SET D
 
 
 --
--- TOC entry 3492 (class 2604 OID 18165)
+-- TOC entry 3502 (class 2604 OID 20966)
 -- Name: dataSourcesRolesResourcesScopes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2380,7 +2490,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResourcesScopes" ALTER COLUMN id SET DE
 
 
 --
--- TOC entry 3494 (class 2604 OID 18166)
+-- TOC entry 3504 (class 2604 OID 20967)
 -- Name: executions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2388,7 +2498,7 @@ ALTER TABLE ONLY public.executions ALTER COLUMN id SET DEFAULT nextval('public.e
 
 
 --
--- TOC entry 3496 (class 2604 OID 18167)
+-- TOC entry 3506 (class 2604 OID 20968)
 -- Name: flow_nodes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2396,7 +2506,7 @@ ALTER TABLE ONLY public.flow_nodes ALTER COLUMN id SET DEFAULT nextval('public.f
 
 
 --
--- TOC entry 3498 (class 2604 OID 18168)
+-- TOC entry 3508 (class 2604 OID 20969)
 -- Name: funds id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2404,7 +2514,7 @@ ALTER TABLE ONLY public.funds ALTER COLUMN id SET DEFAULT nextval('public.funds_
 
 
 --
--- TOC entry 3500 (class 2604 OID 18169)
+-- TOC entry 3510 (class 2604 OID 20970)
 -- Name: hello id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2412,7 +2522,7 @@ ALTER TABLE ONLY public.hello ALTER COLUMN id SET DEFAULT nextval('public.hello_
 
 
 --
--- TOC entry 3501 (class 2604 OID 18170)
+-- TOC entry 3511 (class 2604 OID 20971)
 -- Name: images id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2420,7 +2530,7 @@ ALTER TABLE ONLY public.images ALTER COLUMN id SET DEFAULT nextval('public.image
 
 
 --
--- TOC entry 3502 (class 2604 OID 18171)
+-- TOC entry 3512 (class 2604 OID 20972)
 -- Name: jobs id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2428,7 +2538,7 @@ ALTER TABLE ONLY public.jobs ALTER COLUMN id SET DEFAULT nextval('public.jobs_id
 
 
 --
--- TOC entry 3503 (class 2604 OID 18172)
+-- TOC entry 3513 (class 2604 OID 20973)
 -- Name: projects id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2436,7 +2546,7 @@ ALTER TABLE ONLY public.projects ALTER COLUMN id SET DEFAULT nextval('public.pro
 
 
 --
--- TOC entry 3507 (class 2604 OID 18173)
+-- TOC entry 3517 (class 2604 OID 20974)
 -- Name: proposes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2444,7 +2554,7 @@ ALTER TABLE ONLY public.proposes ALTER COLUMN id SET DEFAULT nextval('public.pro
 
 
 --
--- TOC entry 3513 (class 2604 OID 18174)
+-- TOC entry 3523 (class 2604 OID 20975)
 -- Name: rolesResources id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2452,7 +2562,7 @@ ALTER TABLE ONLY public."rolesResources" ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- TOC entry 3514 (class 2604 OID 18175)
+-- TOC entry 3524 (class 2604 OID 20976)
 -- Name: rolesResourcesActions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2460,7 +2570,7 @@ ALTER TABLE ONLY public."rolesResourcesActions" ALTER COLUMN id SET DEFAULT next
 
 
 --
--- TOC entry 3516 (class 2604 OID 18176)
+-- TOC entry 3526 (class 2604 OID 20977)
 -- Name: rolesResourcesScopes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2468,7 +2578,7 @@ ALTER TABLE ONLY public."rolesResourcesScopes" ALTER COLUMN id SET DEFAULT nextv
 
 
 --
--- TOC entry 3517 (class 2604 OID 18177)
+-- TOC entry 3527 (class 2604 OID 20978)
 -- Name: sequences id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2476,7 +2586,7 @@ ALTER TABLE ONLY public.sequences ALTER COLUMN id SET DEFAULT nextval('public.se
 
 
 --
--- TOC entry 3518 (class 2604 OID 18178)
+-- TOC entry 3528 (class 2604 OID 20979)
 -- Name: storages id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2484,7 +2594,7 @@ ALTER TABLE ONLY public.storages ALTER COLUMN id SET DEFAULT nextval('public.sto
 
 
 --
--- TOC entry 3525 (class 2604 OID 18179)
+-- TOC entry 3535 (class 2604 OID 20980)
 -- Name: systemSettings id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2492,7 +2602,7 @@ ALTER TABLE ONLY public."systemSettings" ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- TOC entry 3530 (class 2604 OID 18180)
+-- TOC entry 3540 (class 2604 OID 20981)
 -- Name: t_587vrvz0gcb id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2500,7 +2610,7 @@ ALTER TABLE ONLY public.t_587vrvz0gcb ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 3534 (class 2604 OID 18181)
+-- TOC entry 3544 (class 2604 OID 20982)
 -- Name: themeConfig id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2508,7 +2618,7 @@ ALTER TABLE ONLY public."themeConfig" ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- TOC entry 3536 (class 2604 OID 18182)
+-- TOC entry 3546 (class 2604 OID 20983)
 -- Name: tokenBlacklist id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2516,7 +2626,7 @@ ALTER TABLE ONLY public."tokenBlacklist" ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- TOC entry 3537 (class 2604 OID 18183)
+-- TOC entry 3547 (class 2604 OID 21211)
 -- Name: transactions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2524,7 +2634,15 @@ ALTER TABLE ONLY public.transactions ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- TOC entry 3541 (class 2604 OID 18184)
+-- TOC entry 3570 (class 2604 OID 21237)
+-- Name: transactions_config id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.transactions_config ALTER COLUMN id SET DEFAULT nextval('public.transactions_config_id_seq'::regclass);
+
+
+--
+-- TOC entry 3551 (class 2604 OID 20985)
 -- Name: uiSchemaServerHooks id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2532,7 +2650,7 @@ ALTER TABLE ONLY public."uiSchemaServerHooks" ALTER COLUMN id SET DEFAULT nextva
 
 
 --
--- TOC entry 3543 (class 2604 OID 18185)
+-- TOC entry 3553 (class 2604 OID 20986)
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2540,7 +2658,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
--- TOC entry 3548 (class 2604 OID 18186)
+-- TOC entry 3558 (class 2604 OID 20987)
 -- Name: users_jobs id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2548,7 +2666,7 @@ ALTER TABLE ONLY public.users_jobs ALTER COLUMN id SET DEFAULT nextval('public.u
 
 
 --
--- TOC entry 3550 (class 2604 OID 18187)
+-- TOC entry 3560 (class 2604 OID 20988)
 -- Name: workflows id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2556,7 +2674,7 @@ ALTER TABLE ONLY public.workflows ALTER COLUMN id SET DEFAULT nextval('public.wo
 
 
 --
--- TOC entry 3904 (class 0 OID 17794)
+-- TOC entry 3922 (class 0 OID 20590)
 -- Dependencies: 216
 -- Data for Name: kafka-topics; Type: TABLE DATA; Schema: KafkaTopic; Owner: postgres
 --
@@ -2566,7 +2684,19 @@ COPY "KafkaTopic"."kafka-topics" (id, "createdAt", "updatedAt", broker_host, top
 
 
 --
--- TOC entry 3905 (class 0 OID 17799)
+-- TOC entry 4015 (class 0 OID 21215)
+-- Dependencies: 309
+-- Data for Name: Video; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Video" ("createdAt", "updatedAt", title, filename, extname, size, mimetype, path, url, meta, id, "storageId", "createdById", "updatedById") FROM stdin;
+2024-12-06 03:00:58.996+00	2024-12-06 03:00:58.996+00	4d9e852a-1517-4ca1-a999-50ca36d12ea5	8aa3fd571270719b0c93363acb9771ea.jpg	.jpg	272331	image/jpeg		/storage/uploads/8aa3fd571270719b0c93363acb9771ea.jpg	{}	1	1	1	1
+2024-12-06 03:06:27.255+00	2024-12-06 03:06:27.255+00	Lấy chi tiết 1 lỗi vận hành - My Workspace 2024-10-26 09-39-46	94a98b76f145cf84eb4dbe35f78aefe3.mp4	.mp4	2102645	video/mp4		/storage/uploads/94a98b76f145cf84eb4dbe35f78aefe3.mp4	{}	2	1	1	1
+\.
+
+
+--
+-- TOC entry 3923 (class 0 OID 20595)
 -- Dependencies: 217
 -- Data for Name: apiKeys; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2576,7 +2706,7 @@ COPY public."apiKeys" (id, "createdAt", name, "roleName", "expiresIn", token, so
 
 
 --
--- TOC entry 3907 (class 0 OID 17805)
+-- TOC entry 3925 (class 0 OID 20601)
 -- Dependencies: 219
 -- Data for Name: applicationPlugins; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2649,11 +2779,12 @@ COPY public."applicationPlugins" (id, "createdAt", "updatedAt", name, "packageNa
 72	2024-12-03 07:20:00.277+00	2024-12-03 07:21:50.847+00	@olp-dtu-2024/solidity-editor-nocobase	@olp-dtu-2024/solidity-editor-nocobase	0.1.0	t	t	\N	\N
 73	2024-12-05 17:02:26.946+00	2024-12-05 18:32:53.128+00	@dtu-olp-2024/solidity-editor-nocobase	@dtu-olp-2024/solidity-editor-nocobase	1.0.0	t	t	\N	\N
 74	2024-12-05 17:02:54.279+00	2024-12-05 17:34:45.454+00	@dtu-olp-2024/kafka-nocobase	@dtu-olp-2024/kafka-nocobase	1.2.0	t	t	\N	\N
+75	2024-12-06 03:10:27.815+00	2024-12-06 03:13:44.082+00	@dtu-olp-2024/web3-client-nocobase	@dtu-olp-2024/web3-client-nocobase	0.1.0	t	t	\N	\N
 \.
 
 
 --
--- TOC entry 3909 (class 0 OID 17811)
+-- TOC entry 3927 (class 0 OID 20607)
 -- Dependencies: 221
 -- Data for Name: applicationVersion; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2664,7 +2795,7 @@ COPY public."applicationVersion" (id, value) FROM stdin;
 
 
 --
--- TOC entry 3911 (class 0 OID 17815)
+-- TOC entry 3929 (class 0 OID 20611)
 -- Dependencies: 223
 -- Data for Name: attachments; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2710,7 +2841,7 @@ COPY public.attachments (id, "createdAt", "updatedAt", title, filename, extname,
 
 
 --
--- TOC entry 3913 (class 0 OID 17822)
+-- TOC entry 3931 (class 0 OID 20618)
 -- Dependencies: 225
 -- Data for Name: authenticators; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2721,7 +2852,7 @@ COPY public.authenticators (id, "createdAt", "updatedAt", name, "authType", titl
 
 
 --
--- TOC entry 3915 (class 0 OID 17831)
+-- TOC entry 3933 (class 0 OID 20627)
 -- Dependencies: 227
 -- Data for Name: chinaRegions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6082,7 +6213,7 @@ COPY public."chinaRegions" ("createdAt", "updatedAt", code, name, "parentCode", 
 
 
 --
--- TOC entry 3916 (class 0 OID 17836)
+-- TOC entry 3934 (class 0 OID 20632)
 -- Dependencies: 228
 -- Data for Name: collectionCategories; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6092,7 +6223,7 @@ COPY public."collectionCategories" (id, "createdAt", "updatedAt", name, color, s
 
 
 --
--- TOC entry 3918 (class 0 OID 17843)
+-- TOC entry 3936 (class 0 OID 20639)
 -- Dependencies: 230
 -- Data for Name: collectionCategory; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6102,7 +6233,7 @@ COPY public."collectionCategory" ("createdAt", "updatedAt", "collectionName", "c
 
 
 --
--- TOC entry 3919 (class 0 OID 17846)
+-- TOC entry 3937 (class 0 OID 20642)
 -- Dependencies: 231
 -- Data for Name: collections; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6117,11 +6248,13 @@ zoq5dq360w9	projects	Dự án	f	f	{"logging":true,"autoGenId":false,"createdAt":
 z7a2ikzf0c6	kafka_topics	Kafka Topics	f	f	{"actions":[{"name":"create","type":"create","title":"Create Kafka Topic","viewName":"form"},{"name":"view","type":"view","title":"View","viewName":"form"},{"name":"edit","type":"edit","title":"Edit","viewName":"form"},{"name":"destroy","type":"destroy","title":"Delete"}],"schema":"public"}	\N	7
 wnpw5lzo0se	kafka_configs	Kafka Configs	f	f	{"actions":[{"name":"create","type":"create","title":"Create Kafka Config","viewName":"form"},{"name":"view","type":"view","title":"View","viewName":"form"},{"name":"edit","type":"edit","title":"Edit","viewName":"form"},{"name":"destroy","type":"destroy","title":"Delete"}],"schema":"public"}	\N	8
 fcouxhz56sk	smart_contracts	Smart Contracts	f	f	{"actions":[{"name":"create","type":"create","title":"Create Kafka Topic","viewName":"form"},{"name":"view","type":"view","title":"View","viewName":"form"},{"name":"edit","type":"edit","title":"Edit","viewName":"form"},{"name":"destroy","type":"destroy","title":"Delete"}],"schema":"public"}	\N	9
+jlzhkspvbzg	Video	videos	f	f	{"logging":true,"autoGenId":false,"createdAt":true,"createdBy":true,"updatedAt":true,"updatedBy":true,"template":"file","view":false,"inherits":[],"storage":"local","schema":"public"}	\N	10
+bv1g8seq64y	transactions_config	Transaction Config	f	f	{"logging":true,"autoGenId":false,"createdAt":true,"createdBy":true,"updatedAt":true,"updatedBy":true,"template":"general","view":false,"schema":"public"}	\N	11
 \.
 
 
 --
--- TOC entry 3920 (class 0 OID 17854)
+-- TOC entry 3938 (class 0 OID 20650)
 -- Dependencies: 232
 -- Data for Name: customRequests; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6133,11 +6266,15 @@ COPY public."customRequests" ("createdAt", "updatedAt", key, options) FROM stdin
 2024-11-25 07:06:57.65+00	2024-11-25 07:06:57.65+00	jcne950cz9g	\N
 2024-12-03 06:42:52.781+00	2024-12-03 06:42:52.781+00	18qyb25j3gb	\N
 2024-12-03 06:41:44.034+00	2024-12-03 08:33:56.367+00	vido4fqv4xo	{"method":"POST","headers":[],"params":[],"responseType":"json","url":"/admin/kafka/emit","data":{"topic_name":"bbbbbbbbbbbbbbbbbbbbbb","data":{"title":"test","stt":"1"}},"collectionName":"transactions","dataSourceKey":"main"}
+2024-12-06 02:54:18.057+00	2024-12-06 02:54:18.057+00	z6vpp6m4uzg	\N
+2024-12-06 02:54:23.31+00	2024-12-06 02:54:23.31+00	5telhyrris0	\N
+2024-12-06 05:27:34.732+00	2024-12-06 05:27:34.732+00	yryqblajq0y	\N
+2024-12-06 05:27:39.235+00	2024-12-06 05:27:39.235+00	aezggjgt7xb	\N
 \.
 
 
 --
--- TOC entry 3921 (class 0 OID 17859)
+-- TOC entry 3939 (class 0 OID 20655)
 -- Dependencies: 233
 -- Data for Name: customRequestsRoles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6147,7 +6284,7 @@ COPY public."customRequestsRoles" ("createdAt", "updatedAt", "customRequestKey",
 
 
 --
--- TOC entry 3922 (class 0 OID 17864)
+-- TOC entry 3940 (class 0 OID 20660)
 -- Dependencies: 234
 -- Data for Name: dataSources; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6158,7 +6295,7 @@ COPY public."dataSources" ("createdAt", "updatedAt", key, "displayName", type, o
 
 
 --
--- TOC entry 3923 (class 0 OID 17871)
+-- TOC entry 3941 (class 0 OID 20667)
 -- Dependencies: 235
 -- Data for Name: dataSourcesCollections; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6168,7 +6305,7 @@ COPY public."dataSourcesCollections" (key, name, options, "dataSourceKey") FROM 
 
 
 --
--- TOC entry 3924 (class 0 OID 17876)
+-- TOC entry 3942 (class 0 OID 20672)
 -- Dependencies: 236
 -- Data for Name: dataSourcesFields; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6178,7 +6315,7 @@ COPY public."dataSourcesFields" (key, name, "collectionName", interface, descrip
 
 
 --
--- TOC entry 3925 (class 0 OID 17882)
+-- TOC entry 3943 (class 0 OID 20678)
 -- Dependencies: 237
 -- Data for Name: dataSourcesRoles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6192,7 +6329,7 @@ nlk3ipx1f9e	\N	main	guest
 
 
 --
--- TOC entry 3926 (class 0 OID 17887)
+-- TOC entry 3944 (class 0 OID 20683)
 -- Dependencies: 238
 -- Data for Name: dataSourcesRolesResources; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6202,7 +6339,7 @@ COPY public."dataSourcesRolesResources" (id, "createdAt", "updatedAt", "dataSour
 
 
 --
--- TOC entry 3927 (class 0 OID 17893)
+-- TOC entry 3945 (class 0 OID 20689)
 -- Dependencies: 239
 -- Data for Name: dataSourcesRolesResourcesActions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6212,7 +6349,7 @@ COPY public."dataSourcesRolesResourcesActions" (id, "createdAt", "updatedAt", na
 
 
 --
--- TOC entry 3929 (class 0 OID 17900)
+-- TOC entry 3947 (class 0 OID 20696)
 -- Dependencies: 241
 -- Data for Name: dataSourcesRolesResourcesScopes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6224,7 +6361,7 @@ COPY public."dataSourcesRolesResourcesScopes" (id, "createdAt", "updatedAt", key
 
 
 --
--- TOC entry 3932 (class 0 OID 17908)
+-- TOC entry 3950 (class 0 OID 20704)
 -- Dependencies: 244
 -- Data for Name: executions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6283,7 +6420,7 @@ COPY public.executions (id, "createdAt", "updatedAt", key, "eventKey", context, 
 
 
 --
--- TOC entry 3934 (class 0 OID 17914)
+-- TOC entry 3952 (class 0 OID 20710)
 -- Dependencies: 246
 -- Data for Name: fields; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6384,11 +6521,35 @@ gsm7993eh33	script	string	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":
 xy0dxkvhik9	abi	json	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":"json","title":"ABI","x-component":"Input","required":false}}	3
 foelj6ji8oq	bytecode	string	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":"string","title":"Bytecode","x-component":"Input","required":false}}	4
 a84jcmuq8kh	contractAddress	string	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":"string","title":"Contract Address","x-component":"Input","required":false}}	5
+t17ebdfx3ev	title	string	input	\N	Video	\N	\N	{"deletable":false,"uiSchema":{"type":"string","title":"{{t(\\"Title\\")}}","x-component":"Input"}}	1
+42lzaltkx92	filename	string	input	\N	Video	\N	\N	{"deletable":false,"uiSchema":{"type":"string","title":"{{t(\\"File name\\", { ns: \\"file-manager\\" })}}","x-component":"Input","x-read-pretty":true}}	2
+wjhin59vygq	extname	string	input	\N	Video	\N	\N	{"deletable":false,"uiSchema":{"type":"string","title":"{{t(\\"Extension name\\", { ns: \\"file-manager\\" })}}","x-component":"Input","x-read-pretty":true}}	3
+5lddqoijbw8	size	integer	integer	\N	Video	\N	\N	{"deletable":false,"uiSchema":{"type":"number","title":"{{t(\\"Size\\", { ns: \\"file-manager\\" })}}","x-component":"InputNumber","x-read-pretty":true,"x-component-props":{"stringMode":true,"step":"0"}}}	4
+5lq2mpznvi3	mimetype	string	input	\N	Video	\N	\N	{"deletable":false,"uiSchema":{"type":"string","title":"{{t(\\"MIME type\\", { ns: \\"file-manager\\" })}}","x-component":"Input","x-read-pretty":true}}	5
+l6slj96pptc	path	string	input	\N	Video	\N	\N	{"deletable":false,"uiSchema":{"type":"string","title":"{{t(\\"Path\\", { ns: \\"file-manager\\" })}}","x-component":"Input","x-read-pretty":true}}	6
+64r09jzsulw	url	string	url	\N	Video	\N	\N	{"deletable":false,"uiSchema":{"type":"string","title":"{{t(\\"URL\\")}}","x-component":"Input.URL","x-read-pretty":true}}	7
+jjv1qauz6t4	preview	string	url	\N	Video	\N	\N	{"field":"url","deletable":false,"uiSchema":{"type":"string","title":"{{t(\\"Preview\\", { ns: \\"file-manager\\" })}}","x-component":"Preview","x-read-pretty":true}}	8
+hmv05awstx5	storage	belongsTo	\N	\N	Video	\N	\N	{"comment":"存储引擎","target":"storages","foreignKey":"storageId","deletable":false,"uiSchema":{"type":"string","title":"{{t(\\"Storage\\", { ns: \\"file-manager\\" })}}","x-component":"Input","x-read-pretty":true},"targetKey":"id"}	9
+1i7ribf8a83	meta	jsonb	\N	\N	Video	\N	\N	{"deletable":false,"defaultValue":{}}	10
+98lviyt6vsi	id	bigInt	integer	\N	Video	\N	\N	{"autoIncrement":true,"primaryKey":true,"allowNull":false,"uiSchema":{"type":"number","title":"{{t(\\"ID\\")}}","x-component":"InputNumber","x-read-pretty":true}}	11
+wujbtr3opop	createdAt	date	createdAt	\N	Video	\N	\N	{"field":"createdAt","uiSchema":{"type":"datetime","title":"{{t(\\"Created at\\")}}","x-component":"DatePicker","x-component-props":{},"x-read-pretty":true}}	12
+cnhmof6jsvt	createdBy	belongsTo	createdBy	\N	Video	\N	\N	{"target":"users","foreignKey":"createdById","uiSchema":{"type":"object","title":"{{t(\\"Created by\\")}}","x-component":"AssociationField","x-component-props":{"fieldNames":{"value":"id","label":"nickname"}},"x-read-pretty":true},"targetKey":"id"}	13
+clvperjkck1	updatedAt	date	updatedAt	\N	Video	\N	\N	{"field":"updatedAt","uiSchema":{"type":"string","title":"{{t(\\"Last updated at\\")}}","x-component":"DatePicker","x-component-props":{},"x-read-pretty":true}}	14
+jtpkv2ppydw	updatedBy	belongsTo	updatedBy	\N	Video	\N	\N	{"target":"users","foreignKey":"updatedById","uiSchema":{"type":"object","title":"{{t(\\"Last updated by\\")}}","x-component":"AssociationField","x-component-props":{"fieldNames":{"value":"id","label":"nickname"}},"x-read-pretty":true},"targetKey":"id"}	15
+tpix84ntywg	id	bigInt	integer	\N	transactions_config	\N	\N	{"autoIncrement":true,"primaryKey":true,"allowNull":false,"uiSchema":{"type":"number","title":"{{t(\\"ID\\")}}","x-component":"InputNumber","x-read-pretty":true}}	1
+1aa47b94z57	createdAt	date	createdAt	\N	transactions_config	\N	\N	{"field":"createdAt","uiSchema":{"type":"datetime","title":"{{t(\\"Created at\\")}}","x-component":"DatePicker","x-component-props":{},"x-read-pretty":true}}	2
+1z36k8qjplf	createdBy	belongsTo	createdBy	\N	transactions_config	\N	\N	{"target":"users","foreignKey":"createdById","uiSchema":{"type":"object","title":"{{t(\\"Created by\\")}}","x-component":"AssociationField","x-component-props":{"fieldNames":{"value":"id","label":"nickname"}},"x-read-pretty":true},"targetKey":"id"}	3
+t3x5tcvmhar	updatedAt	date	updatedAt	\N	transactions_config	\N	\N	{"field":"updatedAt","uiSchema":{"type":"string","title":"{{t(\\"Last updated at\\")}}","x-component":"DatePicker","x-component-props":{},"x-read-pretty":true}}	4
+6y7yq0fgywv	updatedBy	belongsTo	updatedBy	\N	transactions_config	\N	\N	{"target":"users","foreignKey":"updatedById","uiSchema":{"type":"object","title":"{{t(\\"Last updated by\\")}}","x-component":"AssociationField","x-component-props":{"fieldNames":{"value":"id","label":"nickname"}},"x-read-pretty":true},"targetKey":"id"}	5
+u6hltutx8c6	contractAddress	text	textarea	\N	transactions_config	\N	\N	{"uiSchema":{"type":"string","x-component":"Input.TextArea","title":"Contract Address"}}	7
+kq78mlaj6d4	private_key	text	textarea	\N	transactions_config	\N	\N	{"uiSchema":{"type":"string","x-component":"Input.TextArea","title":"Private Key"}}	8
+0cp4f8jl9q9	provider	text	textarea	\N	transactions_config	\N	\N	{"uiSchema":{"type":"string","x-component":"Input.TextArea","title":"Provider"}}	9
+600grqubji6	abi	json	json	\N	transactions_config	\N	\N	{"defaultValue":null,"uiSchema":{"type":"object","x-component":"Input.JSON","x-component-props":{"autoSize":{"minRows":5}},"default":null,"title":"abi"}}	10
 \.
 
 
 --
--- TOC entry 3935 (class 0 OID 17920)
+-- TOC entry 3953 (class 0 OID 20716)
 -- Dependencies: 247
 -- Data for Name: flow_nodes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6412,7 +6573,7 @@ COPY public.flow_nodes (id, "createdAt", "updatedAt", key, title, "upstreamId", 
 
 
 --
--- TOC entry 3937 (class 0 OID 17927)
+-- TOC entry 3955 (class 0 OID 20723)
 -- Dependencies: 249
 -- Data for Name: funds; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6420,15 +6581,15 @@ COPY public.flow_nodes (id, "createdAt", "updatedAt", key, title, "upstreamId", 
 COPY public.funds ("createdAt", "updatedAt", id, "createdById", "updatedById", name, target_amount, current_amount, project_id, description, is_deleted, qr_code_url) FROM stdin;
 2024-12-02 10:58:56.679+00	2024-12-02 11:25:49.798+00	33	\N	1	Xây dựng cầu Phong Châu đứt gãy do bão Yagi	300000000000	120405000000	28	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20X%C3%A2y%20d%E1%BB%B1ng%20c%E1%BA%A7u%20Phong%20Ch%C3%A2u%20%C4%91%E1%BB%A9t%20g%C3%A3y%20do%20b%C3%A3o%20Yagi
 2024-12-02 10:59:19.329+00	2024-12-02 11:26:44.574+00	34	\N	1	Đổ sập nhà dân sau rung chấn ở Đắk Lắk, Gia Lai	126000000000	2000000000	29	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20%C4%90%E1%BB%95%20s%E1%BA%ADp%20nh%C3%A0%20d%C3%A2n%20sau%20rung%20ch%E1%BA%A5n%20%E1%BB%9F%20%C4%90%E1%BA%AFk%20L%E1%BA%AFk%2C%20Gia%20Lai
-2024-12-02 10:59:30.258+00	2024-12-02 11:31:26.201+00	35	\N	1	Hư hại công trình cầu đường ở Điện Biên sau sạt lỡ đất	100000000000	78800000000	30	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20H%C6%B0%20h%E1%BA%A1i%20c%C3%B4ng%20tr%C3%ACnh%20c%E1%BA%A7u%20%C4%91%C6%B0%E1%BB%9Dng%20%E1%BB%9F%20%C4%90i%E1%BB%87n%20Bi%C3%AAn%20sau%20s%E1%BA%A1t%20l%E1%BB%A1%20%C4%91%E1%BA%A5t
 2024-12-03 08:26:27.873+00	2024-12-03 08:26:28.058+00	36	\N	\N	fsdf	1	0	41	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20fsdf
 2024-12-03 08:29:46.794+00	2024-12-03 08:29:46.959+00	37	\N	\N	fgdfg	1	0	42	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20fgdfg
 2024-12-03 08:31:08.468+00	2024-12-03 08:31:08.65+00	38	\N	\N	fdfsd	12	0	43	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20fdfsd
+2024-12-02 10:59:30.258+00	2024-12-02 11:31:26.201+00	9	\N	1	Hư hại công trình cầu đường ở Điện Biên sau sạt lỡ đất	100000000000	78800000000	30	\N	0	https://img.vietqr.io/image/970436-1017142420-FFiaBLN.jpg?addInfo=Dong%20gop%20quy%20H%C6%B0%20h%E1%BA%A1i%20c%C3%B4ng%20tr%C3%ACnh%20c%E1%BA%A7u%20%C4%91%C6%B0%E1%BB%9Dng%20%E1%BB%9F%20%C4%90i%E1%BB%87n%20Bi%C3%AAn%20sau%20s%E1%BA%A1t%20l%E1%BB%A1%20%C4%91%E1%BA%A5t
 \.
 
 
 --
--- TOC entry 3939 (class 0 OID 17934)
+-- TOC entry 3957 (class 0 OID 20730)
 -- Dependencies: 251
 -- Data for Name: hello; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6438,7 +6599,7 @@ COPY public.hello (id, "createdAt", "updatedAt", name) FROM stdin;
 
 
 --
--- TOC entry 3941 (class 0 OID 17938)
+-- TOC entry 3959 (class 0 OID 20734)
 -- Dependencies: 253
 -- Data for Name: iframeHtml; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6452,7 +6613,7 @@ flnldtxdm6m	2024-12-02 09:50:42.104+00	2024-12-02 09:50:42.104+00	<!DOCTYPE html
 
 
 --
--- TOC entry 3942 (class 0 OID 17943)
+-- TOC entry 3960 (class 0 OID 20739)
 -- Dependencies: 254
 -- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6464,7 +6625,7 @@ COPY public.images ("createdAt", "updatedAt", id, "createdById", "updatedById", 
 
 
 --
--- TOC entry 3944 (class 0 OID 17949)
+-- TOC entry 3962 (class 0 OID 20745)
 -- Dependencies: 256
 -- Data for Name: jobs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6609,7 +6770,7 @@ COPY public.jobs (id, "createdAt", "updatedAt", "executionId", "nodeId", "nodeKe
 
 
 --
--- TOC entry 3946 (class 0 OID 17955)
+-- TOC entry 3964 (class 0 OID 20751)
 -- Dependencies: 258
 -- Data for Name: kafka_configs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6620,7 +6781,7 @@ COPY public.kafka_configs (id, "createdAt", "updatedAt", group_id, client_id) FR
 
 
 --
--- TOC entry 3947 (class 0 OID 17960)
+-- TOC entry 3965 (class 0 OID 20756)
 -- Dependencies: 259
 -- Data for Name: kafka_topics; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6633,7 +6794,7 @@ COPY public.kafka_topics (id, "createdAt", "updatedAt", broker_host, topic_name,
 
 
 --
--- TOC entry 3948 (class 0 OID 17965)
+-- TOC entry 3966 (class 0 OID 20761)
 -- Dependencies: 260
 -- Data for Name: migrations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6645,7 +6806,7 @@ COPY public.migrations (name) FROM stdin;
 
 
 --
--- TOC entry 3949 (class 0 OID 17968)
+-- TOC entry 3967 (class 0 OID 20764)
 -- Dependencies: 261
 -- Data for Name: projects; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6661,7 +6822,7 @@ COPY public.projects ("createdAt", "updatedAt", id, "createdById", "updatedById"
 
 
 --
--- TOC entry 3951 (class 0 OID 17977)
+-- TOC entry 3969 (class 0 OID 20773)
 -- Dependencies: 263
 -- Data for Name: proposes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6671,7 +6832,7 @@ COPY public.proposes ("createdAt", "updatedAt", id, "createdById", "updatedById"
 
 
 --
--- TOC entry 3953 (class 0 OID 17985)
+-- TOC entry 3971 (class 0 OID 20781)
 -- Dependencies: 265
 -- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6685,7 +6846,7 @@ COPY public.roles ("createdAt", "updatedAt", name, title, description, strategy,
 
 
 --
--- TOC entry 3954 (class 0 OID 17993)
+-- TOC entry 3972 (class 0 OID 20789)
 -- Dependencies: 266
 -- Data for Name: rolesResources; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6695,7 +6856,7 @@ COPY public."rolesResources" (id, "createdAt", "updatedAt", "roleName", name, "u
 
 
 --
--- TOC entry 3955 (class 0 OID 17998)
+-- TOC entry 3973 (class 0 OID 20794)
 -- Dependencies: 267
 -- Data for Name: rolesResourcesActions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6705,7 +6866,7 @@ COPY public."rolesResourcesActions" (id, "createdAt", "updatedAt", "rolesResourc
 
 
 --
--- TOC entry 3957 (class 0 OID 18005)
+-- TOC entry 3975 (class 0 OID 20801)
 -- Dependencies: 269
 -- Data for Name: rolesResourcesScopes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6715,7 +6876,7 @@ COPY public."rolesResourcesScopes" (id, "createdAt", "updatedAt", key, name, "re
 
 
 --
--- TOC entry 3960 (class 0 OID 18012)
+-- TOC entry 3978 (class 0 OID 20808)
 -- Dependencies: 272
 -- Data for Name: rolesUischemas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6754,11 +6915,13 @@ COPY public."rolesUischemas" ("createdAt", "updatedAt", "roleName", "uiSchemaXUi
 2024-12-03 05:37:18.125+00	2024-12-03 05:37:18.125+00	member	rjd0phm5uy7
 2024-12-03 06:58:27.741+00	2024-12-03 06:58:27.741+00	admin	kschs4oi12g
 2024-12-03 06:58:27.753+00	2024-12-03 06:58:27.753+00	member	kschs4oi12g
+2024-12-06 02:55:21.548+00	2024-12-06 02:55:21.548+00	admin	kbh3q1u65uj
+2024-12-06 02:55:21.555+00	2024-12-06 02:55:21.555+00	member	kbh3q1u65uj
 \.
 
 
 --
--- TOC entry 3961 (class 0 OID 18017)
+-- TOC entry 3979 (class 0 OID 20813)
 -- Dependencies: 273
 -- Data for Name: rolesUsers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6771,7 +6934,7 @@ COPY public."rolesUsers" ("createdAt", "updatedAt", "default", "roleName", "user
 
 
 --
--- TOC entry 3962 (class 0 OID 18020)
+-- TOC entry 3980 (class 0 OID 20816)
 -- Dependencies: 274
 -- Data for Name: sequences; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6781,20 +6944,19 @@ COPY public.sequences (id, "createdAt", "updatedAt", collection, field, key, cur
 
 
 --
--- TOC entry 3995 (class 0 OID 18434)
--- Dependencies: 307
+-- TOC entry 3982 (class 0 OID 20822)
+-- Dependencies: 276
 -- Data for Name: smart_contracts; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.smart_contracts (id, "createdAt", "updatedAt", script, abi, bytecode, "contractAddress") FROM stdin;
-7886a331-7cb3-45d4-a094-2042aa89d1cb	2024-12-05 18:42:46.946+00	2024-12-05 18:43:12.263+00	// SPDX-License-Identifier: MIT\npragma solidity >=0.7.0 <0.9.0;\n\ncontract TransactionManager {\n  struct Transaction {\n    string transaction_code;\n    uint256 amount;\n    string direction;\n    uint256 datetime;\n  }\n\n  Transaction[] public transactions;\n\n  // Hàm mới nhận vào mảng các giao dịch\n  function createTransactions(\n    Transaction[] memory _transactions\n  ) public {\n    for (uint i = 0; i < _transactions.length; i++) {\n      transactions.push(\n        Transaction({\n          transaction_code: _transactions[i].transaction_code,\n          amount: _transactions[i].amount,\n          direction: _transactions[i].direction,\n          datetime: block.timestamp\n        })\n      );\n    }\n  }\n\n  function getAllTransactions() public view returns (Transaction[] memory) {\n    return transactions;\n  }\n}\n	[{"inputs":[{"components":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"internalType":"struct TransactionManager.Transaction[]","name":"_transactions","type":"tuple[]"}],"name":"createTransactions","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getAllTransactions","outputs":[{"components":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"internalType":"struct TransactionManager.Transaction[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"transactions","outputs":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"stateMutability":"view","type":"function"}]	0x6080604052348015600f57600080fd5b50610e108061001f6000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c806327506f53146100465780632ef8e92d146100645780639ace38c214610080575b600080fd5b61004e6100b3565b60405161005b9190610674565b60405180910390f35b61007e600480360381019061007991906109ab565b61024a565b005b61009a600480360381019061009591906109f4565b61034f565b6040516100aa9493929190610a7a565b60405180910390f35b60606000805480602002602001604051908101604052809291908181526020016000905b82821015610241578382906000526020600020906004020160405180608001604052908160008201805461010a90610afc565b80601f016020809104026020016040519081016040528092919081815260200182805461013690610afc565b80156101835780601f1061015857610100808354040283529160200191610183565b820191906000526020600020905b81548152906001019060200180831161016657829003601f168201915b50505050508152602001600182015481526020016002820180546101a690610afc565b80601f01602080910402602001604051908101604052809291908181526020018280546101d290610afc565b801561021f5780601f106101f45761010080835404028352916020019161021f565b820191906000526020600020905b81548152906001019060200180831161020257829003601f168201915b50505050508152602001600382015481525050815260200190600101906100d7565b50505050905090565b60005b815181101561034b576000604051806080016040528084848151811061027657610275610b2d565b5b602002602001015160000151815260200184848151811061029a57610299610b2d565b5b60200260200101516020015181526020018484815181106102be576102bd610b2d565b5b602002602001015160400151815260200142815250908060018154018082558091505060019003906000526020600020906004020160009091909190915060008201518160000190816103119190610d08565b506020820151816001015560408201518160020190816103319190610d08565b50606082015181600301555050808060010191505061024d565b5050565b6000818154811061035f57600080fd5b906000526020600020906004020160009150905080600001805461038290610afc565b80601f01602080910402602001604051908101604052809291908181526020018280546103ae90610afc565b80156103fb5780601f106103d0576101008083540402835291602001916103fb565b820191906000526020600020905b8154815290600101906020018083116103de57829003601f168201915b50505050509080600101549080600201805461041690610afc565b80601f016020809104026020016040519081016040528092919081815260200182805461044290610afc565b801561048f5780601f106104645761010080835404028352916020019161048f565b820191906000526020600020905b81548152906001019060200180831161047257829003601f168201915b5050505050908060030154905084565b600081519050919050565b600082825260208201905092915050565b6000819050602082019050919050565b600081519050919050565b600082825260208201905092915050565b60005b838110156105055780820151818401526020810190506104ea565b60008484015250505050565b6000601f19601f8301169050919050565b600061052d826104cb565b61053781856104d6565b93506105478185602086016104e7565b61055081610511565b840191505092915050565b6000819050919050565b61056e8161055b565b82525050565b600060808301600083015184820360008601526105918282610522565b91505060208301516105a66020860182610565565b50604083015184820360408601526105be8282610522565b91505060608301516105d36060860182610565565b508091505092915050565b60006105ea8383610574565b905092915050565b6000602082019050919050565b600061060a8261049f565b61061481856104aa565b935083602082028501610626856104bb565b8060005b85811015610662578484038952815161064385826105de565b945061064e836105f2565b925060208a0199505060018101905061062a565b50829750879550505050505092915050565b6000602082019050818103600083015261068e81846105ff565b905092915050565b6000604051905090565b600080fd5b600080fd5b600080fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6106e782610511565b810181811067ffffffffffffffff82111715610706576107056106af565b5b80604052505050565b6000610719610696565b905061072582826106de565b919050565b600067ffffffffffffffff821115610745576107446106af565b5b602082029050602081019050919050565b600080fd5b600080fd5b600080fd5b600080fd5b600067ffffffffffffffff821115610785576107846106af565b5b61078e82610511565b9050602081019050919050565b82818337600083830152505050565b60006107bd6107b88461076a565b61070f565b9050828152602081018484840111156107d9576107d8610765565b5b6107e484828561079b565b509392505050565b600082601f830112610801576108006106aa565b5b81356108118482602086016107aa565b91505092915050565b6108238161055b565b811461082e57600080fd5b50565b6000813590506108408161081a565b92915050565b60006080828403121561085c5761085b61075b565b5b610866608061070f565b9050600082013567ffffffffffffffff81111561088657610885610760565b5b610892848285016107ec565b60008301525060206108a684828501610831565b602083015250604082013567ffffffffffffffff8111156108ca576108c9610760565b5b6108d6848285016107ec565b60408301525060606108ea84828501610831565b60608301525092915050565b60006109096109048461072a565b61070f565b9050808382526020820190506020840283018581111561092c5761092b610756565b5b835b8181101561097357803567ffffffffffffffff811115610951576109506106aa565b5b80860161095e8982610846565b8552602085019450505060208101905061092e565b5050509392505050565b600082601f830112610992576109916106aa565b5b81356109a28482602086016108f6565b91505092915050565b6000602082840312156109c1576109c06106a0565b5b600082013567ffffffffffffffff8111156109df576109de6106a5565b5b6109eb8482850161097d565b91505092915050565b600060208284031215610a0a57610a096106a0565b5b6000610a1884828501610831565b91505092915050565b600082825260208201905092915050565b6000610a3d826104cb565b610a478185610a21565b9350610a578185602086016104e7565b610a6081610511565b840191505092915050565b610a748161055b565b82525050565b60006080820190508181036000830152610a948187610a32565b9050610aa36020830186610a6b565b8181036040830152610ab58185610a32565b9050610ac46060830184610a6b565b95945050505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b60006002820490506001821680610b1457607f821691505b602082108103610b2757610b26610acd565b5b50919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b60008190508160005260206000209050919050565b60006020601f8301049050919050565b600082821b905092915050565b600060088302610bbe7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff82610b81565b610bc88683610b81565b95508019841693508086168417925050509392505050565b6000819050919050565b6000610c05610c00610bfb8461055b565b610be0565b61055b565b9050919050565b6000819050919050565b610c1f83610bea565b610c33610c2b82610c0c565b848454610b8e565b825550505050565b600090565b610c48610c3b565b610c53818484610c16565b505050565b5b81811015610c7757610c6c600082610c40565b600181019050610c59565b5050565b601f821115610cbc57610c8d81610b5c565b610c9684610b71565b81016020851015610ca5578190505b610cb9610cb185610b71565b830182610c58565b50505b505050565b600082821c905092915050565b6000610cdf60001984600802610cc1565b1980831691505092915050565b6000610cf88383610cce565b9150826002028217905092915050565b610d11826104cb565b67ffffffffffffffff811115610d2a57610d296106af565b5b610d348254610afc565b610d3f828285610c7b565b600060209050601f831160018114610d725760008415610d60578287015190505b610d6a8582610cec565b865550610dd2565b601f198416610d8086610b5c565b60005b82811015610da857848901518255600182019150602085019450602081019050610d83565b86831015610dc55784890151610dc1601f891682610cce565b8355505b6001600288020188555050505b50505050505056fea2646970667358221220b90d0d7a8cd725b1fc6f568754056e3ede3b10d79135631ec7fbe1e5a63fab3664736f6c634300081c0033	0xD833215cBcc3f914bD1C9ece3EE7BF8B14f841bb
-fbf2c135-2a84-46f7-bd77-e88d8eaabecb	2024-12-05 18:48:20.245+00	2024-12-05 18:48:20.245+00	\n      pragma solidity ^0.8.0;\n\n      contract SimpleStorage {\n          uint256 public storedData;\n\n          function set(uint256 x) public {\n              storedData = x;\n          }\n\n          function get() public view returns (uint256) {\n              return storedData;\n          }\n      }\n        	\N	\N	\N
+ee52de8e-f688-4064-9b93-73ef6b839b27	2024-12-06 07:09:40.924+00	2024-12-06 07:10:29.723+00	// SPDX-License-Identifier: MIT\npragma solidity >=0.7.0 <0.9.0;\n\ncontract TransactionManager {\n  struct Transaction {\n    string transaction_code;\n    uint256 amount;\n    string direction;\n    uint256 datetime;\n  }\n\n  Transaction[] public transactions;\n\n  // Hàm mới nhận vào mảng các giao dịch\n  function createTransactions(\n    Transaction[] memory _transactions\n  ) public {\n    for (uint i = 0; i < _transactions.length; i++) {\n      transactions.push(\n        Transaction({\n          transaction_code: _transactions[i].transaction_code,\n          amount: _transactions[i].amount,\n          direction: _transactions[i].direction,\n          datetime: block.timestamp\n        })\n      );\n    }\n  }\n\n  function getAllTransactions() public view returns (Transaction[] memory) {\n    return transactions;\n  }\n}\n	[{"inputs":[{"components":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"internalType":"struct TransactionManager.Transaction[]","name":"_transactions","type":"tuple[]"}],"name":"createTransactions","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getAllTransactions","outputs":[{"components":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"internalType":"struct TransactionManager.Transaction[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"transactions","outputs":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"stateMutability":"view","type":"function"}]	0x6080604052348015600f57600080fd5b50610e108061001f6000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c806327506f53146100465780632ef8e92d146100645780639ace38c214610080575b600080fd5b61004e6100b3565b60405161005b9190610674565b60405180910390f35b61007e600480360381019061007991906109ab565b61024a565b005b61009a600480360381019061009591906109f4565b61034f565b6040516100aa9493929190610a7a565b60405180910390f35b60606000805480602002602001604051908101604052809291908181526020016000905b82821015610241578382906000526020600020906004020160405180608001604052908160008201805461010a90610afc565b80601f016020809104026020016040519081016040528092919081815260200182805461013690610afc565b80156101835780601f1061015857610100808354040283529160200191610183565b820191906000526020600020905b81548152906001019060200180831161016657829003601f168201915b50505050508152602001600182015481526020016002820180546101a690610afc565b80601f01602080910402602001604051908101604052809291908181526020018280546101d290610afc565b801561021f5780601f106101f45761010080835404028352916020019161021f565b820191906000526020600020905b81548152906001019060200180831161020257829003601f168201915b50505050508152602001600382015481525050815260200190600101906100d7565b50505050905090565b60005b815181101561034b576000604051806080016040528084848151811061027657610275610b2d565b5b602002602001015160000151815260200184848151811061029a57610299610b2d565b5b60200260200101516020015181526020018484815181106102be576102bd610b2d565b5b602002602001015160400151815260200142815250908060018154018082558091505060019003906000526020600020906004020160009091909190915060008201518160000190816103119190610d08565b506020820151816001015560408201518160020190816103319190610d08565b50606082015181600301555050808060010191505061024d565b5050565b6000818154811061035f57600080fd5b906000526020600020906004020160009150905080600001805461038290610afc565b80601f01602080910402602001604051908101604052809291908181526020018280546103ae90610afc565b80156103fb5780601f106103d0576101008083540402835291602001916103fb565b820191906000526020600020905b8154815290600101906020018083116103de57829003601f168201915b50505050509080600101549080600201805461041690610afc565b80601f016020809104026020016040519081016040528092919081815260200182805461044290610afc565b801561048f5780601f106104645761010080835404028352916020019161048f565b820191906000526020600020905b81548152906001019060200180831161047257829003601f168201915b5050505050908060030154905084565b600081519050919050565b600082825260208201905092915050565b6000819050602082019050919050565b600081519050919050565b600082825260208201905092915050565b60005b838110156105055780820151818401526020810190506104ea565b60008484015250505050565b6000601f19601f8301169050919050565b600061052d826104cb565b61053781856104d6565b93506105478185602086016104e7565b61055081610511565b840191505092915050565b6000819050919050565b61056e8161055b565b82525050565b600060808301600083015184820360008601526105918282610522565b91505060208301516105a66020860182610565565b50604083015184820360408601526105be8282610522565b91505060608301516105d36060860182610565565b508091505092915050565b60006105ea8383610574565b905092915050565b6000602082019050919050565b600061060a8261049f565b61061481856104aa565b935083602082028501610626856104bb565b8060005b85811015610662578484038952815161064385826105de565b945061064e836105f2565b925060208a0199505060018101905061062a565b50829750879550505050505092915050565b6000602082019050818103600083015261068e81846105ff565b905092915050565b6000604051905090565b600080fd5b600080fd5b600080fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6106e782610511565b810181811067ffffffffffffffff82111715610706576107056106af565b5b80604052505050565b6000610719610696565b905061072582826106de565b919050565b600067ffffffffffffffff821115610745576107446106af565b5b602082029050602081019050919050565b600080fd5b600080fd5b600080fd5b600080fd5b600067ffffffffffffffff821115610785576107846106af565b5b61078e82610511565b9050602081019050919050565b82818337600083830152505050565b60006107bd6107b88461076a565b61070f565b9050828152602081018484840111156107d9576107d8610765565b5b6107e484828561079b565b509392505050565b600082601f830112610801576108006106aa565b5b81356108118482602086016107aa565b91505092915050565b6108238161055b565b811461082e57600080fd5b50565b6000813590506108408161081a565b92915050565b60006080828403121561085c5761085b61075b565b5b610866608061070f565b9050600082013567ffffffffffffffff81111561088657610885610760565b5b610892848285016107ec565b60008301525060206108a684828501610831565b602083015250604082013567ffffffffffffffff8111156108ca576108c9610760565b5b6108d6848285016107ec565b60408301525060606108ea84828501610831565b60608301525092915050565b60006109096109048461072a565b61070f565b9050808382526020820190506020840283018581111561092c5761092b610756565b5b835b8181101561097357803567ffffffffffffffff811115610951576109506106aa565b5b80860161095e8982610846565b8552602085019450505060208101905061092e565b5050509392505050565b600082601f830112610992576109916106aa565b5b81356109a28482602086016108f6565b91505092915050565b6000602082840312156109c1576109c06106a0565b5b600082013567ffffffffffffffff8111156109df576109de6106a5565b5b6109eb8482850161097d565b91505092915050565b600060208284031215610a0a57610a096106a0565b5b6000610a1884828501610831565b91505092915050565b600082825260208201905092915050565b6000610a3d826104cb565b610a478185610a21565b9350610a578185602086016104e7565b610a6081610511565b840191505092915050565b610a748161055b565b82525050565b60006080820190508181036000830152610a948187610a32565b9050610aa36020830186610a6b565b8181036040830152610ab58185610a32565b9050610ac46060830184610a6b565b95945050505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b60006002820490506001821680610b1457607f821691505b602082108103610b2757610b26610acd565b5b50919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b60008190508160005260206000209050919050565b60006020601f8301049050919050565b600082821b905092915050565b600060088302610bbe7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff82610b81565b610bc88683610b81565b95508019841693508086168417925050509392505050565b6000819050919050565b6000610c05610c00610bfb8461055b565b610be0565b61055b565b9050919050565b6000819050919050565b610c1f83610bea565b610c33610c2b82610c0c565b848454610b8e565b825550505050565b600090565b610c48610c3b565b610c53818484610c16565b505050565b5b81811015610c7757610c6c600082610c40565b600181019050610c59565b5050565b601f821115610cbc57610c8d81610b5c565b610c9684610b71565b81016020851015610ca5578190505b610cb9610cb185610b71565b830182610c58565b50505b505050565b600082821c905092915050565b6000610cdf60001984600802610cc1565b1980831691505092915050565b6000610cf88383610cce565b9150826002028217905092915050565b610d11826104cb565b67ffffffffffffffff811115610d2a57610d296106af565b5b610d348254610afc565b610d3f828285610c7b565b600060209050601f831160018114610d725760008415610d60578287015190505b610d6a8582610cec565b865550610dd2565b601f198416610d8086610b5c565b60005b82811015610da857848901518255600182019150602085019450602081019050610d83565b86831015610dc55784890151610dc1601f891682610cce565b8355505b6001600288020188555050505b50505050505056fea2646970667358221220b90d0d7a8cd725b1fc6f568754056e3ede3b10d79135631ec7fbe1e5a63fab3664736f6c634300081c0033	0x9b1f7F645351AF3631a656421eD2e40f2802E6c0
 \.
 
 
 --
--- TOC entry 3964 (class 0 OID 18026)
--- Dependencies: 276
+-- TOC entry 3983 (class 0 OID 20827)
+-- Dependencies: 277
 -- Data for Name: storages; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6804,8 +6966,8 @@ COPY public.storages (id, "createdAt", "updatedAt", title, name, type, options, 
 
 
 --
--- TOC entry 3967 (class 0 OID 18039)
--- Dependencies: 279
+-- TOC entry 3986 (class 0 OID 20840)
+-- Dependencies: 280
 -- Data for Name: systemSettings; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6815,8 +6977,8 @@ COPY public."systemSettings" (id, "createdAt", "updatedAt", title, "showLogoOnly
 
 
 --
--- TOC entry 3969 (class 0 OID 18049)
--- Dependencies: 281
+-- TOC entry 3988 (class 0 OID 20850)
+-- Dependencies: 282
 -- Data for Name: t_587vrvz0gcb; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6826,8 +6988,8 @@ COPY public.t_587vrvz0gcb ("createdAt", "updatedAt", id, "createdById", "updated
 
 
 --
--- TOC entry 3971 (class 0 OID 18058)
--- Dependencies: 283
+-- TOC entry 3990 (class 0 OID 20859)
+-- Dependencies: 284
 -- Data for Name: t_b3tiaxzyeu3; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6844,8 +7006,8 @@ COPY public.t_b3tiaxzyeu3 ("createdAt", "updatedAt", f_6v6rqo2fmi1, f_h8ptb1wlp6
 
 
 --
--- TOC entry 3972 (class 0 OID 18061)
--- Dependencies: 284
+-- TOC entry 3991 (class 0 OID 20862)
+-- Dependencies: 285
 -- Data for Name: t_bzkvdw2a767; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6866,8 +7028,8 @@ COPY public.t_bzkvdw2a767 ("createdAt", "updatedAt", f_s8php2rxxwe, f_qxu5av3g0s
 
 
 --
--- TOC entry 3973 (class 0 OID 18064)
--- Dependencies: 285
+-- TOC entry 3992 (class 0 OID 20865)
+-- Dependencies: 286
 -- Data for Name: t_ncaek4uddrw; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6878,8 +7040,8 @@ COPY public.t_ncaek4uddrw ("createdAt", "updatedAt", f_j72jrq1b0nw, f_9k9506pi4r
 
 
 --
--- TOC entry 3974 (class 0 OID 18067)
--- Dependencies: 286
+-- TOC entry 3993 (class 0 OID 20868)
+-- Dependencies: 287
 -- Data for Name: t_s9b2jhcxq9q; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6889,8 +7051,8 @@ COPY public.t_s9b2jhcxq9q ("createdAt", "updatedAt", f_b37rybuw15a, f_8o3qqdvq8b
 
 
 --
--- TOC entry 3975 (class 0 OID 18070)
--- Dependencies: 287
+-- TOC entry 3994 (class 0 OID 20871)
+-- Dependencies: 288
 -- Data for Name: themeConfig; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6904,8 +7066,8 @@ COPY public."themeConfig" (id, "createdAt", "updatedAt", config, optional, "isBu
 
 
 --
--- TOC entry 3977 (class 0 OID 18077)
--- Dependencies: 289
+-- TOC entry 3996 (class 0 OID 20878)
+-- Dependencies: 290
 -- Data for Name: tokenBlacklist; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6914,22 +7076,29 @@ COPY public."tokenBlacklist" (id, "createdAt", "updatedAt", token, expiration) F
 
 
 --
--- TOC entry 3979 (class 0 OID 18081)
--- Dependencies: 291
+-- TOC entry 3998 (class 0 OID 20882)
+-- Dependencies: 292
 -- Data for Name: transactions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.transactions ("createdAt", "updatedAt", id, "createdById", "updatedById", transaction_code, amount, description, from_account_no, from_account_name, from_bank_name, f_e47my4oktv2, user_id, fund_id, is_deleted) FROM stdin;
-2024-12-03 06:23:32.318+00	2024-12-03 06:23:32.318+00	12	\N	\N	FD564546575758	4200000	LE MINH TUAN - CHUYEN TIEN	5536457585	LE MINH TUAN	TPBANK	\N	\N	1	0
-2024-12-03 06:27:07.591+00	2024-12-03 06:27:07.591+00	13	\N	\N	FD564546575758	4200000	LE MINH TUAN - CHUYEN TIEN	5536457585	LE MINH TUAN	TPBANK	\N	\N	1	0
-2024-12-03 06:27:22.792+00	2024-12-03 06:27:22.792+00	14	\N	\N	FD564546575758	4200000	LE MINH TUAN - CHUYEN TIEN	5536457585	LE MINH TUAN	TPBANK	\N	\N	1	0
-2024-12-03 06:41:16.253+00	2024-12-03 06:41:16.253+00	15	1	1	12321	0	123123	123123213	1233	2312	\N	\N	33	0
 \.
 
 
 --
--- TOC entry 3981 (class 0 OID 18090)
--- Dependencies: 293
+-- TOC entry 4017 (class 0 OID 21234)
+-- Dependencies: 311
+-- Data for Name: transactions_config; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.transactions_config ("createdAt", "updatedAt", id, "createdById", "updatedById", "contractAddress", private_key, provider, abi) FROM stdin;
+2024-12-06 07:13:52.421+00	2024-12-06 07:13:52.421+00	4	1	1	0x9b1f7F645351AF3631a656421eD2e40f2802E6c0	0x6cbed15c793ce57650b9877cf6fa156fbef513c4e6134f022a85b1ffdd59b2a1	http://localhost:8545	[{"inputs":[{"components":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"internalType":"struct TransactionManager.Transaction[]","name":"_transactions","type":"tuple[]"}],"name":"createTransactions","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getAllTransactions","outputs":[{"components":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"internalType":"struct TransactionManager.Transaction[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"transactions","outputs":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"stateMutability":"view","type":"function"}]
+\.
+
+
+--
+-- TOC entry 4000 (class 0 OID 20891)
+-- Dependencies: 294
 -- Data for Name: uiSchemaServerHooks; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6938,8 +7107,8 @@ COPY public."uiSchemaServerHooks" (id, uid, type, collection, field, method, par
 
 
 --
--- TOC entry 3983 (class 0 OID 18096)
--- Dependencies: 295
+-- TOC entry 4002 (class 0 OID 20897)
+-- Dependencies: 296
 -- Data for Name: uiSchemaTemplates; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6950,8 +7119,8 @@ COPY public."uiSchemaTemplates" ("createdAt", "updatedAt", key, name, "component
 
 
 --
--- TOC entry 3984 (class 0 OID 18101)
--- Dependencies: 296
+-- TOC entry 4003 (class 0 OID 20902)
+-- Dependencies: 297
 -- Data for Name: uiSchemaTreePath; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -17336,12 +17505,953 @@ nsueicidb31	ix8vitsau4c	8	\N	\N	\N
 nsueicidb31	407ix2kv519	9	\N	\N	\N
 nocobase-admin-menu	ix8vitsau4c	9	\N	\N	\N
 nocobase-admin-menu	407ix2kv519	10	\N	\N	\N
+sg5a15sy2m1	sg5a15sy2m1	0	t	properties	\N
+kbh3q1u65uj	sg5a15sy2m1	1	\N	\N	1
+142bcjz930y	142bcjz930y	0	f	properties	\N
+sg5a15sy2m1	142bcjz930y	1	\N	\N	1
+kbh3q1u65uj	142bcjz930y	2	\N	\N	1
+nocobase-admin-menu	sg5a15sy2m1	2	\N	\N	\N
+nocobase-admin-menu	142bcjz930y	3	\N	\N	\N
+kbh3q1u65uj	kbh3q1u65uj	0	f	properties	\N
+nocobase-admin-menu	kbh3q1u65uj	1	\N	\N	14
+2dd2znq967b	2dd2znq967b	0	f	properties	\N
+142bcjz930y	2dd2znq967b	1	\N	\N	1
+zhtteocria4	zhtteocria4	0	f	properties	\N
+2dd2znq967b	zhtteocria4	1	\N	\N	1
+5e1kasz6fhv	5e1kasz6fhv	0	f	properties	\N
+zhtteocria4	5e1kasz6fhv	1	\N	\N	1
+2dd2znq967b	5e1kasz6fhv	2	\N	\N	1
+glif722m9y4	glif722m9y4	0	f	properties	\N
+5e1kasz6fhv	glif722m9y4	1	\N	\N	1
+zhtteocria4	glif722m9y4	2	\N	\N	1
+2dd2znq967b	glif722m9y4	3	\N	\N	1
+dgmw5b0z4sr	dgmw5b0z4sr	0	f	properties	\N
+5e1kasz6fhv	dgmw5b0z4sr	1	\N	\N	2
+zhtteocria4	dgmw5b0z4sr	2	\N	\N	2
+2dd2znq967b	dgmw5b0z4sr	3	\N	\N	2
+sipx3572wld	sipx3572wld	0	f	properties	\N
+wzqor5dsnsi	sipx3572wld	1	\N	\N	1
+142bcjz930y	zhtteocria4	2	\N	\N	\N
+142bcjz930y	5e1kasz6fhv	3	\N	\N	\N
+142bcjz930y	glif722m9y4	4	\N	\N	\N
+142bcjz930y	dgmw5b0z4sr	4	\N	\N	\N
+sg5a15sy2m1	2dd2znq967b	2	\N	\N	\N
+sg5a15sy2m1	zhtteocria4	3	\N	\N	\N
+sg5a15sy2m1	5e1kasz6fhv	4	\N	\N	\N
+sg5a15sy2m1	glif722m9y4	5	\N	\N	\N
+sg5a15sy2m1	dgmw5b0z4sr	5	\N	\N	\N
+kbh3q1u65uj	2dd2znq967b	3	\N	\N	\N
+kbh3q1u65uj	zhtteocria4	4	\N	\N	\N
+kbh3q1u65uj	5e1kasz6fhv	5	\N	\N	\N
+kbh3q1u65uj	glif722m9y4	6	\N	\N	\N
+kbh3q1u65uj	dgmw5b0z4sr	6	\N	\N	\N
+nocobase-admin-menu	2dd2znq967b	4	\N	\N	\N
+nocobase-admin-menu	zhtteocria4	5	\N	\N	\N
+nocobase-admin-menu	5e1kasz6fhv	6	\N	\N	\N
+nocobase-admin-menu	glif722m9y4	7	\N	\N	\N
+nocobase-admin-menu	dgmw5b0z4sr	7	\N	\N	\N
+pfn9wwqwjq1	pfn9wwqwjq1	0	f	properties	\N
+hf7j8fzjn1x	pfn9wwqwjq1	1	\N	\N	1
+5lsuzvqf0pt	5lsuzvqf0pt	0	f	properties	\N
+pfn9wwqwjq1	5lsuzvqf0pt	1	\N	\N	1
+hf7j8fzjn1x	5lsuzvqf0pt	2	\N	\N	1
+glif722m9y4	pfn9wwqwjq1	2	\N	\N	\N
+glif722m9y4	5lsuzvqf0pt	3	\N	\N	\N
+5e1kasz6fhv	hf7j8fzjn1x	2	\N	\N	\N
+5e1kasz6fhv	pfn9wwqwjq1	3	\N	\N	\N
+5e1kasz6fhv	5lsuzvqf0pt	4	\N	\N	\N
+zhtteocria4	hf7j8fzjn1x	3	\N	\N	\N
+zhtteocria4	pfn9wwqwjq1	4	\N	\N	\N
+zhtteocria4	5lsuzvqf0pt	5	\N	\N	\N
+2dd2znq967b	hf7j8fzjn1x	4	\N	\N	\N
+2dd2znq967b	pfn9wwqwjq1	5	\N	\N	\N
+2dd2znq967b	5lsuzvqf0pt	6	\N	\N	\N
+142bcjz930y	hf7j8fzjn1x	5	\N	\N	\N
+142bcjz930y	pfn9wwqwjq1	6	\N	\N	\N
+142bcjz930y	5lsuzvqf0pt	7	\N	\N	\N
+sg5a15sy2m1	hf7j8fzjn1x	6	\N	\N	\N
+sg5a15sy2m1	pfn9wwqwjq1	7	\N	\N	\N
+sg5a15sy2m1	5lsuzvqf0pt	8	\N	\N	\N
+kbh3q1u65uj	hf7j8fzjn1x	7	\N	\N	\N
+kbh3q1u65uj	pfn9wwqwjq1	8	\N	\N	\N
+kbh3q1u65uj	5lsuzvqf0pt	9	\N	\N	\N
+nocobase-admin-menu	hf7j8fzjn1x	8	\N	\N	\N
+nocobase-admin-menu	pfn9wwqwjq1	9	\N	\N	\N
+nocobase-admin-menu	5lsuzvqf0pt	10	\N	\N	\N
+hf7j8fzjn1x	hf7j8fzjn1x	0	f	properties	\N
+glif722m9y4	hf7j8fzjn1x	1	\N	\N	1
+7d4s14p5sq9	7d4s14p5sq9	0	f	properties	\N
+5e1kasz6fhv	7d4s14p5sq9	2	\N	\N	\N
+zhtteocria4	7d4s14p5sq9	3	\N	\N	\N
+2dd2znq967b	7d4s14p5sq9	4	\N	\N	\N
+142bcjz930y	7d4s14p5sq9	5	\N	\N	\N
+sg5a15sy2m1	7d4s14p5sq9	6	\N	\N	\N
+kbh3q1u65uj	7d4s14p5sq9	7	\N	\N	\N
+nocobase-admin-menu	7d4s14p5sq9	8	\N	\N	\N
+glif722m9y4	7d4s14p5sq9	1	\N	\N	2
+umixbn443nx	umixbn443nx	0	f	properties	\N
+5e1kasz6fhv	umixbn443nx	2	\N	\N	\N
+zhtteocria4	umixbn443nx	3	\N	\N	\N
+2dd2znq967b	umixbn443nx	4	\N	\N	\N
+142bcjz930y	umixbn443nx	5	\N	\N	\N
+sg5a15sy2m1	umixbn443nx	6	\N	\N	\N
+kbh3q1u65uj	umixbn443nx	7	\N	\N	\N
+nocobase-admin-menu	umixbn443nx	8	\N	\N	\N
+glif722m9y4	umixbn443nx	1	\N	\N	3
+0kl7cje1o4h	0kl7cje1o4h	0	f	properties	\N
+ftj9sxf4b7z	0kl7cje1o4h	1	\N	\N	1
+dgmw5b0z4sr	0kl7cje1o4h	2	\N	\N	\N
+5e1kasz6fhv	ftj9sxf4b7z	2	\N	\N	\N
+5e1kasz6fhv	0kl7cje1o4h	3	\N	\N	\N
+zhtteocria4	ftj9sxf4b7z	3	\N	\N	\N
+zhtteocria4	0kl7cje1o4h	4	\N	\N	\N
+2dd2znq967b	ftj9sxf4b7z	4	\N	\N	\N
+2dd2znq967b	0kl7cje1o4h	5	\N	\N	\N
+wzqor5dsnsi	wzqor5dsnsi	0	f	properties	\N
+142bcjz930y	ftj9sxf4b7z	5	\N	\N	\N
+142bcjz930y	0kl7cje1o4h	6	\N	\N	\N
+sg5a15sy2m1	ftj9sxf4b7z	6	\N	\N	\N
+sg5a15sy2m1	0kl7cje1o4h	7	\N	\N	\N
+kbh3q1u65uj	ftj9sxf4b7z	7	\N	\N	\N
+kbh3q1u65uj	0kl7cje1o4h	8	\N	\N	\N
+nocobase-admin-menu	ftj9sxf4b7z	8	\N	\N	\N
+nocobase-admin-menu	0kl7cje1o4h	9	\N	\N	\N
+ftj9sxf4b7z	ftj9sxf4b7z	0	f	properties	\N
+dgmw5b0z4sr	ftj9sxf4b7z	1	\N	\N	2
+qt97wounrdr	qt97wounrdr	0	f	properties	\N
+7w4hhv3efmg	qt97wounrdr	1	\N	\N	1
+dgmw5b0z4sr	qt97wounrdr	2	\N	\N	\N
+5e1kasz6fhv	7w4hhv3efmg	2	\N	\N	\N
+5e1kasz6fhv	qt97wounrdr	3	\N	\N	\N
+zhtteocria4	7w4hhv3efmg	3	\N	\N	\N
+zhtteocria4	qt97wounrdr	4	\N	\N	\N
+2dd2znq967b	7w4hhv3efmg	4	\N	\N	\N
+2dd2znq967b	qt97wounrdr	5	\N	\N	\N
+142bcjz930y	7w4hhv3efmg	5	\N	\N	\N
+142bcjz930y	qt97wounrdr	6	\N	\N	\N
+sg5a15sy2m1	7w4hhv3efmg	6	\N	\N	\N
+sg5a15sy2m1	qt97wounrdr	7	\N	\N	\N
+kbh3q1u65uj	7w4hhv3efmg	7	\N	\N	\N
+kbh3q1u65uj	qt97wounrdr	8	\N	\N	\N
+nocobase-admin-menu	7w4hhv3efmg	8	\N	\N	\N
+nocobase-admin-menu	qt97wounrdr	9	\N	\N	\N
+7w4hhv3efmg	7w4hhv3efmg	0	f	properties	\N
+dgmw5b0z4sr	7w4hhv3efmg	1	\N	\N	3
+1dqmkmzw2v1	1dqmkmzw2v1	0	f	properties	\N
+0l0ezy9xb0n	1dqmkmzw2v1	1	\N	\N	1
+dgmw5b0z4sr	1dqmkmzw2v1	2	\N	\N	\N
+5e1kasz6fhv	0l0ezy9xb0n	2	\N	\N	\N
+5e1kasz6fhv	1dqmkmzw2v1	3	\N	\N	\N
+zhtteocria4	0l0ezy9xb0n	3	\N	\N	\N
+zhtteocria4	1dqmkmzw2v1	4	\N	\N	\N
+2dd2znq967b	0l0ezy9xb0n	4	\N	\N	\N
+2dd2znq967b	1dqmkmzw2v1	5	\N	\N	\N
+142bcjz930y	0l0ezy9xb0n	5	\N	\N	\N
+142bcjz930y	1dqmkmzw2v1	6	\N	\N	\N
+sg5a15sy2m1	0l0ezy9xb0n	6	\N	\N	\N
+sg5a15sy2m1	1dqmkmzw2v1	7	\N	\N	\N
+kbh3q1u65uj	0l0ezy9xb0n	7	\N	\N	\N
+kbh3q1u65uj	1dqmkmzw2v1	8	\N	\N	\N
+nocobase-admin-menu	0l0ezy9xb0n	8	\N	\N	\N
+nocobase-admin-menu	1dqmkmzw2v1	9	\N	\N	\N
+0l0ezy9xb0n	0l0ezy9xb0n	0	f	properties	\N
+dgmw5b0z4sr	0l0ezy9xb0n	1	\N	\N	4
+oyqk8o5r6zy	oyqk8o5r6zy	0	f	properties	\N
+n0xi40xzdm1	oyqk8o5r6zy	1	\N	\N	1
+dgmw5b0z4sr	oyqk8o5r6zy	2	\N	\N	\N
+5e1kasz6fhv	n0xi40xzdm1	2	\N	\N	\N
+5e1kasz6fhv	oyqk8o5r6zy	3	\N	\N	\N
+zhtteocria4	n0xi40xzdm1	3	\N	\N	\N
+zhtteocria4	oyqk8o5r6zy	4	\N	\N	\N
+2dd2znq967b	n0xi40xzdm1	4	\N	\N	\N
+2dd2znq967b	oyqk8o5r6zy	5	\N	\N	\N
+142bcjz930y	n0xi40xzdm1	5	\N	\N	\N
+142bcjz930y	oyqk8o5r6zy	6	\N	\N	\N
+sg5a15sy2m1	n0xi40xzdm1	6	\N	\N	\N
+sg5a15sy2m1	oyqk8o5r6zy	7	\N	\N	\N
+kbh3q1u65uj	n0xi40xzdm1	7	\N	\N	\N
+kbh3q1u65uj	oyqk8o5r6zy	8	\N	\N	\N
+nocobase-admin-menu	n0xi40xzdm1	8	\N	\N	\N
+nocobase-admin-menu	oyqk8o5r6zy	9	\N	\N	\N
+n0xi40xzdm1	n0xi40xzdm1	0	f	properties	\N
+dgmw5b0z4sr	n0xi40xzdm1	1	\N	\N	5
+0o54vuebia2	0o54vuebia2	0	f	properties	\N
+9rrg8pfbccc	0o54vuebia2	1	\N	\N	1
+dgmw5b0z4sr	0o54vuebia2	2	\N	\N	\N
+5e1kasz6fhv	9rrg8pfbccc	2	\N	\N	\N
+5e1kasz6fhv	0o54vuebia2	3	\N	\N	\N
+zhtteocria4	9rrg8pfbccc	3	\N	\N	\N
+zhtteocria4	0o54vuebia2	4	\N	\N	\N
+2dd2znq967b	9rrg8pfbccc	4	\N	\N	\N
+2dd2znq967b	0o54vuebia2	5	\N	\N	\N
+142bcjz930y	9rrg8pfbccc	5	\N	\N	\N
+142bcjz930y	0o54vuebia2	6	\N	\N	\N
+sg5a15sy2m1	9rrg8pfbccc	6	\N	\N	\N
+sg5a15sy2m1	0o54vuebia2	7	\N	\N	\N
+kbh3q1u65uj	9rrg8pfbccc	7	\N	\N	\N
+kbh3q1u65uj	0o54vuebia2	8	\N	\N	\N
+nocobase-admin-menu	9rrg8pfbccc	8	\N	\N	\N
+nocobase-admin-menu	0o54vuebia2	9	\N	\N	\N
+9rrg8pfbccc	9rrg8pfbccc	0	f	properties	\N
+dgmw5b0z4sr	9rrg8pfbccc	1	\N	\N	6
+dgmw5b0z4sr	sipx3572wld	2	\N	\N	\N
+5e1kasz6fhv	wzqor5dsnsi	2	\N	\N	\N
+5e1kasz6fhv	sipx3572wld	3	\N	\N	\N
+zhtteocria4	wzqor5dsnsi	3	\N	\N	\N
+zhtteocria4	sipx3572wld	4	\N	\N	\N
+2dd2znq967b	wzqor5dsnsi	4	\N	\N	\N
+2dd2znq967b	sipx3572wld	5	\N	\N	\N
+142bcjz930y	wzqor5dsnsi	5	\N	\N	\N
+142bcjz930y	sipx3572wld	6	\N	\N	\N
+sg5a15sy2m1	wzqor5dsnsi	6	\N	\N	\N
+sg5a15sy2m1	sipx3572wld	7	\N	\N	\N
+kbh3q1u65uj	wzqor5dsnsi	7	\N	\N	\N
+kbh3q1u65uj	sipx3572wld	8	\N	\N	\N
+nocobase-admin-menu	wzqor5dsnsi	8	\N	\N	\N
+nocobase-admin-menu	sipx3572wld	9	\N	\N	\N
+dgmw5b0z4sr	wzqor5dsnsi	1	\N	\N	7
+55yybfjcg5y	55yybfjcg5y	0	f	properties	\N
+3iiq1h5p8d3	55yybfjcg5y	1	\N	\N	1
+fwfyhvsa2o5	fwfyhvsa2o5	0	f	properties	\N
+55yybfjcg5y	fwfyhvsa2o5	1	\N	\N	1
+3iiq1h5p8d3	fwfyhvsa2o5	2	\N	\N	1
+wts93e1j6kk	wts93e1j6kk	0	f	properties	\N
+fwfyhvsa2o5	wts93e1j6kk	1	\N	\N	1
+55yybfjcg5y	wts93e1j6kk	2	\N	\N	1
+3iiq1h5p8d3	wts93e1j6kk	3	\N	\N	1
+slfdwemrlfx	slfdwemrlfx	0	f	properties	\N
+wts93e1j6kk	slfdwemrlfx	1	\N	\N	1
+fwfyhvsa2o5	slfdwemrlfx	2	\N	\N	1
+55yybfjcg5y	slfdwemrlfx	3	\N	\N	1
+3iiq1h5p8d3	slfdwemrlfx	4	\N	\N	1
+sipx3572wld	55yybfjcg5y	2	\N	\N	\N
+sipx3572wld	fwfyhvsa2o5	3	\N	\N	\N
+sipx3572wld	wts93e1j6kk	4	\N	\N	\N
+sipx3572wld	slfdwemrlfx	5	\N	\N	\N
+wzqor5dsnsi	3iiq1h5p8d3	2	\N	\N	\N
+wzqor5dsnsi	55yybfjcg5y	3	\N	\N	\N
+wzqor5dsnsi	fwfyhvsa2o5	4	\N	\N	\N
+wzqor5dsnsi	wts93e1j6kk	5	\N	\N	\N
+wzqor5dsnsi	slfdwemrlfx	6	\N	\N	\N
+dgmw5b0z4sr	3iiq1h5p8d3	3	\N	\N	\N
+dgmw5b0z4sr	55yybfjcg5y	4	\N	\N	\N
+dgmw5b0z4sr	fwfyhvsa2o5	5	\N	\N	\N
+dgmw5b0z4sr	wts93e1j6kk	6	\N	\N	\N
+dgmw5b0z4sr	slfdwemrlfx	7	\N	\N	\N
+5e1kasz6fhv	3iiq1h5p8d3	4	\N	\N	\N
+5e1kasz6fhv	55yybfjcg5y	5	\N	\N	\N
+5e1kasz6fhv	fwfyhvsa2o5	6	\N	\N	\N
+5e1kasz6fhv	wts93e1j6kk	7	\N	\N	\N
+5e1kasz6fhv	slfdwemrlfx	8	\N	\N	\N
+zhtteocria4	3iiq1h5p8d3	5	\N	\N	\N
+zhtteocria4	55yybfjcg5y	6	\N	\N	\N
+zhtteocria4	fwfyhvsa2o5	7	\N	\N	\N
+zhtteocria4	wts93e1j6kk	8	\N	\N	\N
+zhtteocria4	slfdwemrlfx	9	\N	\N	\N
+2dd2znq967b	3iiq1h5p8d3	6	\N	\N	\N
+2dd2znq967b	55yybfjcg5y	7	\N	\N	\N
+2dd2znq967b	fwfyhvsa2o5	8	\N	\N	\N
+2dd2znq967b	wts93e1j6kk	9	\N	\N	\N
+2dd2znq967b	slfdwemrlfx	10	\N	\N	\N
+142bcjz930y	3iiq1h5p8d3	7	\N	\N	\N
+142bcjz930y	55yybfjcg5y	8	\N	\N	\N
+142bcjz930y	fwfyhvsa2o5	9	\N	\N	\N
+142bcjz930y	wts93e1j6kk	10	\N	\N	\N
+142bcjz930y	slfdwemrlfx	11	\N	\N	\N
+sg5a15sy2m1	3iiq1h5p8d3	8	\N	\N	\N
+sg5a15sy2m1	55yybfjcg5y	9	\N	\N	\N
+sg5a15sy2m1	fwfyhvsa2o5	10	\N	\N	\N
+sg5a15sy2m1	wts93e1j6kk	11	\N	\N	\N
+sg5a15sy2m1	slfdwemrlfx	12	\N	\N	\N
+kbh3q1u65uj	3iiq1h5p8d3	9	\N	\N	\N
+kbh3q1u65uj	55yybfjcg5y	10	\N	\N	\N
+kbh3q1u65uj	fwfyhvsa2o5	11	\N	\N	\N
+kbh3q1u65uj	wts93e1j6kk	12	\N	\N	\N
+kbh3q1u65uj	slfdwemrlfx	13	\N	\N	\N
+nocobase-admin-menu	3iiq1h5p8d3	10	\N	\N	\N
+nocobase-admin-menu	55yybfjcg5y	11	\N	\N	\N
+nocobase-admin-menu	fwfyhvsa2o5	12	\N	\N	\N
+nocobase-admin-menu	wts93e1j6kk	13	\N	\N	\N
+nocobase-admin-menu	slfdwemrlfx	14	\N	\N	\N
+3iiq1h5p8d3	3iiq1h5p8d3	0	f	properties	\N
+sipx3572wld	3iiq1h5p8d3	1	\N	\N	2
+k307oz0mluc	k307oz0mluc	0	f	properties	\N
+8dyg7g3yrio	k307oz0mluc	1	\N	\N	1
+fwfyhvsa2o5	k307oz0mluc	2	\N	\N	\N
+55yybfjcg5y	8dyg7g3yrio	2	\N	\N	\N
+55yybfjcg5y	k307oz0mluc	3	\N	\N	\N
+3iiq1h5p8d3	8dyg7g3yrio	3	\N	\N	\N
+3iiq1h5p8d3	k307oz0mluc	4	\N	\N	\N
+sipx3572wld	8dyg7g3yrio	4	\N	\N	\N
+sipx3572wld	k307oz0mluc	5	\N	\N	\N
+wzqor5dsnsi	8dyg7g3yrio	5	\N	\N	\N
+wzqor5dsnsi	k307oz0mluc	6	\N	\N	\N
+dgmw5b0z4sr	8dyg7g3yrio	6	\N	\N	\N
+dgmw5b0z4sr	k307oz0mluc	7	\N	\N	\N
+5e1kasz6fhv	8dyg7g3yrio	7	\N	\N	\N
+5e1kasz6fhv	k307oz0mluc	8	\N	\N	\N
+zhtteocria4	8dyg7g3yrio	8	\N	\N	\N
+zhtteocria4	k307oz0mluc	9	\N	\N	\N
+2dd2znq967b	8dyg7g3yrio	9	\N	\N	\N
+2dd2znq967b	k307oz0mluc	10	\N	\N	\N
+142bcjz930y	8dyg7g3yrio	10	\N	\N	\N
+142bcjz930y	k307oz0mluc	11	\N	\N	\N
+sg5a15sy2m1	8dyg7g3yrio	11	\N	\N	\N
+sg5a15sy2m1	k307oz0mluc	12	\N	\N	\N
+kbh3q1u65uj	8dyg7g3yrio	12	\N	\N	\N
+kbh3q1u65uj	k307oz0mluc	13	\N	\N	\N
+nocobase-admin-menu	8dyg7g3yrio	13	\N	\N	\N
+nocobase-admin-menu	k307oz0mluc	14	\N	\N	\N
+8dyg7g3yrio	8dyg7g3yrio	0	f	properties	\N
+fwfyhvsa2o5	8dyg7g3yrio	1	\N	\N	2
+atuo340cp9o	atuo340cp9o	0	f	properties	\N
+d06pa8wtci4	atuo340cp9o	1	\N	\N	1
+z6ga4ysmlj7	z6ga4ysmlj7	0	f	properties	\N
+atuo340cp9o	z6ga4ysmlj7	1	\N	\N	1
+d06pa8wtci4	z6ga4ysmlj7	2	\N	\N	1
+slfdwemrlfx	atuo340cp9o	2	\N	\N	\N
+slfdwemrlfx	z6ga4ysmlj7	3	\N	\N	\N
+wts93e1j6kk	d06pa8wtci4	2	\N	\N	\N
+wts93e1j6kk	atuo340cp9o	3	\N	\N	\N
+wts93e1j6kk	z6ga4ysmlj7	4	\N	\N	\N
+fwfyhvsa2o5	d06pa8wtci4	3	\N	\N	\N
+fwfyhvsa2o5	atuo340cp9o	4	\N	\N	\N
+fwfyhvsa2o5	z6ga4ysmlj7	5	\N	\N	\N
+55yybfjcg5y	d06pa8wtci4	4	\N	\N	\N
+55yybfjcg5y	atuo340cp9o	5	\N	\N	\N
+55yybfjcg5y	z6ga4ysmlj7	6	\N	\N	\N
+3iiq1h5p8d3	d06pa8wtci4	5	\N	\N	\N
+3iiq1h5p8d3	atuo340cp9o	6	\N	\N	\N
+3iiq1h5p8d3	z6ga4ysmlj7	7	\N	\N	\N
+sipx3572wld	d06pa8wtci4	6	\N	\N	\N
+sipx3572wld	atuo340cp9o	7	\N	\N	\N
+sipx3572wld	z6ga4ysmlj7	8	\N	\N	\N
+wzqor5dsnsi	d06pa8wtci4	7	\N	\N	\N
+wzqor5dsnsi	atuo340cp9o	8	\N	\N	\N
+wzqor5dsnsi	z6ga4ysmlj7	9	\N	\N	\N
+dgmw5b0z4sr	d06pa8wtci4	8	\N	\N	\N
+dgmw5b0z4sr	atuo340cp9o	9	\N	\N	\N
+dgmw5b0z4sr	z6ga4ysmlj7	10	\N	\N	\N
+5e1kasz6fhv	d06pa8wtci4	9	\N	\N	\N
+5e1kasz6fhv	atuo340cp9o	10	\N	\N	\N
+5e1kasz6fhv	z6ga4ysmlj7	11	\N	\N	\N
+zhtteocria4	d06pa8wtci4	10	\N	\N	\N
+zhtteocria4	atuo340cp9o	11	\N	\N	\N
+d06pa8wtci4	d06pa8wtci4	0	f	properties	\N
+slfdwemrlfx	d06pa8wtci4	1	\N	\N	1
+zhtteocria4	z6ga4ysmlj7	12	\N	\N	\N
+2dd2znq967b	d06pa8wtci4	11	\N	\N	\N
+2dd2znq967b	atuo340cp9o	12	\N	\N	\N
+2dd2znq967b	z6ga4ysmlj7	13	\N	\N	\N
+142bcjz930y	d06pa8wtci4	12	\N	\N	\N
+142bcjz930y	atuo340cp9o	13	\N	\N	\N
+142bcjz930y	z6ga4ysmlj7	14	\N	\N	\N
+sg5a15sy2m1	d06pa8wtci4	13	\N	\N	\N
+sg5a15sy2m1	atuo340cp9o	14	\N	\N	\N
+sg5a15sy2m1	z6ga4ysmlj7	15	\N	\N	\N
+kbh3q1u65uj	d06pa8wtci4	14	\N	\N	\N
+kbh3q1u65uj	atuo340cp9o	15	\N	\N	\N
+kbh3q1u65uj	z6ga4ysmlj7	16	\N	\N	\N
+nocobase-admin-menu	d06pa8wtci4	15	\N	\N	\N
+nocobase-admin-menu	atuo340cp9o	16	\N	\N	\N
+nocobase-admin-menu	z6ga4ysmlj7	17	\N	\N	\N
+alkhbhi6y0u	alkhbhi6y0u	0	f	properties	\N
+j85xhz1vxge	alkhbhi6y0u	1	\N	\N	1
+qo25bzrk9zp	qo25bzrk9zp	0	f	properties	\N
+alkhbhi6y0u	qo25bzrk9zp	1	\N	\N	1
+j85xhz1vxge	qo25bzrk9zp	2	\N	\N	1
+slfdwemrlfx	alkhbhi6y0u	2	\N	\N	\N
+slfdwemrlfx	qo25bzrk9zp	3	\N	\N	\N
+wts93e1j6kk	j85xhz1vxge	2	\N	\N	\N
+wts93e1j6kk	alkhbhi6y0u	3	\N	\N	\N
+wts93e1j6kk	qo25bzrk9zp	4	\N	\N	\N
+fwfyhvsa2o5	j85xhz1vxge	3	\N	\N	\N
+fwfyhvsa2o5	alkhbhi6y0u	4	\N	\N	\N
+fwfyhvsa2o5	qo25bzrk9zp	5	\N	\N	\N
+55yybfjcg5y	j85xhz1vxge	4	\N	\N	\N
+55yybfjcg5y	alkhbhi6y0u	5	\N	\N	\N
+55yybfjcg5y	qo25bzrk9zp	6	\N	\N	\N
+3iiq1h5p8d3	j85xhz1vxge	5	\N	\N	\N
+3iiq1h5p8d3	alkhbhi6y0u	6	\N	\N	\N
+3iiq1h5p8d3	qo25bzrk9zp	7	\N	\N	\N
+sipx3572wld	j85xhz1vxge	6	\N	\N	\N
+sipx3572wld	alkhbhi6y0u	7	\N	\N	\N
+sipx3572wld	qo25bzrk9zp	8	\N	\N	\N
+wzqor5dsnsi	j85xhz1vxge	7	\N	\N	\N
+wzqor5dsnsi	alkhbhi6y0u	8	\N	\N	\N
+wzqor5dsnsi	qo25bzrk9zp	9	\N	\N	\N
+dgmw5b0z4sr	j85xhz1vxge	8	\N	\N	\N
+dgmw5b0z4sr	alkhbhi6y0u	9	\N	\N	\N
+dgmw5b0z4sr	qo25bzrk9zp	10	\N	\N	\N
+5e1kasz6fhv	j85xhz1vxge	9	\N	\N	\N
+5e1kasz6fhv	alkhbhi6y0u	10	\N	\N	\N
+5e1kasz6fhv	qo25bzrk9zp	11	\N	\N	\N
+zhtteocria4	j85xhz1vxge	10	\N	\N	\N
+zhtteocria4	alkhbhi6y0u	11	\N	\N	\N
+zhtteocria4	qo25bzrk9zp	12	\N	\N	\N
+2dd2znq967b	j85xhz1vxge	11	\N	\N	\N
+2dd2znq967b	alkhbhi6y0u	12	\N	\N	\N
+2dd2znq967b	qo25bzrk9zp	13	\N	\N	\N
+142bcjz930y	j85xhz1vxge	12	\N	\N	\N
+142bcjz930y	alkhbhi6y0u	13	\N	\N	\N
+142bcjz930y	qo25bzrk9zp	14	\N	\N	\N
+sg5a15sy2m1	j85xhz1vxge	13	\N	\N	\N
+sg5a15sy2m1	alkhbhi6y0u	14	\N	\N	\N
+sg5a15sy2m1	qo25bzrk9zp	15	\N	\N	\N
+kbh3q1u65uj	j85xhz1vxge	14	\N	\N	\N
+kbh3q1u65uj	alkhbhi6y0u	15	\N	\N	\N
+kbh3q1u65uj	qo25bzrk9zp	16	\N	\N	\N
+nocobase-admin-menu	j85xhz1vxge	15	\N	\N	\N
+nocobase-admin-menu	alkhbhi6y0u	16	\N	\N	\N
+nocobase-admin-menu	qo25bzrk9zp	17	\N	\N	\N
+j85xhz1vxge	j85xhz1vxge	0	f	properties	\N
+slfdwemrlfx	j85xhz1vxge	1	\N	\N	2
+xih5ingg3a8	xih5ingg3a8	0	f	properties	\N
+142bcjz930y	xih5ingg3a8	1	\N	\N	2
+1b7p47palcf	1b7p47palcf	0	f	properties	\N
+xih5ingg3a8	1b7p47palcf	1	\N	\N	1
+tld2f837bvc	tld2f837bvc	0	f	properties	\N
+1b7p47palcf	tld2f837bvc	1	\N	\N	1
+xih5ingg3a8	tld2f837bvc	2	\N	\N	1
+wf034k0e7ox	wf034k0e7ox	0	f	properties	\N
+tld2f837bvc	wf034k0e7ox	1	\N	\N	1
+1b7p47palcf	wf034k0e7ox	2	\N	\N	1
+xih5ingg3a8	wf034k0e7ox	3	\N	\N	1
+142bcjz930y	1b7p47palcf	2	\N	\N	\N
+142bcjz930y	tld2f837bvc	3	\N	\N	\N
+142bcjz930y	wf034k0e7ox	4	\N	\N	\N
+sg5a15sy2m1	xih5ingg3a8	2	\N	\N	\N
+sg5a15sy2m1	1b7p47palcf	3	\N	\N	\N
+sg5a15sy2m1	tld2f837bvc	4	\N	\N	\N
+sg5a15sy2m1	wf034k0e7ox	5	\N	\N	\N
+kbh3q1u65uj	xih5ingg3a8	3	\N	\N	\N
+kbh3q1u65uj	1b7p47palcf	4	\N	\N	\N
+kbh3q1u65uj	tld2f837bvc	5	\N	\N	\N
+kbh3q1u65uj	wf034k0e7ox	6	\N	\N	\N
+nocobase-admin-menu	xih5ingg3a8	4	\N	\N	\N
+nocobase-admin-menu	1b7p47palcf	5	\N	\N	\N
+nocobase-admin-menu	tld2f837bvc	6	\N	\N	\N
+nocobase-admin-menu	wf034k0e7ox	7	\N	\N	\N
+bpbkl7jussc	bpbkl7jussc	0	f	properties	\N
+khsl3ougc0m	bpbkl7jussc	1	\N	\N	1
+a27j6849xjb	a27j6849xjb	0	f	properties	\N
+bpbkl7jussc	a27j6849xjb	1	\N	\N	1
+khsl3ougc0m	a27j6849xjb	2	\N	\N	1
+ecywx35zqw6	ecywx35zqw6	0	f	properties	\N
+a27j6849xjb	ecywx35zqw6	1	\N	\N	1
+bpbkl7jussc	ecywx35zqw6	2	\N	\N	1
+khsl3ougc0m	ecywx35zqw6	3	\N	\N	1
+k9fl5d42e26	k9fl5d42e26	0	f	properties	\N
+a27j6849xjb	k9fl5d42e26	1	\N	\N	2
+bpbkl7jussc	k9fl5d42e26	2	\N	\N	2
+khsl3ougc0m	k9fl5d42e26	3	\N	\N	2
+142bcjz930y	bpbkl7jussc	2	\N	\N	\N
+142bcjz930y	a27j6849xjb	3	\N	\N	\N
+142bcjz930y	ecywx35zqw6	4	\N	\N	\N
+142bcjz930y	k9fl5d42e26	4	\N	\N	\N
+sg5a15sy2m1	khsl3ougc0m	2	\N	\N	\N
+sg5a15sy2m1	bpbkl7jussc	3	\N	\N	\N
+sg5a15sy2m1	a27j6849xjb	4	\N	\N	\N
+sg5a15sy2m1	ecywx35zqw6	5	\N	\N	\N
+sg5a15sy2m1	k9fl5d42e26	5	\N	\N	\N
+kbh3q1u65uj	khsl3ougc0m	3	\N	\N	\N
+kbh3q1u65uj	bpbkl7jussc	4	\N	\N	\N
+kbh3q1u65uj	a27j6849xjb	5	\N	\N	\N
+kbh3q1u65uj	ecywx35zqw6	6	\N	\N	\N
+kbh3q1u65uj	k9fl5d42e26	6	\N	\N	\N
+nocobase-admin-menu	khsl3ougc0m	4	\N	\N	\N
+nocobase-admin-menu	bpbkl7jussc	5	\N	\N	\N
+nocobase-admin-menu	a27j6849xjb	6	\N	\N	\N
+nocobase-admin-menu	ecywx35zqw6	7	\N	\N	\N
+nocobase-admin-menu	k9fl5d42e26	7	\N	\N	\N
+khsl3ougc0m	khsl3ougc0m	0	f	properties	\N
+142bcjz930y	khsl3ougc0m	1	\N	\N	3
+iak0ks4tzxs	iak0ks4tzxs	0	f	properties	\N
+k9fl5d42e26	iak0ks4tzxs	1	\N	\N	8
+l99gh8anotl	l99gh8anotl	0	f	properties	\N
+fkz1g6wio1q	fkz1g6wio1q	0	f	properties	\N
+k9fl5d42e26	fkz1g6wio1q	1	\N	\N	7
+nq6sl5ftdxv	nq6sl5ftdxv	0	f	properties	\N
+fkz1g6wio1q	nq6sl5ftdxv	1	\N	\N	1
+k9fl5d42e26	nq6sl5ftdxv	2	\N	\N	\N
+a27j6849xjb	fkz1g6wio1q	2	\N	\N	\N
+a27j6849xjb	nq6sl5ftdxv	3	\N	\N	\N
+bpbkl7jussc	fkz1g6wio1q	3	\N	\N	\N
+bpbkl7jussc	nq6sl5ftdxv	4	\N	\N	\N
+khsl3ougc0m	fkz1g6wio1q	4	\N	\N	\N
+khsl3ougc0m	nq6sl5ftdxv	5	\N	\N	\N
+142bcjz930y	fkz1g6wio1q	5	\N	\N	\N
+142bcjz930y	nq6sl5ftdxv	6	\N	\N	\N
+sg5a15sy2m1	fkz1g6wio1q	6	\N	\N	\N
+sg5a15sy2m1	nq6sl5ftdxv	7	\N	\N	\N
+kbh3q1u65uj	fkz1g6wio1q	7	\N	\N	\N
+kbh3q1u65uj	nq6sl5ftdxv	8	\N	\N	\N
+nocobase-admin-menu	fkz1g6wio1q	8	\N	\N	\N
+nocobase-admin-menu	nq6sl5ftdxv	9	\N	\N	\N
+tulkqm0ztf7	tulkqm0ztf7	0	f	properties	\N
+iak0ks4tzxs	tulkqm0ztf7	1	\N	\N	1
+k9fl5d42e26	tulkqm0ztf7	2	\N	\N	\N
+a27j6849xjb	iak0ks4tzxs	2	\N	\N	\N
+a27j6849xjb	tulkqm0ztf7	3	\N	\N	\N
+bpbkl7jussc	iak0ks4tzxs	3	\N	\N	\N
+bpbkl7jussc	tulkqm0ztf7	4	\N	\N	\N
+khsl3ougc0m	iak0ks4tzxs	4	\N	\N	\N
+khsl3ougc0m	tulkqm0ztf7	5	\N	\N	\N
+142bcjz930y	iak0ks4tzxs	5	\N	\N	\N
+142bcjz930y	tulkqm0ztf7	6	\N	\N	\N
+sg5a15sy2m1	iak0ks4tzxs	6	\N	\N	\N
+sg5a15sy2m1	tulkqm0ztf7	7	\N	\N	\N
+kbh3q1u65uj	iak0ks4tzxs	7	\N	\N	\N
+kbh3q1u65uj	tulkqm0ztf7	8	\N	\N	\N
+nocobase-admin-menu	iak0ks4tzxs	8	\N	\N	\N
+nocobase-admin-menu	tulkqm0ztf7	9	\N	\N	\N
+hbijj0dt6xf	l99gh8anotl	1	\N	\N	1
+oznpziwnb6g	oznpziwnb6g	0	f	properties	\N
+l99gh8anotl	oznpziwnb6g	1	\N	\N	1
+hbijj0dt6xf	oznpziwnb6g	2	\N	\N	1
+arkb72ap8ln	arkb72ap8ln	0	f	properties	\N
+oznpziwnb6g	arkb72ap8ln	1	\N	\N	1
+l99gh8anotl	arkb72ap8ln	2	\N	\N	1
+hbijj0dt6xf	arkb72ap8ln	3	\N	\N	1
+a4k4zl9ytdl	a4k4zl9ytdl	0	f	properties	\N
+arkb72ap8ln	a4k4zl9ytdl	1	\N	\N	1
+oznpziwnb6g	a4k4zl9ytdl	2	\N	\N	1
+l99gh8anotl	a4k4zl9ytdl	3	\N	\N	1
+hbijj0dt6xf	a4k4zl9ytdl	4	\N	\N	1
+ecywx35zqw6	l99gh8anotl	2	\N	\N	\N
+ecywx35zqw6	oznpziwnb6g	3	\N	\N	\N
+ecywx35zqw6	arkb72ap8ln	4	\N	\N	\N
+ecywx35zqw6	a4k4zl9ytdl	5	\N	\N	\N
+a27j6849xjb	hbijj0dt6xf	2	\N	\N	\N
+a27j6849xjb	l99gh8anotl	3	\N	\N	\N
+a27j6849xjb	oznpziwnb6g	4	\N	\N	\N
+a27j6849xjb	arkb72ap8ln	5	\N	\N	\N
+a27j6849xjb	a4k4zl9ytdl	6	\N	\N	\N
+bpbkl7jussc	hbijj0dt6xf	3	\N	\N	\N
+bpbkl7jussc	l99gh8anotl	4	\N	\N	\N
+bpbkl7jussc	oznpziwnb6g	5	\N	\N	\N
+bpbkl7jussc	arkb72ap8ln	6	\N	\N	\N
+bpbkl7jussc	a4k4zl9ytdl	7	\N	\N	\N
+khsl3ougc0m	hbijj0dt6xf	4	\N	\N	\N
+khsl3ougc0m	l99gh8anotl	5	\N	\N	\N
+khsl3ougc0m	oznpziwnb6g	6	\N	\N	\N
+khsl3ougc0m	arkb72ap8ln	7	\N	\N	\N
+khsl3ougc0m	a4k4zl9ytdl	8	\N	\N	\N
+142bcjz930y	hbijj0dt6xf	5	\N	\N	\N
+142bcjz930y	l99gh8anotl	6	\N	\N	\N
+142bcjz930y	oznpziwnb6g	7	\N	\N	\N
+142bcjz930y	arkb72ap8ln	8	\N	\N	\N
+142bcjz930y	a4k4zl9ytdl	9	\N	\N	\N
+sg5a15sy2m1	hbijj0dt6xf	6	\N	\N	\N
+sg5a15sy2m1	l99gh8anotl	7	\N	\N	\N
+sg5a15sy2m1	oznpziwnb6g	8	\N	\N	\N
+sg5a15sy2m1	arkb72ap8ln	9	\N	\N	\N
+sg5a15sy2m1	a4k4zl9ytdl	10	\N	\N	\N
+kbh3q1u65uj	hbijj0dt6xf	7	\N	\N	\N
+kbh3q1u65uj	l99gh8anotl	8	\N	\N	\N
+kbh3q1u65uj	oznpziwnb6g	9	\N	\N	\N
+kbh3q1u65uj	arkb72ap8ln	10	\N	\N	\N
+kbh3q1u65uj	a4k4zl9ytdl	11	\N	\N	\N
+nocobase-admin-menu	hbijj0dt6xf	8	\N	\N	\N
+nocobase-admin-menu	l99gh8anotl	9	\N	\N	\N
+nocobase-admin-menu	oznpziwnb6g	10	\N	\N	\N
+nocobase-admin-menu	arkb72ap8ln	11	\N	\N	\N
+nocobase-admin-menu	a4k4zl9ytdl	12	\N	\N	\N
+hbijj0dt6xf	hbijj0dt6xf	0	f	properties	\N
+ecywx35zqw6	hbijj0dt6xf	1	\N	\N	1
+5q1m23ki1lz	5q1m23ki1lz	0	f	properties	\N
+cemfjrtdwn8	5q1m23ki1lz	1	\N	\N	1
+hsknr3rh1n8	hsknr3rh1n8	0	f	properties	\N
+5q1m23ki1lz	hsknr3rh1n8	1	\N	\N	1
+cemfjrtdwn8	hsknr3rh1n8	2	\N	\N	1
+tlj9ek7mukt	tlj9ek7mukt	0	f	properties	\N
+hsknr3rh1n8	tlj9ek7mukt	1	\N	\N	1
+5q1m23ki1lz	tlj9ek7mukt	2	\N	\N	1
+cemfjrtdwn8	tlj9ek7mukt	3	\N	\N	1
+f55qk1lj3vu	f55qk1lj3vu	0	f	properties	\N
+tlj9ek7mukt	f55qk1lj3vu	1	\N	\N	1
+hsknr3rh1n8	f55qk1lj3vu	2	\N	\N	1
+5q1m23ki1lz	f55qk1lj3vu	3	\N	\N	1
+cemfjrtdwn8	f55qk1lj3vu	4	\N	\N	1
+sax8q1gdyrl	sax8q1gdyrl	0	f	properties	\N
+tlj9ek7mukt	sax8q1gdyrl	1	\N	\N	2
+hsknr3rh1n8	sax8q1gdyrl	2	\N	\N	2
+5q1m23ki1lz	sax8q1gdyrl	3	\N	\N	2
+cemfjrtdwn8	sax8q1gdyrl	4	\N	\N	2
+a4k4zl9ytdl	5q1m23ki1lz	2	\N	\N	\N
+a4k4zl9ytdl	hsknr3rh1n8	3	\N	\N	\N
+a4k4zl9ytdl	tlj9ek7mukt	4	\N	\N	\N
+a4k4zl9ytdl	f55qk1lj3vu	5	\N	\N	\N
+a4k4zl9ytdl	sax8q1gdyrl	5	\N	\N	\N
+arkb72ap8ln	cemfjrtdwn8	2	\N	\N	\N
+arkb72ap8ln	5q1m23ki1lz	3	\N	\N	\N
+arkb72ap8ln	hsknr3rh1n8	4	\N	\N	\N
+arkb72ap8ln	tlj9ek7mukt	5	\N	\N	\N
+arkb72ap8ln	f55qk1lj3vu	6	\N	\N	\N
+arkb72ap8ln	sax8q1gdyrl	6	\N	\N	\N
+oznpziwnb6g	cemfjrtdwn8	3	\N	\N	\N
+oznpziwnb6g	5q1m23ki1lz	4	\N	\N	\N
+oznpziwnb6g	hsknr3rh1n8	5	\N	\N	\N
+oznpziwnb6g	tlj9ek7mukt	6	\N	\N	\N
+oznpziwnb6g	f55qk1lj3vu	7	\N	\N	\N
+oznpziwnb6g	sax8q1gdyrl	7	\N	\N	\N
+l99gh8anotl	cemfjrtdwn8	4	\N	\N	\N
+l99gh8anotl	5q1m23ki1lz	5	\N	\N	\N
+l99gh8anotl	hsknr3rh1n8	6	\N	\N	\N
+l99gh8anotl	tlj9ek7mukt	7	\N	\N	\N
+l99gh8anotl	f55qk1lj3vu	8	\N	\N	\N
+l99gh8anotl	sax8q1gdyrl	8	\N	\N	\N
+hbijj0dt6xf	cemfjrtdwn8	5	\N	\N	\N
+hbijj0dt6xf	5q1m23ki1lz	6	\N	\N	\N
+hbijj0dt6xf	hsknr3rh1n8	7	\N	\N	\N
+hbijj0dt6xf	tlj9ek7mukt	8	\N	\N	\N
+hbijj0dt6xf	f55qk1lj3vu	9	\N	\N	\N
+hbijj0dt6xf	sax8q1gdyrl	9	\N	\N	\N
+ecywx35zqw6	cemfjrtdwn8	6	\N	\N	\N
+ecywx35zqw6	5q1m23ki1lz	7	\N	\N	\N
+ecywx35zqw6	hsknr3rh1n8	8	\N	\N	\N
+ecywx35zqw6	tlj9ek7mukt	9	\N	\N	\N
+ecywx35zqw6	f55qk1lj3vu	10	\N	\N	\N
+ecywx35zqw6	sax8q1gdyrl	10	\N	\N	\N
+a27j6849xjb	cemfjrtdwn8	7	\N	\N	\N
+a27j6849xjb	5q1m23ki1lz	8	\N	\N	\N
+a27j6849xjb	hsknr3rh1n8	9	\N	\N	\N
+a27j6849xjb	tlj9ek7mukt	10	\N	\N	\N
+a27j6849xjb	f55qk1lj3vu	11	\N	\N	\N
+a27j6849xjb	sax8q1gdyrl	11	\N	\N	\N
+bpbkl7jussc	cemfjrtdwn8	8	\N	\N	\N
+bpbkl7jussc	5q1m23ki1lz	9	\N	\N	\N
+bpbkl7jussc	hsknr3rh1n8	10	\N	\N	\N
+bpbkl7jussc	tlj9ek7mukt	11	\N	\N	\N
+bpbkl7jussc	f55qk1lj3vu	12	\N	\N	\N
+bpbkl7jussc	sax8q1gdyrl	12	\N	\N	\N
+khsl3ougc0m	cemfjrtdwn8	9	\N	\N	\N
+khsl3ougc0m	5q1m23ki1lz	10	\N	\N	\N
+khsl3ougc0m	hsknr3rh1n8	11	\N	\N	\N
+khsl3ougc0m	tlj9ek7mukt	12	\N	\N	\N
+khsl3ougc0m	f55qk1lj3vu	13	\N	\N	\N
+khsl3ougc0m	sax8q1gdyrl	13	\N	\N	\N
+142bcjz930y	cemfjrtdwn8	10	\N	\N	\N
+142bcjz930y	5q1m23ki1lz	11	\N	\N	\N
+142bcjz930y	hsknr3rh1n8	12	\N	\N	\N
+142bcjz930y	tlj9ek7mukt	13	\N	\N	\N
+142bcjz930y	f55qk1lj3vu	14	\N	\N	\N
+142bcjz930y	sax8q1gdyrl	14	\N	\N	\N
+sg5a15sy2m1	cemfjrtdwn8	11	\N	\N	\N
+sg5a15sy2m1	5q1m23ki1lz	12	\N	\N	\N
+sg5a15sy2m1	hsknr3rh1n8	13	\N	\N	\N
+sg5a15sy2m1	tlj9ek7mukt	14	\N	\N	\N
+sg5a15sy2m1	f55qk1lj3vu	15	\N	\N	\N
+sg5a15sy2m1	sax8q1gdyrl	15	\N	\N	\N
+kbh3q1u65uj	cemfjrtdwn8	12	\N	\N	\N
+kbh3q1u65uj	5q1m23ki1lz	13	\N	\N	\N
+kbh3q1u65uj	hsknr3rh1n8	14	\N	\N	\N
+kbh3q1u65uj	tlj9ek7mukt	15	\N	\N	\N
+kbh3q1u65uj	f55qk1lj3vu	16	\N	\N	\N
+kbh3q1u65uj	sax8q1gdyrl	16	\N	\N	\N
+nocobase-admin-menu	cemfjrtdwn8	13	\N	\N	\N
+nocobase-admin-menu	5q1m23ki1lz	14	\N	\N	\N
+nocobase-admin-menu	hsknr3rh1n8	15	\N	\N	\N
+nocobase-admin-menu	tlj9ek7mukt	16	\N	\N	\N
+nocobase-admin-menu	f55qk1lj3vu	17	\N	\N	\N
+nocobase-admin-menu	sax8q1gdyrl	17	\N	\N	\N
+cemfjrtdwn8	cemfjrtdwn8	0	f	properties	\N
+a4k4zl9ytdl	cemfjrtdwn8	1	\N	\N	1
+zx03fzxmlvd	zx03fzxmlvd	0	f	properties	\N
+9jnhxrmom8m	zx03fzxmlvd	1	\N	\N	1
+yoiep4r7ftx	yoiep4r7ftx	0	f	properties	\N
+zx03fzxmlvd	yoiep4r7ftx	1	\N	\N	1
+9jnhxrmom8m	yoiep4r7ftx	2	\N	\N	1
+f55qk1lj3vu	zx03fzxmlvd	2	\N	\N	\N
+f55qk1lj3vu	yoiep4r7ftx	3	\N	\N	\N
+tlj9ek7mukt	9jnhxrmom8m	2	\N	\N	\N
+tlj9ek7mukt	zx03fzxmlvd	3	\N	\N	\N
+tlj9ek7mukt	yoiep4r7ftx	4	\N	\N	\N
+hsknr3rh1n8	9jnhxrmom8m	3	\N	\N	\N
+hsknr3rh1n8	zx03fzxmlvd	4	\N	\N	\N
+hsknr3rh1n8	yoiep4r7ftx	5	\N	\N	\N
+5q1m23ki1lz	9jnhxrmom8m	4	\N	\N	\N
+5q1m23ki1lz	zx03fzxmlvd	5	\N	\N	\N
+5q1m23ki1lz	yoiep4r7ftx	6	\N	\N	\N
+cemfjrtdwn8	9jnhxrmom8m	5	\N	\N	\N
+cemfjrtdwn8	zx03fzxmlvd	6	\N	\N	\N
+cemfjrtdwn8	yoiep4r7ftx	7	\N	\N	\N
+a4k4zl9ytdl	9jnhxrmom8m	6	\N	\N	\N
+a4k4zl9ytdl	zx03fzxmlvd	7	\N	\N	\N
+a4k4zl9ytdl	yoiep4r7ftx	8	\N	\N	\N
+arkb72ap8ln	9jnhxrmom8m	7	\N	\N	\N
+arkb72ap8ln	zx03fzxmlvd	8	\N	\N	\N
+arkb72ap8ln	yoiep4r7ftx	9	\N	\N	\N
+oznpziwnb6g	9jnhxrmom8m	8	\N	\N	\N
+oznpziwnb6g	zx03fzxmlvd	9	\N	\N	\N
+oznpziwnb6g	yoiep4r7ftx	10	\N	\N	\N
+l99gh8anotl	9jnhxrmom8m	9	\N	\N	\N
+l99gh8anotl	zx03fzxmlvd	10	\N	\N	\N
+l99gh8anotl	yoiep4r7ftx	11	\N	\N	\N
+hbijj0dt6xf	9jnhxrmom8m	10	\N	\N	\N
+hbijj0dt6xf	zx03fzxmlvd	11	\N	\N	\N
+hbijj0dt6xf	yoiep4r7ftx	12	\N	\N	\N
+ecywx35zqw6	9jnhxrmom8m	11	\N	\N	\N
+ecywx35zqw6	zx03fzxmlvd	12	\N	\N	\N
+ecywx35zqw6	yoiep4r7ftx	13	\N	\N	\N
+a27j6849xjb	9jnhxrmom8m	12	\N	\N	\N
+a27j6849xjb	zx03fzxmlvd	13	\N	\N	\N
+a27j6849xjb	yoiep4r7ftx	14	\N	\N	\N
+bpbkl7jussc	9jnhxrmom8m	13	\N	\N	\N
+bpbkl7jussc	zx03fzxmlvd	14	\N	\N	\N
+bpbkl7jussc	yoiep4r7ftx	15	\N	\N	\N
+khsl3ougc0m	9jnhxrmom8m	14	\N	\N	\N
+khsl3ougc0m	zx03fzxmlvd	15	\N	\N	\N
+khsl3ougc0m	yoiep4r7ftx	16	\N	\N	\N
+142bcjz930y	9jnhxrmom8m	15	\N	\N	\N
+142bcjz930y	zx03fzxmlvd	16	\N	\N	\N
+142bcjz930y	yoiep4r7ftx	17	\N	\N	\N
+sg5a15sy2m1	9jnhxrmom8m	16	\N	\N	\N
+sg5a15sy2m1	zx03fzxmlvd	17	\N	\N	\N
+sg5a15sy2m1	yoiep4r7ftx	18	\N	\N	\N
+kbh3q1u65uj	9jnhxrmom8m	17	\N	\N	\N
+kbh3q1u65uj	zx03fzxmlvd	18	\N	\N	\N
+kbh3q1u65uj	yoiep4r7ftx	19	\N	\N	\N
+nocobase-admin-menu	9jnhxrmom8m	18	\N	\N	\N
+nocobase-admin-menu	zx03fzxmlvd	19	\N	\N	\N
+nocobase-admin-menu	yoiep4r7ftx	20	\N	\N	\N
+9jnhxrmom8m	9jnhxrmom8m	0	f	properties	\N
+f55qk1lj3vu	9jnhxrmom8m	1	\N	\N	1
+rvw4844epw6	rvw4844epw6	0	f	properties	\N
+q37kv05zrx3	rvw4844epw6	1	\N	\N	1
+talwbft3w4v	talwbft3w4v	0	f	properties	\N
+rvw4844epw6	talwbft3w4v	1	\N	\N	1
+q37kv05zrx3	talwbft3w4v	2	\N	\N	1
+f55qk1lj3vu	rvw4844epw6	2	\N	\N	\N
+f55qk1lj3vu	talwbft3w4v	3	\N	\N	\N
+tlj9ek7mukt	q37kv05zrx3	2	\N	\N	\N
+tlj9ek7mukt	rvw4844epw6	3	\N	\N	\N
+tlj9ek7mukt	talwbft3w4v	4	\N	\N	\N
+hsknr3rh1n8	q37kv05zrx3	3	\N	\N	\N
+hsknr3rh1n8	rvw4844epw6	4	\N	\N	\N
+hsknr3rh1n8	talwbft3w4v	5	\N	\N	\N
+5q1m23ki1lz	q37kv05zrx3	4	\N	\N	\N
+5q1m23ki1lz	rvw4844epw6	5	\N	\N	\N
+5q1m23ki1lz	talwbft3w4v	6	\N	\N	\N
+cemfjrtdwn8	q37kv05zrx3	5	\N	\N	\N
+cemfjrtdwn8	rvw4844epw6	6	\N	\N	\N
+cemfjrtdwn8	talwbft3w4v	7	\N	\N	\N
+a4k4zl9ytdl	q37kv05zrx3	6	\N	\N	\N
+a4k4zl9ytdl	rvw4844epw6	7	\N	\N	\N
+a4k4zl9ytdl	talwbft3w4v	8	\N	\N	\N
+arkb72ap8ln	q37kv05zrx3	7	\N	\N	\N
+arkb72ap8ln	rvw4844epw6	8	\N	\N	\N
+arkb72ap8ln	talwbft3w4v	9	\N	\N	\N
+oznpziwnb6g	q37kv05zrx3	8	\N	\N	\N
+oznpziwnb6g	rvw4844epw6	9	\N	\N	\N
+oznpziwnb6g	talwbft3w4v	10	\N	\N	\N
+l99gh8anotl	q37kv05zrx3	9	\N	\N	\N
+l99gh8anotl	rvw4844epw6	10	\N	\N	\N
+l99gh8anotl	talwbft3w4v	11	\N	\N	\N
+hbijj0dt6xf	q37kv05zrx3	10	\N	\N	\N
+hbijj0dt6xf	rvw4844epw6	11	\N	\N	\N
+hbijj0dt6xf	talwbft3w4v	12	\N	\N	\N
+ecywx35zqw6	q37kv05zrx3	11	\N	\N	\N
+ecywx35zqw6	rvw4844epw6	12	\N	\N	\N
+ecywx35zqw6	talwbft3w4v	13	\N	\N	\N
+a27j6849xjb	q37kv05zrx3	12	\N	\N	\N
+a27j6849xjb	rvw4844epw6	13	\N	\N	\N
+a27j6849xjb	talwbft3w4v	14	\N	\N	\N
+bpbkl7jussc	q37kv05zrx3	13	\N	\N	\N
+bpbkl7jussc	rvw4844epw6	14	\N	\N	\N
+bpbkl7jussc	talwbft3w4v	15	\N	\N	\N
+khsl3ougc0m	q37kv05zrx3	14	\N	\N	\N
+khsl3ougc0m	rvw4844epw6	15	\N	\N	\N
+khsl3ougc0m	talwbft3w4v	16	\N	\N	\N
+142bcjz930y	q37kv05zrx3	15	\N	\N	\N
+142bcjz930y	rvw4844epw6	16	\N	\N	\N
+142bcjz930y	talwbft3w4v	17	\N	\N	\N
+sg5a15sy2m1	q37kv05zrx3	16	\N	\N	\N
+sg5a15sy2m1	rvw4844epw6	17	\N	\N	\N
+sg5a15sy2m1	talwbft3w4v	18	\N	\N	\N
+kbh3q1u65uj	q37kv05zrx3	17	\N	\N	\N
+kbh3q1u65uj	rvw4844epw6	18	\N	\N	\N
+kbh3q1u65uj	talwbft3w4v	19	\N	\N	\N
+nocobase-admin-menu	q37kv05zrx3	18	\N	\N	\N
+nocobase-admin-menu	rvw4844epw6	19	\N	\N	\N
+nocobase-admin-menu	talwbft3w4v	20	\N	\N	\N
+q37kv05zrx3	q37kv05zrx3	0	f	properties	\N
+f55qk1lj3vu	q37kv05zrx3	1	\N	\N	2
+s6kohk8xpri	s6kohk8xpri	0	f	properties	\N
+f3yxffbn75w	s6kohk8xpri	1	\N	\N	1
+x5mag7i3h6u	x5mag7i3h6u	0	f	properties	\N
+s6kohk8xpri	x5mag7i3h6u	1	\N	\N	1
+f3yxffbn75w	x5mag7i3h6u	2	\N	\N	1
+f55qk1lj3vu	s6kohk8xpri	2	\N	\N	\N
+f55qk1lj3vu	x5mag7i3h6u	3	\N	\N	\N
+tlj9ek7mukt	f3yxffbn75w	2	\N	\N	\N
+tlj9ek7mukt	s6kohk8xpri	3	\N	\N	\N
+tlj9ek7mukt	x5mag7i3h6u	4	\N	\N	\N
+hsknr3rh1n8	f3yxffbn75w	3	\N	\N	\N
+hsknr3rh1n8	s6kohk8xpri	4	\N	\N	\N
+hsknr3rh1n8	x5mag7i3h6u	5	\N	\N	\N
+5q1m23ki1lz	f3yxffbn75w	4	\N	\N	\N
+5q1m23ki1lz	s6kohk8xpri	5	\N	\N	\N
+5q1m23ki1lz	x5mag7i3h6u	6	\N	\N	\N
+cemfjrtdwn8	f3yxffbn75w	5	\N	\N	\N
+cemfjrtdwn8	s6kohk8xpri	6	\N	\N	\N
+cemfjrtdwn8	x5mag7i3h6u	7	\N	\N	\N
+a4k4zl9ytdl	f3yxffbn75w	6	\N	\N	\N
+a4k4zl9ytdl	s6kohk8xpri	7	\N	\N	\N
+a4k4zl9ytdl	x5mag7i3h6u	8	\N	\N	\N
+arkb72ap8ln	f3yxffbn75w	7	\N	\N	\N
+arkb72ap8ln	s6kohk8xpri	8	\N	\N	\N
+arkb72ap8ln	x5mag7i3h6u	9	\N	\N	\N
+oznpziwnb6g	f3yxffbn75w	8	\N	\N	\N
+oznpziwnb6g	s6kohk8xpri	9	\N	\N	\N
+oznpziwnb6g	x5mag7i3h6u	10	\N	\N	\N
+l99gh8anotl	f3yxffbn75w	9	\N	\N	\N
+l99gh8anotl	s6kohk8xpri	10	\N	\N	\N
+l99gh8anotl	x5mag7i3h6u	11	\N	\N	\N
+hbijj0dt6xf	f3yxffbn75w	10	\N	\N	\N
+hbijj0dt6xf	s6kohk8xpri	11	\N	\N	\N
+hbijj0dt6xf	x5mag7i3h6u	12	\N	\N	\N
+ecywx35zqw6	f3yxffbn75w	11	\N	\N	\N
+ecywx35zqw6	s6kohk8xpri	12	\N	\N	\N
+ecywx35zqw6	x5mag7i3h6u	13	\N	\N	\N
+a27j6849xjb	f3yxffbn75w	12	\N	\N	\N
+a27j6849xjb	s6kohk8xpri	13	\N	\N	\N
+a27j6849xjb	x5mag7i3h6u	14	\N	\N	\N
+bpbkl7jussc	f3yxffbn75w	13	\N	\N	\N
+bpbkl7jussc	s6kohk8xpri	14	\N	\N	\N
+bpbkl7jussc	x5mag7i3h6u	15	\N	\N	\N
+khsl3ougc0m	f3yxffbn75w	14	\N	\N	\N
+khsl3ougc0m	s6kohk8xpri	15	\N	\N	\N
+khsl3ougc0m	x5mag7i3h6u	16	\N	\N	\N
+142bcjz930y	f3yxffbn75w	15	\N	\N	\N
+142bcjz930y	s6kohk8xpri	16	\N	\N	\N
+142bcjz930y	x5mag7i3h6u	17	\N	\N	\N
+sg5a15sy2m1	f3yxffbn75w	16	\N	\N	\N
+sg5a15sy2m1	s6kohk8xpri	17	\N	\N	\N
+sg5a15sy2m1	x5mag7i3h6u	18	\N	\N	\N
+kbh3q1u65uj	f3yxffbn75w	17	\N	\N	\N
+kbh3q1u65uj	s6kohk8xpri	18	\N	\N	\N
+kbh3q1u65uj	x5mag7i3h6u	19	\N	\N	\N
+nocobase-admin-menu	f3yxffbn75w	18	\N	\N	\N
+nocobase-admin-menu	s6kohk8xpri	19	\N	\N	\N
+nocobase-admin-menu	x5mag7i3h6u	20	\N	\N	\N
+f3yxffbn75w	f3yxffbn75w	0	f	properties	\N
+f55qk1lj3vu	f3yxffbn75w	1	\N	\N	3
+xnfbfl18mqy	xnfbfl18mqy	0	f	properties	\N
+pc2tgaswflo	xnfbfl18mqy	1	\N	\N	1
+8ctvczcynfj	8ctvczcynfj	0	f	properties	\N
+xnfbfl18mqy	8ctvczcynfj	1	\N	\N	1
+pc2tgaswflo	8ctvczcynfj	2	\N	\N	1
+f55qk1lj3vu	xnfbfl18mqy	2	\N	\N	\N
+f55qk1lj3vu	8ctvczcynfj	3	\N	\N	\N
+tlj9ek7mukt	pc2tgaswflo	2	\N	\N	\N
+tlj9ek7mukt	xnfbfl18mqy	3	\N	\N	\N
+tlj9ek7mukt	8ctvczcynfj	4	\N	\N	\N
+hsknr3rh1n8	pc2tgaswflo	3	\N	\N	\N
+hsknr3rh1n8	xnfbfl18mqy	4	\N	\N	\N
+hsknr3rh1n8	8ctvczcynfj	5	\N	\N	\N
+5q1m23ki1lz	pc2tgaswflo	4	\N	\N	\N
+5q1m23ki1lz	xnfbfl18mqy	5	\N	\N	\N
+5q1m23ki1lz	8ctvczcynfj	6	\N	\N	\N
+cemfjrtdwn8	pc2tgaswflo	5	\N	\N	\N
+cemfjrtdwn8	xnfbfl18mqy	6	\N	\N	\N
+cemfjrtdwn8	8ctvczcynfj	7	\N	\N	\N
+a4k4zl9ytdl	pc2tgaswflo	6	\N	\N	\N
+a4k4zl9ytdl	xnfbfl18mqy	7	\N	\N	\N
+a4k4zl9ytdl	8ctvczcynfj	8	\N	\N	\N
+arkb72ap8ln	pc2tgaswflo	7	\N	\N	\N
+arkb72ap8ln	xnfbfl18mqy	8	\N	\N	\N
+arkb72ap8ln	8ctvczcynfj	9	\N	\N	\N
+oznpziwnb6g	pc2tgaswflo	8	\N	\N	\N
+oznpziwnb6g	xnfbfl18mqy	9	\N	\N	\N
+oznpziwnb6g	8ctvczcynfj	10	\N	\N	\N
+l99gh8anotl	pc2tgaswflo	9	\N	\N	\N
+l99gh8anotl	xnfbfl18mqy	10	\N	\N	\N
+l99gh8anotl	8ctvczcynfj	11	\N	\N	\N
+hbijj0dt6xf	pc2tgaswflo	10	\N	\N	\N
+hbijj0dt6xf	xnfbfl18mqy	11	\N	\N	\N
+hbijj0dt6xf	8ctvczcynfj	12	\N	\N	\N
+ecywx35zqw6	pc2tgaswflo	11	\N	\N	\N
+ecywx35zqw6	xnfbfl18mqy	12	\N	\N	\N
+ecywx35zqw6	8ctvczcynfj	13	\N	\N	\N
+a27j6849xjb	pc2tgaswflo	12	\N	\N	\N
+a27j6849xjb	xnfbfl18mqy	13	\N	\N	\N
+a27j6849xjb	8ctvczcynfj	14	\N	\N	\N
+bpbkl7jussc	pc2tgaswflo	13	\N	\N	\N
+bpbkl7jussc	xnfbfl18mqy	14	\N	\N	\N
+bpbkl7jussc	8ctvczcynfj	15	\N	\N	\N
+khsl3ougc0m	pc2tgaswflo	14	\N	\N	\N
+khsl3ougc0m	xnfbfl18mqy	15	\N	\N	\N
+khsl3ougc0m	8ctvczcynfj	16	\N	\N	\N
+142bcjz930y	pc2tgaswflo	15	\N	\N	\N
+142bcjz930y	xnfbfl18mqy	16	\N	\N	\N
+142bcjz930y	8ctvczcynfj	17	\N	\N	\N
+sg5a15sy2m1	pc2tgaswflo	16	\N	\N	\N
+sg5a15sy2m1	xnfbfl18mqy	17	\N	\N	\N
+sg5a15sy2m1	8ctvczcynfj	18	\N	\N	\N
+kbh3q1u65uj	pc2tgaswflo	17	\N	\N	\N
+kbh3q1u65uj	xnfbfl18mqy	18	\N	\N	\N
+kbh3q1u65uj	8ctvczcynfj	19	\N	\N	\N
+nocobase-admin-menu	pc2tgaswflo	18	\N	\N	\N
+nocobase-admin-menu	xnfbfl18mqy	19	\N	\N	\N
+nocobase-admin-menu	8ctvczcynfj	20	\N	\N	\N
+pc2tgaswflo	pc2tgaswflo	0	f	properties	\N
+f55qk1lj3vu	pc2tgaswflo	1	\N	\N	4
+qvtkw7s9vrj	qvtkw7s9vrj	0	f	properties	\N
+tlj9ek7mukt	qvtkw7s9vrj	2	\N	\N	\N
+hsknr3rh1n8	qvtkw7s9vrj	3	\N	\N	\N
+5q1m23ki1lz	qvtkw7s9vrj	4	\N	\N	\N
+cemfjrtdwn8	qvtkw7s9vrj	5	\N	\N	\N
+a4k4zl9ytdl	qvtkw7s9vrj	6	\N	\N	\N
+arkb72ap8ln	qvtkw7s9vrj	7	\N	\N	\N
+oznpziwnb6g	qvtkw7s9vrj	8	\N	\N	\N
+l99gh8anotl	qvtkw7s9vrj	9	\N	\N	\N
+hbijj0dt6xf	qvtkw7s9vrj	10	\N	\N	\N
+ecywx35zqw6	qvtkw7s9vrj	11	\N	\N	\N
+a27j6849xjb	qvtkw7s9vrj	12	\N	\N	\N
+bpbkl7jussc	qvtkw7s9vrj	13	\N	\N	\N
+khsl3ougc0m	qvtkw7s9vrj	14	\N	\N	\N
+142bcjz930y	qvtkw7s9vrj	15	\N	\N	\N
+sg5a15sy2m1	qvtkw7s9vrj	16	\N	\N	\N
+kbh3q1u65uj	qvtkw7s9vrj	17	\N	\N	\N
+nocobase-admin-menu	qvtkw7s9vrj	18	\N	\N	\N
+sax8q1gdyrl	qvtkw7s9vrj	1	\N	\N	1
+qiyh0mpz1t2	qiyh0mpz1t2	0	f	properties	\N
+a27j6849xjb	qiyh0mpz1t2	2	\N	\N	\N
+bpbkl7jussc	qiyh0mpz1t2	3	\N	\N	\N
+khsl3ougc0m	qiyh0mpz1t2	4	\N	\N	\N
+142bcjz930y	qiyh0mpz1t2	5	\N	\N	\N
+sg5a15sy2m1	qiyh0mpz1t2	6	\N	\N	\N
+kbh3q1u65uj	qiyh0mpz1t2	7	\N	\N	\N
+nocobase-admin-menu	qiyh0mpz1t2	8	\N	\N	\N
+ecywx35zqw6	qiyh0mpz1t2	1	\N	\N	2
+lakw6hh3r2z	lakw6hh3r2z	0	f	properties	\N
+f4f8g66lled	lakw6hh3r2z	1	\N	\N	1
+44890jxlzup	lakw6hh3r2z	2	\N	\N	\N
+xa635tbvi5c	f4f8g66lled	2	\N	\N	\N
+xa635tbvi5c	lakw6hh3r2z	3	\N	\N	\N
+4dgysxrfq7o	f4f8g66lled	3	\N	\N	\N
+4dgysxrfq7o	lakw6hh3r2z	4	\N	\N	\N
+sf8fl742bgm	f4f8g66lled	4	\N	\N	\N
+sf8fl742bgm	lakw6hh3r2z	5	\N	\N	\N
+sptin92gm5m	f4f8g66lled	5	\N	\N	\N
+sptin92gm5m	lakw6hh3r2z	6	\N	\N	\N
+i0lnhtci4u6	f4f8g66lled	6	\N	\N	\N
+i0lnhtci4u6	lakw6hh3r2z	7	\N	\N	\N
+swxvjglsevf	f4f8g66lled	7	\N	\N	\N
+swxvjglsevf	lakw6hh3r2z	8	\N	\N	\N
+nsueicidb31	f4f8g66lled	8	\N	\N	\N
+nsueicidb31	lakw6hh3r2z	9	\N	\N	\N
+nocobase-admin-menu	f4f8g66lled	9	\N	\N	\N
+nocobase-admin-menu	lakw6hh3r2z	10	\N	\N	\N
+f4f8g66lled	f4f8g66lled	0	f	properties	\N
+44890jxlzup	f4f8g66lled	1	\N	\N	8
 \.
 
 
 --
--- TOC entry 3985 (class 0 OID 18106)
--- Dependencies: 297
+-- TOC entry 4004 (class 0 OID 20907)
+-- Dependencies: 298
 -- Data for Name: uiSchemas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -17639,6 +18749,7 @@ t5a2xk7thpn	1327khvsoaq	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 m9ru2u1mst5	mjuoq59p08i	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 wtu8v3wspnv	69n7eixy9f7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 oi4cs4tbslz	construction_site	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"proposes.construction_site","x-component-props":{},"x-app-version":"1.3.52"}
+xih5ingg3a8	m1ol9mw9862	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
 sqveon4lmdc	9f2hiwn3fwh	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Submit\\") }}","x-action":"submit","x-component":"Action","x-use-component-props":"useCreateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:createSubmit","x-component-props":{"type":"primary","htmlType":"submit"},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.52"}
 f5gqw6rcwi2	dna6pgi1659	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
 edrpkkzgupe	status	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"proposes.status","x-component":"CollectionField","x-component-props":{"style":{"width":"100%"},"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
@@ -17671,6 +18782,7 @@ ajm7jf8wbgk	p7hr0kegxx9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 mn6suiqsq19	jkgo120wuw9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 netkmp5tosm	l7lm0ny2gai	{"type":"void","x-component":"Grid","x-initializer":"assignFieldValuesForm:configureFields"}
 agmpv6q8rox	juducfqox3n	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+1b7p47palcf	qp6y8l500bc	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
 uj9cahk9uzq	from_bank_name	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"transactions.from_bank_name","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
 hnj686cgnhr	x7i5xmr7ntw	{"x-uid":"hnj686cgnhr","name":"x7i5xmr7ntw","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52","title":"Bank"}
 ey3u6lhj0uv	55n8zhkxsk5	{"x-uid":"ey3u6lhj0uv","name":"55n8zhkxsk5","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52","x-component-props":{"fixed":"none"}}
@@ -18079,12 +19191,88 @@ bmrnlumf9wr	u1b6g9t3kpo	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ 
 gb0us11dnkk	2o3iegw9fy0	{"x-uid":"gb0us11dnkk","name":"2o3iegw9fy0","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52","x-component-props":{"width":100}}
 ix8vitsau4c	bqq9xsshio9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
 407ix2kv519	contractAddress	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"smart_contracts.contractAddress","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
+tld2f837bvc	pjqdd5y01tr	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"CardItem","x-decorator":"DataBlockProvider","x-decorator-props":{"Web3Clienteditor":{},"dataSource":"main","collection":"smart_contracts","action":"list"},"x-settings":"blockSettings:Web3Clienteditor","x-toolbar":"BlockSchemaToolbar","x-app-version":"1.3.52"}
+wf034k0e7ox	Web3Clienteditor	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Web3ClientEditor","x-use-component-props":"useCodeBlockProps","x-app-version":"1.3.52"}
+kbh3q1u65uj	9zxkegrd2ix	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Cứu trợ","x-component":"Menu.Item","x-decorator":"ACLMenuItemProvider","x-component-props":{"icon":"borderbottomoutlined"},"x-server-hooks":[{"type":"onSelfCreate","method":"bindMenuToRole"},{"type":"onSelfSave","method":"extractTextToLocale"}],"x-app-version":"1.3.52"}
+sg5a15sy2m1	page	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page","x-app-version":"1.3.52"}
+142bcjz930y	2men3x4dojj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"page:addBlock","x-app-version":"1.3.52"}
+khsl3ougc0m	fu2b7os3fsh	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+bpbkl7jussc	kw6qgg1z7dp	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+a27j6849xjb	meolqbryihb	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableBlockProvider","x-acl-action":"transactions_config:list","x-use-decorator-props":"useTableBlockDecoratorProps","x-decorator-props":{"collection":"transactions_config","dataSource":"main","action":"list","params":{"pageSize":20},"rowKey":"id","showIndex":true,"dragSort":false},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:table","x-component":"CardItem","x-filter-targets":[],"x-app-version":"1.3.52"}
+ecywx35zqw6	actions	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"table:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":"var(--nb-spacing)"}},"x-app-version":"1.3.52"}
+k9fl5d42e26	vkp9pmrd4wb	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-initializer":"table:configureColumns","x-component":"TableV2","x-use-component-props":"useTableBlockProps","x-component-props":{"rowKey":"id","rowSelection":{"type":"checkbox"}},"x-app-version":"1.3.52"}
+fkz1g6wio1q	juk8vxkfecu	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
+nq6sl5ftdxv	contractAddress	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"transactions_config.contractAddress","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
+iak0ks4tzxs	26je9ucd7sz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
+tulkqm0ztf7	provider	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"transactions_config.provider","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
+hbijj0dt6xf	6z1ttgnelcm	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-action":"create","x-acl-action":"create","title":"{{t('Add new')}}","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:addNew","x-component":"Action","x-decorator":"ACLActionProvider","x-component-props":{"openMode":"drawer","type":"primary","component":"CreateRecordAction","icon":"PlusOutlined"},"x-action-context":{"dataSource":"main","collection":"transactions_config"},"x-align":"right","x-acl-action-props":{"skipScopeCheck":true},"x-app-version":"1.3.52"}
+l99gh8anotl	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Add record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"},"x-app-version":"1.3.52"}
+oznpziwnb6g	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab","x-initializer-props":{"gridInitializer":"popup:addNew:addBlock"},"x-app-version":"1.3.52"}
+arkb72ap8ln	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Add new\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{},"x-app-version":"1.3.52"}
+a4k4zl9ytdl	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:addNew:addBlock","x-app-version":"1.3.52"}
+cemfjrtdwn8	e7c7e5k5km0	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+5q1m23ki1lz	m95arwlxnqv	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+hsknr3rh1n8	5rfsatrimoq	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action-props":{"skipScopeCheck":true},"x-acl-action":"transactions_config:create","x-decorator":"FormBlockProvider","x-use-decorator-props":"useCreateFormBlockDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"transactions_config"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:createForm","x-component":"CardItem","x-app-version":"1.3.52"}
+tlj9ek7mukt	b7gtrqo0gec	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"FormV2","x-use-component-props":"useCreateFormBlockProps","x-app-version":"1.3.52"}
+f55qk1lj3vu	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"form:configureFields","x-app-version":"1.3.52"}
+sax8q1gdyrl	2b39aqzejwo	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"createForm:configureActions","x-component":"ActionBar","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.52"}
+2dd2znq967b	4idjfr24jgh	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+zhtteocria4	4rclifqbi54	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+5e1kasz6fhv	fgxntdmsn5i	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableBlockProvider","x-acl-action":"Video:list","x-use-decorator-props":"useTableBlockDecoratorProps","x-decorator-props":{"collection":"Video","dataSource":"main","action":"list","params":{"pageSize":20},"rowKey":"id","showIndex":true,"dragSort":false},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:table","x-component":"CardItem","x-filter-targets":[],"x-app-version":"1.3.52"}
+glif722m9y4	actions	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"table:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":"var(--nb-spacing)"}},"x-app-version":"1.3.52"}
+dgmw5b0z4sr	n4dq0yaderc	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-initializer":"table:configureColumns","x-component":"TableV2","x-use-component-props":"useTableBlockProps","x-component-props":{"rowKey":"id","rowSelection":{"type":"checkbox"}},"x-app-version":"1.3.52"}
+wzqor5dsnsi	actions	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Actions\\") }}","x-action-column":"actions","x-decorator":"TableV2.Column.ActionBar","x-component":"TableV2.Column","x-toolbar":"TableColumnSchemaToolbar","x-initializer":"table:configureItemActions","x-settings":"fieldSettings:TableColumn","x-toolbar-props":{"initializer":"table:configureItemActions"},"x-app-version":"1.3.52"}
+sipx3572wld	ti4gs25yjyk	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DndContext","x-component":"Space","x-component-props":{"split":"|"},"x-app-version":"1.3.52"}
+pfn9wwqwjq1	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Upload files\\") }}","x-component":"Action.Container","x-app-version":"1.3.52"}
+5lsuzvqf0pt	upload	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Upload files\\") }}","x-component":"Upload.DraggerV2","x-use-component-props":"useUploadFiles","x-component-props":{"height":"50vh","multiple":true,"listType":"picture"},"x-app-version":"1.3.52"}
+7d4s14p5sq9	20i6jys8rn6	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Refresh\\") }}","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined"},"x-align":"right","type":"void","x-app-version":"1.3.52"}
+umixbn443nx	wmxydugcz9k	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Delete\\") }}","x-action":"destroy","x-component":"Action","x-use-component-props":"useBulkDestroyActionProps","x-component-props":{"icon":"DeleteOutlined","confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"}},"x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:bulkDelete","x-decorator":"ACLActionProvider","x-acl-action-props":{"skipScopeCheck":true},"x-action-settings":{"triggerWorkflows":[]},"x-acl-action":"Video:destroy","x-align":"right","type":"void","x-app-version":"1.3.52"}
+hf7j8fzjn1x	hmgx3jfqfrg	{"x-uid":"hf7j8fzjn1x","name":"hmgx3jfqfrg","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-action":"create","title":"{{t('Upload')}}","x-designer":"Action.Designer","x-component":"Action","x-decorator":"ACLActionProvider","x-component-props":{"openMode":"drawer","type":"primary","icon":"UploadOutlined"},"x-align":"right","x-acl-action-props":{"skipScopeCheck":true},"x-app-version":"1.3.52","x-action-context":{"dataSource":"main","collection":"Video"}}
+9jnhxrmom8m	6u4ornn3w2r	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+zx03fzxmlvd	wopkqvgxumu	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+yoiep4r7ftx	abi	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions_config.abi","x-component-props":{},"x-app-version":"1.3.52"}
+q37kv05zrx3	qaw6ukej343	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+rvw4844epw6	40mlgz9w5is	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+talwbft3w4v	contractAddress	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions_config.contractAddress","x-component-props":{},"x-app-version":"1.3.52"}
+f3yxffbn75w	nc8psfdr1wd	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+s6kohk8xpri	58v2qbiam03	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+x5mag7i3h6u	private_key	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions_config.private_key","x-component-props":{},"x-app-version":"1.3.52"}
+pc2tgaswflo	4174oo5hv5e	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+xnfbfl18mqy	38qurd3lb17	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+8ctvczcynfj	provider	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions_config.provider","x-component-props":{},"x-app-version":"1.3.52"}
+qvtkw7s9vrj	unkal05kiuq	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Submit\\") }}","x-action":"submit","x-component":"Action","x-use-component-props":"useCreateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:createSubmit","x-component-props":{"type":"primary","htmlType":"submit"},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.52"}
+qiyh0mpz1t2	vs18f7k1znt	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Delete\\") }}","x-action":"destroy","x-component":"Action","x-use-component-props":"useBulkDestroyActionProps","x-component-props":{"icon":"DeleteOutlined","confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"}},"x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:bulkDelete","x-decorator":"ACLActionProvider","x-acl-action-props":{"skipScopeCheck":true},"x-action-settings":{"triggerWorkflows":[]},"x-acl-action":"transactions_config:destroy","x-align":"right","type":"void","x-app-version":"1.3.52"}
+ftj9sxf4b7z	ucoun498oqh	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
+0kl7cje1o4h	title	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"Video.title","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
+7w4hhv3efmg	taq1e1jk873	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
+qt97wounrdr	filename	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"Video.filename","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
+0l0ezy9xb0n	ru07x6mvvnr	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
+1dqmkmzw2v1	extname	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"Video.extname","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
+n0xi40xzdm1	v69qz2wksq6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
+oyqk8o5r6zy	size	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"Video.size","x-component":"CollectionField","x-component-props":{},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
+9rrg8pfbccc	70n1x0pczts	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
+55yybfjcg5y	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"View record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"}}
+fwfyhvsa2o5	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab"}
+wts93e1j6kk	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Details\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{}}
+slfdwemrlfx	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock"}
+3iiq1h5p8d3	jlnz7po7j1l	{"x-uid":"3iiq1h5p8d3","name":"jlnz7po7j1l","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"View\\") }}","x-action":"view","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:view","x-component":"Action.Link","x-component-props":{"openMode":"modal","openSize":"large"},"x-action-context":{"dataSource":"main","collection":"Video"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
+0o54vuebia2	url	{"x-uid":"0o54vuebia2","name":"url","_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"Video.url","x-component":"CollectionField","x-component-props":{"component":"Input.Preview","size":"large"},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
+f4f8g66lled	avq5ogh4uh3	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.52"}
+lakw6hh3r2z	id	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"funds.id","x-component":"CollectionField","x-component-props":{},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.52"}
+8dyg7g3yrio	xnna0a7dg3x	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Video","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{},"x-app-version":"1.3.52"}
+k307oz0mluc	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock","x-app-version":"1.3.52"}
+d06pa8wtci4	80cyvi1ytt4	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+atuo340cp9o	v880wz0hjab	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+z6ga4ysmlj7	hcw3b8xmccy	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-settings":"blockSettings:iframe","x-decorator":"BlockItem","x-decorator-props":{"name":"iframe"},"x-component":"Iframe","x-component-props":{},"x-app-version":"1.3.52"}
+j85xhz1vxge	i5pg22dhsml	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.52"}
+alkhbhi6y0u	ayu8n38sros	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.52"}
+qo25bzrk9zp	j97y2n4iyum	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-settings":"blockSettings:iframe","x-decorator":"BlockItem","x-decorator-props":{"name":"iframe"},"x-component":"Iframe","x-component-props":{},"x-app-version":"1.3.52"}
 \.
 
 
 --
--- TOC entry 3986 (class 0 OID 18112)
--- Dependencies: 298
+-- TOC entry 4005 (class 0 OID 20913)
+-- Dependencies: 299
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -18094,8 +19282,8 @@ COPY public.users (id, "createdAt", "updatedAt", nickname, username, email, phon
 
 
 --
--- TOC entry 3987 (class 0 OID 18118)
--- Dependencies: 299
+-- TOC entry 4006 (class 0 OID 20919)
+-- Dependencies: 300
 -- Data for Name: usersAuthenticators; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -18104,8 +19292,8 @@ COPY public."usersAuthenticators" ("createdAt", "updatedAt", authenticator, "use
 
 
 --
--- TOC entry 3989 (class 0 OID 18127)
--- Dependencies: 301
+-- TOC entry 4008 (class 0 OID 20928)
+-- Dependencies: 302
 -- Data for Name: users_jobs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -18114,8 +19302,8 @@ COPY public.users_jobs (id, "createdAt", "updatedAt", "jobId", "userId", "execut
 
 
 --
--- TOC entry 3991 (class 0 OID 18133)
--- Dependencies: 303
+-- TOC entry 4010 (class 0 OID 20934)
+-- Dependencies: 304
 -- Data for Name: verifications; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -18124,8 +19312,8 @@ COPY public.verifications (id, "createdAt", "updatedAt", type, receiver, status,
 
 
 --
--- TOC entry 3992 (class 0 OID 18139)
--- Dependencies: 304
+-- TOC entry 4011 (class 0 OID 20940)
+-- Dependencies: 305
 -- Data for Name: verifications_providers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -18134,8 +19322,8 @@ COPY public.verifications_providers (id, "createdAt", "updatedAt", title, type, 
 
 
 --
--- TOC entry 3993 (class 0 OID 18144)
--- Dependencies: 305
+-- TOC entry 4012 (class 0 OID 20945)
+-- Dependencies: 306
 -- Data for Name: workflows; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -18150,7 +19338,16 @@ COPY public.workflows (id, "createdAt", "updatedAt", key, title, enabled, descri
 
 
 --
--- TOC entry 4048 (class 0 OID 0)
+-- TOC entry 4072 (class 0 OID 0)
+-- Dependencies: 308
+-- Name: Video_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Video_id_seq"', 2, true);
+
+
+--
+-- TOC entry 4073 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: apiKeys_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18159,16 +19356,16 @@ SELECT pg_catalog.setval('public."apiKeys_id_seq"', 1, false);
 
 
 --
--- TOC entry 4049 (class 0 OID 0)
+-- TOC entry 4074 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: applicationPlugins_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."applicationPlugins_id_seq"', 74, true);
+SELECT pg_catalog.setval('public."applicationPlugins_id_seq"', 75, true);
 
 
 --
--- TOC entry 4050 (class 0 OID 0)
+-- TOC entry 4075 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: applicationVersion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18177,7 +19374,7 @@ SELECT pg_catalog.setval('public."applicationVersion_id_seq"', 1, true);
 
 
 --
--- TOC entry 4051 (class 0 OID 0)
+-- TOC entry 4076 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: attachments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18186,7 +19383,7 @@ SELECT pg_catalog.setval('public.attachments_id_seq', 36, true);
 
 
 --
--- TOC entry 4052 (class 0 OID 0)
+-- TOC entry 4077 (class 0 OID 0)
 -- Dependencies: 226
 -- Name: authenticators_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18195,7 +19392,7 @@ SELECT pg_catalog.setval('public.authenticators_id_seq', 1, true);
 
 
 --
--- TOC entry 4053 (class 0 OID 0)
+-- TOC entry 4078 (class 0 OID 0)
 -- Dependencies: 229
 -- Name: collectionCategories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18204,7 +19401,7 @@ SELECT pg_catalog.setval('public."collectionCategories_id_seq"', 1, false);
 
 
 --
--- TOC entry 4054 (class 0 OID 0)
+-- TOC entry 4079 (class 0 OID 0)
 -- Dependencies: 240
 -- Name: dataSourcesRolesResourcesActions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18213,7 +19410,7 @@ SELECT pg_catalog.setval('public."dataSourcesRolesResourcesActions_id_seq"', 1, 
 
 
 --
--- TOC entry 4055 (class 0 OID 0)
+-- TOC entry 4080 (class 0 OID 0)
 -- Dependencies: 242
 -- Name: dataSourcesRolesResourcesScopes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18222,7 +19419,7 @@ SELECT pg_catalog.setval('public."dataSourcesRolesResourcesScopes_id_seq"', 2, t
 
 
 --
--- TOC entry 4056 (class 0 OID 0)
+-- TOC entry 4081 (class 0 OID 0)
 -- Dependencies: 243
 -- Name: dataSourcesRolesResources_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18231,7 +19428,7 @@ SELECT pg_catalog.setval('public."dataSourcesRolesResources_id_seq"', 1, false);
 
 
 --
--- TOC entry 4057 (class 0 OID 0)
+-- TOC entry 4082 (class 0 OID 0)
 -- Dependencies: 245
 -- Name: executions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18240,7 +19437,7 @@ SELECT pg_catalog.setval('public.executions_id_seq', 49, true);
 
 
 --
--- TOC entry 4058 (class 0 OID 0)
+-- TOC entry 4083 (class 0 OID 0)
 -- Dependencies: 248
 -- Name: flow_nodes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18249,7 +19446,7 @@ SELECT pg_catalog.setval('public.flow_nodes_id_seq', 81, true);
 
 
 --
--- TOC entry 4059 (class 0 OID 0)
+-- TOC entry 4084 (class 0 OID 0)
 -- Dependencies: 250
 -- Name: funds_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18258,7 +19455,7 @@ SELECT pg_catalog.setval('public.funds_id_seq', 38, true);
 
 
 --
--- TOC entry 4060 (class 0 OID 0)
+-- TOC entry 4085 (class 0 OID 0)
 -- Dependencies: 252
 -- Name: hello_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18267,7 +19464,7 @@ SELECT pg_catalog.setval('public.hello_id_seq', 1, false);
 
 
 --
--- TOC entry 4061 (class 0 OID 0)
+-- TOC entry 4086 (class 0 OID 0)
 -- Dependencies: 255
 -- Name: images_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18276,7 +19473,7 @@ SELECT pg_catalog.setval('public.images_id_seq', 1, false);
 
 
 --
--- TOC entry 4062 (class 0 OID 0)
+-- TOC entry 4087 (class 0 OID 0)
 -- Dependencies: 257
 -- Name: jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18285,7 +19482,7 @@ SELECT pg_catalog.setval('public.jobs_id_seq', 135, true);
 
 
 --
--- TOC entry 4063 (class 0 OID 0)
+-- TOC entry 4088 (class 0 OID 0)
 -- Dependencies: 262
 -- Name: projects_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18294,7 +19491,7 @@ SELECT pg_catalog.setval('public.projects_id_seq', 43, true);
 
 
 --
--- TOC entry 4064 (class 0 OID 0)
+-- TOC entry 4089 (class 0 OID 0)
 -- Dependencies: 264
 -- Name: proposes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18303,7 +19500,7 @@ SELECT pg_catalog.setval('public.proposes_id_seq', 23, true);
 
 
 --
--- TOC entry 4065 (class 0 OID 0)
+-- TOC entry 4090 (class 0 OID 0)
 -- Dependencies: 268
 -- Name: rolesResourcesActions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18312,7 +19509,7 @@ SELECT pg_catalog.setval('public."rolesResourcesActions_id_seq"', 1, false);
 
 
 --
--- TOC entry 4066 (class 0 OID 0)
+-- TOC entry 4091 (class 0 OID 0)
 -- Dependencies: 270
 -- Name: rolesResourcesScopes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18321,7 +19518,7 @@ SELECT pg_catalog.setval('public."rolesResourcesScopes_id_seq"', 1, false);
 
 
 --
--- TOC entry 4067 (class 0 OID 0)
+-- TOC entry 4092 (class 0 OID 0)
 -- Dependencies: 271
 -- Name: rolesResources_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18330,7 +19527,7 @@ SELECT pg_catalog.setval('public."rolesResources_id_seq"', 1, false);
 
 
 --
--- TOC entry 4068 (class 0 OID 0)
+-- TOC entry 4093 (class 0 OID 0)
 -- Dependencies: 275
 -- Name: sequences_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -18339,8 +19536,8 @@ SELECT pg_catalog.setval('public.sequences_id_seq', 1, false);
 
 
 --
--- TOC entry 4069 (class 0 OID 0)
--- Dependencies: 277
+-- TOC entry 4094 (class 0 OID 0)
+-- Dependencies: 278
 -- Name: storages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -18348,8 +19545,8 @@ SELECT pg_catalog.setval('public.storages_id_seq', 1, true);
 
 
 --
--- TOC entry 4070 (class 0 OID 0)
--- Dependencies: 278
+-- TOC entry 4095 (class 0 OID 0)
+-- Dependencies: 279
 -- Name: student_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -18357,8 +19554,8 @@ SELECT pg_catalog.setval('public.student_id_seq', 1, false);
 
 
 --
--- TOC entry 4071 (class 0 OID 0)
--- Dependencies: 280
+-- TOC entry 4096 (class 0 OID 0)
+-- Dependencies: 281
 -- Name: systemSettings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -18366,8 +19563,8 @@ SELECT pg_catalog.setval('public."systemSettings_id_seq"', 1, true);
 
 
 --
--- TOC entry 4072 (class 0 OID 0)
--- Dependencies: 282
+-- TOC entry 4097 (class 0 OID 0)
+-- Dependencies: 283
 -- Name: t_587vrvz0gcb_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -18375,8 +19572,8 @@ SELECT pg_catalog.setval('public.t_587vrvz0gcb_id_seq', 2, true);
 
 
 --
--- TOC entry 4073 (class 0 OID 0)
--- Dependencies: 288
+-- TOC entry 4098 (class 0 OID 0)
+-- Dependencies: 289
 -- Name: themeConfig_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -18384,8 +19581,8 @@ SELECT pg_catalog.setval('public."themeConfig_id_seq"', 5, true);
 
 
 --
--- TOC entry 4074 (class 0 OID 0)
--- Dependencies: 290
+-- TOC entry 4099 (class 0 OID 0)
+-- Dependencies: 291
 -- Name: tokenBlacklist_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -18393,17 +19590,26 @@ SELECT pg_catalog.setval('public."tokenBlacklist_id_seq"', 1, false);
 
 
 --
--- TOC entry 4075 (class 0 OID 0)
--- Dependencies: 292
+-- TOC entry 4100 (class 0 OID 0)
+-- Dependencies: 310
+-- Name: transactions_config_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.transactions_config_id_seq', 4, true);
+
+
+--
+-- TOC entry 4101 (class 0 OID 0)
+-- Dependencies: 293
 -- Name: transactions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.transactions_id_seq', 15, true);
+SELECT pg_catalog.setval('public.transactions_id_seq', 16, true);
 
 
 --
--- TOC entry 4076 (class 0 OID 0)
--- Dependencies: 294
+-- TOC entry 4102 (class 0 OID 0)
+-- Dependencies: 295
 -- Name: uiSchemaServerHooks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -18411,8 +19617,8 @@ SELECT pg_catalog.setval('public."uiSchemaServerHooks_id_seq"', 1, false);
 
 
 --
--- TOC entry 4077 (class 0 OID 0)
--- Dependencies: 300
+-- TOC entry 4103 (class 0 OID 0)
+-- Dependencies: 301
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -18420,8 +19626,8 @@ SELECT pg_catalog.setval('public.users_id_seq', 1, true);
 
 
 --
--- TOC entry 4078 (class 0 OID 0)
--- Dependencies: 302
+-- TOC entry 4104 (class 0 OID 0)
+-- Dependencies: 303
 -- Name: users_jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -18429,8 +19635,8 @@ SELECT pg_catalog.setval('public.users_jobs_id_seq', 1, false);
 
 
 --
--- TOC entry 4079 (class 0 OID 0)
--- Dependencies: 306
+-- TOC entry 4105 (class 0 OID 0)
+-- Dependencies: 307
 -- Name: workflows_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -18438,7 +19644,7 @@ SELECT pg_catalog.setval('public.workflows_id_seq', 27, true);
 
 
 --
--- TOC entry 3559 (class 2606 OID 18189)
+-- TOC entry 3572 (class 2606 OID 20991)
 -- Name: kafka-topics kafka-topics_pkey; Type: CONSTRAINT; Schema: KafkaTopic; Owner: postgres
 --
 
@@ -18447,7 +19653,16 @@ ALTER TABLE ONLY "KafkaTopic"."kafka-topics"
 
 
 --
--- TOC entry 3561 (class 2606 OID 18191)
+-- TOC entry 3775 (class 2606 OID 21223)
+-- Name: Video Video_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Video"
+    ADD CONSTRAINT "Video_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3574 (class 2606 OID 20993)
 -- Name: apiKeys apiKeys_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18456,7 +19671,7 @@ ALTER TABLE ONLY public."apiKeys"
 
 
 --
--- TOC entry 3564 (class 2606 OID 18193)
+-- TOC entry 3577 (class 2606 OID 20995)
 -- Name: applicationPlugins applicationPlugins_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18465,7 +19680,7 @@ ALTER TABLE ONLY public."applicationPlugins"
 
 
 --
--- TOC entry 3566 (class 2606 OID 18195)
+-- TOC entry 3579 (class 2606 OID 20997)
 -- Name: applicationPlugins applicationPlugins_packageName_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18474,7 +19689,7 @@ ALTER TABLE ONLY public."applicationPlugins"
 
 
 --
--- TOC entry 3568 (class 2606 OID 18197)
+-- TOC entry 3581 (class 2606 OID 20999)
 -- Name: applicationPlugins applicationPlugins_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18483,7 +19698,7 @@ ALTER TABLE ONLY public."applicationPlugins"
 
 
 --
--- TOC entry 3570 (class 2606 OID 18199)
+-- TOC entry 3583 (class 2606 OID 21001)
 -- Name: applicationVersion applicationVersion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18492,7 +19707,7 @@ ALTER TABLE ONLY public."applicationVersion"
 
 
 --
--- TOC entry 3573 (class 2606 OID 18201)
+-- TOC entry 3586 (class 2606 OID 21003)
 -- Name: attachments attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18501,7 +19716,7 @@ ALTER TABLE ONLY public.attachments
 
 
 --
--- TOC entry 3577 (class 2606 OID 18203)
+-- TOC entry 3590 (class 2606 OID 21005)
 -- Name: authenticators authenticators_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18510,7 +19725,7 @@ ALTER TABLE ONLY public.authenticators
 
 
 --
--- TOC entry 3579 (class 2606 OID 18205)
+-- TOC entry 3592 (class 2606 OID 21007)
 -- Name: authenticators authenticators_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18519,7 +19734,7 @@ ALTER TABLE ONLY public.authenticators
 
 
 --
--- TOC entry 3581 (class 2606 OID 18207)
+-- TOC entry 3594 (class 2606 OID 21009)
 -- Name: chinaRegions chinaRegions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18528,7 +19743,7 @@ ALTER TABLE ONLY public."chinaRegions"
 
 
 --
--- TOC entry 3584 (class 2606 OID 18209)
+-- TOC entry 3597 (class 2606 OID 21011)
 -- Name: collectionCategories collectionCategories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18537,7 +19752,7 @@ ALTER TABLE ONLY public."collectionCategories"
 
 
 --
--- TOC entry 3586 (class 2606 OID 18211)
+-- TOC entry 3599 (class 2606 OID 21013)
 -- Name: collectionCategory collectionCategory_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18546,7 +19761,7 @@ ALTER TABLE ONLY public."collectionCategory"
 
 
 --
--- TOC entry 3589 (class 2606 OID 18213)
+-- TOC entry 3602 (class 2606 OID 21015)
 -- Name: collections collections_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18555,7 +19770,7 @@ ALTER TABLE ONLY public.collections
 
 
 --
--- TOC entry 3591 (class 2606 OID 18215)
+-- TOC entry 3604 (class 2606 OID 21017)
 -- Name: collections collections_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18564,7 +19779,7 @@ ALTER TABLE ONLY public.collections
 
 
 --
--- TOC entry 3595 (class 2606 OID 18217)
+-- TOC entry 3608 (class 2606 OID 21019)
 -- Name: customRequestsRoles customRequestsRoles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18573,7 +19788,7 @@ ALTER TABLE ONLY public."customRequestsRoles"
 
 
 --
--- TOC entry 3593 (class 2606 OID 18219)
+-- TOC entry 3606 (class 2606 OID 21021)
 -- Name: customRequests customRequests_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18582,7 +19797,7 @@ ALTER TABLE ONLY public."customRequests"
 
 
 --
--- TOC entry 3600 (class 2606 OID 18221)
+-- TOC entry 3613 (class 2606 OID 21023)
 -- Name: dataSourcesCollections dataSourcesCollections_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18591,7 +19806,7 @@ ALTER TABLE ONLY public."dataSourcesCollections"
 
 
 --
--- TOC entry 3604 (class 2606 OID 18223)
+-- TOC entry 3617 (class 2606 OID 21025)
 -- Name: dataSourcesFields dataSourcesFields_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18600,7 +19815,7 @@ ALTER TABLE ONLY public."dataSourcesFields"
 
 
 --
--- TOC entry 3617 (class 2606 OID 18225)
+-- TOC entry 3630 (class 2606 OID 21027)
 -- Name: dataSourcesRolesResourcesActions dataSourcesRolesResourcesActions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18609,7 +19824,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResourcesActions"
 
 
 --
--- TOC entry 3621 (class 2606 OID 18227)
+-- TOC entry 3634 (class 2606 OID 21029)
 -- Name: dataSourcesRolesResourcesScopes dataSourcesRolesResourcesScopes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18618,7 +19833,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResourcesScopes"
 
 
 --
--- TOC entry 3613 (class 2606 OID 18229)
+-- TOC entry 3626 (class 2606 OID 21031)
 -- Name: dataSourcesRolesResources dataSourcesRolesResources_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18627,7 +19842,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResources"
 
 
 --
--- TOC entry 3609 (class 2606 OID 18231)
+-- TOC entry 3622 (class 2606 OID 21033)
 -- Name: dataSourcesRoles dataSourcesRoles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18636,7 +19851,7 @@ ALTER TABLE ONLY public."dataSourcesRoles"
 
 
 --
--- TOC entry 3598 (class 2606 OID 18233)
+-- TOC entry 3611 (class 2606 OID 21035)
 -- Name: dataSources dataSources_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18645,7 +19860,7 @@ ALTER TABLE ONLY public."dataSources"
 
 
 --
--- TOC entry 3624 (class 2606 OID 18235)
+-- TOC entry 3637 (class 2606 OID 21037)
 -- Name: executions executions_eventKey_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18654,7 +19869,7 @@ ALTER TABLE ONLY public.executions
 
 
 --
--- TOC entry 3626 (class 2606 OID 18237)
+-- TOC entry 3639 (class 2606 OID 21039)
 -- Name: executions executions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18663,7 +19878,7 @@ ALTER TABLE ONLY public.executions
 
 
 --
--- TOC entry 3631 (class 2606 OID 18239)
+-- TOC entry 3644 (class 2606 OID 21041)
 -- Name: fields fields_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18672,7 +19887,7 @@ ALTER TABLE ONLY public.fields
 
 
 --
--- TOC entry 3635 (class 2606 OID 18241)
+-- TOC entry 3648 (class 2606 OID 21043)
 -- Name: flow_nodes flow_nodes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18681,7 +19896,7 @@ ALTER TABLE ONLY public.flow_nodes
 
 
 --
--- TOC entry 3640 (class 2606 OID 18243)
+-- TOC entry 3653 (class 2606 OID 21045)
 -- Name: funds funds_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18690,7 +19905,7 @@ ALTER TABLE ONLY public.funds
 
 
 --
--- TOC entry 3644 (class 2606 OID 18245)
+-- TOC entry 3657 (class 2606 OID 21047)
 -- Name: hello hello_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18699,7 +19914,7 @@ ALTER TABLE ONLY public.hello
 
 
 --
--- TOC entry 3646 (class 2606 OID 18247)
+-- TOC entry 3659 (class 2606 OID 21049)
 -- Name: iframeHtml iframeHtml_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18708,7 +19923,7 @@ ALTER TABLE ONLY public."iframeHtml"
 
 
 --
--- TOC entry 3651 (class 2606 OID 18249)
+-- TOC entry 3664 (class 2606 OID 21051)
 -- Name: jobs jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18717,7 +19932,7 @@ ALTER TABLE ONLY public.jobs
 
 
 --
--- TOC entry 3654 (class 2606 OID 18251)
+-- TOC entry 3667 (class 2606 OID 21053)
 -- Name: kafka_configs kafka_configs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18726,7 +19941,7 @@ ALTER TABLE ONLY public.kafka_configs
 
 
 --
--- TOC entry 3656 (class 2606 OID 18253)
+-- TOC entry 3669 (class 2606 OID 21055)
 -- Name: kafka_topics kafka_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18735,7 +19950,7 @@ ALTER TABLE ONLY public.kafka_topics
 
 
 --
--- TOC entry 3658 (class 2606 OID 18255)
+-- TOC entry 3671 (class 2606 OID 21057)
 -- Name: migrations migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18744,7 +19959,7 @@ ALTER TABLE ONLY public.migrations
 
 
 --
--- TOC entry 3660 (class 2606 OID 18257)
+-- TOC entry 3673 (class 2606 OID 21059)
 -- Name: projects projects_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18753,7 +19968,7 @@ ALTER TABLE ONLY public.projects
 
 
 --
--- TOC entry 3663 (class 2606 OID 18259)
+-- TOC entry 3676 (class 2606 OID 21061)
 -- Name: proposes proposes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18762,7 +19977,7 @@ ALTER TABLE ONLY public.proposes
 
 
 --
--- TOC entry 3673 (class 2606 OID 18261)
+-- TOC entry 3686 (class 2606 OID 21063)
 -- Name: rolesResourcesActions rolesResourcesActions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18771,7 +19986,7 @@ ALTER TABLE ONLY public."rolesResourcesActions"
 
 
 --
--- TOC entry 3677 (class 2606 OID 18263)
+-- TOC entry 3690 (class 2606 OID 21065)
 -- Name: rolesResourcesScopes rolesResourcesScopes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18780,7 +19995,7 @@ ALTER TABLE ONLY public."rolesResourcesScopes"
 
 
 --
--- TOC entry 3670 (class 2606 OID 18265)
+-- TOC entry 3683 (class 2606 OID 21067)
 -- Name: rolesResources rolesResources_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18789,7 +20004,7 @@ ALTER TABLE ONLY public."rolesResources"
 
 
 --
--- TOC entry 3679 (class 2606 OID 18267)
+-- TOC entry 3692 (class 2606 OID 21069)
 -- Name: rolesUischemas rolesUischemas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18798,7 +20013,7 @@ ALTER TABLE ONLY public."rolesUischemas"
 
 
 --
--- TOC entry 3682 (class 2606 OID 18269)
+-- TOC entry 3695 (class 2606 OID 21071)
 -- Name: rolesUsers rolesUsers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18807,7 +20022,7 @@ ALTER TABLE ONLY public."rolesUsers"
 
 
 --
--- TOC entry 3666 (class 2606 OID 18271)
+-- TOC entry 3679 (class 2606 OID 21073)
 -- Name: roles roles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18816,7 +20031,7 @@ ALTER TABLE ONLY public.roles
 
 
 --
--- TOC entry 3668 (class 2606 OID 18273)
+-- TOC entry 3681 (class 2606 OID 21075)
 -- Name: roles roles_title_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18825,7 +20040,7 @@ ALTER TABLE ONLY public.roles
 
 
 --
--- TOC entry 3685 (class 2606 OID 18275)
+-- TOC entry 3698 (class 2606 OID 21077)
 -- Name: sequences sequences_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18834,7 +20049,7 @@ ALTER TABLE ONLY public.sequences
 
 
 --
--- TOC entry 3760 (class 2606 OID 18440)
+-- TOC entry 3700 (class 2606 OID 21079)
 -- Name: smart_contracts smart_contracts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18843,7 +20058,7 @@ ALTER TABLE ONLY public.smart_contracts
 
 
 --
--- TOC entry 3687 (class 2606 OID 18277)
+-- TOC entry 3702 (class 2606 OID 21081)
 -- Name: storages storages_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18852,7 +20067,7 @@ ALTER TABLE ONLY public.storages
 
 
 --
--- TOC entry 3689 (class 2606 OID 18279)
+-- TOC entry 3704 (class 2606 OID 21083)
 -- Name: storages storages_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18861,7 +20076,7 @@ ALTER TABLE ONLY public.storages
 
 
 --
--- TOC entry 3691 (class 2606 OID 18281)
+-- TOC entry 3706 (class 2606 OID 21085)
 -- Name: systemSettings systemSettings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18870,7 +20085,7 @@ ALTER TABLE ONLY public."systemSettings"
 
 
 --
--- TOC entry 3694 (class 2606 OID 18283)
+-- TOC entry 3709 (class 2606 OID 21087)
 -- Name: t_587vrvz0gcb t_587vrvz0gcb_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18879,7 +20094,7 @@ ALTER TABLE ONLY public.t_587vrvz0gcb
 
 
 --
--- TOC entry 3697 (class 2606 OID 18285)
+-- TOC entry 3712 (class 2606 OID 21089)
 -- Name: t_bzkvdw2a767 t_bzkvdw2a767_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18888,7 +20103,7 @@ ALTER TABLE ONLY public.t_bzkvdw2a767
 
 
 --
--- TOC entry 3700 (class 2606 OID 18287)
+-- TOC entry 3715 (class 2606 OID 21091)
 -- Name: t_ncaek4uddrw t_ncaek4uddrw_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18897,7 +20112,7 @@ ALTER TABLE ONLY public.t_ncaek4uddrw
 
 
 --
--- TOC entry 3703 (class 2606 OID 18289)
+-- TOC entry 3718 (class 2606 OID 21093)
 -- Name: t_s9b2jhcxq9q t_s9b2jhcxq9q_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18906,7 +20121,7 @@ ALTER TABLE ONLY public.t_s9b2jhcxq9q
 
 
 --
--- TOC entry 3705 (class 2606 OID 18291)
+-- TOC entry 3720 (class 2606 OID 21095)
 -- Name: themeConfig themeConfig_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18915,7 +20130,7 @@ ALTER TABLE ONLY public."themeConfig"
 
 
 --
--- TOC entry 3707 (class 2606 OID 18293)
+-- TOC entry 3722 (class 2606 OID 21097)
 -- Name: tokenBlacklist tokenBlacklist_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18924,7 +20139,16 @@ ALTER TABLE ONLY public."tokenBlacklist"
 
 
 --
--- TOC entry 3713 (class 2606 OID 18295)
+-- TOC entry 3778 (class 2606 OID 21239)
+-- Name: transactions_config transactions_config_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.transactions_config
+    ADD CONSTRAINT transactions_config_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3728 (class 2606 OID 21099)
 -- Name: transactions transactions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18933,7 +20157,7 @@ ALTER TABLE ONLY public.transactions
 
 
 --
--- TOC entry 3717 (class 2606 OID 18297)
+-- TOC entry 3732 (class 2606 OID 21101)
 -- Name: uiSchemaServerHooks uiSchemaServerHooks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18942,7 +20166,7 @@ ALTER TABLE ONLY public."uiSchemaServerHooks"
 
 
 --
--- TOC entry 3720 (class 2606 OID 18299)
+-- TOC entry 3735 (class 2606 OID 21103)
 -- Name: uiSchemaTemplates uiSchemaTemplates_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18951,7 +20175,7 @@ ALTER TABLE ONLY public."uiSchemaTemplates"
 
 
 --
--- TOC entry 3723 (class 2606 OID 18301)
+-- TOC entry 3738 (class 2606 OID 21105)
 -- Name: uiSchemaTreePath uiSchemaTreePath_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18960,7 +20184,7 @@ ALTER TABLE ONLY public."uiSchemaTreePath"
 
 
 --
--- TOC entry 3726 (class 2606 OID 18303)
+-- TOC entry 3741 (class 2606 OID 21107)
 -- Name: uiSchemas uiSchemas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18969,7 +20193,7 @@ ALTER TABLE ONLY public."uiSchemas"
 
 
 --
--- TOC entry 3739 (class 2606 OID 18305)
+-- TOC entry 3754 (class 2606 OID 21109)
 -- Name: usersAuthenticators usersAuthenticators_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18978,7 +20202,7 @@ ALTER TABLE ONLY public."usersAuthenticators"
 
 
 --
--- TOC entry 3729 (class 2606 OID 18307)
+-- TOC entry 3744 (class 2606 OID 21111)
 -- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18987,7 +20211,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3744 (class 2606 OID 18309)
+-- TOC entry 3759 (class 2606 OID 21113)
 -- Name: users_jobs users_jobs_jobId_userId_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -18996,7 +20220,7 @@ ALTER TABLE ONLY public.users_jobs
 
 
 --
--- TOC entry 3748 (class 2606 OID 18311)
+-- TOC entry 3763 (class 2606 OID 21115)
 -- Name: users_jobs users_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -19005,7 +20229,7 @@ ALTER TABLE ONLY public.users_jobs
 
 
 --
--- TOC entry 3731 (class 2606 OID 18313)
+-- TOC entry 3746 (class 2606 OID 21117)
 -- Name: users users_phone_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -19014,7 +20238,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3733 (class 2606 OID 18315)
+-- TOC entry 3748 (class 2606 OID 21119)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -19023,7 +20247,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3735 (class 2606 OID 18317)
+-- TOC entry 3750 (class 2606 OID 21121)
 -- Name: users users_resetToken_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -19032,7 +20256,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3737 (class 2606 OID 18319)
+-- TOC entry 3752 (class 2606 OID 21123)
 -- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -19041,7 +20265,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3752 (class 2606 OID 18321)
+-- TOC entry 3767 (class 2606 OID 21125)
 -- Name: verifications verifications_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -19050,7 +20274,7 @@ ALTER TABLE ONLY public.verifications
 
 
 --
--- TOC entry 3755 (class 2606 OID 18323)
+-- TOC entry 3770 (class 2606 OID 21127)
 -- Name: verifications_providers verifications_providers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -19059,7 +20283,7 @@ ALTER TABLE ONLY public.verifications_providers
 
 
 --
--- TOC entry 3758 (class 2606 OID 18325)
+-- TOC entry 3773 (class 2606 OID 21129)
 -- Name: workflows workflows_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -19068,7 +20292,7 @@ ALTER TABLE ONLY public.workflows
 
 
 --
--- TOC entry 3562 (class 1259 OID 18326)
+-- TOC entry 3575 (class 1259 OID 21130)
 -- Name: api_keys_role_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19076,7 +20300,7 @@ CREATE INDEX api_keys_role_name ON public."apiKeys" USING btree ("roleName");
 
 
 --
--- TOC entry 3571 (class 1259 OID 18327)
+-- TOC entry 3584 (class 1259 OID 21131)
 -- Name: attachments_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19084,7 +20308,7 @@ CREATE INDEX attachments_created_by_id ON public.attachments USING btree ("creat
 
 
 --
--- TOC entry 3574 (class 1259 OID 18328)
+-- TOC entry 3587 (class 1259 OID 21132)
 -- Name: attachments_storage_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19092,7 +20316,7 @@ CREATE INDEX attachments_storage_id ON public.attachments USING btree ("storageI
 
 
 --
--- TOC entry 3575 (class 1259 OID 18329)
+-- TOC entry 3588 (class 1259 OID 21133)
 -- Name: authenticators_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19100,7 +20324,7 @@ CREATE INDEX authenticators_created_by_id ON public.authenticators USING btree (
 
 
 --
--- TOC entry 3582 (class 1259 OID 18330)
+-- TOC entry 3595 (class 1259 OID 21134)
 -- Name: china_regions_parent_code; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19108,7 +20332,7 @@ CREATE INDEX china_regions_parent_code ON public."chinaRegions" USING btree ("pa
 
 
 --
--- TOC entry 3587 (class 1259 OID 18331)
+-- TOC entry 3600 (class 1259 OID 21135)
 -- Name: collection_category_category_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19116,7 +20340,7 @@ CREATE INDEX collection_category_category_id ON public."collectionCategory" USIN
 
 
 --
--- TOC entry 3596 (class 1259 OID 18332)
+-- TOC entry 3609 (class 1259 OID 21136)
 -- Name: custom_requests_roles_role_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19124,7 +20348,7 @@ CREATE INDEX custom_requests_roles_role_name ON public."customRequestsRoles" USI
 
 
 --
--- TOC entry 3601 (class 1259 OID 18333)
+-- TOC entry 3614 (class 1259 OID 21137)
 -- Name: data_sources_collections_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19132,7 +20356,7 @@ CREATE INDEX data_sources_collections_data_source_key ON public."dataSourcesColl
 
 
 --
--- TOC entry 3602 (class 1259 OID 18334)
+-- TOC entry 3615 (class 1259 OID 21138)
 -- Name: data_sources_collections_name_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19140,7 +20364,7 @@ CREATE UNIQUE INDEX data_sources_collections_name_data_source_key ON public."dat
 
 
 --
--- TOC entry 3605 (class 1259 OID 18335)
+-- TOC entry 3618 (class 1259 OID 21139)
 -- Name: data_sources_fields_collection_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19148,7 +20372,7 @@ CREATE INDEX data_sources_fields_collection_key ON public."dataSourcesFields" US
 
 
 --
--- TOC entry 3606 (class 1259 OID 18336)
+-- TOC entry 3619 (class 1259 OID 21140)
 -- Name: data_sources_fields_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19156,7 +20380,7 @@ CREATE INDEX data_sources_fields_data_source_key ON public."dataSourcesFields" U
 
 
 --
--- TOC entry 3607 (class 1259 OID 18337)
+-- TOC entry 3620 (class 1259 OID 21141)
 -- Name: data_sources_fields_name_collection_name_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19164,7 +20388,7 @@ CREATE UNIQUE INDEX data_sources_fields_name_collection_name_data_source_key ON 
 
 
 --
--- TOC entry 3610 (class 1259 OID 18338)
+-- TOC entry 3623 (class 1259 OID 21142)
 -- Name: data_sources_roles_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19172,7 +20396,7 @@ CREATE INDEX data_sources_roles_data_source_key ON public."dataSourcesRoles" USI
 
 
 --
--- TOC entry 3618 (class 1259 OID 18339)
+-- TOC entry 3631 (class 1259 OID 21143)
 -- Name: data_sources_roles_resources_actions_roles_resource_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19180,7 +20404,7 @@ CREATE INDEX data_sources_roles_resources_actions_roles_resource_id ON public."d
 
 
 --
--- TOC entry 3619 (class 1259 OID 18340)
+-- TOC entry 3632 (class 1259 OID 21144)
 -- Name: data_sources_roles_resources_actions_scope_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19188,7 +20412,7 @@ CREATE INDEX data_sources_roles_resources_actions_scope_id ON public."dataSource
 
 
 --
--- TOC entry 3614 (class 1259 OID 18341)
+-- TOC entry 3627 (class 1259 OID 21145)
 -- Name: data_sources_roles_resources_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19196,7 +20420,7 @@ CREATE INDEX data_sources_roles_resources_data_source_key ON public."dataSources
 
 
 --
--- TOC entry 3615 (class 1259 OID 18342)
+-- TOC entry 3628 (class 1259 OID 21146)
 -- Name: data_sources_roles_resources_role_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19204,7 +20428,7 @@ CREATE INDEX data_sources_roles_resources_role_name ON public."dataSourcesRolesR
 
 
 --
--- TOC entry 3622 (class 1259 OID 18343)
+-- TOC entry 3635 (class 1259 OID 21147)
 -- Name: data_sources_roles_resources_scopes_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19212,7 +20436,7 @@ CREATE INDEX data_sources_roles_resources_scopes_data_source_key ON public."data
 
 
 --
--- TOC entry 3611 (class 1259 OID 18344)
+-- TOC entry 3624 (class 1259 OID 21148)
 -- Name: data_sources_roles_role_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19220,7 +20444,7 @@ CREATE INDEX data_sources_roles_role_name ON public."dataSourcesRoles" USING btr
 
 
 --
--- TOC entry 3627 (class 1259 OID 18345)
+-- TOC entry 3640 (class 1259 OID 21149)
 -- Name: executions_workflow_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19228,7 +20452,7 @@ CREATE INDEX executions_workflow_id ON public.executions USING btree ("workflowI
 
 
 --
--- TOC entry 3628 (class 1259 OID 18346)
+-- TOC entry 3641 (class 1259 OID 21150)
 -- Name: fields_collection_name_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19236,7 +20460,7 @@ CREATE UNIQUE INDEX fields_collection_name_name ON public.fields USING btree ("c
 
 
 --
--- TOC entry 3629 (class 1259 OID 18347)
+-- TOC entry 3642 (class 1259 OID 21151)
 -- Name: fields_parent_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19244,7 +20468,7 @@ CREATE INDEX fields_parent_key ON public.fields USING btree ("parentKey");
 
 
 --
--- TOC entry 3632 (class 1259 OID 18348)
+-- TOC entry 3645 (class 1259 OID 21152)
 -- Name: fields_reverse_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19252,7 +20476,7 @@ CREATE INDEX fields_reverse_key ON public.fields USING btree ("reverseKey");
 
 
 --
--- TOC entry 3633 (class 1259 OID 18349)
+-- TOC entry 3646 (class 1259 OID 21153)
 -- Name: flow_nodes_downstream_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19260,7 +20484,7 @@ CREATE INDEX flow_nodes_downstream_id ON public.flow_nodes USING btree ("downstr
 
 
 --
--- TOC entry 3636 (class 1259 OID 18350)
+-- TOC entry 3649 (class 1259 OID 21154)
 -- Name: flow_nodes_upstream_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19268,7 +20492,7 @@ CREATE INDEX flow_nodes_upstream_id ON public.flow_nodes USING btree ("upstreamI
 
 
 --
--- TOC entry 3637 (class 1259 OID 18351)
+-- TOC entry 3650 (class 1259 OID 21155)
 -- Name: flow_nodes_workflow_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19276,7 +20500,7 @@ CREATE INDEX flow_nodes_workflow_id ON public.flow_nodes USING btree ("workflowI
 
 
 --
--- TOC entry 3638 (class 1259 OID 18352)
+-- TOC entry 3651 (class 1259 OID 21156)
 -- Name: funds_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19284,7 +20508,7 @@ CREATE INDEX funds_created_by_id ON public.funds USING btree ("createdById");
 
 
 --
--- TOC entry 3641 (class 1259 OID 18353)
+-- TOC entry 3654 (class 1259 OID 21157)
 -- Name: funds_project_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19292,7 +20516,7 @@ CREATE INDEX funds_project_id ON public.funds USING btree (project_id);
 
 
 --
--- TOC entry 3642 (class 1259 OID 18354)
+-- TOC entry 3655 (class 1259 OID 21158)
 -- Name: funds_updated_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19300,7 +20524,7 @@ CREATE INDEX funds_updated_by_id ON public.funds USING btree ("updatedById");
 
 
 --
--- TOC entry 3647 (class 1259 OID 18355)
+-- TOC entry 3660 (class 1259 OID 21159)
 -- Name: iframe_html_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19308,7 +20532,7 @@ CREATE INDEX iframe_html_created_by_id ON public."iframeHtml" USING btree ("crea
 
 
 --
--- TOC entry 3648 (class 1259 OID 18356)
+-- TOC entry 3661 (class 1259 OID 21160)
 -- Name: jobs_execution_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19316,7 +20540,7 @@ CREATE INDEX jobs_execution_id ON public.jobs USING btree ("executionId");
 
 
 --
--- TOC entry 3649 (class 1259 OID 18357)
+-- TOC entry 3662 (class 1259 OID 21161)
 -- Name: jobs_node_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19324,7 +20548,7 @@ CREATE INDEX jobs_node_id ON public.jobs USING btree ("nodeId");
 
 
 --
--- TOC entry 3652 (class 1259 OID 18358)
+-- TOC entry 3665 (class 1259 OID 21162)
 -- Name: jobs_upstream_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19332,7 +20556,7 @@ CREATE INDEX jobs_upstream_id ON public.jobs USING btree ("upstreamId");
 
 
 --
--- TOC entry 3661 (class 1259 OID 18359)
+-- TOC entry 3674 (class 1259 OID 21163)
 -- Name: proposes_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19340,7 +20564,7 @@ CREATE INDEX proposes_created_by_id ON public.proposes USING btree ("createdById
 
 
 --
--- TOC entry 3664 (class 1259 OID 18360)
+-- TOC entry 3677 (class 1259 OID 21164)
 -- Name: proposes_updated_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19348,7 +20572,7 @@ CREATE INDEX proposes_updated_by_id ON public.proposes USING btree ("updatedById
 
 
 --
--- TOC entry 3674 (class 1259 OID 18361)
+-- TOC entry 3687 (class 1259 OID 21165)
 -- Name: roles_resources_actions_roles_resource_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19356,7 +20580,7 @@ CREATE INDEX roles_resources_actions_roles_resource_id ON public."rolesResources
 
 
 --
--- TOC entry 3675 (class 1259 OID 18362)
+-- TOC entry 3688 (class 1259 OID 21166)
 -- Name: roles_resources_actions_scope_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19364,7 +20588,7 @@ CREATE INDEX roles_resources_actions_scope_id ON public."rolesResourcesActions" 
 
 
 --
--- TOC entry 3671 (class 1259 OID 18363)
+-- TOC entry 3684 (class 1259 OID 21167)
 -- Name: roles_resources_role_name_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19372,7 +20596,7 @@ CREATE UNIQUE INDEX roles_resources_role_name_name ON public."rolesResources" US
 
 
 --
--- TOC entry 3680 (class 1259 OID 18364)
+-- TOC entry 3693 (class 1259 OID 21168)
 -- Name: roles_uischemas_ui_schema_x_uid; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19380,7 +20604,7 @@ CREATE INDEX roles_uischemas_ui_schema_x_uid ON public."rolesUischemas" USING bt
 
 
 --
--- TOC entry 3683 (class 1259 OID 18365)
+-- TOC entry 3696 (class 1259 OID 21169)
 -- Name: roles_users_user_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19388,7 +20612,7 @@ CREATE INDEX roles_users_user_id ON public."rolesUsers" USING btree ("userId");
 
 
 --
--- TOC entry 3692 (class 1259 OID 18366)
+-- TOC entry 3707 (class 1259 OID 21170)
 -- Name: system_settings_logo_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19396,7 +20620,7 @@ CREATE INDEX system_settings_logo_id ON public."systemSettings" USING btree ("lo
 
 
 --
--- TOC entry 3695 (class 1259 OID 18367)
+-- TOC entry 3710 (class 1259 OID 21171)
 -- Name: t_bzkvdw2a767_f_qxu5av3g0sx; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19404,7 +20628,7 @@ CREATE INDEX t_bzkvdw2a767_f_qxu5av3g0sx ON public.t_bzkvdw2a767 USING btree (f_
 
 
 --
--- TOC entry 3698 (class 1259 OID 18368)
+-- TOC entry 3713 (class 1259 OID 21172)
 -- Name: t_ncaek4uddrw_f_9k9506pi4rq; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19412,7 +20636,7 @@ CREATE INDEX t_ncaek4uddrw_f_9k9506pi4rq ON public.t_ncaek4uddrw USING btree (f_
 
 
 --
--- TOC entry 3701 (class 1259 OID 18369)
+-- TOC entry 3716 (class 1259 OID 21173)
 -- Name: t_s9b2jhcxq9q_f_8o3qqdvq8bk; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19420,7 +20644,7 @@ CREATE INDEX t_s9b2jhcxq9q_f_8o3qqdvq8bk ON public.t_s9b2jhcxq9q USING btree (f_
 
 
 --
--- TOC entry 3708 (class 1259 OID 18370)
+-- TOC entry 3723 (class 1259 OID 21174)
 -- Name: token_blacklist_token; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19428,7 +20652,7 @@ CREATE INDEX token_blacklist_token ON public."tokenBlacklist" USING btree (token
 
 
 --
--- TOC entry 3709 (class 1259 OID 18371)
+-- TOC entry 3724 (class 1259 OID 21175)
 -- Name: transactions_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19436,7 +20660,7 @@ CREATE INDEX transactions_created_by_id ON public.transactions USING btree ("cre
 
 
 --
--- TOC entry 3710 (class 1259 OID 18372)
+-- TOC entry 3725 (class 1259 OID 21176)
 -- Name: transactions_f_e47my4oktv2; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19444,7 +20668,7 @@ CREATE INDEX transactions_f_e47my4oktv2 ON public.transactions USING btree (f_e4
 
 
 --
--- TOC entry 3711 (class 1259 OID 18373)
+-- TOC entry 3726 (class 1259 OID 21177)
 -- Name: transactions_fund_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19452,7 +20676,7 @@ CREATE INDEX transactions_fund_id ON public.transactions USING btree (fund_id);
 
 
 --
--- TOC entry 3714 (class 1259 OID 18374)
+-- TOC entry 3729 (class 1259 OID 21178)
 -- Name: transactions_updated_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19460,7 +20684,7 @@ CREATE INDEX transactions_updated_by_id ON public.transactions USING btree ("upd
 
 
 --
--- TOC entry 3715 (class 1259 OID 18375)
+-- TOC entry 3730 (class 1259 OID 21179)
 -- Name: transactions_user_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19468,7 +20692,7 @@ CREATE INDEX transactions_user_id ON public.transactions USING btree (user_id);
 
 
 --
--- TOC entry 3718 (class 1259 OID 18376)
+-- TOC entry 3733 (class 1259 OID 21180)
 -- Name: ui_schema_server_hooks_uid; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19476,7 +20700,7 @@ CREATE INDEX ui_schema_server_hooks_uid ON public."uiSchemaServerHooks" USING bt
 
 
 --
--- TOC entry 3721 (class 1259 OID 18377)
+-- TOC entry 3736 (class 1259 OID 21181)
 -- Name: ui_schema_templates_uid; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19484,7 +20708,7 @@ CREATE INDEX ui_schema_templates_uid ON public."uiSchemaTemplates" USING btree (
 
 
 --
--- TOC entry 3724 (class 1259 OID 18378)
+-- TOC entry 3739 (class 1259 OID 21182)
 -- Name: ui_schema_tree_path_descendant; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19492,7 +20716,7 @@ CREATE INDEX ui_schema_tree_path_descendant ON public."uiSchemaTreePath" USING b
 
 
 --
--- TOC entry 3740 (class 1259 OID 18379)
+-- TOC entry 3755 (class 1259 OID 21183)
 -- Name: users_authenticators_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19500,7 +20724,7 @@ CREATE INDEX users_authenticators_created_by_id ON public."usersAuthenticators" 
 
 
 --
--- TOC entry 3741 (class 1259 OID 18380)
+-- TOC entry 3756 (class 1259 OID 21184)
 -- Name: users_authenticators_user_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19508,7 +20732,7 @@ CREATE INDEX users_authenticators_user_id ON public."usersAuthenticators" USING 
 
 
 --
--- TOC entry 3727 (class 1259 OID 18381)
+-- TOC entry 3742 (class 1259 OID 21185)
 -- Name: users_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19516,7 +20740,7 @@ CREATE INDEX users_created_by_id ON public.users USING btree ("createdById");
 
 
 --
--- TOC entry 3742 (class 1259 OID 18382)
+-- TOC entry 3757 (class 1259 OID 21186)
 -- Name: users_jobs_execution_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19524,7 +20748,7 @@ CREATE INDEX users_jobs_execution_id ON public.users_jobs USING btree ("executio
 
 
 --
--- TOC entry 3745 (class 1259 OID 18383)
+-- TOC entry 3760 (class 1259 OID 21187)
 -- Name: users_jobs_job_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19532,7 +20756,7 @@ CREATE INDEX users_jobs_job_id ON public.users_jobs USING btree ("jobId");
 
 
 --
--- TOC entry 3746 (class 1259 OID 18384)
+-- TOC entry 3761 (class 1259 OID 21188)
 -- Name: users_jobs_node_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19540,7 +20764,7 @@ CREATE INDEX users_jobs_node_id ON public.users_jobs USING btree ("nodeId");
 
 
 --
--- TOC entry 3749 (class 1259 OID 18385)
+-- TOC entry 3764 (class 1259 OID 21189)
 -- Name: users_jobs_user_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19548,7 +20772,7 @@ CREATE INDEX users_jobs_user_id ON public.users_jobs USING btree ("userId");
 
 
 --
--- TOC entry 3750 (class 1259 OID 18386)
+-- TOC entry 3765 (class 1259 OID 21190)
 -- Name: users_jobs_workflow_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19556,7 +20780,7 @@ CREATE INDEX users_jobs_workflow_id ON public.users_jobs USING btree ("workflowI
 
 
 --
--- TOC entry 3753 (class 1259 OID 18387)
+-- TOC entry 3768 (class 1259 OID 21191)
 -- Name: verifications_provider_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -19564,14 +20788,22 @@ CREATE INDEX verifications_provider_id ON public.verifications USING btree ("pro
 
 
 --
--- TOC entry 3756 (class 1259 OID 18388)
+-- TOC entry 3776 (class 1259 OID 21224)
+-- Name: video_storage_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX video_storage_id ON public."Video" USING btree ("storageId");
+
+
+--
+-- TOC entry 3771 (class 1259 OID 21192)
 -- Name: workflows_key_current; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX workflows_key_current ON public.workflows USING btree (key, current);
 
 
--- Completed on 2024-12-05 19:18:12 UTC
+-- Completed on 2024-12-06 07:15:25 UTC
 
 --
 -- PostgreSQL database dump complete
