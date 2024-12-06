@@ -26,12 +26,12 @@ export class QrDonateServer extends Plugin {
           return;
         }
 
-        const bank_code = process.env.BANK_CODE;
-        const account_no = process.env.ACCOUNT_NO;
-        const template_id = process.env.TEMPLATE_ID;
+        const bank_code = '970422';
+        const account_no = '6098617062003';
+        const template_id = 'FFiaBLN';
 
         const qrContent = `https://img.vietqr.io/image/${bank_code}-${account_no}-${template_id}.jpg?addInfo=${encodeURIComponent(
-          'Dong gop quy ' + fund_name
+          `GREENHOPE (HY VONG XANH) - MA QUY: ${fund_id}`
         )}`;
 
         const fund = await this.app.db.getRepository('funds').findById(fund_id);
