@@ -4,6 +4,9 @@ Thiết kế theo kiến trúc microservices như hình vẽ bên dưới:
 ![s](../resources/LCDP-Architecture.png)
 
 ## 🕹️ Các thành phần chính và chức năng:
+![s](../resources/SystemArchitecture.jpg)
+
+
 - NocoBase: Là nền tảng cốt lõi, cung cấp giao diện người dùng và có thể là cả backend.
 - LCDP: Một nguồn dữ liệu quan trọng, được lưu trữ trong Postgresql.
 - Kafka: Hệ thống nhắn tin, đóng vai trò như một bus sự kiện, truyền tải dữ liệu giữa các dịch vụ.
@@ -38,9 +41,18 @@ Thiết kế theo kiến trúc microservices như hình vẽ bên dưới:
 - Giám sát và đánh giá tiến độ: Hệ thống giám sát quá trình tái thiết qua dữ liệu trực tuyến và báo cáo chi tiết, giúp cộng đồng và các tổ chức nắm bắt tiến độ và đánh giá hiệu quả của công tác tái thiết, từ đó điều chỉnh kế hoạch nếu cần thiết.
 
 ## 💡Nhà phát triển
-📧 Email: minhtuanledng@gmail.com
+- Lê Minh Tuấn
+-  📧 Email: minhtuanledng@gmail.com
+-  📱 Hotline: +84 889 001 505
 
-📱 Hotline: +84 889 001 505
+-  Trần Nguyễn Duy Khánh
+-  📧 Email: duykhanhtran17062003@gmail.com
+-  📱 Hotline: 0905081330
+
+-  Trịnh Minh Son
+-  📧 Email: trinhminhson2004@gmail.com
+-  📱 Hotline: 0357572879
+
 
 ### 📝 License
 Dự án này được cấp phép theo các điều khoản của giấy phép [GPL V3 License](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENCE)

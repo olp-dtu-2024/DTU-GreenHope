@@ -29,8 +29,9 @@ yarn add @olp-dtu-2024/rich-block-nocobase
 ## 👥 Tác Giả
 - Lê Minh Tuấn
 - Trần Nguyễn Duy Khánh
+- Trịnh Minh Son
 ## 📄 Giấy Phép
-Dự án được phân phối dưới giấy phép GNU General Public License v3.0
+Dự án được phân phối dưới giấy phép [GNU General Public License v3.0 ](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENCE)
 ## 🤝 Đóng Góp
 Chúng tôi rất hoan nghênh các đóng góp từ cộng đồng! Vui lòng:
 
@@ -49,4 +50,4 @@ Nếu gặp bất kỳ vấn đề nào, vui lòng:
 
 
 
-*"Được phát triển với ❤️ bởi Nhóm DTU-GreenHope"*
+*"Được phát triển với ❤️ bởi Nhóm DTU_DZ1 🌟"*
