@@ -1243,7 +1243,19 @@
     "@codemirror/view" "^6.27.0"
     "@lezer/common" "^1.1.0"
 
-"@codemirror/language@^6.0.0":
+"@codemirror/lang-javascript@^6.2.2":
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/@codemirror/lang-javascript/-/lang-javascript-6.2.2.tgz#7141090b22994bef85bcc5608a3bc1257f2db2ad"
+  dependencies:
+    "@codemirror/autocomplete" "^6.0.0"
+    "@codemirror/language" "^6.6.0"
+    "@codemirror/lint" "^6.0.0"
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.17.0"
+    "@lezer/common" "^1.0.0"
+    "@lezer/javascript" "^1.0.0"
+
+"@codemirror/language@^6.0.0", "@codemirror/language@^6.6.0":
   version "6.10.6"
   resolved "https://registry.yarnpkg.com/@codemirror/language/-/language-6.10.6.tgz#3770aa55fce575b45b1037b390b576907f0061c7"
   dependencies:
@@ -3047,17 +3059,25 @@
     npmlog "^4.1.2"
     write-file-atomic "^3.0.3"
 
-"@lezer/common@^1.0.0", "@lezer/common@^1.1.0":
+"@lezer/common@^1.0.0", "@lezer/common@^1.1.0", "@lezer/common@^1.2.0":
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/@lezer/common/-/common-1.2.3.tgz#138fcddab157d83da557554851017c6c1e5667fd"
 
-"@lezer/highlight@^1.0.0":
+"@lezer/highlight@^1.0.0", "@lezer/highlight@^1.1.3":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@lezer/highlight/-/highlight-1.2.1.tgz#596fa8f9aeb58a608be0a563e960c373cbf23f8b"
   dependencies:
     "@lezer/common" "^1.0.0"
 
-"@lezer/lr@^1.0.0":
+"@lezer/javascript@^1.0.0":
+  version "1.4.21"
+  resolved "https://registry.yarnpkg.com/@lezer/javascript/-/javascript-1.4.21.tgz#8ebf7d1f891c70e3d00864f5a03ac42c75d19492"
+  dependencies:
+    "@lezer/common" "^1.2.0"
+    "@lezer/highlight" "^1.1.3"
+    "@lezer/lr" "^1.3.0"
+
+"@lezer/lr@^1.0.0", "@lezer/lr@^1.3.0":
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/@lezer/lr/-/lr-1.4.2.tgz#931ea3dea8e9de84e90781001dae30dea9ff1727"
   dependencies:
@@ -6368,6 +6388,12 @@ arrify@^1.0.1:
 arrify@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-2.0.1.tgz#c9655e9331e0abcd588d2a7cad7e9956f66701fa"
+
+artplayer@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/artplayer/-/artplayer-5.2.1.tgz#f31db7cfad0beeb71412517541fef0d5830f64b1"
+  dependencies:
+    option-validator "^2.0.6"
 
 asap@^2.0.0:
   version "2.0.6"
@@ -14637,6 +14663,12 @@ open@^9.1.0:
     define-lazy-prop "^3.0.0"
     is-inside-container "^1.0.0"
     is-wsl "^2.2.0"
+
+option-validator@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/option-validator/-/option-validator-2.0.6.tgz#a314dae65e26db5f948ef0ff96fc88f18bb76ed6"
+  dependencies:
+    kind-of "^6.0.3"
 
 optionator@^0.9.3:
   version "0.9.4"
