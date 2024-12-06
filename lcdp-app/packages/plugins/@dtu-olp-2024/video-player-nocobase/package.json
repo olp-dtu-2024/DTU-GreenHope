@@ -9,6 +9,6 @@
     "@nocobase/test": "1.x"
   },
   "devDependencies": {
-    "artplayer": "^5.2.1",
+    "artplayer": "^5.2.1"
   }
 }
