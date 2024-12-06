@@ -41,6 +41,9 @@ const sidebars: SidebarsConfig = {
         'plugin/progress-nocobase',
         'plugin/rich-block-nocobase',
         'plugin/vietqr-nocobase',
+        'plugin/video-player-nocobase',
+        'plugin/landing-page',
+        'plugin/solidity-editor-nocobase',
       ],
     },
     {

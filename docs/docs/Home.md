@@ -39,10 +39,19 @@ Mục đích của dự án là phát triển một hệ thống dựa trên n�
 - **Các nhà nghiên cứu và chuyên gia trong lĩnh vực thảm họa và tái thiết**: Các nhà nghiên cứu, chuyên gia trong lĩnh vực thiên tai, cứu trợ và tái thiết sẽ sử dụng ứng dụng để thu thập dữ liệu, phân tích xu hướng thiệt hại và cải tiến các chiến lược phục hồi cho các thảm họa trong tương lai.
 
 Các tổ chức cung cấp công nghệ và giải pháp phần mềm: Các công ty công nghệ, đặc biệt trong các lĩnh vực drone, vệ tinh và AI, sẽ sử dụng nền tảng để cung cấp các giải pháp công nghệ và cải thiện hiệu quả ứng dụng của các công nghệ này trong công tác cứu trợ và tái thiết.
-## 💡Nhà phát triển
-📧 Email: minhtuanledng@gmail.com
 
-📱 Hotline: +84 889 001 505
+## 💡Nhà phát triển
+- Lê Minh Tuấn
+    -  📧 Email: minhtuanledng@gmail.com
+    -  📱 Hotline: +84 889 001 505
+
+- Trần Nguyễn Duy Khánh
+    -  📧 Email: duykhanhtran17062003@gmail.com
+    -  📱 Hotline: 0905081330
+
+- Trịnh Minh Son
+    -  📧 Email: trinhminhson2004@gmail.com
+    -  📱 Hotline: 0357572879
 
 ### 📝 License
 Dự án này được cấp phép theo các điều khoản của giấy phép [GPL V3 License](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENCE)

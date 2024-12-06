@@ -1,28 +1,34 @@
-# Progress NocoBase Plugin
+# Video Player NocoBase Plugin
 ## 🌟 Giới thiệu
-@olp-dtu-2024/progress-nocobase là một plugin cho nền tảng NocoBase, tích hợp Progress Bar giúp đơn giản hóa việc hiển thị tiến độ dưới dạng thanh tiến trình trong ứng dụng NocoBase của bạn.
+@olp-dtu-2024/video-player-nocobase là một Plugin cung cấp trình phát video tích hợp với tính năng nâng cao, hỗ trợ nhiều định dạng và tùy chỉnh linh hoạt.
 ### 🏆 Bối Cảnh
 Plugin được phát triển như một phần của cuộc thi Mã Nguồn Mở năm 2024.
 ## ✨ Tính Năng
-- 🔗 Tích hợp dễ dàng Ant Design Progress với NocoBase
-- 🎨 Tùy chỉnh giao diện và màu sắc thanh tiến trình
-- 🧮 Tự động tính toán phần trăm hoàn thành
-- 🌐 Tương thích với phiên bản NocoBase 1.x
-
+- 🎥 Trình phát video đa nền tảng
+- 🔧 Hỗ trợ nhiều định dạng video
+- 🔌 Tích hợp mượt mà với NocoBase
 ## 🚀 Cài Đặt
 Sử Dụng npm:
 ```
-npm install @olp-dtu-2024/progress-nocobase
+  npm install @dtu-olp-2024/video-player-nocobase
 ```
 Sử Dụng yarn:
 ```
-yarn add @olp-dtu-2024/progress-nocobase
+  yarn add @dtu-olp-2024/video-player-nocobase  
 ```
-
+## 📋 Phụ Thuộc
+```
+  {
+    "artplayer": "^5.2.1",
+    "react": "^18.x",
+    "@types/react": "^18.x"
+  }
+```
 ## 📋 Yêu Cầu Tiên Quyết
-- Node.js version 18.x trở lên
-- NocoBase phiên bản 1.x
-- Ant Design phiên bản 4.x trở lên
+- Node.js phiên bản 18.x trở lên
+- Phiên bản NocoBase mới nhất
+- Trình duyệt hỗ trợ HTML5
+
 
 ## 👥 Tác Giả
 - Lê Minh Tuấn
@@ -44,10 +50,10 @@ Nếu gặp bất kỳ vấn đề nào, vui lòng:
 - Mở issue tại GitHub repository
 - Liên hệ trực tiếp với nhóm phát triển
 - Cung cấp thông tin chi tiết để chúng tôi hỗ trợ tốt nhất
-## ⚠️ Lưu Ý
-- Kiểm tra tương thích với phiên bản NocoBase
-- Đảm bảo cấu hình phù hợp
-- Theo dõi các bản cập nhật mới
+## ⚠️ Lưu ý quan trọng
+- Kiểm tra tương thích trình duyệt
+- Đảm bảo kết nối internet ổn định
+- Xác minh định dạng video được hỗ trợ
 
 
  *"Được phát triển với ❤️ bởi Nhóm DTU_DZ1 🌟"*

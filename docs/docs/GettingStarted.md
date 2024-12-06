@@ -9,6 +9,8 @@
 - ❤️‍🩹Đánh giá thiệt hại và hỗ trợ tái thiết sau thảm họa
 - 🫶Kết nối giữa các tổ chức cứu trợ, cộng đồng
 ## Tổng quan hệ thống
+
+
 | Công nghệ | Chức năng | Ưu điểm |
 |-----------|-----------|----------|
 | 📱 TypeScript & NestJS | Phát triển backend | Độ tin cậy cao, khả năng mở rộng linh hoạt |
@@ -25,6 +27,7 @@
 - 🔗 NocoBase	Triển khai hệ thống LCDP để quản lý cấu hình và hỗ trợ phát triển nhanh.	Phát triển ứng dụng nhanh, hiệu năng vượt trội
 - 📡 Apache Kafka	Message Queue	Xử lý realtime, khả năng chịu tải cao
 - 🔄 Redis	Cache & Queue	Tối ưu hiệu năng, giảm tải database
+
 ### Các module chính
 #### 🌪️ Nhận diện thiên tai
 - Phân tích ảnh vệ tinh theo thời gian thực
@@ -57,9 +60,17 @@
 
 Nhờ vào việc ứng dụng các công nghệ hiện đại, hệ thống này không chỉ cải thiện công tác cứu trợ mà còn tạo điều kiện cho việc tái thiết bền vững, đồng thời hỗ trợ sự phát triển ổn định của các cộng đồng sau thảm họa.
 ## 💡Nhà phát triển
-📧 Email: minhtuanledng@gmail.com
+- Lê Minh Tuấn
+    -  📧 Email: minhtuanledng@gmail.com
+    -  📱 Hotline: +84 889 001 505
 
-📱 Hotline: +84 889 001 505
+- Trần Nguyễn Duy Khánh
+    -  📧 Email: duykhanhtran17062003@gmail.com
+    -  📱 Hotline: 0905081330
+
+- Trịnh Minh Son
+    -  📧 Email: trinhminhson2004@gmail.com
+    -  📱 Hotline: 0357572879
 
 ### 📝 License
 Dự án này được cấp phép theo các điều khoản của giấy phép [GPL V3 License](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENCE)
