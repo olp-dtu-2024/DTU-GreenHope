@@ -32,6 +32,26 @@ export class CarouselNocobaseClient extends Plugin {
       `dataBlocks.${carouselInitializerItem.name}`,
       carouselInitializerItem
     );
+    this.app.schemaInitializerManager.addItem(
+      'table:configureActions',
+      'enableActions.customRequest',
+      {
+        type: 'item',
+        name: 'customRequest',
+        title: '{{t("Custom request")}}',
+        Component: 'CustomRequestInitializer',
+      }
+    );
+    this.app.schemaInitializerManager.addItem(
+      'list:configureActions',
+      'enableActions.customRequest',
+      {
+        type: 'item',
+        name: 'customRequest',
+        title: '{{t("Custom request")}}',
+        Component: 'CustomRequestInitializer',
+      }
+    );
   }
 }
 
