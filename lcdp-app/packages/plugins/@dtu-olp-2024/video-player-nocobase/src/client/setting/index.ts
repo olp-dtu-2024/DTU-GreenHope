@@ -1,6 +1,6 @@
 import { SchemaSettings } from '@nocobase/client';
 import { BlockNameLowercase } from '../constants';
-import {urlSchemaSettingsItem} from './url'
+import { urlSchemaSettingsItem } from './url';
 
 export const videoPlayerSettings = new SchemaSettings({
   name: `blockSettings:${BlockNameLowercase}`,
@@ -15,6 +15,6 @@ export const videoPlayerSettings = new SchemaSettings({
         },
       },
     },
+    urlSchemaSettingsItem,
   ],
-  urlSchemaSettingsItem
 });
