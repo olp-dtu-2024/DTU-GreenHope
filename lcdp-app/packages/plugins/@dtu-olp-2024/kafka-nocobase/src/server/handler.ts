@@ -1,4 +1,5 @@
 import Application, { DefaultContext, DefaultState } from '@nocobase/server';
+import { deployTransaction } from './utils/deployTransaction';
 
 export class MessageHandlers {
   static async transactionResponse(
@@ -30,6 +31,26 @@ export class MessageHandlers {
     const data = message?.data;
     const transferTransaction = data?.transferTransaction ?? [];
     const receiverTransaction = data?.receiverTransaction ?? [];
+    // ---------------------------------------------------------------------------
+    const allTrans = [...transferTransaction, ...receiverTransaction];
+    console.log('allTrans:', allTrans);
+
+    const transactionConfigRepo = await appInstance.db.getRepository(
+      'transactions_config'
+    );
+    const transactionConfig = await transactionConfigRepo.find();
+    const { abi, contractAddress, provider, private_key } =
+      transactionConfig[0];
+    deployTransaction(
+      {
+        abi,
+        contractAddress,
+        provider,
+        private_key,
+      },
+      allTrans
+    );
+    // ---------------------------------------------------------------------------
     const transactionRepository =
       await appInstance.db.getRepository('transactions');
     const fundRepository = await appInstance.db.getRepository('funds');
@@ -81,7 +102,7 @@ export class MessageHandlers {
         const fund_id = getFundIdTransferTransaction(
           transactionData.description
         );
-        if (!fund_id) return;
+        // if (!fund_id) return;
         const [transactionRecord] = await Promise.all([
           transactionRepository.create({
             values: {
@@ -112,7 +133,7 @@ export class MessageHandlers {
           transactionData.description
         );
 
-        if (!fund_id) return;
+        // if (!fund_id) return;
         const [transactionRecord] = await Promise.all([
           transactionRepository.create({
             values: {
