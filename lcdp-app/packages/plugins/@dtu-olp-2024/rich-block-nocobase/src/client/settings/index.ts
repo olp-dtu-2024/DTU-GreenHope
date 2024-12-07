@@ -9,7 +9,7 @@ import { useFieldSchema } from '@formily/react';
 import { BlockNameLowercase } from '../constants';
 import { heightSchemaSettingsItem } from './items/height';
 
-export const headerPickerSettings = new SchemaSettings({
+export const richSettings = new SchemaSettings({
   name: `blockSettings:${BlockNameLowercase}`,
   items: [
     {

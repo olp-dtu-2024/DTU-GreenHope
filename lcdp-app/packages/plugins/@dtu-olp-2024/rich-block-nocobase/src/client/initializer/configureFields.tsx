@@ -42,7 +42,7 @@ function getFieldInitializerItem(options: GetFieldInitializerItemOptions) {
 }
 
 export const configureFields = new SchemaInitializer({
-  name: 'info:configureFields',
+  name: 'richText:configureFields',
   icon: 'SettingOutlined',
   title: 'Configure fields',
   items: [

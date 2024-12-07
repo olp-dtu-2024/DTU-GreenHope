@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hệ thống nhận diện nạn nhân trong thiên tai</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f4f4f9 0%, #e8e8f3 100%);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow:
+                0 10px 20px rgba(0, 0, 0, 0.1),
+                0 6px 6px rgba(0, 0, 0, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .video-container:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            border-radius: 3px;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+        }
+
+        #sourceVideo,
+        #processedCanvas {
+            width: 48%;
+            margin: 10px 0;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: none;
+        }
+
+        #sourceVideo:hover,
+        #processedCanvas:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .controls {
+            margin: 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .controls input[type="file"] {
+            padding: 12px 20px;
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .controls input[type="file"]:hover {
+            border-color: #3498db;
+            background: #f0f7ff;
+        }
+
+        .controls label {
+            margin-right: 15px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .controls select {
+            padding: 10px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            color: #2c3e50;
+            font-weight: 500;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 15px;
+            padding-right: 40px;
+        }
+
+        .controls select:hover {
+            border-color: #3498db;
+            background-color: #f0f7ff;
+        }
+
+        .wide-video {
+            width: 100% !important;
+        }
+
+        <blade media|%20(max-width%3A%20768px)%20%7B>.flex-container {
+            flex-direction: column;
+        }
+        }
+
+        #sourceVideo,
+        #processedCanvas {
+            width: 100%;
+        }
+
+        .controls {
+            flex-direction: column;
+            gap: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="video-container">
+        <h2>Hệ thống nhận diện nạn nhân trong thiên tai - DTU_DZ1</h2>
+        <div class="controls">
+            <input type="file" id="videoInput" accept="video/mp4" />
+            <div>
+                <label for="playbackRate">Tốc độ phát:</label>
+                <select id="playbackRate" onchange="changePlaybackRate()">
+                    <option value="0.25">0.25x</option>
+                    <option value="0.5">0.5x</option>
+                    <option value="1" selected>1x</option>
+                </select>
+            </div>
+        </div>
+        <div class="flex-container">
+            <video id="sourceVideo" controls>
+                Your browser does not support the video tag.
+            </video>
+            <canvas id="processedCanvas"></canvas>
+        </div>
+    </div>
+
+    <script>
+        let isProcessing = false;
+        let lastProcessTime = 0;
+        const PROCESS_INTERVAL = 100;
+
+        const video = document.getElementById('sourceVideo');
+        const canvas = document.getElementById('processedCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function changePlaybackRate() {
+            const rate = document.getElementById('playbackRate').value;
+            video.playbackRate = parseFloat(rate);
+        }
+
+        document.getElementById('videoInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            video.src = URL.createObjectURL(file);
+            video.playbackRate = document.getElementById('playbackRate').value;
+
+            video.onloadedmetadata = function () {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                isProcessing = true;
+                video.play();
+                processFrame();
+
+                // Hiển thị player video khi đã chọn video
+                video.style.display = 'block';
+                canvas.style.display = 'block';
+
+                // Check aspect ratio and adjust video size
+                const aspectRatio = video.videoWidth / video.videoHeight;
+                if (aspectRatio > 1) {
+                    video.classList.add('wide-video');
+                } else {
+                    video.classList.remove('wide-video');
+                }
+            };
+        });
+
+        async function processFrame() {
+            if (!isProcessing || video.paused || video.ended) return;
+
+            const currentTime = Date.now();
+            if (currentTime - lastProcessTime < PROCESS_INTERVAL) {
+                requestAnimationFrame(processFrame);
+                return;
+            }
+
+            lastProcessTime = currentTime;
+
+            ctx.drawImage(video, 0, 0);
+
+            try {
+                canvas.toBlob(async (blob) => {
+                    const formData = new FormData();
+                    formData.append('file', blob, 'frame.jpg');
+
+                    const response = await fetch('/detect/stream/video/process', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (response.ok) {
+                        const processedBlob = await response.blob();
+                        const img = new Image();
+                        img.onload = () => {
+                            ctx.drawImage(img, 0, 0);
+                            setTimeout(() => requestAnimationFrame(processFrame), PROCESS_INTERVAL);
+                        };
+                        img.src = URL.createObjectURL(processedBlob);
+                    } else {
+                        console.error('API Error:', response.status);
+                        setTimeout(() => requestAnimationFrame(processFrame), PROCESS_INTERVAL);
+                    }
+                }, 'image/jpeg', 0.8);
+            } catch (error) {
+                console.error('Error processing frame:', error);
+                setTimeout(() => requestAnimationFrame(processFrame), PROCESS_INTERVAL);
+            }
+        }
+
+        video.addEventListener('ended', () => {
+            isProcessing = false;
+        });
+
+        video.addEventListener('play', () => {
+            isProcessing = true;
+            processFrame();
+        });
+
+        video.addEventListener('pause', () => {
+            isProcessing = false;
+        });
+    </script>
+</body>
+
+</html>

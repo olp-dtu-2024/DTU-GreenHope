@@ -8,8 +8,8 @@ import {
   useParsedFilter,
 } from '@nocobase/client';
 import { BlockName, BlockNameLowercase } from '../constants';
-import { headerPickerSettings } from '../settings';
-import { InfoField } from './infoItem';
+import { richSettings } from '../settings';
+import { useFieldSchema } from '@formily/react';
 
 export interface HeaderPickerProps {
   collectionName: string;
@@ -74,6 +74,11 @@ export function useHeaderPickerProps(): HeaderPickerProps {
   };
 }
 
+export function useRichBlockProps() {
+  const fieldSchema = useFieldSchema();
+  return fieldSchema.parent?.['x-decorator-props']?.[BlockNameLowercase];
+}
+
 export function useFieldOptions(): SelectProps['options'] {
   const collection = useCollection();
   const compile = useCompile();
@@ -83,33 +88,35 @@ export function useFieldOptions(): SelectProps['options'] {
   }));
 }
 
-export function getHeaderPickerSchema({ dataSource = 'main', collection }) {
+export function getRichSchema({ dataSource = 'main', collection }) {
   return {
     type: 'void',
     'x-decorator': 'DataBlockProvider',
     'x-decorator-props': {
-      ['myHeaderPicker']: {},
+      [BlockNameLowercase]: {},
       dataSource,
       collection,
       action: 'list',
     },
     'x-component': 'CardItem',
     'x-toolbar': 'BlockSchemaToolbar',
-    'x-settings': headerPickerSettings.name,
-    'x-designer': 'FormV2.Designer',
+    'x-settings': richSettings.name,
     'x-component-props': {
       useConfigureFields: true,
     },
     'x-use-decorator-props': 'useBlockScopeDecoratorProps',
+    'x-use-component-props': 'useRichBlockProps',
+
     properties: {
       [BlockNameLowercase]: {
         type: 'void',
-        'x-component': 'HeaderPickerBlock',
+        'x-component': `${BlockName}Block`,
+        'x-use-component-props': 'useRichBlockProps',
         properties: {
           fields: {
             type: 'void',
             'x-component': 'Grid',
-            'x-initializer': 'info:configureFields',
+            'x-initializer': 'richText:configureFields',
           },
         },
       },

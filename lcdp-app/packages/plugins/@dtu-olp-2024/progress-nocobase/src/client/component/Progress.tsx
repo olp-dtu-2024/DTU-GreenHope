@@ -71,7 +71,8 @@ const useProgressData = (): IProgressData => {
  *
  * @returns {JSX.Element} A rendered progress bar representing the fiscal progress towards a goal.
  */
-export const Progress = withDynamicSchemaProps(() => {
+export const Progress = withDynamicSchemaProps((props) => {
+  const { height } = props;
   const { target, current } = useProgressData();
   const calculatePercent = React.useMemo(() => {
     if (!target || target === 0) return 0;
@@ -109,8 +110,8 @@ export const Progress = withDynamicSchemaProps(() => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        height: height || 12,
         position: 'relative',
-        height: 12,
         borderRadius: 6,
         marginTop: 24,
       }}

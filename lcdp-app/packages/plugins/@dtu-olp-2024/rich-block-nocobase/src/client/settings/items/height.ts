@@ -1,14 +1,16 @@
 import { SchemaSettingsItemType, useDesignable } from '@nocobase/client';
 import { useFieldSchema } from '@formily/react';
 import { useT } from '../../locale';
+import { BlockNameLowercase } from '../../constants';
 
 export const heightSchemaSettingsItem: SchemaSettingsItemType = {
   name: 'height',
   type: 'actionModal',
   useComponentProps() {
-    const filedSchema = useFieldSchema();
+    const fieldSchema = useFieldSchema();
     const { deepMerge } = useDesignable();
     const t = useT();
+    console.log('>>>>', fieldSchema['x-decorator-props']);
 
     return {
       title: t('Edit Height'),
@@ -20,7 +22,7 @@ export const heightSchemaSettingsItem: SchemaSettingsItemType = {
             title: t('Height'),
             type: 'number',
             default:
-              filedSchema['x-decorator-props']?.['myHeaderPicker']?.height,
+              fieldSchema['x-decorator-props']?.[BlockNameLowercase]?.height,
             'x-decorator': 'FormItem',
             'x-component': 'InputNumber',
           },
@@ -28,11 +30,11 @@ export const heightSchemaSettingsItem: SchemaSettingsItemType = {
       },
       onSubmit({ height }: any) {
         deepMerge({
-          'x-uid': filedSchema['x-uid'],
+          'x-uid': fieldSchema.parent['x-uid'],
           'x-decorator-props': {
-            ...filedSchema['x-decorator-props'],
-            ['myHeaderPicker']: {
-              ...filedSchema['x-decorator-props']?.['myHeaderPicker'],
+            ...fieldSchema['x-decorator-props'],
+            [BlockNameLowercase]: {
+              ...fieldSchema['x-decorator-props']?.[BlockNameLowercase],
               height,
             },
           },

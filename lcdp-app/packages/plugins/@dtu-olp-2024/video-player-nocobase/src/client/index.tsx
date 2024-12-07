@@ -2,10 +2,13 @@ import { Plugin } from '@nocobase/client';
 import { videoPlayerSettings } from './setting';
 import { videoPlayerInitializerItem } from './initializer';
 import { VideoPlayer } from './component/VideoPlayer';
+import { useCodeBlockProps } from './schema';
 
 export class VideoPlayerNocobaseClient extends Plugin {
   async load() {
     this.app.addComponents({ VideoPlayer });
+
+    this.app.addScopes({ useCodeBlockProps });
 
     // Add schema settings
     this.app.schemaSettingsManager.add(videoPlayerSettings);

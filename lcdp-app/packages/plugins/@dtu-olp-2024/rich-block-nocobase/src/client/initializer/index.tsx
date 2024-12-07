@@ -9,7 +9,7 @@ import {
 import { CodeOutlined } from '@ant-design/icons';
 
 import { BlockName, BlockNameLowercase } from '../constants';
-import { getHeaderPickerSchema } from '../schema';
+import { getRichSchema } from '../schema';
 import { useT } from '../locale';
 
 export function useFieldOptions(): SelectProps['options'] {
@@ -22,20 +22,21 @@ export function useFieldOptions(): SelectProps['options'] {
   }));
 }
 
-export const headerPickerInitializerItem: SchemaInitializerItemType = {
+export const richInitializerItem: SchemaInitializerItemType = {
+  type: 'item',
   name: BlockNameLowercase,
   Component: 'DataBlockInitializer',
   useComponentProps() {
     const { insert } = useSchemaInitializer();
     const t = useT();
     return {
-      title: t(BlockName),
+      title: t(`${BlockName} block`),
       icon: <CodeOutlined />,
       componentType: BlockName,
       useTranslationHooks: useT,
       onCreateBlockSchema({ item }) {
         insert(
-          getHeaderPickerSchema({
+          getRichSchema({
             dataSource: item.dataSource,
             collection: item.name,
           })
