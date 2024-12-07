@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Nền tảng hỗ trợ sau thiên tai của chúng tôi là cầu nối giữa lòng nhân ái và những người cần giúp đỡ. Với tính năng nhận diện cứu trợ nhanh chóng và quyên góp minh bạch, chúng tôi giúp cộng đồng đoàn kết để xây dựng lại cuộc sống, mang lại hy vọng mới cho những vùng bị ảnh hưởng bởi thiên tai.",
   "private": true,
-  "workspaces": [
-    "lcdp-app"
-  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "docker:build": "docker compose -p dtu-green-hope -f ./docker/docker-compose.yml up --build -d",
