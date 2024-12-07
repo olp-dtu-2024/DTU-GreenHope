@@ -57,7 +57,6 @@ export function useBlockScopeDecoratorProps(props) {
 
 export function useProgressBlockProps() {
   const fieldSchema = useFieldSchema();
-
   return fieldSchema.parent?.['x-decorator-props']?.[BlockNameLowerCase];
 }
 

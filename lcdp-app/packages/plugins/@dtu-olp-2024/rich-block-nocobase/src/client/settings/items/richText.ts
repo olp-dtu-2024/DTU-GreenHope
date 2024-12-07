@@ -2,10 +2,9 @@ import {
   createSelectSchemaSettingsItem,
   SchemaSettings,
 } from '@nocobase/client';
-import { BlockNameLowercase } from '../../constants';
 
-export const headerTypeSettings = new SchemaSettings({
-  name: `fieldSettings:component:${BlockNameLowercase}`,
+export const richTextSettings = new SchemaSettings({
+  name: 'fieldSettings:component:richText',
   items: [
     {
       type: 'remove',
@@ -18,9 +17,9 @@ export const headerTypeSettings = new SchemaSettings({
       },
     },
     createSelectSchemaSettingsItem({
-      name: 'headerType',
-      title: 'Header Type',
-      schemaKey: 'x-component-props.headerType',
+      name: 'richText',
+      title: 'Rich Text',
+      schemaKey: 'x-component-props.richText',
       defaultValue: 'h1',
       useOptions() {
         return [

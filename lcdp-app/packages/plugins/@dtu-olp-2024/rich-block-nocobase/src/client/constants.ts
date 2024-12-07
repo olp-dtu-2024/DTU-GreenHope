@@ -1,2 +1,2 @@
-export const BlockName = 'Header Picker';
+export const BlockName = 'Rich';
 export const BlockNameLowercase = BlockName.toLowerCase();
