@@ -120,59 +120,76 @@ export const SolidityEditor = withDynamicSchemaProps(
           return;
         }
 
+        message.loading('Đang triển khai hợp đồng...', 0);
+
         const response = await api.request({
           url: '/contract:get',
           method: 'post',
           data: { contractId: currentId },
         });
 
+        const { abi, bytecode } = response.data.data;
         setContractInfo(response.data.data);
 
-        const { abi, bytecode } = response.data.data;
+        // Get current nonce
+        const nonce = await instanceWeb3.eth.getTransactionCount(
+          infoWallet.address,
+          'latest'
+        );
+
+        // Estimate gas price and convert to string
+        const gasPrice = (await instanceWeb3.eth.getGasPrice()).toString();
 
         const contract = new instanceWeb3.eth.Contract(abi);
+        const deploy = contract.deploy({
+          data: bytecode,
+        });
 
-        contract
-          .deploy({
-            data: bytecode,
-          })
-          .send({
-            from: infoWallet.address,
-            gas: 5000000,
-          })
-          .then((newContractInstance) => {
-            console.log(
-              'Contract deployed at address:',
-              newContractInstance.options.address
-            );
-            const contractAddress = newContractInstance.options.address;
-            console.warn('contractAddress', contractAddress);
-            api
-              .resource('smart_contracts')
-              .update({
-                filterByTk: currentId,
-                values: {
-                  contractAddress,
-                },
-              })
-              .then((response) => {
-                if (response.status === 200 || response.status === 201) {
-                  message.success('Contract address updated successfully');
-                }
-              })
-              .catch((error) => {
-                console.error('Error updating contract address:', error);
-                message.error('Failed to update contract address');
-              });
-          })
-          .catch((err) => {
-            console.error('Error deploying contract:', err);
-          });
+        // Estimate gas and handle BigInt conversion
+        const estimatedGas = await deploy.estimateGas({
+          from: infoWallet.address,
+        });
 
-        console.log('response', response.data.data);
+        // Safe gas calculation with string conversion
+        const gasLimit = String(
+          Math.min(Math.floor(Number(estimatedGas.toString()) * 1.2), 5000000)
+        );
+
+        const newContractInstance = await deploy.send({
+          from: infoWallet.address,
+          gas: gasLimit,
+          gasPrice: gasPrice,
+          nonce: nonce,
+        });
+
+        const contractAddress = newContractInstance.options.address;
+
+        // Verify deployment
+        const code = await instanceWeb3.eth.getCode(contractAddress);
+        if (code === '0x' || code === '0x0') {
+          throw new Error('Contract deployment failed - no code at address');
+        }
+
+        await api.resource('smart_contracts').update({
+          filterByTk: currentId,
+          values: {
+            contractAddress,
+          },
+        });
+
+        message.destroy();
+        message.success('Hợp đồng đã được triển khai thành công');
+        setStatusDeploy(true);
+
         return response.data;
       } catch (error) {
-        console.error('Error deploy:', error);
+        message.destroy();
+        console.error('Error deploying contract:', error);
+        if (error.message.includes('nonce')) {
+          message.error('Vui lòng đợi giao dịch trước hoàn tất');
+        } else {
+          message.error('Lỗi triển khai hợp đồng: ' + error.message);
+        }
       }
     };
 

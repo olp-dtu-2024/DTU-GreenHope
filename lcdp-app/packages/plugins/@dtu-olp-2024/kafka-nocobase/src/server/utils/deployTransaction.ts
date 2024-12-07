@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 
 const MAX_RETRIES = 3;
-const RETRY_DELAY = 2000; // 2 seconds
+const RETRY_DELAY = 2000;
 
 export const deployTransaction = async (
   config: {
