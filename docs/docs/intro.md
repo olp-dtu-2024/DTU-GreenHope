@@ -30,6 +30,9 @@ Mục đích của dự án là phát triển một hệ thống dựa trên `n�
 - 🫶 Nền tảng hỗ trợ tái thiết sau thảm họa
 - 🌪️ Đánh giá thiệt hại sau thảm họa
 
+![s](../resources/Main-Function.png)
+
+
 ## 📢 Đối tượng hướng đến
 - **Nhà tài trợ và tổ chức quốc tế**: Các tổ chức phi chính phủ, nhà tài trợ và các tổ chức quốc tế đóng vai trò quan trọng trong việc cung cấp nguồn lực cho công tác cứu trợ. Họ sẽ sử dụng nền tảng để theo dõi và giám sát các hoạt động tái thiết, đồng thời đảm bảo rằng nguồn lực được phân phối đúng nơi cần thiết.
 

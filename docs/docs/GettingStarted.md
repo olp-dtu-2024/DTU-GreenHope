@@ -8,6 +8,10 @@
 - 🔍Tìm kiếm và cứu nạn
 - ❤️‍🩹Đánh giá thiệt hại và hỗ trợ tái thiết sau thảm họa
 - 🫶Kết nối giữa các tổ chức cứu trợ, cộng đồng
+
+![s](../resources/Main-Function.png)
+
+
 ## Tổng quan hệ thống
 
 
