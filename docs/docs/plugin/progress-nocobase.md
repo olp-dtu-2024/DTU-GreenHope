@@ -1,6 +1,6 @@
 # Progress NocoBase Plugin
 ## 🌟 Giới thiệu
-@olp-dtu-2024/progress-nocobase là một plugin cho nền tảng NocoBase, tích hợp Progress Bar giúp đơn giản hóa việc hiển thị tiến độ dưới dạng thanh tiến trình trong ứng dụng NocoBase của bạn.
+**@olp-dtu-2024/progress-nocobase** là một plugin cho nền tảng NocoBase, tích hợp Progress Bar giúp đơn giản hóa việc hiển thị tiến độ dưới dạng thanh tiến trình trong ứng dụng NocoBase của bạn.
 ### 🏆 Bối Cảnh
 Plugin được phát triển như một phần của cuộc thi Mã Nguồn Mở năm 2024.
 ## ✨ Tính Năng

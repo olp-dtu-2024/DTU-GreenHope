@@ -1,6 +1,6 @@
 # RichBlock NocoBase Plugin
 ## 🌟 Giới Thiệu
-@olp-dtu-2024/rich-block-nocobase là một plugin cho nền tảng NocoBase, cung cấp trải nghiệm soạn thảo nội dung linh hoạt với các khối kéo thả dựa trên Ant Design (antd). Plugin giúp người dùng dễ dàng tạo các content card phức tạp với các heading và đoạn văn một cách trực quan và nhanh chóng.
+**@olp-dtu-2024/rich-block-nocobase** là một plugin cho nền tảng NocoBase, cung cấp trải nghiệm soạn thảo nội dung linh hoạt với các khối kéo thả dựa trên Ant Design (antd). Plugin giúp người dùng dễ dàng tạo các content card phức tạp với các heading và đoạn văn một cách trực quan và nhanh chóng.
 ### 🏆 Bối Cảnh
 Plugin được phát triển như một phần của cuộc thi Mã Nguồn Mở năm 2024.
 

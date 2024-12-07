@@ -29,6 +29,7 @@ const sidebars: SidebarsConfig = {
         'services/capcha-service',
         'services/lcdp-service',
         'services/reconition-service',
+        'services/solidity-service',
         'services/transaction-service',
       ],
     },

@@ -1,6 +1,6 @@
 # Kafka NocoBase Plugin
 ## 🌟 Giới Thiệu
-@olp-dtu-2024/kafka-nocobase là một plugin cho nền tảng NocoBase, tích hợp KafkaJS giúp đơn giản hóa việc xử lý các sự kiện và giao tiếp message trong ứng dụng NocoBase của bạn.
+**@olp-dtu-2024/kafka-nocobase** là một plugin cho nền tảng NocoBase, tích hợp KafkaJS giúp đơn giản hóa việc xử lý các sự kiện và giao tiếp message trong ứng dụng NocoBase của bạn.
 ### 🏆 Bối Cảnh
 Plugin được phát triển như một phần của cuộc thi Mã Nguồn Mở năm 2024.
 

@@ -1,7 +1,7 @@
 # Tổng quan
 > *"🤝 Kết nối yêu thương, kiến tạo tương lai bền vững 🌿"*
-## 🍀 Greenhope
-- GREENHOPE (Hy vọng xanh) là một nền tảng tiên tiến phát triển dựa trên LCDP trong cuộc thi [Phần Mềm Nguồn Mở-Olympic Tin học Sinh viên Việt Nam 2024](https://www.olp.vn/procon-pmmn/ph%E1%BA%A7n-m%E1%BB%81m-ngu%E1%BB%93n-m%E1%BB%9F)
+## 🍀 GreenHope
+- GreenHope (Hy vọng xanh) là một nền tảng tiên tiến phát triển dựa trên LCDP trong cuộc thi [Phần Mềm Nguồn Mở-Olympic Tin học Sinh viên Việt Nam 2024](https://www.olp.vn/procon-pmmn/ph%E1%BA%A7n-m%E1%BB%81m-ngu%E1%BB%93n-m%E1%BB%9F)
  nhằm hỗ trợ sau thiên tai, được thiết kế để kết nối cộng đồng, quản lý cứu trợ và mang lại hy vọng mới cho những vùng bị ảnh hưởng bởi thiên tai.
 - Cung cấp một hệ thống toàn diện nhằm đảm bảo sự minh bạch, hiệu quả, là một giải phá p dài hạn cho cộng đồng, không ngừng cải tiến các công nghệ để góp phần ủng hộ cộng đồng vượt qua những vấn nạn về thiên tai trong cuộc sống hiện nay.
 ## Các chức năng chính của dự án
@@ -59,20 +59,22 @@
 Ứng dụng này hướng tới các mục tiêu như hỗ trợ tìm kiếm và cứu nạn, cung cấp báo cáo thiệt hại chính xác, giám sát tiến độ tái thiết, và tạo ra hệ thống phối hợp minh bạch giữa các bên liên quan. Các tính năng thông minh giúp tự động hóa việc đánh giá và phân bổ nguồn lực, đồng thời tăng cường khả năng tương tác với cộng đồng. Trong tương lai, ứng dụng kỳ vọng sẽ mở rộng ra toàn cầu, tích hợp AI và dữ liệu lớn, dự báo thảm họa, và xây dựng một hệ sinh thái bền vững để giúp các khu vực phục hồi nhanh chóng và hiệu quả sau mỗi thảm họa.
 
 Nhờ vào việc ứng dụng các công nghệ hiện đại, hệ thống này không chỉ cải thiện công tác cứu trợ mà còn tạo điều kiện cho việc tái thiết bền vững, đồng thời hỗ trợ sự phát triển ổn định của các cộng đồng sau thảm họa.
-## 💡Nhà phát triển
-- Lê Minh Tuấn
-    -  📧 Email: minhtuanledng@gmail.com
-    -  📱 Hotline: +84 889 001 505
 
-- Trần Nguyễn Duy Khánh
+## 💡Nhà phát triển
+- ### Lê Minh Tuấn
+    -  📧 Email: minhtuanledng@gmail.com
+    -  📱 Hotline: 0889001505
+
+- ### Trần Nguyễn Duy Khánh
     -  📧 Email: duykhanhtran17062003@gmail.com
     -  📱 Hotline: 0905081330
 
-- Trịnh Minh Son
+- ### Trịnh Minh Son
     -  📧 Email: trinhminhson2004@gmail.com
     -  📱 Hotline: 0357572879
 
-### 📝 License
+
+## 📝 License
 Dự án này được cấp phép theo các điều khoản của giấy phép [GPL V3 License](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENCE)
 
 

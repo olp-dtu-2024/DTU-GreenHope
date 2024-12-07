@@ -1,6 +1,6 @@
 # Video Player NocoBase Plugin
 ## 🌟 Giới thiệu
-@olp-dtu-2024/video-player-nocobase là một Plugin cung cấp trình phát video tích hợp với tính năng nâng cao, hỗ trợ nhiều định dạng và tùy chỉnh linh hoạt.
+**@olp-dtu-2024/video-player-nocobase** là một Plugin cung cấp trình phát video tích hợp với tính năng nâng cao, hỗ trợ nhiều định dạng và tùy chỉnh linh hoạt.
 ### 🏆 Bối Cảnh
 Plugin được phát triển như một phần của cuộc thi Mã Nguồn Mở năm 2024.
 ## ✨ Tính Năng

@@ -1,6 +1,6 @@
 # Carousel NocoBase Plugin
 ## 🌟 Giới Thiệu
-@olp-dtu-2024/carousel-nocobase là một plugin cho nền tảng NocoBase, cung cấp trải nghiệm hiển thị hình ảnh linh hoạt với Carousel dựa trên Ant Design (antd). Plugin giúp người dùng dễ dàng tạo và quản lý các slide show một cách trực quan và nhanh chóng.
+**@olp-dtu-2024/carousel-nocobase** là một plugin cho nền tảng NocoBase, cung cấp trải nghiệm hiển thị hình ảnh linh hoạt với Carousel dựa trên Ant Design (antd). Plugin giúp người dùng dễ dàng tạo và quản lý các slide show một cách trực quan và nhanh chóng.
 ### 🏆 Bối Cảnh
 Plugin được phát triển như một phần của cuộc thi Mã Nguồn Mở năm 2024.
 

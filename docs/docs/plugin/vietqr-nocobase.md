@@ -1,6 +1,6 @@
 # VietQR NocoBase Plugin
 ## 🌟 Giới Thiệu
-@olp-dtu-2024/vietqr-nocobase là một plugin cho nền tảng NocoBase, tích hợp VietQR API, giúp dễ dàng sinh mã QR thanh toán
+**@olp-dtu-2024/vietqr-nocobase** là một plugin cho nền tảng NocoBase, tích hợp VietQR API, giúp dễ dàng sinh mã QR thanh toán
 ### 🏆 Bối Cảnh
 Plugin được phát triển như một phần của cuộc thi Mã Nguồn Mở năm 2024.
 

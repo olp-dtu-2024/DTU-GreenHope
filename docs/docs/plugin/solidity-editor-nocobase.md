@@ -1,6 +1,6 @@
 # Solidity Editor NocoBase Plugin
 ## 🌟 Giới Thiệu
-@olp-dtu-2024/solidity-editor-nocobase là một plugin cung cấp môi trường phát triển hợp đồng thông minh Solidity với giao diện khách hàng Web3 tích hợp, giúp người dùng dễ dàng soạn thảo, triển khai và tương tác với các hợp đồng blockchain.
+**@olp-dtu-2024/solidity-editor-nocobase** là một plugin cung cấp môi trường phát triển hợp đồng thông minh Solidity với giao diện khách hàng Web3 tích hợp, giúp người dùng dễ dàng soạn thảo, triển khai và tương tác với các hợp đồng blockchain.
 ### 🏆 Bối Cảnh
 Plugin được phát triển như một phần của cuộc thi Mã Nguồn Mở năm 2024.
 
