@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Live Video Stream</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h2 {
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        .video-container {
+            max-width: 800px;
+            width: 100%;
+            max-height: 80vh;
+            /* Limit container height */
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        video {
+            width: 100%;
+            max-height: calc(80vh - 100px);
+            /* Subtract space for controls and padding */
+            object-fit: contain;
+            /* Maintain aspect ratio */
+            border-bottom: 1px solid #ccc;
+        }
+
+        .controls {
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            /* Prevent controls from shrinking */
+        }
+
+        .controls button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .controls button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Live Video Stream</h2>
+    <div class="video-container">
+        <video id="videoPlayer" controls autoplay>
+            <source src="{{ video_url }}?v={{ range(1000000) | random }}" type="video/mp4">
+        </video>
+        <div class="controls">
+            <button onclick="refreshVideo()">Refresh Video</button>
+        </div>
+    </div>
+    <script>
+        function refreshVideo() {
+            var video = document.getElementById('videoPlayer');
+            var currentTime = video.currentTime;
+            var source = video.getElementsByTagName('source')[0];
+            source.src = "{{ video_url }}?v=" + new Date().getTime(); // Add timestamp to prevent caching
+            video.load();
+            video.currentTime = currentTime;
+        }
+
+        // Auto refresh video every 10 seconds
+        setInterval(refreshVideo, 10000);
+    </script>
+</body>
+
+</html>
