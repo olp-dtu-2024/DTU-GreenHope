@@ -5,6 +5,7 @@ import { BlockNameLowercase } from '../constants';
 
 export function useCodeBlockProps() {
   const fieldSchema = useFieldSchema();
+
   return fieldSchema.parent?.['x-decorator-props']?.[BlockNameLowercase];
 }
 

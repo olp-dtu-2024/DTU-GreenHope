@@ -21,7 +21,7 @@ export const urlSchemaSettingsItem: SchemaSettingsItemType = {
             default:
               filedSchema['x-decorator-props']?.[BlockNameLowercase]?.url,
             'x-decorator': 'FormItem',
-            'x-component': 'InputNumber',
+            'x-component': 'Input',
           },
         },
       },
