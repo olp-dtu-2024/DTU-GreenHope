@@ -37,8 +37,8 @@ export const deployTransaction = async (
 
     const receipt = await tx.send({
       from: fromAddress,
-      gas,
-      gasPrice,
+      gas: gas.toString(),
+      gasPrice: gasPrice.toString(),
     });
 
     console.log('Giao dịch đã được gửi thành công:', receipt);

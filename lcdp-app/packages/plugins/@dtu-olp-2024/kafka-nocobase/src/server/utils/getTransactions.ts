@@ -9,6 +9,9 @@ export const getTransaction = async (config: {
   const contract = new web3.eth.Contract(abi, contractAddress);
   try {
     const transactions = await contract.methods.getAllTransactions().call();
+    if (!transactions || !Array.isArray(transactions)) {
+      throw new Error('Invalid transactions data');
+    }
     const mappedTransactions = transactions.map((tx) => ({
       transaction_code: tx[0],
       amount: parseInt(tx[1]),
