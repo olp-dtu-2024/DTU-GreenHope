@@ -5,7 +5,7 @@
 -- Dumped from database version 17.2
 -- Dumped by pg_dump version 17.2
 
--- Started on 2024-12-07 12:27:10 UTC
+-- Started on 2024-12-07 17:07:51 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -2430,8 +2430,8 @@ COPY public."applicationPlugins" (id, "createdAt", "updatedAt", name, "packageNa
 48	2024-12-04 09:18:58.829+00	2024-12-05 11:48:14.843+00	api-doc	@nocobase/plugin-api-doc	1.3.51	t	t	\N	\N
 63	2024-12-06 23:50:51.83+00	2024-12-06 23:51:22.791+00	@dtu-olp-2024/video-player-nocobase	@dtu-olp-2024/video-player-nocobase	1.0.0	t	t	\N	\N
 54	2024-12-04 09:20:53.146+00	2024-12-07 10:32:19.558+00	@dtu-olp-2024/carousel-nocobase	@dtu-olp-2024/carousel-nocobase	1.0.2	t	t	\N	\N
-55	2024-12-04 09:21:02.35+00	2024-12-07 10:32:19.571+00	@dtu-olp-2024/kafka-nocobase	@dtu-olp-2024/kafka-nocobase	1.2.5	t	t	\N	\N
 60	2024-12-04 09:22:14.436+00	2024-12-07 10:32:52.773+00	@dtu-olp-2024/solidity-editor-nocobase	@dtu-olp-2024/solidity-editor-nocobase	1.0.4	t	t	\N	\N
+55	2024-12-04 09:21:02.35+00	2024-12-07 15:53:43.467+00	@dtu-olp-2024/kafka-nocobase	@dtu-olp-2024/kafka-nocobase	1.2.5	t	t	\N	\N
 \.
 
 
@@ -2442,7 +2442,7 @@ COPY public."applicationPlugins" (id, "createdAt", "updatedAt", name, "packageNa
 --
 
 COPY public."applicationVersion" (id, value) FROM stdin;
-32	1.3.51
+33	1.3.51
 \.
 
 
@@ -6409,9 +6409,9 @@ COPY public.kafka_configs (id, "createdAt", "updatedAt", group_id, client_id) FR
 --
 
 COPY public.kafka_topics (id, "createdAt", "updatedAt", broker_host, topic_name, type) FROM stdin;
-d218894f-da15-4fda-abc3-a2d399df872a	2024-12-04 11:50:18.872+00	2024-12-04 11:50:18.872+00	localhost:9092	nocobase-events	producer
-3e06ef13-683e-42fa-9e6a-70a6e3fb19ce	2024-12-05 11:49:11.948+00	2024-12-05 11:49:11.948+00	localhost:9092	compileResponse	consumer
-2095e094-a756-4d23-86d8-ed67537e60aa	2024-12-05 11:49:24.85+00	2024-12-05 11:49:24.85+00	localhost:9092	transactionResponse	consumer
+2095e094-a756-4d23-86d8-ed67537e60aa	2024-12-05 11:49:24.85+00	2024-12-07 15:51:01.487+00	kafka-olp-dtu-2024:9092	transactionResponse	consumer
+3e06ef13-683e-42fa-9e6a-70a6e3fb19ce	2024-12-05 11:49:11.948+00	2024-12-07 15:51:04.551+00	kafka-olp-dtu-2024:9092	compileResponse	consumer
+d218894f-da15-4fda-abc3-a2d399df872a	2024-12-04 11:50:18.872+00	2024-12-07 15:51:07.259+00	kafka-olp-dtu-2024:9092	nocobase-events	producer
 \.
 
 
@@ -6578,7 +6578,7 @@ COPY public.sequences (id, "createdAt", "updatedAt", collection, field, key, cur
 --
 
 COPY public.smart_contracts (id, "createdAt", "updatedAt", script, abi, bytecode, "contractAddress") FROM stdin;
-65020f58-dbeb-4bcc-941f-366cc4120ac3	2024-12-07 11:09:58.648+00	2024-12-07 11:09:58.648+00	// SPDX-License-Identifier: MIT\npragma solidity >=0.7.0 <0.9.0;\n\ncontract TransactionManager {\n  struct Transaction {\n    string transaction_code;\n    uint256 amount;\n    string direction;\n    uint256 datetime;\n  }\n\n  Transaction[] public transactions;\n\n  // Hàm mới nhận vào mảng các giao dịch\n  function createTransactions(\n    Transaction[] memory _transactions\n  ) public {\n    for (uint i = 0; i < _transactions.length; i++) {\n      transactions.push(\n        Transaction({\n          transaction_code: _transactions[i].transaction_code,\n          amount: _transactions[i].amount,\n          direction: _transactions[i].direction,\n          datetime: block.timestamp\n        })\n      );\n    }\n  }\n\n  function getAllTransactions() public view returns (Transaction[] memory) {\n    return transactions;\n  }\n}	\N	\N	\N
+65020f58-dbeb-4bcc-941f-366cc4120ac3	2024-12-07 11:09:58.648+00	2024-12-07 15:55:10.159+00	pragma solidity >=0.7.0 <0.9.0;\n\ncontract TransactionManager {\n  struct Transaction {\n    string transaction_code;\n    uint256 amount;\n    string direction;\n    uint256 datetime;\n  }\n\n  Transaction[] public transactions;\n\n  function createTransactions(\n    Transaction[] memory _transactions\n  ) public {\n    for (uint i = 0; i < _transactions.length; i++) {\n      transactions.push(\n        Transaction({\n          transaction_code: _transactions[i].transaction_code,\n          amount: _transactions[i].amount,\n          direction: _transactions[i].direction,\n          datetime: block.timestamp\n        })\n      );\n    }\n  }\n\n  function getAllTransactions() public view returns (Transaction[] memory) {\n    return transactions;\n  }\n}	[{"inputs":[{"components":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"internalType":"struct TransactionManager.Transaction[]","name":"_transactions","type":"tuple[]"}],"name":"createTransactions","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getAllTransactions","outputs":[{"components":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"internalType":"struct TransactionManager.Transaction[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"transactions","outputs":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"stateMutability":"view","type":"function"}]	0x6080604052348015600f57600080fd5b50610e108061001f6000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c806327506f53146100465780632ef8e92d146100645780639ace38c214610080575b600080fd5b61004e6100b3565b60405161005b9190610674565b60405180910390f35b61007e600480360381019061007991906109ab565b61024a565b005b61009a600480360381019061009591906109f4565b61034f565b6040516100aa9493929190610a7a565b60405180910390f35b60606000805480602002602001604051908101604052809291908181526020016000905b82821015610241578382906000526020600020906004020160405180608001604052908160008201805461010a90610afc565b80601f016020809104026020016040519081016040528092919081815260200182805461013690610afc565b80156101835780601f1061015857610100808354040283529160200191610183565b820191906000526020600020905b81548152906001019060200180831161016657829003601f168201915b50505050508152602001600182015481526020016002820180546101a690610afc565b80601f01602080910402602001604051908101604052809291908181526020018280546101d290610afc565b801561021f5780601f106101f45761010080835404028352916020019161021f565b820191906000526020600020905b81548152906001019060200180831161020257829003601f168201915b50505050508152602001600382015481525050815260200190600101906100d7565b50505050905090565b60005b815181101561034b576000604051806080016040528084848151811061027657610275610b2d565b5b602002602001015160000151815260200184848151811061029a57610299610b2d565b5b60200260200101516020015181526020018484815181106102be576102bd610b2d565b5b602002602001015160400151815260200142815250908060018154018082558091505060019003906000526020600020906004020160009091909190915060008201518160000190816103119190610d08565b506020820151816001015560408201518160020190816103319190610d08565b50606082015181600301555050808060010191505061024d565b5050565b6000818154811061035f57600080fd5b906000526020600020906004020160009150905080600001805461038290610afc565b80601f01602080910402602001604051908101604052809291908181526020018280546103ae90610afc565b80156103fb5780601f106103d0576101008083540402835291602001916103fb565b820191906000526020600020905b8154815290600101906020018083116103de57829003601f168201915b50505050509080600101549080600201805461041690610afc565b80601f016020809104026020016040519081016040528092919081815260200182805461044290610afc565b801561048f5780601f106104645761010080835404028352916020019161048f565b820191906000526020600020905b81548152906001019060200180831161047257829003601f168201915b5050505050908060030154905084565b600081519050919050565b600082825260208201905092915050565b6000819050602082019050919050565b600081519050919050565b600082825260208201905092915050565b60005b838110156105055780820151818401526020810190506104ea565b60008484015250505050565b6000601f19601f8301169050919050565b600061052d826104cb565b61053781856104d6565b93506105478185602086016104e7565b61055081610511565b840191505092915050565b6000819050919050565b61056e8161055b565b82525050565b600060808301600083015184820360008601526105918282610522565b91505060208301516105a66020860182610565565b50604083015184820360408601526105be8282610522565b91505060608301516105d36060860182610565565b508091505092915050565b60006105ea8383610574565b905092915050565b6000602082019050919050565b600061060a8261049f565b61061481856104aa565b935083602082028501610626856104bb565b8060005b85811015610662578484038952815161064385826105de565b945061064e836105f2565b925060208a0199505060018101905061062a565b50829750879550505050505092915050565b6000602082019050818103600083015261068e81846105ff565b905092915050565b6000604051905090565b600080fd5b600080fd5b600080fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6106e782610511565b810181811067ffffffffffffffff82111715610706576107056106af565b5b80604052505050565b6000610719610696565b905061072582826106de565b919050565b600067ffffffffffffffff821115610745576107446106af565b5b602082029050602081019050919050565b600080fd5b600080fd5b600080fd5b600080fd5b600067ffffffffffffffff821115610785576107846106af565b5b61078e82610511565b9050602081019050919050565b82818337600083830152505050565b60006107bd6107b88461076a565b61070f565b9050828152602081018484840111156107d9576107d8610765565b5b6107e484828561079b565b509392505050565b600082601f830112610801576108006106aa565b5b81356108118482602086016107aa565b91505092915050565b6108238161055b565b811461082e57600080fd5b50565b6000813590506108408161081a565b92915050565b60006080828403121561085c5761085b61075b565b5b610866608061070f565b9050600082013567ffffffffffffffff81111561088657610885610760565b5b610892848285016107ec565b60008301525060206108a684828501610831565b602083015250604082013567ffffffffffffffff8111156108ca576108c9610760565b5b6108d6848285016107ec565b60408301525060606108ea84828501610831565b60608301525092915050565b60006109096109048461072a565b61070f565b9050808382526020820190506020840283018581111561092c5761092b610756565b5b835b8181101561097357803567ffffffffffffffff811115610951576109506106aa565b5b80860161095e8982610846565b8552602085019450505060208101905061092e565b5050509392505050565b600082601f830112610992576109916106aa565b5b81356109a28482602086016108f6565b91505092915050565b6000602082840312156109c1576109c06106a0565b5b600082013567ffffffffffffffff8111156109df576109de6106a5565b5b6109eb8482850161097d565b91505092915050565b600060208284031215610a0a57610a096106a0565b5b6000610a1884828501610831565b91505092915050565b600082825260208201905092915050565b6000610a3d826104cb565b610a478185610a21565b9350610a578185602086016104e7565b610a6081610511565b840191505092915050565b610a748161055b565b82525050565b60006080820190508181036000830152610a948187610a32565b9050610aa36020830186610a6b565b8181036040830152610ab58185610a32565b9050610ac46060830184610a6b565b95945050505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b60006002820490506001821680610b1457607f821691505b602082108103610b2757610b26610acd565b5b50919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b60008190508160005260206000209050919050565b60006020601f8301049050919050565b600082821b905092915050565b600060088302610bbe7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff82610b81565b610bc88683610b81565b95508019841693508086168417925050509392505050565b6000819050919050565b6000610c05610c00610bfb8461055b565b610be0565b61055b565b9050919050565b6000819050919050565b610c1f83610bea565b610c33610c2b82610c0c565b848454610b8e565b825550505050565b600090565b610c48610c3b565b610c53818484610c16565b505050565b5b81811015610c7757610c6c600082610c40565b600181019050610c59565b5050565b601f821115610cbc57610c8d81610b5c565b610c9684610b71565b81016020851015610ca5578190505b610cb9610cb185610b71565b830182610c58565b50505b505050565b600082821c905092915050565b6000610cdf60001984600802610cc1565b1980831691505092915050565b6000610cf88383610cce565b9150826002028217905092915050565b610d11826104cb565b67ffffffffffffffff811115610d2a57610d296106af565b5b610d348254610afc565b610d3f828285610c7b565b600060209050601f831160018114610d725760008415610d60578287015190505b610d6a8582610cec565b865550610dd2565b601f198416610d8086610b5c565b60005b82811015610da857848901518255600182019150602085019450602081019050610d83565b86831015610dc55784890151610dc1601f891682610cce565b8355505b6001600288020188555050505b50505050505056fea26469706673582212200075dd7affc3db13968f733fc2d0d856fa06859a32028931d36e09eafdafa9c064736f6c634300081c0033	0xD3aA556287Afe63102e5797BFDDd2A1E8DbB3eA5
 \.
 
 
@@ -6695,7 +6695,7 @@ COPY public.transactions ("createdAt", "updatedAt", id, "createdById", "updatedB
 --
 
 COPY public.transactions_config ("createdAt", "updatedAt", id, "createdById", "updatedById", "contractAddress", private_key, provider, abi) FROM stdin;
-2024-12-07 11:15:15.319+00	2024-12-07 11:15:15.319+00	1	1	1	dsfsd	fgdfg	sgasgfd	\N
+2024-12-07 15:56:33.814+00	2024-12-07 15:56:33.814+00	2	1	1	0xD3aA556287Afe63102e5797BFDDd2A1E8DbB3eA5	0x395df67f0c2d2d9fe1ad08d1bc8b6627011959b79c53d7dd6a3536a33ab8a4fd	http://ganache-olp-dtu-2024:8545	[{"inputs":[{"components":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"internalType":"struct TransactionManager.Transaction[]","name":"_transactions","type":"tuple[]"}],"name":"createTransactions","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getAllTransactions","outputs":[{"components":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"internalType":"struct TransactionManager.Transaction[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"transactions","outputs":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"stateMutability":"view","type":"function"}]
 \.
 
 
@@ -12565,27 +12565,6 @@ nmo9mk3zqna	70esyi2cnyt	19	\N	\N	\N
 073buw1m70l	772x26dg2a4	18	\N	\N	\N
 073buw1m70l	6r00qlukgvq	19	\N	\N	\N
 n7gwoyocqxm	n7gwoyocqxm	0	f	properties	\N
-lk04zin36r9	lk04zin36r9	0	f	properties	\N
-avfrtpm5d65	lk04zin36r9	1	\N	\N	1
-u7z981cpekd	lk04zin36r9	2	\N	\N	\N
-hw80ixyrjgz	avfrtpm5d65	2	\N	\N	\N
-hw80ixyrjgz	lk04zin36r9	3	\N	\N	\N
-me1ohauow6f	avfrtpm5d65	3	\N	\N	\N
-me1ohauow6f	lk04zin36r9	4	\N	\N	\N
-xqf45rvay4g	avfrtpm5d65	4	\N	\N	\N
-xqf45rvay4g	lk04zin36r9	5	\N	\N	\N
-2mxzcpz5cle	avfrtpm5d65	5	\N	\N	\N
-2mxzcpz5cle	lk04zin36r9	6	\N	\N	\N
-jqr7lgri2e0	avfrtpm5d65	6	\N	\N	\N
-jqr7lgri2e0	lk04zin36r9	7	\N	\N	\N
-5vjhonzhs45	avfrtpm5d65	7	\N	\N	\N
-5vjhonzhs45	lk04zin36r9	8	\N	\N	\N
-073buw1m70l	avfrtpm5d65	8	\N	\N	\N
-073buw1m70l	lk04zin36r9	9	\N	\N	\N
-nocobase-admin-menu	avfrtpm5d65	9	\N	\N	\N
-nocobase-admin-menu	lk04zin36r9	10	\N	\N	\N
-avfrtpm5d65	avfrtpm5d65	0	f	properties	\N
-u7z981cpekd	avfrtpm5d65	1	\N	\N	2
 w2xb0a6rkey	n7gwoyocqxm	2	\N	\N	\N
 x8ujxnhlng7	n7gwoyocqxm	3	\N	\N	\N
 evtz6ljqxdq	n7gwoyocqxm	4	\N	\N	\N
@@ -19143,6 +19122,442 @@ nocobase-admin-menu	367j9rm7qvl	19	\N	\N	\N
 fzzjta8vefz	367j9rm7qvl	4	\N	\N	\N
 g4n9eb2icuo	367j9rm7qvl	5	\N	\N	\N
 bb7nfngcfhq	367j9rm7qvl	1	\N	\N	2
+024s22ncu12	024s22ncu12	0	f	properties	\N
+77ts7szo3co	024s22ncu12	1	\N	\N	1
+azr8rt58jhq	azr8rt58jhq	0	f	properties	\N
+024s22ncu12	azr8rt58jhq	1	\N	\N	1
+77ts7szo3co	azr8rt58jhq	2	\N	\N	1
+53onwv1p0ao	53onwv1p0ao	0	f	properties	\N
+azr8rt58jhq	53onwv1p0ao	1	\N	\N	1
+024s22ncu12	53onwv1p0ao	2	\N	\N	1
+77ts7szo3co	53onwv1p0ao	3	\N	\N	1
+uatnso3i8u3	uatnso3i8u3	0	f	properties	\N
+53onwv1p0ao	uatnso3i8u3	1	\N	\N	1
+azr8rt58jhq	uatnso3i8u3	2	\N	\N	1
+024s22ncu12	uatnso3i8u3	3	\N	\N	1
+77ts7szo3co	uatnso3i8u3	4	\N	\N	1
+tmiqe6j1j64	024s22ncu12	2	\N	\N	\N
+tmiqe6j1j64	azr8rt58jhq	3	\N	\N	\N
+tmiqe6j1j64	53onwv1p0ao	4	\N	\N	\N
+tmiqe6j1j64	uatnso3i8u3	5	\N	\N	\N
+hw80ixyrjgz	77ts7szo3co	2	\N	\N	\N
+hw80ixyrjgz	024s22ncu12	3	\N	\N	\N
+hw80ixyrjgz	azr8rt58jhq	4	\N	\N	\N
+hw80ixyrjgz	53onwv1p0ao	5	\N	\N	\N
+hw80ixyrjgz	uatnso3i8u3	6	\N	\N	\N
+me1ohauow6f	77ts7szo3co	3	\N	\N	\N
+me1ohauow6f	024s22ncu12	4	\N	\N	\N
+me1ohauow6f	azr8rt58jhq	5	\N	\N	\N
+me1ohauow6f	53onwv1p0ao	6	\N	\N	\N
+me1ohauow6f	uatnso3i8u3	7	\N	\N	\N
+xqf45rvay4g	77ts7szo3co	4	\N	\N	\N
+xqf45rvay4g	024s22ncu12	5	\N	\N	\N
+xqf45rvay4g	azr8rt58jhq	6	\N	\N	\N
+xqf45rvay4g	53onwv1p0ao	7	\N	\N	\N
+xqf45rvay4g	uatnso3i8u3	8	\N	\N	\N
+2mxzcpz5cle	77ts7szo3co	5	\N	\N	\N
+2mxzcpz5cle	024s22ncu12	6	\N	\N	\N
+2mxzcpz5cle	azr8rt58jhq	7	\N	\N	\N
+2mxzcpz5cle	53onwv1p0ao	8	\N	\N	\N
+2mxzcpz5cle	uatnso3i8u3	9	\N	\N	\N
+jqr7lgri2e0	77ts7szo3co	6	\N	\N	\N
+jqr7lgri2e0	024s22ncu12	7	\N	\N	\N
+jqr7lgri2e0	azr8rt58jhq	8	\N	\N	\N
+jqr7lgri2e0	53onwv1p0ao	9	\N	\N	\N
+jqr7lgri2e0	uatnso3i8u3	10	\N	\N	\N
+5vjhonzhs45	77ts7szo3co	7	\N	\N	\N
+5vjhonzhs45	024s22ncu12	8	\N	\N	\N
+5vjhonzhs45	azr8rt58jhq	9	\N	\N	\N
+5vjhonzhs45	53onwv1p0ao	10	\N	\N	\N
+5vjhonzhs45	uatnso3i8u3	11	\N	\N	\N
+073buw1m70l	77ts7szo3co	8	\N	\N	\N
+073buw1m70l	024s22ncu12	9	\N	\N	\N
+073buw1m70l	azr8rt58jhq	10	\N	\N	\N
+073buw1m70l	53onwv1p0ao	11	\N	\N	\N
+073buw1m70l	uatnso3i8u3	12	\N	\N	\N
+nocobase-admin-menu	77ts7szo3co	9	\N	\N	\N
+nocobase-admin-menu	024s22ncu12	10	\N	\N	\N
+nocobase-admin-menu	azr8rt58jhq	11	\N	\N	\N
+nocobase-admin-menu	53onwv1p0ao	12	\N	\N	\N
+nocobase-admin-menu	uatnso3i8u3	13	\N	\N	\N
+77ts7szo3co	77ts7szo3co	0	f	properties	\N
+tmiqe6j1j64	77ts7szo3co	1	\N	\N	3
+lkhgik8xv90	lkhgik8xv90	0	f	properties	\N
+o8147vmdwcq	lkhgik8xv90	1	\N	\N	1
+msr8trei5uf	msr8trei5uf	0	f	properties	\N
+lkhgik8xv90	msr8trei5uf	1	\N	\N	1
+o8147vmdwcq	msr8trei5uf	2	\N	\N	1
+nxqum1qxnv4	nxqum1qxnv4	0	f	properties	\N
+msr8trei5uf	nxqum1qxnv4	1	\N	\N	1
+lkhgik8xv90	nxqum1qxnv4	2	\N	\N	1
+o8147vmdwcq	nxqum1qxnv4	3	\N	\N	1
+658x6srrpsl	658x6srrpsl	0	f	properties	\N
+nxqum1qxnv4	658x6srrpsl	1	\N	\N	1
+msr8trei5uf	658x6srrpsl	2	\N	\N	1
+lkhgik8xv90	658x6srrpsl	3	\N	\N	1
+o8147vmdwcq	658x6srrpsl	4	\N	\N	1
+3nx5wrm9dsv	3nx5wrm9dsv	0	f	properties	\N
+nxqum1qxnv4	3nx5wrm9dsv	1	\N	\N	2
+msr8trei5uf	3nx5wrm9dsv	2	\N	\N	2
+lkhgik8xv90	3nx5wrm9dsv	3	\N	\N	2
+o8147vmdwcq	3nx5wrm9dsv	4	\N	\N	2
+uatnso3i8u3	lkhgik8xv90	2	\N	\N	\N
+uatnso3i8u3	msr8trei5uf	3	\N	\N	\N
+uatnso3i8u3	nxqum1qxnv4	4	\N	\N	\N
+uatnso3i8u3	658x6srrpsl	5	\N	\N	\N
+uatnso3i8u3	3nx5wrm9dsv	5	\N	\N	\N
+53onwv1p0ao	o8147vmdwcq	2	\N	\N	\N
+53onwv1p0ao	lkhgik8xv90	3	\N	\N	\N
+53onwv1p0ao	msr8trei5uf	4	\N	\N	\N
+53onwv1p0ao	nxqum1qxnv4	5	\N	\N	\N
+53onwv1p0ao	658x6srrpsl	6	\N	\N	\N
+53onwv1p0ao	3nx5wrm9dsv	6	\N	\N	\N
+azr8rt58jhq	o8147vmdwcq	3	\N	\N	\N
+azr8rt58jhq	lkhgik8xv90	4	\N	\N	\N
+azr8rt58jhq	msr8trei5uf	5	\N	\N	\N
+azr8rt58jhq	nxqum1qxnv4	6	\N	\N	\N
+azr8rt58jhq	658x6srrpsl	7	\N	\N	\N
+azr8rt58jhq	3nx5wrm9dsv	7	\N	\N	\N
+024s22ncu12	o8147vmdwcq	4	\N	\N	\N
+024s22ncu12	lkhgik8xv90	5	\N	\N	\N
+024s22ncu12	msr8trei5uf	6	\N	\N	\N
+024s22ncu12	nxqum1qxnv4	7	\N	\N	\N
+024s22ncu12	658x6srrpsl	8	\N	\N	\N
+024s22ncu12	3nx5wrm9dsv	8	\N	\N	\N
+77ts7szo3co	o8147vmdwcq	5	\N	\N	\N
+77ts7szo3co	lkhgik8xv90	6	\N	\N	\N
+77ts7szo3co	msr8trei5uf	7	\N	\N	\N
+77ts7szo3co	nxqum1qxnv4	8	\N	\N	\N
+77ts7szo3co	658x6srrpsl	9	\N	\N	\N
+77ts7szo3co	3nx5wrm9dsv	9	\N	\N	\N
+tmiqe6j1j64	o8147vmdwcq	6	\N	\N	\N
+tmiqe6j1j64	lkhgik8xv90	7	\N	\N	\N
+tmiqe6j1j64	msr8trei5uf	8	\N	\N	\N
+tmiqe6j1j64	nxqum1qxnv4	9	\N	\N	\N
+tmiqe6j1j64	658x6srrpsl	10	\N	\N	\N
+tmiqe6j1j64	3nx5wrm9dsv	10	\N	\N	\N
+hw80ixyrjgz	o8147vmdwcq	7	\N	\N	\N
+hw80ixyrjgz	lkhgik8xv90	8	\N	\N	\N
+hw80ixyrjgz	msr8trei5uf	9	\N	\N	\N
+hw80ixyrjgz	nxqum1qxnv4	10	\N	\N	\N
+hw80ixyrjgz	658x6srrpsl	11	\N	\N	\N
+hw80ixyrjgz	3nx5wrm9dsv	11	\N	\N	\N
+me1ohauow6f	o8147vmdwcq	8	\N	\N	\N
+me1ohauow6f	lkhgik8xv90	9	\N	\N	\N
+me1ohauow6f	msr8trei5uf	10	\N	\N	\N
+me1ohauow6f	nxqum1qxnv4	11	\N	\N	\N
+me1ohauow6f	658x6srrpsl	12	\N	\N	\N
+me1ohauow6f	3nx5wrm9dsv	12	\N	\N	\N
+xqf45rvay4g	o8147vmdwcq	9	\N	\N	\N
+xqf45rvay4g	lkhgik8xv90	10	\N	\N	\N
+o8147vmdwcq	o8147vmdwcq	0	f	properties	\N
+xqf45rvay4g	msr8trei5uf	11	\N	\N	\N
+xqf45rvay4g	nxqum1qxnv4	12	\N	\N	\N
+xqf45rvay4g	658x6srrpsl	13	\N	\N	\N
+xqf45rvay4g	3nx5wrm9dsv	13	\N	\N	\N
+2mxzcpz5cle	o8147vmdwcq	10	\N	\N	\N
+2mxzcpz5cle	lkhgik8xv90	11	\N	\N	\N
+2mxzcpz5cle	msr8trei5uf	12	\N	\N	\N
+2mxzcpz5cle	nxqum1qxnv4	13	\N	\N	\N
+2mxzcpz5cle	658x6srrpsl	14	\N	\N	\N
+2mxzcpz5cle	3nx5wrm9dsv	14	\N	\N	\N
+jqr7lgri2e0	o8147vmdwcq	11	\N	\N	\N
+jqr7lgri2e0	lkhgik8xv90	12	\N	\N	\N
+jqr7lgri2e0	msr8trei5uf	13	\N	\N	\N
+jqr7lgri2e0	nxqum1qxnv4	14	\N	\N	\N
+jqr7lgri2e0	658x6srrpsl	15	\N	\N	\N
+jqr7lgri2e0	3nx5wrm9dsv	15	\N	\N	\N
+5vjhonzhs45	o8147vmdwcq	12	\N	\N	\N
+5vjhonzhs45	lkhgik8xv90	13	\N	\N	\N
+5vjhonzhs45	msr8trei5uf	14	\N	\N	\N
+5vjhonzhs45	nxqum1qxnv4	15	\N	\N	\N
+5vjhonzhs45	658x6srrpsl	16	\N	\N	\N
+5vjhonzhs45	3nx5wrm9dsv	16	\N	\N	\N
+073buw1m70l	o8147vmdwcq	13	\N	\N	\N
+073buw1m70l	lkhgik8xv90	14	\N	\N	\N
+073buw1m70l	msr8trei5uf	15	\N	\N	\N
+073buw1m70l	nxqum1qxnv4	16	\N	\N	\N
+073buw1m70l	658x6srrpsl	17	\N	\N	\N
+073buw1m70l	3nx5wrm9dsv	17	\N	\N	\N
+nocobase-admin-menu	o8147vmdwcq	14	\N	\N	\N
+nocobase-admin-menu	lkhgik8xv90	15	\N	\N	\N
+nocobase-admin-menu	msr8trei5uf	16	\N	\N	\N
+nocobase-admin-menu	nxqum1qxnv4	17	\N	\N	\N
+nocobase-admin-menu	658x6srrpsl	18	\N	\N	\N
+nocobase-admin-menu	3nx5wrm9dsv	18	\N	\N	\N
+uatnso3i8u3	o8147vmdwcq	1	\N	\N	1
+l4gmsjuzhm4	l4gmsjuzhm4	0	f	properties	\N
+88s7o745fdq	l4gmsjuzhm4	1	\N	\N	1
+k519ukw8iau	k519ukw8iau	0	f	properties	\N
+l4gmsjuzhm4	k519ukw8iau	1	\N	\N	1
+88s7o745fdq	k519ukw8iau	2	\N	\N	1
+658x6srrpsl	l4gmsjuzhm4	2	\N	\N	\N
+658x6srrpsl	k519ukw8iau	3	\N	\N	\N
+nxqum1qxnv4	88s7o745fdq	2	\N	\N	\N
+nxqum1qxnv4	l4gmsjuzhm4	3	\N	\N	\N
+nxqum1qxnv4	k519ukw8iau	4	\N	\N	\N
+msr8trei5uf	88s7o745fdq	3	\N	\N	\N
+msr8trei5uf	l4gmsjuzhm4	4	\N	\N	\N
+msr8trei5uf	k519ukw8iau	5	\N	\N	\N
+lkhgik8xv90	88s7o745fdq	4	\N	\N	\N
+lkhgik8xv90	l4gmsjuzhm4	5	\N	\N	\N
+lkhgik8xv90	k519ukw8iau	6	\N	\N	\N
+o8147vmdwcq	88s7o745fdq	5	\N	\N	\N
+o8147vmdwcq	l4gmsjuzhm4	6	\N	\N	\N
+o8147vmdwcq	k519ukw8iau	7	\N	\N	\N
+uatnso3i8u3	88s7o745fdq	6	\N	\N	\N
+uatnso3i8u3	l4gmsjuzhm4	7	\N	\N	\N
+uatnso3i8u3	k519ukw8iau	8	\N	\N	\N
+53onwv1p0ao	88s7o745fdq	7	\N	\N	\N
+53onwv1p0ao	l4gmsjuzhm4	8	\N	\N	\N
+53onwv1p0ao	k519ukw8iau	9	\N	\N	\N
+azr8rt58jhq	88s7o745fdq	8	\N	\N	\N
+azr8rt58jhq	l4gmsjuzhm4	9	\N	\N	\N
+azr8rt58jhq	k519ukw8iau	10	\N	\N	\N
+024s22ncu12	88s7o745fdq	9	\N	\N	\N
+024s22ncu12	l4gmsjuzhm4	10	\N	\N	\N
+024s22ncu12	k519ukw8iau	11	\N	\N	\N
+77ts7szo3co	88s7o745fdq	10	\N	\N	\N
+77ts7szo3co	l4gmsjuzhm4	11	\N	\N	\N
+77ts7szo3co	k519ukw8iau	12	\N	\N	\N
+tmiqe6j1j64	88s7o745fdq	11	\N	\N	\N
+tmiqe6j1j64	l4gmsjuzhm4	12	\N	\N	\N
+tmiqe6j1j64	k519ukw8iau	13	\N	\N	\N
+hw80ixyrjgz	88s7o745fdq	12	\N	\N	\N
+hw80ixyrjgz	l4gmsjuzhm4	13	\N	\N	\N
+hw80ixyrjgz	k519ukw8iau	14	\N	\N	\N
+me1ohauow6f	88s7o745fdq	13	\N	\N	\N
+me1ohauow6f	l4gmsjuzhm4	14	\N	\N	\N
+me1ohauow6f	k519ukw8iau	15	\N	\N	\N
+xqf45rvay4g	88s7o745fdq	14	\N	\N	\N
+xqf45rvay4g	l4gmsjuzhm4	15	\N	\N	\N
+xqf45rvay4g	k519ukw8iau	16	\N	\N	\N
+2mxzcpz5cle	88s7o745fdq	15	\N	\N	\N
+2mxzcpz5cle	l4gmsjuzhm4	16	\N	\N	\N
+2mxzcpz5cle	k519ukw8iau	17	\N	\N	\N
+jqr7lgri2e0	88s7o745fdq	16	\N	\N	\N
+jqr7lgri2e0	l4gmsjuzhm4	17	\N	\N	\N
+jqr7lgri2e0	k519ukw8iau	18	\N	\N	\N
+5vjhonzhs45	88s7o745fdq	17	\N	\N	\N
+5vjhonzhs45	l4gmsjuzhm4	18	\N	\N	\N
+5vjhonzhs45	k519ukw8iau	19	\N	\N	\N
+073buw1m70l	88s7o745fdq	18	\N	\N	\N
+073buw1m70l	l4gmsjuzhm4	19	\N	\N	\N
+073buw1m70l	k519ukw8iau	20	\N	\N	\N
+nocobase-admin-menu	88s7o745fdq	19	\N	\N	\N
+nocobase-admin-menu	l4gmsjuzhm4	20	\N	\N	\N
+nocobase-admin-menu	k519ukw8iau	21	\N	\N	\N
+88s7o745fdq	88s7o745fdq	0	f	properties	\N
+658x6srrpsl	88s7o745fdq	1	\N	\N	1
+p6bn6qruz31	p6bn6qruz31	0	f	properties	\N
+jxsrhg1ryiq	p6bn6qruz31	1	\N	\N	1
+dbyel17qbz6	dbyel17qbz6	0	f	properties	\N
+p6bn6qruz31	dbyel17qbz6	1	\N	\N	1
+jxsrhg1ryiq	dbyel17qbz6	2	\N	\N	1
+658x6srrpsl	p6bn6qruz31	2	\N	\N	\N
+658x6srrpsl	dbyel17qbz6	3	\N	\N	\N
+nxqum1qxnv4	jxsrhg1ryiq	2	\N	\N	\N
+nxqum1qxnv4	p6bn6qruz31	3	\N	\N	\N
+nxqum1qxnv4	dbyel17qbz6	4	\N	\N	\N
+msr8trei5uf	jxsrhg1ryiq	3	\N	\N	\N
+msr8trei5uf	p6bn6qruz31	4	\N	\N	\N
+msr8trei5uf	dbyel17qbz6	5	\N	\N	\N
+lkhgik8xv90	jxsrhg1ryiq	4	\N	\N	\N
+lkhgik8xv90	p6bn6qruz31	5	\N	\N	\N
+lkhgik8xv90	dbyel17qbz6	6	\N	\N	\N
+o8147vmdwcq	jxsrhg1ryiq	5	\N	\N	\N
+o8147vmdwcq	p6bn6qruz31	6	\N	\N	\N
+o8147vmdwcq	dbyel17qbz6	7	\N	\N	\N
+uatnso3i8u3	jxsrhg1ryiq	6	\N	\N	\N
+uatnso3i8u3	p6bn6qruz31	7	\N	\N	\N
+uatnso3i8u3	dbyel17qbz6	8	\N	\N	\N
+53onwv1p0ao	jxsrhg1ryiq	7	\N	\N	\N
+53onwv1p0ao	p6bn6qruz31	8	\N	\N	\N
+53onwv1p0ao	dbyel17qbz6	9	\N	\N	\N
+azr8rt58jhq	jxsrhg1ryiq	8	\N	\N	\N
+azr8rt58jhq	p6bn6qruz31	9	\N	\N	\N
+azr8rt58jhq	dbyel17qbz6	10	\N	\N	\N
+024s22ncu12	jxsrhg1ryiq	9	\N	\N	\N
+024s22ncu12	p6bn6qruz31	10	\N	\N	\N
+024s22ncu12	dbyel17qbz6	11	\N	\N	\N
+77ts7szo3co	jxsrhg1ryiq	10	\N	\N	\N
+jxsrhg1ryiq	jxsrhg1ryiq	0	f	properties	\N
+658x6srrpsl	jxsrhg1ryiq	1	\N	\N	2
+77ts7szo3co	p6bn6qruz31	11	\N	\N	\N
+77ts7szo3co	dbyel17qbz6	12	\N	\N	\N
+tmiqe6j1j64	jxsrhg1ryiq	11	\N	\N	\N
+tmiqe6j1j64	p6bn6qruz31	12	\N	\N	\N
+tmiqe6j1j64	dbyel17qbz6	13	\N	\N	\N
+hw80ixyrjgz	jxsrhg1ryiq	12	\N	\N	\N
+hw80ixyrjgz	p6bn6qruz31	13	\N	\N	\N
+hw80ixyrjgz	dbyel17qbz6	14	\N	\N	\N
+me1ohauow6f	jxsrhg1ryiq	13	\N	\N	\N
+me1ohauow6f	p6bn6qruz31	14	\N	\N	\N
+me1ohauow6f	dbyel17qbz6	15	\N	\N	\N
+xqf45rvay4g	jxsrhg1ryiq	14	\N	\N	\N
+xqf45rvay4g	p6bn6qruz31	15	\N	\N	\N
+xqf45rvay4g	dbyel17qbz6	16	\N	\N	\N
+2mxzcpz5cle	jxsrhg1ryiq	15	\N	\N	\N
+2mxzcpz5cle	p6bn6qruz31	16	\N	\N	\N
+2mxzcpz5cle	dbyel17qbz6	17	\N	\N	\N
+jqr7lgri2e0	jxsrhg1ryiq	16	\N	\N	\N
+jqr7lgri2e0	p6bn6qruz31	17	\N	\N	\N
+jqr7lgri2e0	dbyel17qbz6	18	\N	\N	\N
+5vjhonzhs45	jxsrhg1ryiq	17	\N	\N	\N
+5vjhonzhs45	p6bn6qruz31	18	\N	\N	\N
+5vjhonzhs45	dbyel17qbz6	19	\N	\N	\N
+073buw1m70l	jxsrhg1ryiq	18	\N	\N	\N
+073buw1m70l	p6bn6qruz31	19	\N	\N	\N
+073buw1m70l	dbyel17qbz6	20	\N	\N	\N
+nocobase-admin-menu	jxsrhg1ryiq	19	\N	\N	\N
+nocobase-admin-menu	p6bn6qruz31	20	\N	\N	\N
+nocobase-admin-menu	dbyel17qbz6	21	\N	\N	\N
+xbpsy39t0e1	xbpsy39t0e1	0	f	properties	\N
+0o6llbg5pk4	xbpsy39t0e1	1	\N	\N	1
+26c3eby94dx	26c3eby94dx	0	f	properties	\N
+xbpsy39t0e1	26c3eby94dx	1	\N	\N	1
+0o6llbg5pk4	26c3eby94dx	2	\N	\N	1
+658x6srrpsl	xbpsy39t0e1	2	\N	\N	\N
+658x6srrpsl	26c3eby94dx	3	\N	\N	\N
+nxqum1qxnv4	0o6llbg5pk4	2	\N	\N	\N
+nxqum1qxnv4	xbpsy39t0e1	3	\N	\N	\N
+nxqum1qxnv4	26c3eby94dx	4	\N	\N	\N
+msr8trei5uf	0o6llbg5pk4	3	\N	\N	\N
+msr8trei5uf	xbpsy39t0e1	4	\N	\N	\N
+msr8trei5uf	26c3eby94dx	5	\N	\N	\N
+lkhgik8xv90	0o6llbg5pk4	4	\N	\N	\N
+lkhgik8xv90	xbpsy39t0e1	5	\N	\N	\N
+lkhgik8xv90	26c3eby94dx	6	\N	\N	\N
+o8147vmdwcq	0o6llbg5pk4	5	\N	\N	\N
+o8147vmdwcq	xbpsy39t0e1	6	\N	\N	\N
+o8147vmdwcq	26c3eby94dx	7	\N	\N	\N
+uatnso3i8u3	0o6llbg5pk4	6	\N	\N	\N
+uatnso3i8u3	xbpsy39t0e1	7	\N	\N	\N
+uatnso3i8u3	26c3eby94dx	8	\N	\N	\N
+53onwv1p0ao	0o6llbg5pk4	7	\N	\N	\N
+53onwv1p0ao	xbpsy39t0e1	8	\N	\N	\N
+53onwv1p0ao	26c3eby94dx	9	\N	\N	\N
+azr8rt58jhq	0o6llbg5pk4	8	\N	\N	\N
+azr8rt58jhq	xbpsy39t0e1	9	\N	\N	\N
+azr8rt58jhq	26c3eby94dx	10	\N	\N	\N
+024s22ncu12	0o6llbg5pk4	9	\N	\N	\N
+024s22ncu12	xbpsy39t0e1	10	\N	\N	\N
+024s22ncu12	26c3eby94dx	11	\N	\N	\N
+77ts7szo3co	0o6llbg5pk4	10	\N	\N	\N
+77ts7szo3co	xbpsy39t0e1	11	\N	\N	\N
+77ts7szo3co	26c3eby94dx	12	\N	\N	\N
+tmiqe6j1j64	0o6llbg5pk4	11	\N	\N	\N
+tmiqe6j1j64	xbpsy39t0e1	12	\N	\N	\N
+tmiqe6j1j64	26c3eby94dx	13	\N	\N	\N
+hw80ixyrjgz	0o6llbg5pk4	12	\N	\N	\N
+hw80ixyrjgz	xbpsy39t0e1	13	\N	\N	\N
+hw80ixyrjgz	26c3eby94dx	14	\N	\N	\N
+me1ohauow6f	0o6llbg5pk4	13	\N	\N	\N
+me1ohauow6f	xbpsy39t0e1	14	\N	\N	\N
+me1ohauow6f	26c3eby94dx	15	\N	\N	\N
+xqf45rvay4g	0o6llbg5pk4	14	\N	\N	\N
+xqf45rvay4g	xbpsy39t0e1	15	\N	\N	\N
+xqf45rvay4g	26c3eby94dx	16	\N	\N	\N
+2mxzcpz5cle	0o6llbg5pk4	15	\N	\N	\N
+2mxzcpz5cle	xbpsy39t0e1	16	\N	\N	\N
+2mxzcpz5cle	26c3eby94dx	17	\N	\N	\N
+jqr7lgri2e0	0o6llbg5pk4	16	\N	\N	\N
+jqr7lgri2e0	xbpsy39t0e1	17	\N	\N	\N
+jqr7lgri2e0	26c3eby94dx	18	\N	\N	\N
+5vjhonzhs45	0o6llbg5pk4	17	\N	\N	\N
+5vjhonzhs45	xbpsy39t0e1	18	\N	\N	\N
+5vjhonzhs45	26c3eby94dx	19	\N	\N	\N
+073buw1m70l	0o6llbg5pk4	18	\N	\N	\N
+073buw1m70l	xbpsy39t0e1	19	\N	\N	\N
+073buw1m70l	26c3eby94dx	20	\N	\N	\N
+nocobase-admin-menu	0o6llbg5pk4	19	\N	\N	\N
+nocobase-admin-menu	xbpsy39t0e1	20	\N	\N	\N
+nocobase-admin-menu	26c3eby94dx	21	\N	\N	\N
+0o6llbg5pk4	0o6llbg5pk4	0	f	properties	\N
+658x6srrpsl	0o6llbg5pk4	1	\N	\N	3
+110a4f3nenj	110a4f3nenj	0	f	properties	\N
+4ap6581smcx	110a4f3nenj	1	\N	\N	1
+tn3dqsa088d	tn3dqsa088d	0	f	properties	\N
+110a4f3nenj	tn3dqsa088d	1	\N	\N	1
+4ap6581smcx	tn3dqsa088d	2	\N	\N	1
+658x6srrpsl	110a4f3nenj	2	\N	\N	\N
+658x6srrpsl	tn3dqsa088d	3	\N	\N	\N
+nxqum1qxnv4	4ap6581smcx	2	\N	\N	\N
+nxqum1qxnv4	110a4f3nenj	3	\N	\N	\N
+nxqum1qxnv4	tn3dqsa088d	4	\N	\N	\N
+msr8trei5uf	4ap6581smcx	3	\N	\N	\N
+msr8trei5uf	110a4f3nenj	4	\N	\N	\N
+msr8trei5uf	tn3dqsa088d	5	\N	\N	\N
+lkhgik8xv90	4ap6581smcx	4	\N	\N	\N
+lkhgik8xv90	110a4f3nenj	5	\N	\N	\N
+lkhgik8xv90	tn3dqsa088d	6	\N	\N	\N
+o8147vmdwcq	4ap6581smcx	5	\N	\N	\N
+o8147vmdwcq	110a4f3nenj	6	\N	\N	\N
+o8147vmdwcq	tn3dqsa088d	7	\N	\N	\N
+uatnso3i8u3	4ap6581smcx	6	\N	\N	\N
+uatnso3i8u3	110a4f3nenj	7	\N	\N	\N
+uatnso3i8u3	tn3dqsa088d	8	\N	\N	\N
+53onwv1p0ao	4ap6581smcx	7	\N	\N	\N
+53onwv1p0ao	110a4f3nenj	8	\N	\N	\N
+53onwv1p0ao	tn3dqsa088d	9	\N	\N	\N
+azr8rt58jhq	4ap6581smcx	8	\N	\N	\N
+azr8rt58jhq	110a4f3nenj	9	\N	\N	\N
+azr8rt58jhq	tn3dqsa088d	10	\N	\N	\N
+024s22ncu12	4ap6581smcx	9	\N	\N	\N
+024s22ncu12	110a4f3nenj	10	\N	\N	\N
+024s22ncu12	tn3dqsa088d	11	\N	\N	\N
+77ts7szo3co	4ap6581smcx	10	\N	\N	\N
+77ts7szo3co	110a4f3nenj	11	\N	\N	\N
+77ts7szo3co	tn3dqsa088d	12	\N	\N	\N
+tmiqe6j1j64	4ap6581smcx	11	\N	\N	\N
+tmiqe6j1j64	110a4f3nenj	12	\N	\N	\N
+tmiqe6j1j64	tn3dqsa088d	13	\N	\N	\N
+hw80ixyrjgz	4ap6581smcx	12	\N	\N	\N
+4ap6581smcx	4ap6581smcx	0	f	properties	\N
+658x6srrpsl	4ap6581smcx	1	\N	\N	4
+hw80ixyrjgz	110a4f3nenj	13	\N	\N	\N
+hw80ixyrjgz	tn3dqsa088d	14	\N	\N	\N
+me1ohauow6f	4ap6581smcx	13	\N	\N	\N
+me1ohauow6f	110a4f3nenj	14	\N	\N	\N
+me1ohauow6f	tn3dqsa088d	15	\N	\N	\N
+xqf45rvay4g	4ap6581smcx	14	\N	\N	\N
+xqf45rvay4g	110a4f3nenj	15	\N	\N	\N
+xqf45rvay4g	tn3dqsa088d	16	\N	\N	\N
+2mxzcpz5cle	4ap6581smcx	15	\N	\N	\N
+2mxzcpz5cle	110a4f3nenj	16	\N	\N	\N
+2mxzcpz5cle	tn3dqsa088d	17	\N	\N	\N
+jqr7lgri2e0	4ap6581smcx	16	\N	\N	\N
+jqr7lgri2e0	110a4f3nenj	17	\N	\N	\N
+jqr7lgri2e0	tn3dqsa088d	18	\N	\N	\N
+5vjhonzhs45	4ap6581smcx	17	\N	\N	\N
+5vjhonzhs45	110a4f3nenj	18	\N	\N	\N
+5vjhonzhs45	tn3dqsa088d	19	\N	\N	\N
+073buw1m70l	4ap6581smcx	18	\N	\N	\N
+073buw1m70l	110a4f3nenj	19	\N	\N	\N
+073buw1m70l	tn3dqsa088d	20	\N	\N	\N
+nocobase-admin-menu	4ap6581smcx	19	\N	\N	\N
+nocobase-admin-menu	110a4f3nenj	20	\N	\N	\N
+nocobase-admin-menu	tn3dqsa088d	21	\N	\N	\N
+ndlxv6qkxig	ndlxv6qkxig	0	f	properties	\N
+nxqum1qxnv4	ndlxv6qkxig	2	\N	\N	\N
+msr8trei5uf	ndlxv6qkxig	3	\N	\N	\N
+lkhgik8xv90	ndlxv6qkxig	4	\N	\N	\N
+o8147vmdwcq	ndlxv6qkxig	5	\N	\N	\N
+uatnso3i8u3	ndlxv6qkxig	6	\N	\N	\N
+53onwv1p0ao	ndlxv6qkxig	7	\N	\N	\N
+azr8rt58jhq	ndlxv6qkxig	8	\N	\N	\N
+024s22ncu12	ndlxv6qkxig	9	\N	\N	\N
+77ts7szo3co	ndlxv6qkxig	10	\N	\N	\N
+tmiqe6j1j64	ndlxv6qkxig	11	\N	\N	\N
+hw80ixyrjgz	ndlxv6qkxig	12	\N	\N	\N
+me1ohauow6f	ndlxv6qkxig	13	\N	\N	\N
+xqf45rvay4g	ndlxv6qkxig	14	\N	\N	\N
+2mxzcpz5cle	ndlxv6qkxig	15	\N	\N	\N
+jqr7lgri2e0	ndlxv6qkxig	16	\N	\N	\N
+5vjhonzhs45	ndlxv6qkxig	17	\N	\N	\N
+073buw1m70l	ndlxv6qkxig	18	\N	\N	\N
+nocobase-admin-menu	ndlxv6qkxig	19	\N	\N	\N
+3nx5wrm9dsv	ndlxv6qkxig	1	\N	\N	1
 \.
 
 
@@ -19604,8 +20019,6 @@ lfzrxis4nkc	6gu9k101na7	{"x-uid":"lfzrxis4nkc","name":"6gu9k101na7","_isJSONSche
 nmo9mk3zqna	50ku5d0kf0s	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Video cứu trợ","x-component":"Menu.Item","x-decorator":"ACLMenuItemProvider","x-component-props":{"icon":"videocameraoutlined"},"x-server-hooks":[{"type":"onSelfCreate","method":"bindMenuToRole"},{"type":"onSelfSave","method":"extractTextToLocale"}]}
 xr71y0bi2gt	page	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page"}
 o7z0dukywzh	i0e48w1iloj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"page:addBlock"}
-avfrtpm5d65	i5bzkrho8fy	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
-lk04zin36r9	abi	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"transactions_config.abi","x-component":"CollectionField","x-component-props":{},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
 z8z84alfqmc	m7zd5da93z2	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
 gs87kzzh4rw	contractAddress	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"transactions_config.contractAddress","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
 0ned8lv8tr0	zzxsc301gn3	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
@@ -19954,6 +20367,30 @@ oam5lsqaqw1	qdbg7w5bdby	{"x-uid":"oam5lsqaqw1","name":"qdbg7w5bdby","_isJSONSche
 wcrqjis5vk6	3y5g7eiio78	{"x-uid":"wcrqjis5vk6","name":"3y5g7eiio78","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action.Link","x-use-component-props":"useDestroyActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:delete","x-component-props":{"confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"refreshDataBlockRequest":true,"iconColor":"#1677FF","danger":false},"x-action-settings":{"triggerWorkflows":[]},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"type":"void"}
 xviw8ru0k6f	1mrzsuoggzv	{"x-uid":"xviw8ru0k6f","name":"1mrzsuoggzv","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action.Link","x-use-component-props":"useDestroyActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:delete","x-component-props":{"confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"refreshDataBlockRequest":true,"iconColor":"#1677FF","danger":false},"x-action-settings":{"triggerWorkflows":[]},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"type":"void"}
 9ss1gvlutz5	row_6zt634df0jw	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":1}
+77ts7szo3co	fv3qzuyndie	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-action":"create","x-acl-action":"create","title":"{{t('Add new')}}","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:addNew","x-component":"Action","x-decorator":"ACLActionProvider","x-component-props":{"openMode":"drawer","type":"primary","component":"CreateRecordAction","icon":"PlusOutlined"},"x-action-context":{"dataSource":"main","collection":"transactions_config"},"x-align":"right","x-acl-action-props":{"skipScopeCheck":true},"x-app-version":"1.3.51"}
+024s22ncu12	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Add record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"},"x-app-version":"1.3.51"}
+azr8rt58jhq	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab","x-initializer-props":{"gridInitializer":"popup:addNew:addBlock"},"x-app-version":"1.3.51"}
+53onwv1p0ao	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Add new\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{},"x-app-version":"1.3.51"}
+uatnso3i8u3	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:addNew:addBlock","x-app-version":"1.3.51"}
+o8147vmdwcq	1bddcqmitl1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+lkhgik8xv90	b85c0af62v7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+msr8trei5uf	2juor9cmp2t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action-props":{"skipScopeCheck":true},"x-acl-action":"transactions_config:create","x-decorator":"FormBlockProvider","x-use-decorator-props":"useCreateFormBlockDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"transactions_config"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:createForm","x-component":"CardItem","x-app-version":"1.3.51"}
+nxqum1qxnv4	ot0a5e4mfto	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"FormV2","x-use-component-props":"useCreateFormBlockProps","x-app-version":"1.3.51"}
+658x6srrpsl	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"form:configureFields","x-app-version":"1.3.51"}
+3nx5wrm9dsv	yg2fguu7741	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"createForm:configureActions","x-component":"ActionBar","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.51"}
+88s7o745fdq	fmp0l9jvjqo	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+l4gmsjuzhm4	h52edscmx31	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+k519ukw8iau	private_key	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions_config.private_key","x-component-props":{},"x-app-version":"1.3.51"}
+jxsrhg1ryiq	mopj42k5o4a	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+p6bn6qruz31	2xtrmr22a7m	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+dbyel17qbz6	provider	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions_config.provider","x-component-props":{},"x-app-version":"1.3.51"}
+0o6llbg5pk4	c96hjsmu45f	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+xbpsy39t0e1	2zfi2bvu4hz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+26c3eby94dx	abi	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions_config.abi","x-component-props":{},"x-app-version":"1.3.51"}
+4ap6581smcx	81cm0gricdb	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+110a4f3nenj	69nxkl7fbww	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+tn3dqsa088d	contractAddress	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions_config.contractAddress","x-component-props":{},"x-app-version":"1.3.51"}
+ndlxv6qkxig	q7kyukbtmi2	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Submit\\") }}","x-action":"submit","x-component":"Action","x-use-component-props":"useCreateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:createSubmit","x-component-props":{"type":"primary","htmlType":"submit"},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.51"}
 \.
 
 
@@ -20050,7 +20487,7 @@ SELECT pg_catalog.setval('public."applicationPlugins_id_seq"', 63, true);
 -- Name: applicationVersion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."applicationVersion_id_seq"', 32, true);
+SELECT pg_catalog.setval('public."applicationVersion_id_seq"', 33, true);
 
 
 --
@@ -20239,7 +20676,7 @@ SELECT pg_catalog.setval('public."tokenBlacklist_id_seq"', 2, true);
 -- Name: transactions_config_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.transactions_config_id_seq', 1, true);
+SELECT pg_catalog.setval('public.transactions_config_id_seq', 2, true);
 
 
 --
@@ -21355,7 +21792,7 @@ CREATE INDEX verifications_provider_id ON public.verifications USING btree ("pro
 CREATE UNIQUE INDEX workflows_key_current ON public.workflows USING btree (key, current);
 
 
--- Completed on 2024-12-07 12:27:10 UTC
+-- Completed on 2024-12-07 17:07:51 UTC
 
 --
 -- PostgreSQL database dump complete
