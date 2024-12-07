@@ -1,0 +1,44 @@
+{
+  "name": "@dtu-olp-2024/video-player-nocobase",
+  "version": "1.0.0",
+  "license": "GPL-3.0",
+  "main": "dist/server/index.js",
+  "dependencies": {},
+  "peerDependencies": {
+    "@nocobase/client": "1.x",
+    "@nocobase/server": "1.x",
+    "@nocobase/test": "1.x"
+  },
+  "devDependencies": {
+    "artplayer": "^5.2.1"
+  },
+  "files": [
+    "dist",
+    "dist/node_modules",
+    "README.md",
+    "LICENSE",
+    "package.json",
+    "server.js",
+    "server.d.ts",
+    "client.js",
+    "client.d.ts",
+    "CHANGELOG.md"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olp-dtu-2024/DTU-GreenHope"
+  },
+  "description": "A NocoBase plugin for Video Player integration, supporting stream video. Built for the DTU GreenHope project.",
+  "displayName": "Video Player Plugin - DTU GreenHope 2024",
+  "keywords": [
+    "plugin",
+    "nocobase",
+    "dtu",
+    "greenhope",
+    "video-player"
+  ]
+}

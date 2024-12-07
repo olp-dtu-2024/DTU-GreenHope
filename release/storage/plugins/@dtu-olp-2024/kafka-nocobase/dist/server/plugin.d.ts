@@ -5,7 +5,6 @@ export declare class KafkaNocobaseServer extends Plugin {
     producer: Producer;
     consumer: Consumer;
     private eventListener;
-    private router;
     load(): Promise<void>;
     install(options?: InstallOptions): Promise<void>;
     afterEnable(): Promise<void>;
