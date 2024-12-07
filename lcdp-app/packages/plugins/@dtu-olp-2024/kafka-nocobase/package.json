@@ -1,11 +1,11 @@
 {
   "name": "@dtu-olp-2024/kafka-nocobase",
-  "version": "1.2.2",
+  "version": "1.2.4",
   "license": "GPL-3.0",
   "main": "dist/server/index.js",
   "devDependencies": {
     "kafkajs": "^2.2.4",
-    "web3": "^4.16.0"
+    "ethers": "^6.9.0"
   },
   "files": [
     "dist",
@@ -39,6 +39,7 @@
     "plugin",
     "nocobase",
     "dtu",
-    "greenhope"
+    "greenhope",
+    "ethers"
   ]
 }

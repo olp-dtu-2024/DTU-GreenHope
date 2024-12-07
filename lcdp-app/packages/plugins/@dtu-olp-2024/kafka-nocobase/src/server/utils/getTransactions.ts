@@ -1,25 +1,33 @@
-import Web3 from 'web3';
+import { ethers } from 'ethers';
+
 export const getTransaction = async (config: {
   abi: any;
   contractAddress: string;
   provider: string;
 }) => {
   const { abi, contractAddress, provider } = config;
-  const web3 = new Web3(new Web3.providers.HttpProvider(provider));
-  const contract = new web3.eth.Contract(abi, contractAddress);
+
+  // Create provider and contract instances using ethers
+  const ethersProvider = new ethers.JsonRpcProvider(provider);
+  const contract = new ethers.Contract(contractAddress, abi, ethersProvider);
+
   try {
-    const transactions = await contract.methods.getAllTransactions().call();
+    // Call the contract method using ethers syntax
+    const transactions = await contract.getAllTransactions();
+
     if (!transactions || !Array.isArray(transactions)) {
       throw new Error('Invalid transactions data');
     }
+
     const mappedTransactions = transactions.map((tx) => ({
       transaction_code: tx[0],
       amount: parseInt(tx[1]),
       direction: tx[2],
       datetime: parseInt(tx[3]),
     }));
+
     return mappedTransactions;
   } catch (error) {
-    console.error('Lỗi khi lấy giao dịch:', error);
+    console.error('Error fetching transactions:', error);
   }
 };

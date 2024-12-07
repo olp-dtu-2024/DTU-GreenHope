@@ -1,4 +1,5 @@
-import Web3 from 'web3';
+import { ethers } from 'ethers';
+
 export const deployTransaction = async (
   config: {
     abi: any;
@@ -9,15 +10,13 @@ export const deployTransaction = async (
   data?: any[]
 ) => {
   const { abi, contractAddress, private_key, provider } = config;
-  const web3 = new Web3(new Web3.providers.HttpProvider(provider));
 
-  const contract = new web3.eth.Contract(abi, contractAddress);
+  // Create provider and signer
+  const ethersProvider = new ethers.JsonRpcProvider(provider);
+  const signer = new ethers.Wallet(private_key, ethersProvider);
 
-  const account = web3.eth.accounts.privateKeyToAccount(private_key);
-
-  web3.eth.accounts.wallet.add(account);
-
-  const fromAddress = account.address;
+  // Create contract instance
+  const contract = new ethers.Contract(contractAddress, abi, signer);
 
   const transactionsData = data?.map((item) => {
     return {
@@ -30,19 +29,24 @@ export const deployTransaction = async (
   });
 
   try {
-    const tx = contract.methods.createTransactions(transactionsData);
+    // Estimate gas
+    const gasEstimate =
+      await contract.createTransactions.estimateGas(transactionsData);
+    const gasPrice = await ethersProvider.getFeeData();
 
-    const gas = await tx.estimateGas({ from: fromAddress });
-    const gasPrice = await web3.eth.getGasPrice();
-
-    const receipt = await tx.send({
-      from: fromAddress,
-      gas: gas.toString(),
-      gasPrice: gasPrice.toString(),
+    // Send transaction
+    const tx = await contract.createTransactions(transactionsData, {
+      gasLimit: gasEstimate,
+      gasPrice: gasPrice.gasPrice,
     });
 
+    // Wait for transaction receipt
+    const receipt = await tx.wait();
     console.log('Giao dịch đã được gửi thành công:', receipt);
+
+    return receipt;
   } catch (error) {
     console.error('Lỗi khi gửi giao dịch:', error);
+    throw error;
   }
 };
