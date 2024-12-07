@@ -1,2 +1,2 @@
 import { SchemaSettings } from '@nocobase/client';
-export declare const headerPickerSettings: SchemaSettings<{}>;
+export declare const richSettings: SchemaSettings<{}>;

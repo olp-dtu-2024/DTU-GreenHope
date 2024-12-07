@@ -1,10 +1,12 @@
+interface Transaction {
+    transaction_code: string;
+    amount: number;
+    direction: string;
+    datetime: number;
+}
 export declare const getTransaction: (config: {
     abi: any;
     contractAddress: string;
     provider: string;
-}) => Promise<{
-    transaction_code: any;
-    amount: number;
-    direction: any;
-    datetime: number;
-}[]>;
+}) => Promise<Transaction[]>;
+export {};
