@@ -7,13 +7,12 @@ export const getTransaction = async (config: {
 }) => {
   const { abi, contractAddress, provider } = config;
 
-  // Create provider and contract instances using ethers
   const ethersProvider = new ethers.JsonRpcProvider(provider);
   const contract = new ethers.Contract(contractAddress, abi, ethersProvider);
 
   try {
-    // Call the contract method using ethers syntax
     const transactions = await contract.getAllTransactions();
+    console.log('Transactions:', transactions);
 
     if (!transactions || !Array.isArray(transactions)) {
       throw new Error('Invalid transactions data');
@@ -25,6 +24,8 @@ export const getTransaction = async (config: {
       direction: tx[2],
       datetime: parseInt(tx[3]),
     }));
+
+    console.warn(mappedTransactions, '<<');
 
     return mappedTransactions;
   } catch (error) {

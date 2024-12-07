@@ -124,7 +124,9 @@ export class MessageHandlers {
     ]);
 
     const allTrans = [...newTransferTransactions, ...newReceiverTransactions];
-
+    if (allTrans.length === 0) {
+      return { status: 'processed', message: 'Hello received' };
+    }
     const transactionConfigRepo = await appInstance.db.getRepository(
       'transactions_config'
     );

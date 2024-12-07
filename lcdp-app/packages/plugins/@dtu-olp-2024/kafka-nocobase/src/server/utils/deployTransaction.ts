@@ -1,5 +1,8 @@
 import { ethers } from 'ethers';
 
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 2000; // 2 seconds
+
 export const deployTransaction = async (
   config: {
     abi: any;
@@ -10,12 +13,36 @@ export const deployTransaction = async (
   data?: any[]
 ) => {
   const { abi, contractAddress, private_key, provider } = config;
+  console.warn(provider);
 
-  // Create provider and signer
-  const ethersProvider = new ethers.JsonRpcProvider(provider);
+  if (!provider.startsWith('http://') && !provider.startsWith('https://')) {
+    throw new Error('Invalid provider URL format');
+  }
+
+  let retries = 0;
+  let ethersProvider;
+
+  while (retries < MAX_RETRIES) {
+    try {
+      ethersProvider = new ethers.JsonRpcProvider(provider);
+      await ethersProvider.getNetwork();
+      break;
+    } catch (error) {
+      retries++;
+      if (retries === MAX_RETRIES) {
+        console.error(`Failed to connect to provider after ${MAX_RETRIES} attempts. Please check if:
+          1. The provider URL is correct
+          2. The Ethereum node is running
+          3. Network connectivity is available`);
+      }
+      console.log(
+        `Connection attempt ${retries} failed, retrying in ${RETRY_DELAY / 1000}s...`
+      );
+      await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
+    }
+  }
+
   const signer = new ethers.Wallet(private_key, ethersProvider);
-
-  // Create contract instance
   const contract = new ethers.Contract(contractAddress, abi, signer);
 
   const transactionsData = data?.map((item) => {
@@ -29,24 +56,22 @@ export const deployTransaction = async (
   });
 
   try {
-    // Estimate gas
     const gasEstimate =
       await contract.createTransactions.estimateGas(transactionsData);
     const gasPrice = await ethersProvider.getFeeData();
 
-    // Send transaction
     const tx = await contract.createTransactions(transactionsData, {
       gasLimit: gasEstimate,
       gasPrice: gasPrice.gasPrice,
     });
 
-    // Wait for transaction receipt
-    const receipt = await tx.wait();
-    console.log('Giao dịch đã được gửi thành công:', receipt);
+    console.warn('transactionsData:', transactionsData);
 
+    const receipt = await tx.wait();
+    console.log('Transaction sent successfully:', receipt);
     return receipt;
   } catch (error) {
-    console.error('Lỗi khi gửi giao dịch:', error);
+    console.error('Error sending transaction:', error);
     throw error;
   }
 };
