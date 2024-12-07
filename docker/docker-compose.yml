@@ -18,14 +18,14 @@ services:
     container_name: postgres-5439-olp-dtu-2024
     volumes:
       - postgres-data-be:/bitnami/postgresql
-      # - type: bind
-      #   source: ./initialize-db.sh
-      #   target: /docker-entrypoint-initdb.d/init-script.sh
-      #   read_only: true
-      # - type: bind
-      #   source: ../release/database/dump.sql
-      #   target: /docker-entrypoint-initdb.d/initialize-db.sql
-      #   read_only: true
+      - type: bind
+        source: ./initialize-db.sh
+        target: /docker-entrypoint-initdb.d/init-script.sh
+        read_only: true
+      - type: bind
+        source: ../release/database/dump.sql
+        target: /docker-entrypoint-initdb.d/initialize-db.sql
+        read_only: true
     environment:
       - POSTGRESQL_USERNAME=postgres
       - POSTGRESQL_PASSWORD=postgres

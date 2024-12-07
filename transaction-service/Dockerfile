@@ -9,7 +9,8 @@ COPY . .
 RUN yarn build
 
 RUN yarn add playwright
-RUN npx playwright install --with-deps
+RUN npx playwright install --with-deps chromium
+RUN npx playwright install-deps
 RUN npm install request --save
 
 FROM node:20-slim
@@ -17,6 +18,7 @@ FROM node:20-slim
 WORKDIR /app
 
 COPY --from=builder /app /app
+COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
 
 RUN apt-get update && apt-get install -y \
   libatk1.0-0 \
@@ -35,6 +37,8 @@ RUN apt-get update && apt-get install -y \
   libdbus-glib-1-2 && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
+
+RUN chmod -R 777 /root/.cache/ms-playwright
 
 EXPOSE 3027
 
