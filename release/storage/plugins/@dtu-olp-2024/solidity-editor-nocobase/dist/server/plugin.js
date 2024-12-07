@@ -31,12 +31,14 @@ __export(plugin_exports, {
 });
 module.exports = __toCommonJS(plugin_exports);
 var import_server = require("@nocobase/server");
+var import_contract = require("./routes/contract");
 class SolidityEditorNocobaseServer extends import_server.Plugin {
   async afterAdd() {
   }
   async beforeLoad() {
   }
   async load() {
+    await (0, import_contract.registerContract)(this.app);
     const db = this.db;
     const tableSmartContractName = "smart_contracts";
     const tableSmartContractExists = await db.sequelize.getQueryInterface().showAllTables().then((tables) => tables.includes(tableSmartContractName));
@@ -63,6 +65,11 @@ class SolidityEditorNocobaseServer extends import_server.Plugin {
           {
             type: "text",
             name: "bytecode",
+            required: false
+          },
+          {
+            type: "text",
+            name: "contractAddress",
             required: false
           }
         ]
@@ -114,6 +121,17 @@ class SolidityEditorNocobaseServer extends import_server.Plugin {
               uiSchema: {
                 type: "string",
                 title: "Bytecode",
+                "x-component": "Input",
+                required: false
+              }
+            },
+            {
+              name: "contractAddress",
+              interface: "textarea",
+              type: "string",
+              uiSchema: {
+                type: "string",
+                title: "Contract Address",
                 "x-component": "Input",
                 required: false
               }

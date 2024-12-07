@@ -1,0 +1,14 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+*.mp4
+temp_videos/*
+.git
+.gitignore 
+Dockerfile
+docker-compose.yml

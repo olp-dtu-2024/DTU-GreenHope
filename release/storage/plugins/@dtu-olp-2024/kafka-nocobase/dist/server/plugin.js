@@ -7,11 +7,9 @@
  * For more information, please refer to: https://www.nocobase.com/agreement.
  */
 
-var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
   for (var name in all)
@@ -25,14 +23,6 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var plugin_exports = {};
 __export(plugin_exports, {
@@ -43,18 +33,18 @@ module.exports = __toCommonJS(plugin_exports);
 var import_server = require("@nocobase/server");
 var import_kafkajs = require("kafkajs");
 var import_eventListener = require("./eventListener");
-var import_koa_router = __toESM(require("koa-router"));
 var import_solidity = require("./routes/solidity");
 var import_transactions = require("./routes/transactions");
+var import_recognition = require("./routes/recognition");
 class KafkaNocobaseServer extends import_server.Plugin {
   kafka;
   producer;
   consumer;
   eventListener;
-  router;
   async load() {
     await this.initialCollection();
     await this.initialKafka();
+    await (0, import_recognition.registerRecognitionRoutes)(this.app, this.producer);
     await (0, import_solidity.registerSolidityRoutes)(this.app, this.producer);
     await (0, import_transactions.registerTransactionRoutes)(this.app, this.producer);
   }
@@ -118,10 +108,8 @@ class KafkaNocobaseServer extends import_server.Plugin {
     await this.cleanup();
   }
   async afterAdd() {
-    this.router = new import_koa_router.default();
   }
   async beforeLoad() {
-    this.app.use(this.router.routes());
   }
   async cleanup() {
     var _a, _b;

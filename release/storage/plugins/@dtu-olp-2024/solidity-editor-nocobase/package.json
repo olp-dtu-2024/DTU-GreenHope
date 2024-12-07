@@ -1,6 +1,6 @@
 {
   "name": "@dtu-olp-2024/solidity-editor-nocobase",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "license": "GPL-3.0",
   "main": "dist/server/index.js",
   "files": [
@@ -41,6 +41,11 @@
   "devDependencies": {
     "@types/react": "^18.0.0",
     "@uiw/codemirror-theme-tokyo-night": "^4.23.6",
-    "@uiw/react-codemirror": "^4.23.6"
+    "@uiw/react-codemirror": "^4.23.6",
+    "@codemirror/lang-javascript": "^6.2.2",
+    "web3": "^4.16.0"
+  },
+  "dependencies": {
+    "codemirror-lang-solidity": "^1.0.3"
   }
 }

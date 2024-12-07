@@ -1,7 +1,6 @@
 import { InstallOptions, Plugin } from '@nocobase/server';
 import { Kafka, Producer, Consumer } from 'kafkajs';
 import { KafkaEventListener } from './eventListener';
-import Router from 'koa-router';
 import { registerSolidityRoutes } from './routes/solidity';
 import { registerTransactionRoutes } from './routes/transactions';
 import { registerRecognitionRoutes } from './routes/recognition';
@@ -11,7 +10,6 @@ export class KafkaNocobaseServer extends Plugin {
   producer: Producer;
   consumer: Consumer;
   private eventListener: KafkaEventListener;
-  private router: Router<any, any>;
 
   async load() {
     await this.initialCollection();
@@ -90,13 +88,9 @@ export class KafkaNocobaseServer extends Plugin {
     await this.cleanup();
   }
 
-  async afterAdd() {
-    this.router = new Router();
-  }
+  async afterAdd() {}
 
-  async beforeLoad() {
-    this.app.use(this.router.routes());
-  }
+  async beforeLoad() {}
 
   private async cleanup() {
     try {

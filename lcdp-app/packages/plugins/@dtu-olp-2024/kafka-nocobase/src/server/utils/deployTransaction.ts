@@ -1,4 +1,8 @@
-import Web3 from 'web3';
+import { ethers } from 'ethers';
+
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 2000;
+
 export const deployTransaction = async (
   config: {
     abi: any;
@@ -9,15 +13,37 @@ export const deployTransaction = async (
   data?: any[]
 ) => {
   const { abi, contractAddress, private_key, provider } = config;
-  const web3 = new Web3(new Web3.providers.HttpProvider(provider));
+  console.warn(provider);
 
-  const contract = new web3.eth.Contract(abi, contractAddress);
+  if (!provider.startsWith('http://') && !provider.startsWith('https://')) {
+    throw new Error('Invalid provider URL format');
+  }
 
-  const account = web3.eth.accounts.privateKeyToAccount(private_key);
+  let retries = 0;
+  let ethersProvider;
 
-  web3.eth.accounts.wallet.add(account);
+  while (retries < MAX_RETRIES) {
+    try {
+      ethersProvider = new ethers.JsonRpcProvider(provider);
+      await ethersProvider.getNetwork();
+      break;
+    } catch (error) {
+      retries++;
+      if (retries === MAX_RETRIES) {
+        console.error(`Failed to connect to provider after ${MAX_RETRIES} attempts. Please check if:
+          1. The provider URL is correct
+          2. The Ethereum node is running
+          3. Network connectivity is available`);
+      }
+      console.log(
+        `Connection attempt ${retries} failed, retrying in ${RETRY_DELAY / 1000}s...`
+      );
+      await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY));
+    }
+  }
 
-  const fromAddress = account.address;
+  const signer = new ethers.Wallet(private_key, ethersProvider);
+  const contract = new ethers.Contract(contractAddress, abi, signer);
 
   const transactionsData = data?.map((item) => {
     return {
@@ -30,19 +56,22 @@ export const deployTransaction = async (
   });
 
   try {
-    const tx = contract.methods.createTransactions(transactionsData);
+    const gasEstimate =
+      await contract.createTransactions.estimateGas(transactionsData);
+    const gasPrice = await ethersProvider.getFeeData();
 
-    const gas = await tx.estimateGas({ from: fromAddress });
-    const gasPrice = await web3.eth.getGasPrice();
-
-    const receipt = await tx.send({
-      from: fromAddress,
-      gas,
-      gasPrice,
+    const tx = await contract.createTransactions(transactionsData, {
+      gasLimit: gasEstimate,
+      gasPrice: gasPrice.gasPrice,
     });
 
-    console.log('Giao dịch đã được gửi thành công:', receipt);
+    console.warn('transactionsData:', transactionsData);
+
+    const receipt = await tx.wait();
+    console.log('Transaction sent successfully:', receipt);
+    return receipt;
   } catch (error) {
-    console.error('Lỗi khi gửi giao dịch:', error);
+    console.error('Error sending transaction:', error);
+    throw error;
   }
 };

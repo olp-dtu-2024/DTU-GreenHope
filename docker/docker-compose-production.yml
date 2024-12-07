@@ -130,7 +130,7 @@ services:
       - olp-dtu-2024-network
 
   transaction-service:
-    image: auroraphtgrp/dtu-olp-transaction-service
+    image: auroraphtgrp/dtu-olp-transaction-service:latest
     container_name: transaction-service
     restart: unless-stopped
     ports:
@@ -156,7 +156,7 @@ services:
         condition: service_started
 
   solidity-service:
-    image: auroraphtgrp/dtu-olp-solidity-service
+    image: auroraphtgrp/dtu-olp-solidity-service:latest
     container_name: solidity-service
     restart: unless-stopped
     ports:
@@ -174,6 +174,20 @@ services:
         condition: service_started
       kafka:
         condition: service_healthy
+
+  recognition-service:
+    image: auroraphtgrp/dtu-olp-recognition-service:latest
+    container_name: recognition-service
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    volumes:
+      - ../recognition-service/temp_videos:/app/temp_videos
+      - ../recognition-service/yolo11n.pt:/app/yolo11n.pt
+    networks:
+      - olp-dtu-2024-network
+    environment:
+      - PYTHONUNBUFFERED=1
 
   lcdp-app:
     container_name: lcdp-app-olp-dtu-2024

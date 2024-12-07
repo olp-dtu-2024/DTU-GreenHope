@@ -131,55 +131,55 @@ services:
     networks:
       - olp-dtu-2024-network
 
-  transaction-service:
-    build:
-      context: ../transaction-service
-      dockerfile: Dockerfile
-    container_name: transaction-service
-    restart: unless-stopped
-    ports:
-      - '3027:3027'
-    networks:
-      - olp-dtu-2024-network
-    environment:
-      - APP_PORT=3027
-      - REDIS_HOST=redis-6444-olp-dtu-2024
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=redis
-      - KAFKA_BROKERS=kafka-olp-dtu-2024:9092
-      - MB_LOGIN_ID=TRANNGUYENDUYKHANH
-      - MB_PASSWORD=Tndk.0905081330
-      - MB_ACCOUNT_ID=6098617062003
-      - CAPTCHA_SERVICE_HOST=http://captcha-service:1234
-    depends_on:
-      redis:
-        condition: service_started
-      kafka:
-        condition: service_healthy
-      captcha-service:
-        condition: service_started
+  # transaction-service:
+  #   build:
+  #     context: ../transaction-service
+  #     dockerfile: Dockerfile
+  #   container_name: transaction-service
+  #   restart: unless-stopped
+  #   ports:
+  #     - '3027:3027'
+  #   networks:
+  #     - olp-dtu-2024-network
+  #   environment:
+  #     - APP_PORT=3027
+  #     - REDIS_HOST=redis-6444-olp-dtu-2024
+  #     - REDIS_PORT=6379
+  #     - REDIS_PASSWORD=redis
+  #     - KAFKA_BROKERS=kafka-olp-dtu-2024:9092
+  #     - MB_LOGIN_ID=TRANNGUYENDUYKHANH
+  #     - MB_PASSWORD=Tndk.0905081330
+  #     - MB_ACCOUNT_ID=6098617062003
+  #     - CAPTCHA_SERVICE_HOST=http://captcha-service:1234
+  #   depends_on:
+  #     redis:
+  #       condition: service_started
+  #     kafka:
+  #       condition: service_healthy
+  #     captcha-service:
+  #       condition: service_started
 
-  solidity-service:
-    build:
-      context: ../solidity-service
-      dockerfile: Dockerfile
-    container_name: solidity-service
-    restart: unless-stopped
-    ports:
-      - '3029:3029'
-    networks:
-      - olp-dtu-2024-network
-    environment:
-      - APP_PORT=3029
-      - REDIS_HOST=redis-6444-olp-dtu-2024
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=redis
-      - KAFKA_BROKERS=kafka-olp-dtu-2024:9092
-    depends_on:
-      redis:
-        condition: service_started
-      kafka:
-        condition: service_healthy
+  # solidity-service:
+  #   build:
+  #     context: ../solidity-service
+  #     dockerfile: Dockerfile
+  #   container_name: solidity-service
+  #   restart: unless-stopped
+  #   ports:
+  #     - '3029:3029'
+  #   networks:
+  #     - olp-dtu-2024-network
+  #   environment:
+  #     - APP_PORT=3029
+  #     - REDIS_HOST=redis-6444-olp-dtu-2024
+  #     - REDIS_PORT=6379
+  #     - REDIS_PASSWORD=redis
+  #     - KAFKA_BROKERS=kafka-olp-dtu-2024:9092
+  #   depends_on:
+  #     redis:
+  #       condition: service_started
+  #     kafka:
+  #       condition: service_healthy
 
   lcdp-app:
     container_name: lcdp-app-olp-dtu-2024

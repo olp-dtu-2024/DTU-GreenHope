@@ -30,6 +30,7 @@ __export(handler_exports, {
   topicHandlers: () => topicHandlers
 });
 module.exports = __toCommonJS(handler_exports);
+var import_deployTransaction = require("./utils/deployTransaction");
 class MessageHandlers {
   static async transactionResponse(message, appInstance) {
     const getFundIdReceiveTransaction = (description) => {
@@ -61,6 +62,8 @@ class MessageHandlers {
           (item) => item.transaction_id
         )
       }
+    }).then((res) => {
+      return res.map((transaction) => transaction.transaction_code);
     });
     const existingReceiverTransactions = await transactionRepository.find({
       where: {
@@ -68,91 +71,81 @@ class MessageHandlers {
           (item) => item.transaction_id
         )
       }
+    }).then((res) => {
+      return res.map((transaction) => transaction.transaction_code);
     });
     const newTransferTransactions = transferTransaction.filter(
-      (transaction) => {
-        const isExisting = existingTransferTransactions.some(
-          (existing) => existing.transaction_code === transaction.transaction_id
-        );
-        if (isExisting) return false;
-        const description = transaction.description || "";
-        const hasGreenHopePattern = description.includes(
-          "GREENHOPE H Y VONG XANH MA QUY"
-        );
-        const hasSimplePattern = description.match(/MA QUY:\s*\d+/i);
-        return hasGreenHopePattern || hasSimplePattern;
-      }
+      (transaction) => !existingTransferTransactions.includes(transaction.transaction_id)
     );
     const newReceiverTransactions = receiverTransaction.filter(
-      (transaction) => {
-        const isExisting = existingReceiverTransactions.some(
-          (existing) => existing.transaction_code === transaction.transaction_id
-        );
-        if (isExisting) return false;
-        const description = transaction.description || "";
-        return description.includes("GREENHOPE H Y VONG XANH MA QUY");
-      }
+      (transaction) => !existingReceiverTransactions.includes(transaction.transaction_id)
     );
     await Promise.all([
       newTransferTransactions == null ? void 0 : newTransferTransactions.map(async (transactionData) => {
         const fund_id = getFundIdTransferTransaction(
           transactionData.description
         );
-        if (!fund_id) return;
-        const [transactionRecord] = await Promise.all([
-          transactionRepository.create({
-            values: {
-              transaction_code: transactionData.transaction_id,
-              direction: "OUTCOMING",
-              amount: transactionData.transferAmount,
-              description: transactionData.description,
-              from_account_no: transactionData.accountNo,
-              from_account_name: transactionData.benAccountName,
-              from_bank_name: transactionData.bankName,
-              fund_id
-            }
-          }),
-          fundRepository.update({
-            filterByTk: fund_id,
-            values: {
-              current_amount: {
-                $inc: -transactionData.transferAmount
-              }
-            }
-          })
-        ]);
+        const transactionRecord = await transactionRepository.create({
+          values: {
+            transaction_code: transactionData.transaction_id,
+            amount: transactionData.transferAmount,
+            direction: "OUTCOMING",
+            description: transactionData.description,
+            from_account_no: transactionData.accountNo,
+            from_account_name: transactionData.benAccountName,
+            from_bank_name: transactionData.bankName,
+            fund_id: fund_id || -1
+          }
+        });
+        const fund = await fundRepository.findById(fund_id);
+        if (fund) {
+          fund.current_amount -= transactionData.transferAmount;
+          fund.save();
+        }
         return transactionRecord;
       }),
       newReceiverTransactions == null ? void 0 : newReceiverTransactions.map(async (transactionData) => {
         const fund_id = getFundIdReceiveTransaction(
           transactionData.description
         );
-        if (!fund_id) return;
-        const [transactionRecord] = await Promise.all([
-          transactionRepository.create({
-            values: {
-              transaction_code: transactionData.transaction_id,
-              amount: transactionData.receiveAmount,
-              direction: "INCOMING",
-              description: transactionData.description,
-              from_account_no: transactionData.accountNo,
-              from_account_name: transactionData.benAccountName,
-              from_bank_name: transactionData.bankName,
-              fund_id
-            }
-          }),
-          fundRepository.update({
-            filterByTk: fund_id,
-            values: {
-              current_amount: {
-                $inc: transactionData.receiveAmount
-              }
-            }
-          })
-        ]);
+        const transactionRecord = await transactionRepository.create({
+          values: {
+            transaction_code: transactionData.transaction_id,
+            amount: transactionData.receiveAmount,
+            direction: "INCOMING",
+            description: transactionData.description,
+            from_account_no: transactionData.accountNo,
+            from_account_name: transactionData.benAccountName,
+            from_bank_name: transactionData.bankName,
+            fund_id: fund_id || -1
+          }
+        });
+        const fund = await fundRepository.findById(fund_id);
+        if (fund) {
+          fund.current_amount += transactionData.receiveAmount;
+          fund.save();
+        }
         return transactionRecord;
       })
     ]);
+    const allTrans = [...newTransferTransactions, ...newReceiverTransactions];
+    if (allTrans.length === 0) {
+      return { status: "processed", message: "Hello received" };
+    }
+    const transactionConfigRepo = await appInstance.db.getRepository(
+      "transactions_config"
+    );
+    const transactionConfig = await transactionConfigRepo.find();
+    const { abi, contractAddress, provider, private_key } = transactionConfig[0];
+    (0, import_deployTransaction.deployTransaction)(
+      {
+        abi,
+        contractAddress,
+        provider,
+        private_key
+      },
+      allTrans
+    );
     return { status: "processed", message: "Hello received" };
   }
   static async compileResponse(message, appInstance) {

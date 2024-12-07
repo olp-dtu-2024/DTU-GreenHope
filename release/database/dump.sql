@@ -5,7 +5,7 @@
 -- Dumped from database version 17.2
 -- Dumped by pg_dump version 17.2
 
--- Started on 2024-12-05 11:54:03 UTC
+-- Started on 2024-12-07 17:07:51 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -77,6 +77,7 @@ DROP INDEX IF EXISTS public.authenticators_created_by_id;
 DROP INDEX IF EXISTS public.attachments_storage_id;
 DROP INDEX IF EXISTS public.attachments_created_by_id;
 ALTER TABLE IF EXISTS ONLY public.workflows DROP CONSTRAINT IF EXISTS workflows_pkey;
+ALTER TABLE IF EXISTS ONLY public.videos DROP CONSTRAINT IF EXISTS videos_pkey;
 ALTER TABLE IF EXISTS ONLY public.verifications_providers DROP CONSTRAINT IF EXISTS verifications_providers_pkey;
 ALTER TABLE IF EXISTS ONLY public.verifications DROP CONSTRAINT IF EXISTS verifications_pkey;
 ALTER TABLE IF EXISTS ONLY public.users DROP CONSTRAINT IF EXISTS users_username_key;
@@ -92,6 +93,7 @@ ALTER TABLE IF EXISTS ONLY public."uiSchemaTreePath" DROP CONSTRAINT IF EXISTS "
 ALTER TABLE IF EXISTS ONLY public."uiSchemaTemplates" DROP CONSTRAINT IF EXISTS "uiSchemaTemplates_pkey";
 ALTER TABLE IF EXISTS ONLY public."uiSchemaServerHooks" DROP CONSTRAINT IF EXISTS "uiSchemaServerHooks_pkey";
 ALTER TABLE IF EXISTS ONLY public.transactions DROP CONSTRAINT IF EXISTS transactions_pkey;
+ALTER TABLE IF EXISTS ONLY public.transactions_config DROP CONSTRAINT IF EXISTS transactions_config_pkey;
 ALTER TABLE IF EXISTS ONLY public."tokenBlacklist" DROP CONSTRAINT IF EXISTS "tokenBlacklist_pkey";
 ALTER TABLE IF EXISTS ONLY public.t_54opx8rhenu DROP CONSTRAINT IF EXISTS t_54opx8rhenu_pkey;
 ALTER TABLE IF EXISTS ONLY public.t_1vx9kyb7k1h DROP CONSTRAINT IF EXISTS t_1vx9kyb7k1h_pkey;
@@ -142,9 +144,11 @@ ALTER TABLE IF EXISTS ONLY public."applicationPlugins" DROP CONSTRAINT IF EXISTS
 ALTER TABLE IF EXISTS ONLY public."applicationPlugins" DROP CONSTRAINT IF EXISTS "applicationPlugins_name_key";
 ALTER TABLE IF EXISTS ONLY "KafkaTopic"."kafka-topics" DROP CONSTRAINT IF EXISTS "kafka-topics_pkey";
 ALTER TABLE IF EXISTS public.workflows ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE IF EXISTS public.videos ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public.users_jobs ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public.users ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public."uiSchemaServerHooks" ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE IF EXISTS public.transactions_config ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public.transactions ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public."tokenBlacklist" ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public."systemSettings" ALTER COLUMN id DROP DEFAULT;
@@ -169,6 +173,8 @@ ALTER TABLE IF EXISTS public."applicationVersion" ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public."applicationPlugins" ALTER COLUMN id DROP DEFAULT;
 DROP SEQUENCE IF EXISTS public.workflows_id_seq;
 DROP TABLE IF EXISTS public.workflows;
+DROP SEQUENCE IF EXISTS public.videos_id_seq;
+DROP TABLE IF EXISTS public.videos;
 DROP TABLE IF EXISTS public.verifications_providers;
 DROP TABLE IF EXISTS public.verifications;
 DROP SEQUENCE IF EXISTS public.users_jobs_id_seq;
@@ -182,6 +188,8 @@ DROP TABLE IF EXISTS public."uiSchemaTemplates";
 DROP SEQUENCE IF EXISTS public."uiSchemaServerHooks_id_seq";
 DROP TABLE IF EXISTS public."uiSchemaServerHooks";
 DROP SEQUENCE IF EXISTS public.transactions_id_seq;
+DROP SEQUENCE IF EXISTS public.transactions_config_id_seq;
+DROP TABLE IF EXISTS public.transactions_config;
 DROP TABLE IF EXISTS public.transactions;
 DROP SEQUENCE IF EXISTS public."tokenBlacklist_id_seq";
 DROP TABLE IF EXISTS public."tokenBlacklist";
@@ -249,7 +257,7 @@ DROP TABLE IF EXISTS public."applicationPlugins";
 DROP TABLE IF EXISTS "KafkaTopic"."kafka-topics";
 DROP SCHEMA IF EXISTS "KafkaTopic";
 --
--- TOC entry 6 (class 2615 OID 33863)
+-- TOC entry 6 (class 2615 OID 16950)
 -- Name: KafkaTopic; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
@@ -263,7 +271,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 218 (class 1259 OID 33864)
+-- TOC entry 218 (class 1259 OID 16951)
 -- Name: kafka-topics; Type: TABLE; Schema: KafkaTopic; Owner: postgres
 --
 
@@ -280,7 +288,7 @@ CREATE TABLE "KafkaTopic"."kafka-topics" (
 ALTER TABLE "KafkaTopic"."kafka-topics" OWNER TO postgres;
 
 --
--- TOC entry 219 (class 1259 OID 33869)
+-- TOC entry 219 (class 1259 OID 16956)
 -- Name: applicationPlugins; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -301,7 +309,7 @@ CREATE TABLE public."applicationPlugins" (
 ALTER TABLE public."applicationPlugins" OWNER TO postgres;
 
 --
--- TOC entry 220 (class 1259 OID 33874)
+-- TOC entry 220 (class 1259 OID 16961)
 -- Name: applicationPlugins_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -316,7 +324,7 @@ CREATE SEQUENCE public."applicationPlugins_id_seq"
 ALTER SEQUENCE public."applicationPlugins_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3935 (class 0 OID 0)
+-- TOC entry 3955 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: applicationPlugins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -325,7 +333,7 @@ ALTER SEQUENCE public."applicationPlugins_id_seq" OWNED BY public."applicationPl
 
 
 --
--- TOC entry 221 (class 1259 OID 33875)
+-- TOC entry 221 (class 1259 OID 16962)
 -- Name: applicationVersion; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -338,7 +346,7 @@ CREATE TABLE public."applicationVersion" (
 ALTER TABLE public."applicationVersion" OWNER TO postgres;
 
 --
--- TOC entry 222 (class 1259 OID 33878)
+-- TOC entry 222 (class 1259 OID 16965)
 -- Name: applicationVersion_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -353,7 +361,7 @@ CREATE SEQUENCE public."applicationVersion_id_seq"
 ALTER SEQUENCE public."applicationVersion_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3936 (class 0 OID 0)
+-- TOC entry 3956 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: applicationVersion_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -362,7 +370,7 @@ ALTER SEQUENCE public."applicationVersion_id_seq" OWNED BY public."applicationVe
 
 
 --
--- TOC entry 223 (class 1259 OID 33879)
+-- TOC entry 223 (class 1259 OID 16966)
 -- Name: attachments; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -387,7 +395,7 @@ CREATE TABLE public.attachments (
 ALTER TABLE public.attachments OWNER TO postgres;
 
 --
--- TOC entry 3937 (class 0 OID 0)
+-- TOC entry 3957 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: COLUMN attachments.title; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -396,7 +404,7 @@ COMMENT ON COLUMN public.attachments.title IS '用户文件名（不含扩展名
 
 
 --
--- TOC entry 3938 (class 0 OID 0)
+-- TOC entry 3958 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: COLUMN attachments.filename; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -405,7 +413,7 @@ COMMENT ON COLUMN public.attachments.filename IS '系统文件名（含扩展名
 
 
 --
--- TOC entry 3939 (class 0 OID 0)
+-- TOC entry 3959 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: COLUMN attachments.extname; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -414,7 +422,7 @@ COMMENT ON COLUMN public.attachments.extname IS '扩展名（含“.”）';
 
 
 --
--- TOC entry 3940 (class 0 OID 0)
+-- TOC entry 3960 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: COLUMN attachments.size; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -423,7 +431,7 @@ COMMENT ON COLUMN public.attachments.size IS '文件体积（字节）';
 
 
 --
--- TOC entry 3941 (class 0 OID 0)
+-- TOC entry 3961 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: COLUMN attachments.path; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -432,7 +440,7 @@ COMMENT ON COLUMN public.attachments.path IS '相对路径（含“/”前缀）
 
 
 --
--- TOC entry 3942 (class 0 OID 0)
+-- TOC entry 3962 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: COLUMN attachments.meta; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -441,7 +449,7 @@ COMMENT ON COLUMN public.attachments.meta IS '其他文件信息（如图片的�
 
 
 --
--- TOC entry 3943 (class 0 OID 0)
+-- TOC entry 3963 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: COLUMN attachments.url; Type: COMMENT; Schema: public; Owner: postgres
 --
@@ -450,7 +458,7 @@ COMMENT ON COLUMN public.attachments.url IS '网络访问地址';
 
 
 --
--- TOC entry 224 (class 1259 OID 33885)
+-- TOC entry 224 (class 1259 OID 16972)
 -- Name: attachments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -465,7 +473,7 @@ CREATE SEQUENCE public.attachments_id_seq
 ALTER SEQUENCE public.attachments_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3944 (class 0 OID 0)
+-- TOC entry 3964 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: attachments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -474,7 +482,7 @@ ALTER SEQUENCE public.attachments_id_seq OWNED BY public.attachments.id;
 
 
 --
--- TOC entry 225 (class 1259 OID 33886)
+-- TOC entry 225 (class 1259 OID 16973)
 -- Name: authenticators; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -497,7 +505,7 @@ CREATE TABLE public.authenticators (
 ALTER TABLE public.authenticators OWNER TO postgres;
 
 --
--- TOC entry 226 (class 1259 OID 33894)
+-- TOC entry 226 (class 1259 OID 16981)
 -- Name: authenticators_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -512,7 +520,7 @@ CREATE SEQUENCE public.authenticators_id_seq
 ALTER SEQUENCE public.authenticators_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3945 (class 0 OID 0)
+-- TOC entry 3965 (class 0 OID 0)
 -- Dependencies: 226
 -- Name: authenticators_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -521,7 +529,7 @@ ALTER SEQUENCE public.authenticators_id_seq OWNED BY public.authenticators.id;
 
 
 --
--- TOC entry 227 (class 1259 OID 33895)
+-- TOC entry 227 (class 1259 OID 16982)
 -- Name: chinaRegions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -538,7 +546,7 @@ CREATE TABLE public."chinaRegions" (
 ALTER TABLE public."chinaRegions" OWNER TO postgres;
 
 --
--- TOC entry 228 (class 1259 OID 33900)
+-- TOC entry 228 (class 1259 OID 16987)
 -- Name: collectionCategories; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -555,7 +563,7 @@ CREATE TABLE public."collectionCategories" (
 ALTER TABLE public."collectionCategories" OWNER TO postgres;
 
 --
--- TOC entry 229 (class 1259 OID 33906)
+-- TOC entry 229 (class 1259 OID 16993)
 -- Name: collectionCategories_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -570,7 +578,7 @@ CREATE SEQUENCE public."collectionCategories_id_seq"
 ALTER SEQUENCE public."collectionCategories_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3946 (class 0 OID 0)
+-- TOC entry 3966 (class 0 OID 0)
 -- Dependencies: 229
 -- Name: collectionCategories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -579,7 +587,7 @@ ALTER SEQUENCE public."collectionCategories_id_seq" OWNED BY public."collectionC
 
 
 --
--- TOC entry 230 (class 1259 OID 33907)
+-- TOC entry 230 (class 1259 OID 16994)
 -- Name: collectionCategory; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -594,7 +602,7 @@ CREATE TABLE public."collectionCategory" (
 ALTER TABLE public."collectionCategory" OWNER TO postgres;
 
 --
--- TOC entry 231 (class 1259 OID 33910)
+-- TOC entry 231 (class 1259 OID 16997)
 -- Name: collections; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -613,7 +621,7 @@ CREATE TABLE public.collections (
 ALTER TABLE public.collections OWNER TO postgres;
 
 --
--- TOC entry 232 (class 1259 OID 33918)
+-- TOC entry 232 (class 1259 OID 17005)
 -- Name: customRequests; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -628,7 +636,7 @@ CREATE TABLE public."customRequests" (
 ALTER TABLE public."customRequests" OWNER TO postgres;
 
 --
--- TOC entry 233 (class 1259 OID 33923)
+-- TOC entry 233 (class 1259 OID 17010)
 -- Name: customRequestsRoles; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -643,7 +651,7 @@ CREATE TABLE public."customRequestsRoles" (
 ALTER TABLE public."customRequestsRoles" OWNER TO postgres;
 
 --
--- TOC entry 234 (class 1259 OID 33928)
+-- TOC entry 234 (class 1259 OID 17015)
 -- Name: dataSources; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -662,7 +670,7 @@ CREATE TABLE public."dataSources" (
 ALTER TABLE public."dataSources" OWNER TO postgres;
 
 --
--- TOC entry 235 (class 1259 OID 33935)
+-- TOC entry 235 (class 1259 OID 17022)
 -- Name: dataSourcesCollections; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -677,7 +685,7 @@ CREATE TABLE public."dataSourcesCollections" (
 ALTER TABLE public."dataSourcesCollections" OWNER TO postgres;
 
 --
--- TOC entry 236 (class 1259 OID 33940)
+-- TOC entry 236 (class 1259 OID 17027)
 -- Name: dataSourcesFields; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -697,7 +705,7 @@ CREATE TABLE public."dataSourcesFields" (
 ALTER TABLE public."dataSourcesFields" OWNER TO postgres;
 
 --
--- TOC entry 237 (class 1259 OID 33946)
+-- TOC entry 237 (class 1259 OID 17033)
 -- Name: dataSourcesRoles; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -712,7 +720,7 @@ CREATE TABLE public."dataSourcesRoles" (
 ALTER TABLE public."dataSourcesRoles" OWNER TO postgres;
 
 --
--- TOC entry 238 (class 1259 OID 33951)
+-- TOC entry 238 (class 1259 OID 17038)
 -- Name: dataSourcesRolesResources; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -730,7 +738,7 @@ CREATE TABLE public."dataSourcesRolesResources" (
 ALTER TABLE public."dataSourcesRolesResources" OWNER TO postgres;
 
 --
--- TOC entry 239 (class 1259 OID 33957)
+-- TOC entry 239 (class 1259 OID 17044)
 -- Name: dataSourcesRolesResourcesActions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -748,7 +756,7 @@ CREATE TABLE public."dataSourcesRolesResourcesActions" (
 ALTER TABLE public."dataSourcesRolesResourcesActions" OWNER TO postgres;
 
 --
--- TOC entry 240 (class 1259 OID 33963)
+-- TOC entry 240 (class 1259 OID 17050)
 -- Name: dataSourcesRolesResourcesActions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -763,7 +771,7 @@ CREATE SEQUENCE public."dataSourcesRolesResourcesActions_id_seq"
 ALTER SEQUENCE public."dataSourcesRolesResourcesActions_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3947 (class 0 OID 0)
+-- TOC entry 3967 (class 0 OID 0)
 -- Dependencies: 240
 -- Name: dataSourcesRolesResourcesActions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -772,7 +780,7 @@ ALTER SEQUENCE public."dataSourcesRolesResourcesActions_id_seq" OWNED BY public.
 
 
 --
--- TOC entry 241 (class 1259 OID 33964)
+-- TOC entry 241 (class 1259 OID 17051)
 -- Name: dataSourcesRolesResourcesScopes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -791,7 +799,7 @@ CREATE TABLE public."dataSourcesRolesResourcesScopes" (
 ALTER TABLE public."dataSourcesRolesResourcesScopes" OWNER TO postgres;
 
 --
--- TOC entry 242 (class 1259 OID 33970)
+-- TOC entry 242 (class 1259 OID 17057)
 -- Name: dataSourcesRolesResourcesScopes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -806,7 +814,7 @@ CREATE SEQUENCE public."dataSourcesRolesResourcesScopes_id_seq"
 ALTER SEQUENCE public."dataSourcesRolesResourcesScopes_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3948 (class 0 OID 0)
+-- TOC entry 3968 (class 0 OID 0)
 -- Dependencies: 242
 -- Name: dataSourcesRolesResourcesScopes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -815,7 +823,7 @@ ALTER SEQUENCE public."dataSourcesRolesResourcesScopes_id_seq" OWNED BY public."
 
 
 --
--- TOC entry 243 (class 1259 OID 33971)
+-- TOC entry 243 (class 1259 OID 17058)
 -- Name: dataSourcesRolesResources_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -830,7 +838,7 @@ CREATE SEQUENCE public."dataSourcesRolesResources_id_seq"
 ALTER SEQUENCE public."dataSourcesRolesResources_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3949 (class 0 OID 0)
+-- TOC entry 3969 (class 0 OID 0)
 -- Dependencies: 243
 -- Name: dataSourcesRolesResources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -839,7 +847,7 @@ ALTER SEQUENCE public."dataSourcesRolesResources_id_seq" OWNED BY public."dataSo
 
 
 --
--- TOC entry 244 (class 1259 OID 33972)
+-- TOC entry 244 (class 1259 OID 17059)
 -- Name: executions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -858,7 +866,7 @@ CREATE TABLE public.executions (
 ALTER TABLE public.executions OWNER TO postgres;
 
 --
--- TOC entry 245 (class 1259 OID 33977)
+-- TOC entry 245 (class 1259 OID 17064)
 -- Name: executions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -873,7 +881,7 @@ CREATE SEQUENCE public.executions_id_seq
 ALTER SEQUENCE public.executions_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3950 (class 0 OID 0)
+-- TOC entry 3970 (class 0 OID 0)
 -- Dependencies: 245
 -- Name: executions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -882,7 +890,7 @@ ALTER SEQUENCE public.executions_id_seq OWNED BY public.executions.id;
 
 
 --
--- TOC entry 246 (class 1259 OID 33978)
+-- TOC entry 246 (class 1259 OID 17065)
 -- Name: fields; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -903,7 +911,7 @@ CREATE TABLE public.fields (
 ALTER TABLE public.fields OWNER TO postgres;
 
 --
--- TOC entry 247 (class 1259 OID 33984)
+-- TOC entry 247 (class 1259 OID 17071)
 -- Name: flow_nodes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -925,7 +933,7 @@ CREATE TABLE public.flow_nodes (
 ALTER TABLE public.flow_nodes OWNER TO postgres;
 
 --
--- TOC entry 248 (class 1259 OID 33990)
+-- TOC entry 248 (class 1259 OID 17077)
 -- Name: flow_nodes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -940,7 +948,7 @@ CREATE SEQUENCE public.flow_nodes_id_seq
 ALTER SEQUENCE public.flow_nodes_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3951 (class 0 OID 0)
+-- TOC entry 3971 (class 0 OID 0)
 -- Dependencies: 248
 -- Name: flow_nodes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -949,7 +957,7 @@ ALTER SEQUENCE public.flow_nodes_id_seq OWNED BY public.flow_nodes.id;
 
 
 --
--- TOC entry 249 (class 1259 OID 33991)
+-- TOC entry 249 (class 1259 OID 17078)
 -- Name: funds; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -970,7 +978,7 @@ CREATE TABLE public.funds (
 ALTER TABLE public.funds OWNER TO postgres;
 
 --
--- TOC entry 250 (class 1259 OID 33998)
+-- TOC entry 250 (class 1259 OID 17085)
 -- Name: funds_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -985,7 +993,7 @@ CREATE SEQUENCE public.funds_id_seq
 ALTER SEQUENCE public.funds_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3952 (class 0 OID 0)
+-- TOC entry 3972 (class 0 OID 0)
 -- Dependencies: 250
 -- Name: funds_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -994,7 +1002,7 @@ ALTER SEQUENCE public.funds_id_seq OWNED BY public.funds.id;
 
 
 --
--- TOC entry 251 (class 1259 OID 33999)
+-- TOC entry 251 (class 1259 OID 17086)
 -- Name: iframeHtml; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1011,7 +1019,7 @@ CREATE TABLE public."iframeHtml" (
 ALTER TABLE public."iframeHtml" OWNER TO postgres;
 
 --
--- TOC entry 252 (class 1259 OID 34004)
+-- TOC entry 252 (class 1259 OID 17091)
 -- Name: jobs; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1031,7 +1039,7 @@ CREATE TABLE public.jobs (
 ALTER TABLE public.jobs OWNER TO postgres;
 
 --
--- TOC entry 253 (class 1259 OID 34009)
+-- TOC entry 253 (class 1259 OID 17096)
 -- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1046,7 +1054,7 @@ CREATE SEQUENCE public.jobs_id_seq
 ALTER SEQUENCE public.jobs_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3953 (class 0 OID 0)
+-- TOC entry 3973 (class 0 OID 0)
 -- Dependencies: 253
 -- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1055,7 +1063,7 @@ ALTER SEQUENCE public.jobs_id_seq OWNED BY public.jobs.id;
 
 
 --
--- TOC entry 254 (class 1259 OID 34010)
+-- TOC entry 254 (class 1259 OID 17097)
 -- Name: kafka_configs; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1071,7 +1079,7 @@ CREATE TABLE public.kafka_configs (
 ALTER TABLE public.kafka_configs OWNER TO postgres;
 
 --
--- TOC entry 255 (class 1259 OID 34015)
+-- TOC entry 255 (class 1259 OID 17102)
 -- Name: kafka_topics; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1088,7 +1096,7 @@ CREATE TABLE public.kafka_topics (
 ALTER TABLE public.kafka_topics OWNER TO postgres;
 
 --
--- TOC entry 256 (class 1259 OID 34020)
+-- TOC entry 256 (class 1259 OID 17107)
 -- Name: migrations; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1100,7 +1108,7 @@ CREATE TABLE public.migrations (
 ALTER TABLE public.migrations OWNER TO postgres;
 
 --
--- TOC entry 257 (class 1259 OID 34023)
+-- TOC entry 257 (class 1259 OID 17110)
 -- Name: projects; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1121,7 +1129,7 @@ CREATE TABLE public.projects (
 ALTER TABLE public.projects OWNER TO postgres;
 
 --
--- TOC entry 258 (class 1259 OID 34028)
+-- TOC entry 258 (class 1259 OID 17115)
 -- Name: projects_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1136,7 +1144,7 @@ CREATE SEQUENCE public.projects_id_seq
 ALTER SEQUENCE public.projects_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3954 (class 0 OID 0)
+-- TOC entry 3974 (class 0 OID 0)
 -- Dependencies: 258
 -- Name: projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1145,7 +1153,7 @@ ALTER SEQUENCE public.projects_id_seq OWNED BY public.projects.id;
 
 
 --
--- TOC entry 259 (class 1259 OID 34029)
+-- TOC entry 259 (class 1259 OID 17116)
 -- Name: proposes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1164,7 +1172,7 @@ CREATE TABLE public.proposes (
 ALTER TABLE public.proposes OWNER TO postgres;
 
 --
--- TOC entry 260 (class 1259 OID 34035)
+-- TOC entry 260 (class 1259 OID 17122)
 -- Name: proposes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1179,7 +1187,7 @@ CREATE SEQUENCE public.proposes_id_seq
 ALTER SEQUENCE public.proposes_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3955 (class 0 OID 0)
+-- TOC entry 3975 (class 0 OID 0)
 -- Dependencies: 260
 -- Name: proposes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1188,7 +1196,7 @@ ALTER SEQUENCE public.proposes_id_seq OWNED BY public.proposes.id;
 
 
 --
--- TOC entry 261 (class 1259 OID 34036)
+-- TOC entry 261 (class 1259 OID 17123)
 -- Name: roles; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1211,7 +1219,7 @@ CREATE TABLE public.roles (
 ALTER TABLE public.roles OWNER TO postgres;
 
 --
--- TOC entry 262 (class 1259 OID 34044)
+-- TOC entry 262 (class 1259 OID 17131)
 -- Name: rolesResources; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1228,7 +1236,7 @@ CREATE TABLE public."rolesResources" (
 ALTER TABLE public."rolesResources" OWNER TO postgres;
 
 --
--- TOC entry 263 (class 1259 OID 34049)
+-- TOC entry 263 (class 1259 OID 17136)
 -- Name: rolesResourcesActions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1246,7 +1254,7 @@ CREATE TABLE public."rolesResourcesActions" (
 ALTER TABLE public."rolesResourcesActions" OWNER TO postgres;
 
 --
--- TOC entry 264 (class 1259 OID 34055)
+-- TOC entry 264 (class 1259 OID 17142)
 -- Name: rolesResourcesActions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1261,7 +1269,7 @@ CREATE SEQUENCE public."rolesResourcesActions_id_seq"
 ALTER SEQUENCE public."rolesResourcesActions_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3956 (class 0 OID 0)
+-- TOC entry 3976 (class 0 OID 0)
 -- Dependencies: 264
 -- Name: rolesResourcesActions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1270,7 +1278,7 @@ ALTER SEQUENCE public."rolesResourcesActions_id_seq" OWNED BY public."rolesResou
 
 
 --
--- TOC entry 265 (class 1259 OID 34056)
+-- TOC entry 265 (class 1259 OID 17143)
 -- Name: rolesResourcesScopes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1288,7 +1296,7 @@ CREATE TABLE public."rolesResourcesScopes" (
 ALTER TABLE public."rolesResourcesScopes" OWNER TO postgres;
 
 --
--- TOC entry 266 (class 1259 OID 34061)
+-- TOC entry 266 (class 1259 OID 17148)
 -- Name: rolesResourcesScopes_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1303,7 +1311,7 @@ CREATE SEQUENCE public."rolesResourcesScopes_id_seq"
 ALTER SEQUENCE public."rolesResourcesScopes_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3957 (class 0 OID 0)
+-- TOC entry 3977 (class 0 OID 0)
 -- Dependencies: 266
 -- Name: rolesResourcesScopes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1312,7 +1320,7 @@ ALTER SEQUENCE public."rolesResourcesScopes_id_seq" OWNED BY public."rolesResour
 
 
 --
--- TOC entry 267 (class 1259 OID 34062)
+-- TOC entry 267 (class 1259 OID 17149)
 -- Name: rolesResources_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1327,7 +1335,7 @@ CREATE SEQUENCE public."rolesResources_id_seq"
 ALTER SEQUENCE public."rolesResources_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3958 (class 0 OID 0)
+-- TOC entry 3978 (class 0 OID 0)
 -- Dependencies: 267
 -- Name: rolesResources_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1336,7 +1344,7 @@ ALTER SEQUENCE public."rolesResources_id_seq" OWNED BY public."rolesResources".i
 
 
 --
--- TOC entry 268 (class 1259 OID 34063)
+-- TOC entry 268 (class 1259 OID 17150)
 -- Name: rolesUischemas; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1351,7 +1359,7 @@ CREATE TABLE public."rolesUischemas" (
 ALTER TABLE public."rolesUischemas" OWNER TO postgres;
 
 --
--- TOC entry 269 (class 1259 OID 34068)
+-- TOC entry 269 (class 1259 OID 17155)
 -- Name: rolesUsers; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1367,7 +1375,7 @@ CREATE TABLE public."rolesUsers" (
 ALTER TABLE public."rolesUsers" OWNER TO postgres;
 
 --
--- TOC entry 270 (class 1259 OID 34071)
+-- TOC entry 270 (class 1259 OID 17158)
 -- Name: sequences; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1386,7 +1394,7 @@ CREATE TABLE public.sequences (
 ALTER TABLE public.sequences OWNER TO postgres;
 
 --
--- TOC entry 271 (class 1259 OID 34076)
+-- TOC entry 271 (class 1259 OID 17163)
 -- Name: sequences_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1401,7 +1409,7 @@ CREATE SEQUENCE public.sequences_id_seq
 ALTER SEQUENCE public.sequences_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3959 (class 0 OID 0)
+-- TOC entry 3979 (class 0 OID 0)
 -- Dependencies: 271
 -- Name: sequences_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1410,7 +1418,7 @@ ALTER SEQUENCE public.sequences_id_seq OWNED BY public.sequences.id;
 
 
 --
--- TOC entry 297 (class 1259 OID 34431)
+-- TOC entry 272 (class 1259 OID 17164)
 -- Name: smart_contracts; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1420,14 +1428,15 @@ CREATE TABLE public.smart_contracts (
     "updatedAt" timestamp with time zone NOT NULL,
     script text,
     abi json,
-    bytecode text
+    bytecode text,
+    "contractAddress" text
 );
 
 
 ALTER TABLE public.smart_contracts OWNER TO postgres;
 
 --
--- TOC entry 272 (class 1259 OID 34082)
+-- TOC entry 273 (class 1259 OID 17169)
 -- Name: storages; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1450,8 +1459,8 @@ CREATE TABLE public.storages (
 ALTER TABLE public.storages OWNER TO postgres;
 
 --
--- TOC entry 3960 (class 0 OID 0)
--- Dependencies: 272
+-- TOC entry 3980 (class 0 OID 0)
+-- Dependencies: 273
 -- Name: COLUMN storages.title; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1459,8 +1468,8 @@ COMMENT ON COLUMN public.storages.title IS '存储引擎名称';
 
 
 --
--- TOC entry 3961 (class 0 OID 0)
--- Dependencies: 272
+-- TOC entry 3981 (class 0 OID 0)
+-- Dependencies: 273
 -- Name: COLUMN storages.type; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1468,8 +1477,8 @@ COMMENT ON COLUMN public.storages.type IS '类型标识，如 local/ali-oss 等'
 
 
 --
--- TOC entry 3962 (class 0 OID 0)
--- Dependencies: 272
+-- TOC entry 3982 (class 0 OID 0)
+-- Dependencies: 273
 -- Name: COLUMN storages.options; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1477,8 +1486,8 @@ COMMENT ON COLUMN public.storages.options IS '配置项';
 
 
 --
--- TOC entry 3963 (class 0 OID 0)
--- Dependencies: 272
+-- TOC entry 3983 (class 0 OID 0)
+-- Dependencies: 273
 -- Name: COLUMN storages.rules; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1486,8 +1495,8 @@ COMMENT ON COLUMN public.storages.rules IS '文件规则';
 
 
 --
--- TOC entry 3964 (class 0 OID 0)
--- Dependencies: 272
+-- TOC entry 3984 (class 0 OID 0)
+-- Dependencies: 273
 -- Name: COLUMN storages.path; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1495,8 +1504,8 @@ COMMENT ON COLUMN public.storages.path IS '存储相对路径模板';
 
 
 --
--- TOC entry 3965 (class 0 OID 0)
--- Dependencies: 272
+-- TOC entry 3985 (class 0 OID 0)
+-- Dependencies: 273
 -- Name: COLUMN storages."baseUrl"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1504,8 +1513,8 @@ COMMENT ON COLUMN public.storages."baseUrl" IS '访问地址前缀';
 
 
 --
--- TOC entry 3966 (class 0 OID 0)
--- Dependencies: 272
+-- TOC entry 3986 (class 0 OID 0)
+-- Dependencies: 273
 -- Name: COLUMN storages."default"; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1513,7 +1522,7 @@ COMMENT ON COLUMN public.storages."default" IS '默认引擎';
 
 
 --
--- TOC entry 273 (class 1259 OID 34093)
+-- TOC entry 274 (class 1259 OID 17180)
 -- Name: storages_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1528,8 +1537,8 @@ CREATE SEQUENCE public.storages_id_seq
 ALTER SEQUENCE public.storages_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3967 (class 0 OID 0)
--- Dependencies: 273
+-- TOC entry 3987 (class 0 OID 0)
+-- Dependencies: 274
 -- Name: storages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1537,7 +1546,7 @@ ALTER SEQUENCE public.storages_id_seq OWNED BY public.storages.id;
 
 
 --
--- TOC entry 274 (class 1259 OID 34094)
+-- TOC entry 275 (class 1259 OID 17181)
 -- Name: student_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1552,7 +1561,7 @@ CREATE SEQUENCE public.student_id_seq
 ALTER SEQUENCE public.student_id_seq OWNER TO postgres;
 
 --
--- TOC entry 275 (class 1259 OID 34095)
+-- TOC entry 276 (class 1259 OID 17182)
 -- Name: systemSettings; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1574,7 +1583,7 @@ CREATE TABLE public."systemSettings" (
 ALTER TABLE public."systemSettings" OWNER TO postgres;
 
 --
--- TOC entry 276 (class 1259 OID 34104)
+-- TOC entry 277 (class 1259 OID 17191)
 -- Name: systemSettings_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1589,8 +1598,8 @@ CREATE SEQUENCE public."systemSettings_id_seq"
 ALTER SEQUENCE public."systemSettings_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3968 (class 0 OID 0)
--- Dependencies: 276
+-- TOC entry 3988 (class 0 OID 0)
+-- Dependencies: 277
 -- Name: systemSettings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1598,7 +1607,7 @@ ALTER SEQUENCE public."systemSettings_id_seq" OWNED BY public."systemSettings".i
 
 
 --
--- TOC entry 277 (class 1259 OID 34105)
+-- TOC entry 278 (class 1259 OID 17192)
 -- Name: t_1vx9kyb7k1h; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1613,7 +1622,7 @@ CREATE TABLE public.t_1vx9kyb7k1h (
 ALTER TABLE public.t_1vx9kyb7k1h OWNER TO postgres;
 
 --
--- TOC entry 278 (class 1259 OID 34108)
+-- TOC entry 279 (class 1259 OID 17195)
 -- Name: t_54opx8rhenu; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1628,7 +1637,7 @@ CREATE TABLE public.t_54opx8rhenu (
 ALTER TABLE public.t_54opx8rhenu OWNER TO postgres;
 
 --
--- TOC entry 279 (class 1259 OID 34111)
+-- TOC entry 280 (class 1259 OID 17198)
 -- Name: tokenBlacklist; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1644,7 +1653,7 @@ CREATE TABLE public."tokenBlacklist" (
 ALTER TABLE public."tokenBlacklist" OWNER TO postgres;
 
 --
--- TOC entry 280 (class 1259 OID 34114)
+-- TOC entry 281 (class 1259 OID 17201)
 -- Name: tokenBlacklist_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1659,8 +1668,8 @@ CREATE SEQUENCE public."tokenBlacklist_id_seq"
 ALTER SEQUENCE public."tokenBlacklist_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3969 (class 0 OID 0)
--- Dependencies: 280
+-- TOC entry 3989 (class 0 OID 0)
+-- Dependencies: 281
 -- Name: tokenBlacklist_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1668,7 +1677,7 @@ ALTER SEQUENCE public."tokenBlacklist_id_seq" OWNED BY public."tokenBlacklist".i
 
 
 --
--- TOC entry 281 (class 1259 OID 34115)
+-- TOC entry 282 (class 1259 OID 17202)
 -- Name: transactions; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1691,7 +1700,51 @@ CREATE TABLE public.transactions (
 ALTER TABLE public.transactions OWNER TO postgres;
 
 --
--- TOC entry 282 (class 1259 OID 34121)
+-- TOC entry 283 (class 1259 OID 17208)
+-- Name: transactions_config; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.transactions_config (
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    id bigint NOT NULL,
+    "createdById" bigint,
+    "updatedById" bigint,
+    "contractAddress" text,
+    private_key text,
+    provider text,
+    abi json
+);
+
+
+ALTER TABLE public.transactions_config OWNER TO postgres;
+
+--
+-- TOC entry 284 (class 1259 OID 17213)
+-- Name: transactions_config_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.transactions_config_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.transactions_config_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3990 (class 0 OID 0)
+-- Dependencies: 284
+-- Name: transactions_config_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.transactions_config_id_seq OWNED BY public.transactions_config.id;
+
+
+--
+-- TOC entry 285 (class 1259 OID 17214)
 -- Name: transactions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1706,8 +1759,8 @@ CREATE SEQUENCE public.transactions_id_seq
 ALTER SEQUENCE public.transactions_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3970 (class 0 OID 0)
--- Dependencies: 282
+-- TOC entry 3991 (class 0 OID 0)
+-- Dependencies: 285
 -- Name: transactions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1715,7 +1768,7 @@ ALTER SEQUENCE public.transactions_id_seq OWNED BY public.transactions.id;
 
 
 --
--- TOC entry 283 (class 1259 OID 34122)
+-- TOC entry 286 (class 1259 OID 17215)
 -- Name: uiSchemaServerHooks; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1733,7 +1786,7 @@ CREATE TABLE public."uiSchemaServerHooks" (
 ALTER TABLE public."uiSchemaServerHooks" OWNER TO postgres;
 
 --
--- TOC entry 284 (class 1259 OID 34127)
+-- TOC entry 287 (class 1259 OID 17220)
 -- Name: uiSchemaServerHooks_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1748,8 +1801,8 @@ CREATE SEQUENCE public."uiSchemaServerHooks_id_seq"
 ALTER SEQUENCE public."uiSchemaServerHooks_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3971 (class 0 OID 0)
--- Dependencies: 284
+-- TOC entry 3992 (class 0 OID 0)
+-- Dependencies: 287
 -- Name: uiSchemaServerHooks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1757,7 +1810,7 @@ ALTER SEQUENCE public."uiSchemaServerHooks_id_seq" OWNED BY public."uiSchemaServ
 
 
 --
--- TOC entry 285 (class 1259 OID 34128)
+-- TOC entry 288 (class 1259 OID 17221)
 -- Name: uiSchemaTemplates; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1778,7 +1831,7 @@ CREATE TABLE public."uiSchemaTemplates" (
 ALTER TABLE public."uiSchemaTemplates" OWNER TO postgres;
 
 --
--- TOC entry 286 (class 1259 OID 34133)
+-- TOC entry 289 (class 1259 OID 17226)
 -- Name: uiSchemaTreePath; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1795,8 +1848,8 @@ CREATE TABLE public."uiSchemaTreePath" (
 ALTER TABLE public."uiSchemaTreePath" OWNER TO postgres;
 
 --
--- TOC entry 3972 (class 0 OID 0)
--- Dependencies: 286
+-- TOC entry 3993 (class 0 OID 0)
+-- Dependencies: 289
 -- Name: COLUMN "uiSchemaTreePath".type; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1804,8 +1857,8 @@ COMMENT ON COLUMN public."uiSchemaTreePath".type IS 'type of node';
 
 
 --
--- TOC entry 3973 (class 0 OID 0)
--- Dependencies: 286
+-- TOC entry 3994 (class 0 OID 0)
+-- Dependencies: 289
 -- Name: COLUMN "uiSchemaTreePath".sort; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -1813,7 +1866,7 @@ COMMENT ON COLUMN public."uiSchemaTreePath".sort IS 'sort of node in adjacency';
 
 
 --
--- TOC entry 287 (class 1259 OID 34138)
+-- TOC entry 290 (class 1259 OID 17231)
 -- Name: uiSchemas; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1827,7 +1880,7 @@ CREATE TABLE public."uiSchemas" (
 ALTER TABLE public."uiSchemas" OWNER TO postgres;
 
 --
--- TOC entry 288 (class 1259 OID 34144)
+-- TOC entry 291 (class 1259 OID 17237)
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1852,7 +1905,7 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
--- TOC entry 289 (class 1259 OID 34150)
+-- TOC entry 292 (class 1259 OID 17243)
 -- Name: usersAuthenticators; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1873,7 +1926,7 @@ CREATE TABLE public."usersAuthenticators" (
 ALTER TABLE public."usersAuthenticators" OWNER TO postgres;
 
 --
--- TOC entry 290 (class 1259 OID 34158)
+-- TOC entry 293 (class 1259 OID 17251)
 -- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1888,8 +1941,8 @@ CREATE SEQUENCE public.users_id_seq
 ALTER SEQUENCE public.users_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3974 (class 0 OID 0)
--- Dependencies: 290
+-- TOC entry 3995 (class 0 OID 0)
+-- Dependencies: 293
 -- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1897,7 +1950,7 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- TOC entry 291 (class 1259 OID 34159)
+-- TOC entry 294 (class 1259 OID 17252)
 -- Name: users_jobs; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1918,7 +1971,7 @@ CREATE TABLE public.users_jobs (
 ALTER TABLE public.users_jobs OWNER TO postgres;
 
 --
--- TOC entry 292 (class 1259 OID 34164)
+-- TOC entry 295 (class 1259 OID 17257)
 -- Name: users_jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -1933,8 +1986,8 @@ CREATE SEQUENCE public.users_jobs_id_seq
 ALTER SEQUENCE public.users_jobs_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3975 (class 0 OID 0)
--- Dependencies: 292
+-- TOC entry 3996 (class 0 OID 0)
+-- Dependencies: 295
 -- Name: users_jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -1942,7 +1995,7 @@ ALTER SEQUENCE public.users_jobs_id_seq OWNED BY public.users_jobs.id;
 
 
 --
--- TOC entry 293 (class 1259 OID 34165)
+-- TOC entry 296 (class 1259 OID 17258)
 -- Name: verifications; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1962,7 +2015,7 @@ CREATE TABLE public.verifications (
 ALTER TABLE public.verifications OWNER TO postgres;
 
 --
--- TOC entry 294 (class 1259 OID 34171)
+-- TOC entry 297 (class 1259 OID 17264)
 -- Name: verifications_providers; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1980,7 +2033,55 @@ CREATE TABLE public.verifications_providers (
 ALTER TABLE public.verifications_providers OWNER TO postgres;
 
 --
--- TOC entry 295 (class 1259 OID 34176)
+-- TOC entry 298 (class 1259 OID 17269)
+-- Name: videos; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.videos (
+    "createdAt" timestamp with time zone,
+    "updatedAt" timestamp with time zone,
+    id bigint NOT NULL,
+    "createdById" bigint,
+    "updatedById" bigint,
+    title character varying(255),
+    filename character varying(255),
+    extname character varying(255),
+    size bigint,
+    mimetype character varying(255),
+    path character varying(255),
+    url text,
+    preview text
+);
+
+
+ALTER TABLE public.videos OWNER TO postgres;
+
+--
+-- TOC entry 299 (class 1259 OID 17274)
+-- Name: videos_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.videos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.videos_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3997 (class 0 OID 0)
+-- Dependencies: 299
+-- Name: videos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.videos_id_seq OWNED BY public.videos.id;
+
+
+--
+-- TOC entry 300 (class 1259 OID 17275)
 -- Name: workflows; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -2006,7 +2107,7 @@ CREATE TABLE public.workflows (
 ALTER TABLE public.workflows OWNER TO postgres;
 
 --
--- TOC entry 296 (class 1259 OID 34188)
+-- TOC entry 301 (class 1259 OID 17287)
 -- Name: workflows_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -2021,8 +2122,8 @@ CREATE SEQUENCE public.workflows_id_seq
 ALTER SEQUENCE public.workflows_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3976 (class 0 OID 0)
--- Dependencies: 296
+-- TOC entry 3998 (class 0 OID 0)
+-- Dependencies: 301
 -- Name: workflows_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -2030,7 +2131,7 @@ ALTER SEQUENCE public.workflows_id_seq OWNED BY public.workflows.id;
 
 
 --
--- TOC entry 3445 (class 2604 OID 34189)
+-- TOC entry 3455 (class 2604 OID 17288)
 -- Name: applicationPlugins id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2038,7 +2139,7 @@ ALTER TABLE ONLY public."applicationPlugins" ALTER COLUMN id SET DEFAULT nextval
 
 
 --
--- TOC entry 3446 (class 2604 OID 34190)
+-- TOC entry 3456 (class 2604 OID 17289)
 -- Name: applicationVersion id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2046,7 +2147,7 @@ ALTER TABLE ONLY public."applicationVersion" ALTER COLUMN id SET DEFAULT nextval
 
 
 --
--- TOC entry 3447 (class 2604 OID 34191)
+-- TOC entry 3457 (class 2604 OID 17290)
 -- Name: attachments id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2054,7 +2155,7 @@ ALTER TABLE ONLY public.attachments ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
--- TOC entry 3449 (class 2604 OID 34192)
+-- TOC entry 3459 (class 2604 OID 17291)
 -- Name: authenticators id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2062,7 +2163,7 @@ ALTER TABLE ONLY public.authenticators ALTER COLUMN id SET DEFAULT nextval('publ
 
 
 --
--- TOC entry 3453 (class 2604 OID 34193)
+-- TOC entry 3463 (class 2604 OID 17292)
 -- Name: collectionCategories id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2070,7 +2171,7 @@ ALTER TABLE ONLY public."collectionCategories" ALTER COLUMN id SET DEFAULT nextv
 
 
 --
--- TOC entry 3461 (class 2604 OID 34194)
+-- TOC entry 3471 (class 2604 OID 17293)
 -- Name: dataSourcesRolesResources id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2078,7 +2179,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResources" ALTER COLUMN id SET DEFAULT 
 
 
 --
--- TOC entry 3463 (class 2604 OID 34195)
+-- TOC entry 3473 (class 2604 OID 17294)
 -- Name: dataSourcesRolesResourcesActions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2086,7 +2187,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResourcesActions" ALTER COLUMN id SET D
 
 
 --
--- TOC entry 3465 (class 2604 OID 34196)
+-- TOC entry 3475 (class 2604 OID 17295)
 -- Name: dataSourcesRolesResourcesScopes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2094,7 +2195,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResourcesScopes" ALTER COLUMN id SET DE
 
 
 --
--- TOC entry 3467 (class 2604 OID 34197)
+-- TOC entry 3477 (class 2604 OID 17296)
 -- Name: executions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2102,7 +2203,7 @@ ALTER TABLE ONLY public.executions ALTER COLUMN id SET DEFAULT nextval('public.e
 
 
 --
--- TOC entry 3469 (class 2604 OID 34198)
+-- TOC entry 3479 (class 2604 OID 17297)
 -- Name: flow_nodes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2110,7 +2211,7 @@ ALTER TABLE ONLY public.flow_nodes ALTER COLUMN id SET DEFAULT nextval('public.f
 
 
 --
--- TOC entry 3471 (class 2604 OID 34199)
+-- TOC entry 3481 (class 2604 OID 17298)
 -- Name: funds id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2118,7 +2219,7 @@ ALTER TABLE ONLY public.funds ALTER COLUMN id SET DEFAULT nextval('public.funds_
 
 
 --
--- TOC entry 3474 (class 2604 OID 34200)
+-- TOC entry 3484 (class 2604 OID 17299)
 -- Name: jobs id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2126,7 +2227,7 @@ ALTER TABLE ONLY public.jobs ALTER COLUMN id SET DEFAULT nextval('public.jobs_id
 
 
 --
--- TOC entry 3475 (class 2604 OID 34201)
+-- TOC entry 3485 (class 2604 OID 17300)
 -- Name: projects id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2134,7 +2235,7 @@ ALTER TABLE ONLY public.projects ALTER COLUMN id SET DEFAULT nextval('public.pro
 
 
 --
--- TOC entry 3476 (class 2604 OID 34202)
+-- TOC entry 3486 (class 2604 OID 17301)
 -- Name: proposes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2142,7 +2243,7 @@ ALTER TABLE ONLY public.proposes ALTER COLUMN id SET DEFAULT nextval('public.pro
 
 
 --
--- TOC entry 3481 (class 2604 OID 34203)
+-- TOC entry 3491 (class 2604 OID 17302)
 -- Name: rolesResources id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2150,7 +2251,7 @@ ALTER TABLE ONLY public."rolesResources" ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- TOC entry 3482 (class 2604 OID 34204)
+-- TOC entry 3492 (class 2604 OID 17303)
 -- Name: rolesResourcesActions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2158,7 +2259,7 @@ ALTER TABLE ONLY public."rolesResourcesActions" ALTER COLUMN id SET DEFAULT next
 
 
 --
--- TOC entry 3484 (class 2604 OID 34205)
+-- TOC entry 3494 (class 2604 OID 17304)
 -- Name: rolesResourcesScopes id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2166,7 +2267,7 @@ ALTER TABLE ONLY public."rolesResourcesScopes" ALTER COLUMN id SET DEFAULT nextv
 
 
 --
--- TOC entry 3485 (class 2604 OID 34206)
+-- TOC entry 3495 (class 2604 OID 17305)
 -- Name: sequences id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2174,7 +2275,7 @@ ALTER TABLE ONLY public.sequences ALTER COLUMN id SET DEFAULT nextval('public.se
 
 
 --
--- TOC entry 3486 (class 2604 OID 34207)
+-- TOC entry 3496 (class 2604 OID 17306)
 -- Name: storages id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2182,7 +2283,7 @@ ALTER TABLE ONLY public.storages ALTER COLUMN id SET DEFAULT nextval('public.sto
 
 
 --
--- TOC entry 3493 (class 2604 OID 34208)
+-- TOC entry 3503 (class 2604 OID 17307)
 -- Name: systemSettings id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2190,7 +2291,7 @@ ALTER TABLE ONLY public."systemSettings" ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- TOC entry 3498 (class 2604 OID 34209)
+-- TOC entry 3508 (class 2604 OID 17308)
 -- Name: tokenBlacklist id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2198,7 +2299,7 @@ ALTER TABLE ONLY public."tokenBlacklist" ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- TOC entry 3499 (class 2604 OID 34210)
+-- TOC entry 3509 (class 2604 OID 17309)
 -- Name: transactions id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2206,7 +2307,15 @@ ALTER TABLE ONLY public.transactions ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- TOC entry 3501 (class 2604 OID 34211)
+-- TOC entry 3511 (class 2604 OID 17310)
+-- Name: transactions_config id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.transactions_config ALTER COLUMN id SET DEFAULT nextval('public.transactions_config_id_seq'::regclass);
+
+
+--
+-- TOC entry 3512 (class 2604 OID 17311)
 -- Name: uiSchemaServerHooks id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2214,7 +2323,7 @@ ALTER TABLE ONLY public."uiSchemaServerHooks" ALTER COLUMN id SET DEFAULT nextva
 
 
 --
--- TOC entry 3503 (class 2604 OID 34212)
+-- TOC entry 3514 (class 2604 OID 17312)
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2222,7 +2331,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
--- TOC entry 3508 (class 2604 OID 34213)
+-- TOC entry 3519 (class 2604 OID 17313)
 -- Name: users_jobs id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2230,7 +2339,15 @@ ALTER TABLE ONLY public.users_jobs ALTER COLUMN id SET DEFAULT nextval('public.u
 
 
 --
--- TOC entry 3510 (class 2604 OID 34214)
+-- TOC entry 3521 (class 2604 OID 17314)
+-- Name: videos id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.videos ALTER COLUMN id SET DEFAULT nextval('public.videos_id_seq'::regclass);
+
+
+--
+-- TOC entry 3522 (class 2604 OID 17315)
 -- Name: workflows id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -2238,7 +2355,7 @@ ALTER TABLE ONLY public.workflows ALTER COLUMN id SET DEFAULT nextval('public.wo
 
 
 --
--- TOC entry 3850 (class 0 OID 33864)
+-- TOC entry 3866 (class 0 OID 16951)
 -- Dependencies: 218
 -- Data for Name: kafka-topics; Type: TABLE DATA; Schema: KafkaTopic; Owner: postgres
 --
@@ -2248,7 +2365,7 @@ COPY "KafkaTopic"."kafka-topics" (id, "createdAt", "updatedAt", broker_host, top
 
 
 --
--- TOC entry 3851 (class 0 OID 33869)
+-- TOC entry 3867 (class 0 OID 16956)
 -- Dependencies: 219
 -- Data for Name: applicationPlugins; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2306,30 +2423,31 @@ COPY public."applicationPlugins" (id, "createdAt", "updatedAt", name, "packageNa
 38	2024-12-04 09:18:58.821+00	2024-12-04 09:19:00.168+00	action-print	@nocobase/plugin-action-print	1.3.51	t	t	t	\N
 39	2024-12-04 09:18:58.822+00	2024-12-04 09:19:00.168+00	collection-sql	@nocobase/plugin-collection-sql	1.3.51	t	t	t	\N
 40	2024-12-04 09:18:58.823+00	2024-12-04 09:19:00.169+00	collection-tree	@nocobase/plugin-collection-tree	1.3.51	t	t	t	\N
-54	2024-12-04 09:20:53.146+00	2024-12-04 09:21:45.004+00	@dtu-olp-2024/carousel-nocobase	@dtu-olp-2024/carousel-nocobase	1.0.1	t	t	\N	\N
 59	2024-12-04 09:21:27.967+00	2024-12-04 09:21:59.65+00	@dtu-olp-2024/landing-page	@dtu-olp-2024/landing-page	1.0.0	t	t	\N	\N
 56	2024-12-04 09:21:08.28+00	2024-12-04 09:22:28.387+00	@dtu-olp-2024/progress-nocobase	@dtu-olp-2024/progress-nocobase	1.0.1	t	t	\N	\N
 57	2024-12-04 09:21:14.631+00	2024-12-04 09:22:34.281+00	@dtu-olp-2024/rich-block-nocobase	@dtu-olp-2024/rich-block-nocobase	1.0.1	t	t	\N	\N
-55	2024-12-04 09:21:02.35+00	2024-12-05 11:52:20.833+00	@dtu-olp-2024/kafka-nocobase	@dtu-olp-2024/kafka-nocobase	1.2.0	t	t	\N	\N
 62	2024-12-05 11:46:31.376+00	2024-12-05 11:46:44.714+00	@dtu-olp-2024/vietqr-nocobase	@dtu-olp-2024/vietqr-nocobase	1.0.2	t	t	\N	\N
-60	2024-12-04 09:22:14.436+00	2024-12-05 11:50:59.267+00	@dtu-olp-2024/solidity-editor-nocobase	@dtu-olp-2024/solidity-editor-nocobase	1.0.1	t	t	\N	\N
 48	2024-12-04 09:18:58.829+00	2024-12-05 11:48:14.843+00	api-doc	@nocobase/plugin-api-doc	1.3.51	t	t	\N	\N
+63	2024-12-06 23:50:51.83+00	2024-12-06 23:51:22.791+00	@dtu-olp-2024/video-player-nocobase	@dtu-olp-2024/video-player-nocobase	1.0.0	t	t	\N	\N
+54	2024-12-04 09:20:53.146+00	2024-12-07 10:32:19.558+00	@dtu-olp-2024/carousel-nocobase	@dtu-olp-2024/carousel-nocobase	1.0.2	t	t	\N	\N
+60	2024-12-04 09:22:14.436+00	2024-12-07 10:32:52.773+00	@dtu-olp-2024/solidity-editor-nocobase	@dtu-olp-2024/solidity-editor-nocobase	1.0.4	t	t	\N	\N
+55	2024-12-04 09:21:02.35+00	2024-12-07 15:53:43.467+00	@dtu-olp-2024/kafka-nocobase	@dtu-olp-2024/kafka-nocobase	1.2.5	t	t	\N	\N
 \.
 
 
 --
--- TOC entry 3853 (class 0 OID 33875)
+-- TOC entry 3869 (class 0 OID 16962)
 -- Dependencies: 221
 -- Data for Name: applicationVersion; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."applicationVersion" (id, value) FROM stdin;
-9	1.3.51
+33	1.3.51
 \.
 
 
 --
--- TOC entry 3855 (class 0 OID 33879)
+-- TOC entry 3871 (class 0 OID 16966)
 -- Dependencies: 223
 -- Data for Name: attachments; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2348,11 +2466,63 @@ COPY public.attachments (id, "createdAt", "updatedAt", title, filename, extname,
 11	2024-12-04 14:43:46.051+00	2024-12-04 14:43:46.051+00	image00220230718165933-17068901867521153615427	ac8b790e6c548f94d00e99307a0f0e81.jpeg	.jpeg	86421	image/jpeg	1		{}	/storage/uploads/ac8b790e6c548f94d00e99307a0f0e81.jpeg	1	1
 12	2024-12-04 14:43:46.055+00	2024-12-04 14:43:46.055+00	3c9e299f85f74cac38d8c1d823a44483	fc0d1b31e87bc4b487f666fbdf2e7022.jpg	.jpg	82150	image/jpeg	1		{}	/storage/uploads/fc0d1b31e87bc4b487f666fbdf2e7022.jpg	1	1
 13	2024-12-04 14:43:46.07+00	2024-12-04 14:43:46.07+00	image.daidoanket.vn-images-upload-linhdh-12152020-_anh-bai-chinh-2	ee05a062728c27de0d6cc9f7e917a13c.jpg	.jpg	533191	image/jpeg	1		{}	/storage/uploads/ee05a062728c27de0d6cc9f7e917a13c.jpg	1	1
+14	2024-12-07 00:07:11.118+00	2024-12-07 00:07:11.118+00	cau-dan-sinh-71124-2	5a50fa04c13915b7461abf478be04c98.jpg	.jpg	72609	image/jpeg	1		{}	/storage/uploads/5a50fa04c13915b7461abf478be04c98.jpg	1	1
+15	2024-12-07 00:07:11.129+00	2024-12-07 00:07:11.129+00	img-6553-jpg-1730959849-5857-1730960046	d2a9894f746f50a575721ce9220d1612.jpg	.jpg	209786	image/jpeg	1		{}	/storage/uploads/d2a9894f746f50a575721ce9220d1612.jpg	1	1
+16	2024-12-07 00:07:11.134+00	2024-12-07 00:07:11.134+00	ttxvn-cau-lung-cang-ha-giang-4-4704.jpg	b184d834f181e8a370a28a58e8347257.webp	.webp	266618	image/webp	1		{}	/storage/uploads/b184d834f181e8a370a28a58e8347257.webp	1	1
+17	2024-12-07 02:11:36.968+00	2024-12-07 02:11:36.968+00	tải xuống	cb1692b5ce428437d721866ef151dd45.jpg	.jpg	9720	image/jpeg	1		{}	/storage/uploads/cb1692b5ce428437d721866ef151dd45.jpg	1	1
+18	2024-12-07 02:11:36.984+00	2024-12-07 02:11:36.984+00	125564915_410691283467059_4609940394654218577_n_MBCB	6443d0963f32dbf3cd1d1bea4285c9f4.jpg	.jpg	472940	image/jpeg	1		{}	/storage/uploads/6443d0963f32dbf3cd1d1bea4285c9f4.jpg	1	1
+19	2024-12-07 02:11:36.987+00	2024-12-07 02:11:36.987+00	1(2)	ab893a04d276ce15ec4932f5c2748208.jpg	.jpg	755014	image/jpeg	1		{}	/storage/uploads/ab893a04d276ce15ec4932f5c2748208.jpg	1	1
+20	2024-12-07 02:14:00.19+00	2024-12-07 02:14:00.19+00	th-quang-vinh-1-6945	d82e2e1b0e6fec131af437641dfac39f.webp	.webp	152950	image/webp	1		{}	/storage/uploads/d82e2e1b0e6fec131af437641dfac39f.webp	1	1
+21	2024-12-07 02:14:00.274+00	2024-12-07 02:14:00.274+00	ttxvn_truong_hoc_thai_nguyen_1.jpg	0dff40652c53c5bf2526ab2bb3de1474.webp	.webp	100710	image/webp	1		{}	/storage/uploads/0dff40652c53c5bf2526ab2bb3de1474.webp	1	1
+22	2024-12-07 02:16:30.597+00	2024-12-07 02:16:30.597+00	tải xuống (1)	0cf22c1a5f00340ac0dab6c6c1b82adc.jpg	.jpg	11425	image/jpeg	1		{}	/storage/uploads/0cf22c1a5f00340ac0dab6c6c1b82adc.jpg	1	1
+23	2024-12-07 02:16:30.6+00	2024-12-07 02:16:30.6+00	tải xuống (2)	ec06f89b76e1c05dd03ad053c42c1464.jpg	.jpg	9473	image/jpeg	1		{}	/storage/uploads/ec06f89b76e1c05dd03ad053c42c1464.jpg	1	1
+24	2024-12-07 02:16:30.607+00	2024-12-07 02:16:30.607+00	tải xuống (3)	fb58e3c75e3a90a7df1d7e32ce179713.jpg	.jpg	13024	image/jpeg	1		{}	/storage/uploads/fb58e3c75e3a90a7df1d7e32ce179713.jpg	1	1
+25	2024-12-07 03:09:21.527+00	2024-12-07 03:09:21.527+00	quangnamhinh	fe0594a20cb280752d0168475e7c9256.jpg	.jpg	99015	image/jpeg	1		{}	/storage/uploads/fe0594a20cb280752d0168475e7c9256.jpg	1	1
+26	2024-12-07 03:09:21.544+00	2024-12-07 03:09:21.544+00	tải xuống (4)	5e5cd6b434c608944da4cabd47205559.jpg	.jpg	10688	image/jpeg	1		{}	/storage/uploads/5e5cd6b434c608944da4cabd47205559.jpg	1	1
+27	2024-12-07 03:09:21.546+00	2024-12-07 03:09:21.546+00	FB_IMG_1603852462757	9cd875d3e7dcde13e6820677d90dfc2a.jpg	.jpg	28491	image/jpeg	1		{}	/storage/uploads/9cd875d3e7dcde13e6820677d90dfc2a.jpg	1	1
+28	2024-12-07 03:09:21.577+00	2024-12-07 03:09:21.577+00	nhung-hinh-anh-thiet-hai-dau-tien-do-bao-so-3-o-ha-long-1535	5cf741bb45a5104cd7b313d821d18008.jpeg	.jpeg	838401	image/jpeg	1		{}	/storage/uploads/5cf741bb45a5104cd7b313d821d18008.jpeg	1	1
+29	2024-12-07 03:12:59.757+00	2024-12-07 03:12:59.757+00	08584112062017	44ae7e81fa866782495ce40eb499db74.jpg	.jpg	78501	image/jpeg	1		{}	/storage/uploads/44ae7e81fa866782495ce40eb499db74.jpg	1	1
+30	2024-12-07 03:12:59.794+00	2024-12-07 03:12:59.794+00	dak-lak-lam-ro-trach-nhiem-vi-de-suy-giam-244-ha-rung-o-du-an-ho-thuy-loi-nghin-ti-3582	5c30ecabf196949dbcba467a460e8f40.jpg	.jpg	260206	image/jpeg	1		{}	/storage/uploads/5c30ecabf196949dbcba467a460e8f40.jpg	1	1
+31	2024-12-07 03:12:59.796+00	2024-12-07 03:12:59.796+00	8-Ho-Dap	e91610258523be989873dd83124c96bb.jpg	.jpg	118937	image/jpeg	1		{}	/storage/uploads/e91610258523be989873dd83124c96bb.jpg	1	1
+32	2024-12-07 03:22:33.576+00	2024-12-07 03:22:33.576+00	z58069262926888c01fe787d6b3470be7876bb5944beab-172570623406339516614-1725706638606-1725706639075134753531	8343e7a508858e718f7114a5a471e65b.webp	.webp	45346	image/webp	1		{}	/storage/uploads/8343e7a508858e718f7114a5a471e65b.webp	1	1
+33	2024-12-07 03:22:33.586+00	2024-12-07 03:22:33.586+00	tải xuống (5)	87d73396ad6a5651207f569d11689ed1.jpg	.jpg	8378	image/jpeg	1		{}	/storage/uploads/87d73396ad6a5651207f569d11689ed1.jpg	1	1
+34	2024-12-07 03:31:10.243+00	2024-12-07 03:31:10.243+00	img-6553-jpg-1730959849-5857-1730960046	05feb1dcaad3a4e5a043315a894ef451.jpg	.jpg	209786	image/jpeg	1		{}	/storage/uploads/05feb1dcaad3a4e5a043315a894ef451.jpg	1	1
+35	2024-12-07 03:31:10.249+00	2024-12-07 03:31:10.249+00	ttxvn-cau-lung-cang-ha-giang-4-4704.jpg	352a9059c62ea230ac17bf613b615c4b.webp	.webp	266618	image/webp	1		{}	/storage/uploads/352a9059c62ea230ac17bf613b615c4b.webp	1	1
+36	2024-12-07 03:31:10.267+00	2024-12-07 03:31:10.267+00	1-1725862536-1112-1725862567	94596c831d6e5be5f48209811b6da453.jpg	.jpg	635760	image/jpeg	1		{}	/storage/uploads/94596c831d6e5be5f48209811b6da453.jpg	1	1
+37	2024-12-07 03:34:27.161+00	2024-12-07 03:34:27.161+00	screen-shot-2024-10-08-at-110629-1728360468474568244100-20-0-415-632-crop-172836051705479693444	60171568659bb17f8448f47ecae02989.webp	.webp	137162	image/webp	1		{}	/storage/uploads/60171568659bb17f8448f47ecae02989.webp	1	1
+38	2024-12-07 03:34:27.189+00	2024-12-07 03:34:27.189+00	sat-lo-o-lao-cai-12-1726023156417-1726028626387	bbe264811e909df1df4b93273e5d67a0.webp	.webp	1327716	image/webp	1		{}	/storage/uploads/bbe264811e909df1df4b93273e5d67a0.webp	1	1
+39	2024-12-07 03:34:27.202+00	2024-12-07 03:34:27.202+00	z5821061594787c3bf00290463c681346553fea77bf478-172606455745514052784	ebb9da64ef9f942bb00dcbd1db1e6783.webp	.webp	1853408	image/webp	1		{}	/storage/uploads/ebb9da64ef9f942bb00dcbd1db1e6783.webp	1	1
+40	2024-12-07 10:52:02.454+00	2024-12-07 10:52:02.454+00	cau-dan-sinh-71124-2	bc7ed57905b92689da0bd62cf1222e0d.jpg	.jpg	72609	image/jpeg	1		{}	/storage/uploads/bc7ed57905b92689da0bd62cf1222e0d.jpg	1	1
+41	2024-12-07 10:52:37.729+00	2024-12-07 10:52:37.729+00	img-6553-jpg-1730959849-5857-1730960046	5b123536a256bc2922428b936e99a7ef.jpg	.jpg	209786	image/jpeg	1		{}	/storage/uploads/5b123536a256bc2922428b936e99a7ef.jpg	1	1
+42	2024-12-07 10:52:37.751+00	2024-12-07 10:52:37.751+00	ttxvn-cau-lung-cang-ha-giang-4-4704.jpg	caecbf7cee52e861f1606c1808ef31f6.webp	.webp	266618	image/webp	1		{}	/storage/uploads/caecbf7cee52e861f1606c1808ef31f6.webp	1	1
+43	2024-12-07 10:52:37.787+00	2024-12-07 10:52:37.787+00	cau-dan-sinh-71124-2	83d8c4a35d1c709ec0fdfa13e829c7d7.jpg	.jpg	72609	image/jpeg	1		{}	/storage/uploads/83d8c4a35d1c709ec0fdfa13e829c7d7.jpg	1	1
+44	2024-12-07 10:53:53.611+00	2024-12-07 10:53:53.611+00	tải xuống	35fb47a18847702e684619604e06d605.jpg	.jpg	9720	image/jpeg	1		{}	/storage/uploads/35fb47a18847702e684619604e06d605.jpg	1	1
+45	2024-12-07 10:53:53.625+00	2024-12-07 10:53:53.625+00	1(2)	493be89771a8e1bbf924d1a6bd18cfb0.jpg	.jpg	755014	image/jpeg	1		{}	/storage/uploads/493be89771a8e1bbf924d1a6bd18cfb0.jpg	1	1
+46	2024-12-07 10:54:26.103+00	2024-12-07 10:54:26.103+00	th-quang-vinh-1-6945	db19b28eae3d2d40951816f4eeb0945f.webp	.webp	152950	image/webp	1		{}	/storage/uploads/db19b28eae3d2d40951816f4eeb0945f.webp	1	1
+47	2024-12-07 10:54:26.132+00	2024-12-07 10:54:26.132+00	ttxvn_truong_hoc_thai_nguyen_1.jpg	b3f8598cdfb153f61f90c69b44029703.webp	.webp	100710	image/webp	1		{}	/storage/uploads/b3f8598cdfb153f61f90c69b44029703.webp	1	1
+48	2024-12-07 10:55:54.162+00	2024-12-07 10:55:54.162+00	08584112062017	93c2c4d6902faf63d9104718b3702478.jpg	.jpg	78501	image/jpeg	1		{}	/storage/uploads/93c2c4d6902faf63d9104718b3702478.jpg	1	1
+49	2024-12-07 10:55:54.166+00	2024-12-07 10:55:54.166+00	tải xuống (2)	f5f5eade9691d3a16ff3878739cb8094.jpg	.jpg	9473	image/jpeg	1		{}	/storage/uploads/f5f5eade9691d3a16ff3878739cb8094.jpg	1	1
+50	2024-12-07 10:55:54.17+00	2024-12-07 10:55:54.17+00	tải xuống (3)	7e5aa72ee99497b44ef307768add2c87.jpg	.jpg	13024	image/jpeg	1		{}	/storage/uploads/7e5aa72ee99497b44ef307768add2c87.jpg	1	1
+51	2024-12-07 10:56:47.682+00	2024-12-07 10:56:47.682+00	1-17257082458721286936710	cf25a327fb148de459283a5cc1081c91.webp	.webp	83867	image/webp	1		{}	/storage/uploads/cf25a327fb148de459283a5cc1081c91.webp	1	1
+52	2024-12-07 10:56:47.733+00	2024-12-07 10:56:47.733+00	tải xuống (4)	680e9a9a211dd8321b579640d714c094.jpg	.jpg	10688	image/jpeg	1		{}	/storage/uploads/680e9a9a211dd8321b579640d714c094.jpg	1	1
+53	2024-12-07 10:56:47.759+00	2024-12-07 10:56:47.759+00	nhung-hinh-anh-thiet-hai-dau-tien-do-bao-so-3-o-ha-long-1535	e727073e99f0490b2b0a393bfc5eee0e.jpeg	.jpeg	838401	image/jpeg	1		{}	/storage/uploads/e727073e99f0490b2b0a393bfc5eee0e.jpeg	1	1
+54	2024-12-07 10:56:47.763+00	2024-12-07 10:56:47.763+00	quangnamhinh	25fe14ef8704c2716960961d2c5f9d50.jpg	.jpg	99015	image/jpeg	1		{}	/storage/uploads/25fe14ef8704c2716960961d2c5f9d50.jpg	1	1
+55	2024-12-07 10:58:13.894+00	2024-12-07 10:58:13.894+00	dak-lak-lam-ro-trach-nhiem-vi-de-suy-giam-244-ha-rung-o-du-an-ho-thuy-loi-nghin-ti-3582	b679969933abf14d78e91aa15e80d4e5.jpg	.jpg	260206	image/jpeg	1		{}	/storage/uploads/b679969933abf14d78e91aa15e80d4e5.jpg	1	1
+56	2024-12-07 10:58:13.902+00	2024-12-07 10:58:13.902+00	08584112062017	7f69d3a3e3ec874345dc412b166ae3dc.jpg	.jpg	78501	image/jpeg	1		{}	/storage/uploads/7f69d3a3e3ec874345dc412b166ae3dc.jpg	1	1
+57	2024-12-07 10:58:13.932+00	2024-12-07 10:58:13.932+00	8-Ho-Dap	4b33ccd416e4b34952d0f9c43d94ec3f.jpg	.jpg	118937	image/jpeg	1		{}	/storage/uploads/4b33ccd416e4b34952d0f9c43d94ec3f.jpg	1	1
+58	2024-12-07 10:59:09.267+00	2024-12-07 10:59:09.267+00	z58069262926888c01fe787d6b3470be7876bb5944beab-172570623406339516614-1725706638606-1725706639075134753531	84ebf7c21f794dd8a1074b2939223389.webp	.webp	45346	image/webp	1		{}	/storage/uploads/84ebf7c21f794dd8a1074b2939223389.webp	1	1
+59	2024-12-07 10:59:09.269+00	2024-12-07 10:59:09.269+00	tải xuống (5)	2882b9b5e575df8e0f69b5d74ee7b8ed.jpg	.jpg	8378	image/jpeg	1		{}	/storage/uploads/2882b9b5e575df8e0f69b5d74ee7b8ed.jpg	1	1
+60	2024-12-07 11:00:04.934+00	2024-12-07 11:00:04.934+00	1-1725862536-1112-1725862567	321813db20178e750e773e02ee8575c9.jpg	.jpg	635760	image/jpeg	1		{}	/storage/uploads/321813db20178e750e773e02ee8575c9.jpg	1	1
+61	2024-12-07 11:00:04.97+00	2024-12-07 11:00:04.97+00	img-6553-jpg-1730959849-5857-1730960046	5cbfac3cdb78227248deb782629e10e1.jpg	.jpg	209786	image/jpeg	1		{}	/storage/uploads/5cbfac3cdb78227248deb782629e10e1.jpg	1	1
+62	2024-12-07 11:00:04.974+00	2024-12-07 11:00:04.974+00	ttxvn-cau-lung-cang-ha-giang-4-4704.jpg	8926bd26d4ca62681473fba471f59261.webp	.webp	266618	image/webp	1		{}	/storage/uploads/8926bd26d4ca62681473fba471f59261.webp	1	1
+63	2024-12-07 11:00:27.647+00	2024-12-07 11:00:27.647+00	sat-lo-o-lao-cai-12-1726023156417-1726028626387	8759c0f3b5b453eb808c93e0248987e9.webp	.webp	1327716	image/webp	1		{}	/storage/uploads/8759c0f3b5b453eb808c93e0248987e9.webp	1	1
+64	2024-12-07 11:00:27.655+00	2024-12-07 11:00:27.655+00	screen-shot-2024-10-08-at-110629-1728360468474568244100-20-0-415-632-crop-172836051705479693444	fd78b76610ea76f3dce6160563555980.webp	.webp	137162	image/webp	1		{}	/storage/uploads/fd78b76610ea76f3dce6160563555980.webp	1	1
+65	2024-12-07 11:00:27.659+00	2024-12-07 11:00:27.659+00	z5821061594787c3bf00290463c681346553fea77bf478-172606455745514052784	861d57d31625c965cc1a751b4a30d920.webp	.webp	1853408	image/webp	1		{}	/storage/uploads/861d57d31625c965cc1a751b4a30d920.webp	1	1
 \.
 
 
 --
--- TOC entry 3857 (class 0 OID 33886)
+-- TOC entry 3873 (class 0 OID 16973)
 -- Dependencies: 225
 -- Data for Name: authenticators; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -2363,7 +2533,7 @@ COPY public.authenticators (id, "createdAt", "updatedAt", name, "authType", titl
 
 
 --
--- TOC entry 3859 (class 0 OID 33895)
+-- TOC entry 3875 (class 0 OID 16982)
 -- Dependencies: 227
 -- Data for Name: chinaRegions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5724,7 +5894,7 @@ COPY public."chinaRegions" ("createdAt", "updatedAt", code, name, "parentCode", 
 
 
 --
--- TOC entry 3860 (class 0 OID 33900)
+-- TOC entry 3876 (class 0 OID 16987)
 -- Dependencies: 228
 -- Data for Name: collectionCategories; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5734,7 +5904,7 @@ COPY public."collectionCategories" (id, "createdAt", "updatedAt", name, color, s
 
 
 --
--- TOC entry 3862 (class 0 OID 33907)
+-- TOC entry 3878 (class 0 OID 16994)
 -- Dependencies: 230
 -- Data for Name: collectionCategory; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5744,7 +5914,7 @@ COPY public."collectionCategory" ("createdAt", "updatedAt", "collectionName", "c
 
 
 --
--- TOC entry 3863 (class 0 OID 33910)
+-- TOC entry 3879 (class 0 OID 16997)
 -- Dependencies: 231
 -- Data for Name: collections; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5758,22 +5928,28 @@ v47dqoj2dnb	proposes	Yêu cầu xây dựng	f	f	{"logging":true,"autoGenId":fals
 hq0iwm7ahaf	projects	Dự án	f	f	{"logging":true,"autoGenId":false,"createdAt":true,"createdBy":true,"updatedAt":true,"updatedBy":true,"template":"general","view":false,"simplePaginate":true,"schema":"public"}	\N	7
 urxp2sa2a28	funds	Quỹ dự án	f	f	{"logging":true,"autoGenId":false,"createdAt":true,"createdBy":true,"updatedAt":true,"updatedBy":true,"template":"general","view":false,"simplePaginate":true,"schema":"public"}	\N	8
 jiijksepvri	transactions	Giao dịch	f	f	{"logging":true,"autoGenId":false,"createdAt":true,"createdBy":true,"updatedAt":true,"updatedBy":true,"template":"general","view":false,"simplePaginate":true,"schema":"public"}	\N	9
-3tthtuwt7yq	smart_contracts	Smart Contracts	f	f	{"actions":[{"name":"create","type":"create","title":"Create Kafka Topic","viewName":"form"},{"name":"view","type":"view","title":"View","viewName":"form"},{"name":"edit","type":"edit","title":"Edit","viewName":"form"},{"name":"destroy","type":"destroy","title":"Delete"}],"schema":"public"}	\N	10
+trqcbqr6fdr	transactions_config	Transaction Config	f	f	{"logging":true,"autoGenId":false,"createdAt":true,"createdBy":true,"updatedAt":true,"updatedBy":true,"template":"general","view":false,"schema":"public"}	\N	11
+dgtti5muuos	smart_contracts	Smart Contracts	f	f	{"actions":[{"name":"create","type":"create","title":"Create Kafka Topic","viewName":"form"},{"name":"view","type":"view","title":"View","viewName":"form"},{"name":"edit","type":"edit","title":"Edit","viewName":"form"},{"name":"destroy","type":"destroy","title":"Delete"}],"schema":"public"}	\N	12
+chzaop30ce6	videos	Video	f	f	{"logging":true,"autoGenId":false,"createdAt":true,"createdBy":true,"updatedAt":true,"updatedBy":true,"template":"general","view":false,"schema":"public"}	\N	13
 \.
 
 
 --
--- TOC entry 3864 (class 0 OID 33918)
+-- TOC entry 3880 (class 0 OID 17005)
 -- Dependencies: 232
 -- Data for Name: customRequests; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."customRequests" ("createdAt", "updatedAt", key, options) FROM stdin;
+2024-12-07 00:15:42.38+00	2024-12-07 00:16:06.145+00	iiiyyai0tzy	{"method":"POST","headers":[],"params":[],"responseType":"json","url":"http://localhost:12000/api/transactions:refetch","data":null,"collectionName":"projects","dataSourceKey":"main"}
+2024-12-07 00:46:15.413+00	2024-12-07 00:50:28.599+00	q5h3u6jhgri	{"method":"POST","headers":[],"params":[],"responseType":"json","url":"http://localhost:12000/api/transactions:refetch","collectionName":"projects","dataSourceKey":"main"}
+2024-12-07 11:07:11.639+00	2024-12-07 11:38:55.589+00	53yk2iaibro	{"method":"POST","headers":[],"params":[],"responseType":"json","url":"http://localhost:12000/api/transactions:refetch","collectionName":"transactions","dataSourceKey":"main"}
+2024-12-07 11:40:02.77+00	2024-12-07 11:40:23.303+00	367j9rm7qvl	{"method":"POST","headers":[],"params":[],"responseType":"json","url":"http://localhost:12000/api/transactions:refetch","data":null,"collectionName":"transactions","dataSourceKey":"main"}
 \.
 
 
 --
--- TOC entry 3865 (class 0 OID 33923)
+-- TOC entry 3881 (class 0 OID 17010)
 -- Dependencies: 233
 -- Data for Name: customRequestsRoles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5783,7 +5959,7 @@ COPY public."customRequestsRoles" ("createdAt", "updatedAt", "customRequestKey",
 
 
 --
--- TOC entry 3866 (class 0 OID 33928)
+-- TOC entry 3882 (class 0 OID 17015)
 -- Dependencies: 234
 -- Data for Name: dataSources; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5794,7 +5970,7 @@ COPY public."dataSources" ("createdAt", "updatedAt", key, "displayName", type, o
 
 
 --
--- TOC entry 3867 (class 0 OID 33935)
+-- TOC entry 3883 (class 0 OID 17022)
 -- Dependencies: 235
 -- Data for Name: dataSourcesCollections; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5804,7 +5980,7 @@ COPY public."dataSourcesCollections" (key, name, options, "dataSourceKey") FROM 
 
 
 --
--- TOC entry 3868 (class 0 OID 33940)
+-- TOC entry 3884 (class 0 OID 17027)
 -- Dependencies: 236
 -- Data for Name: dataSourcesFields; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5814,7 +5990,7 @@ COPY public."dataSourcesFields" (key, name, "collectionName", interface, descrip
 
 
 --
--- TOC entry 3869 (class 0 OID 33946)
+-- TOC entry 3885 (class 0 OID 17033)
 -- Dependencies: 237
 -- Data for Name: dataSourcesRoles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5827,7 +6003,7 @@ m32ubqbcgwc	{"actions":["view","update:own","destroy:own","create","importXlsx",
 
 
 --
--- TOC entry 3870 (class 0 OID 33951)
+-- TOC entry 3886 (class 0 OID 17038)
 -- Dependencies: 238
 -- Data for Name: dataSourcesRolesResources; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5837,7 +6013,7 @@ COPY public."dataSourcesRolesResources" (id, "createdAt", "updatedAt", "dataSour
 
 
 --
--- TOC entry 3871 (class 0 OID 33957)
+-- TOC entry 3887 (class 0 OID 17044)
 -- Dependencies: 239
 -- Data for Name: dataSourcesRolesResourcesActions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5847,7 +6023,7 @@ COPY public."dataSourcesRolesResourcesActions" (id, "createdAt", "updatedAt", na
 
 
 --
--- TOC entry 3873 (class 0 OID 33964)
+-- TOC entry 3889 (class 0 OID 17051)
 -- Dependencies: 241
 -- Data for Name: dataSourcesRolesResourcesScopes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5859,7 +6035,7 @@ COPY public."dataSourcesRolesResourcesScopes" (id, "createdAt", "updatedAt", key
 
 
 --
--- TOC entry 3876 (class 0 OID 33972)
+-- TOC entry 3892 (class 0 OID 17059)
 -- Dependencies: 244
 -- Data for Name: executions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5877,6 +6053,7 @@ COPY public.executions (id, "createdAt", "updatedAt", key, "eventKey", context, 
 12	2024-12-04 13:58:19.983+00	2024-12-04 13:58:20.044+00	31trl35v3w1	9d5032e0-5541-4eaf-bcc4-8107abc21a50	{"data":{"createdAt":"2024-12-04T13:58:19.951Z","updatedAt":"2024-12-04T13:58:19.951Z","project_id":4,"id":3,"name":"fd","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-04T13:58:19.899Z","updatedAt":"2024-12-04T13:58:19.899Z","id":4,"name":"fd","sub_title":null,"description":null,"address":"hg","total_amount":null,"createdById":null,"updatedById":null}},"stack":[9,10]}	-1	7
 13	2024-12-04 13:59:31.961+00	2024-12-04 13:59:32.036+00	j62ztm6t709	acb26617-9358-42bf-8b50-02527e938945	{"data":{"createdAt":"2024-12-04T13:59:28.845Z","updatedAt":"2024-12-04T13:59:31.939Z","id":9,"name":"hhh","status":"APPROVED","address":"df","createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null}}}	1	6
 14	2024-12-04 13:59:32.027+00	2024-12-04 13:59:32.089+00	htfnmps0m41	efd9c364-768c-45f3-8af7-f4c934e6aa25	{"data":{"createdAt":"2024-12-04T13:59:31.998Z","updatedAt":"2024-12-04T13:59:31.998Z","id":5,"name":"hhh","sub_title":null,"description":null,"address":"df","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null},"stack":[13]}	1	2
+78	2024-12-07 03:29:28.565+00	2024-12-07 03:29:28.621+00	htfnmps0m41	382aba3b-8589-4848-bf8b-d087f934f30c	{"data":{"createdAt":"2024-12-07T03:29:28.552Z","updatedAt":"2024-12-07T03:29:28.552Z","id":20,"name":"Làng Nũ","sub_title":null,"description":null,"address":"Làng Nũ","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null},"stack":[77]}	1	2
 15	2024-12-04 13:59:32.082+00	2024-12-04 13:59:32.159+00	0f9c722cpnx	9d260564-4afa-45ff-8c87-dda2c2d9f406	{"data":{"createdAt":"2024-12-04T13:59:32.061Z","updatedAt":"2024-12-04T13:59:32.061Z","project_id":5,"id":4,"name":"hhh","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-04T13:59:31.998Z","updatedAt":"2024-12-04T13:59:31.998Z","id":5,"name":"hhh","sub_title":null,"description":null,"address":"df","total_amount":null,"createdById":null,"updatedById":null}},"stack":[13,14]}	1	3
 16	2024-12-04 13:59:32.097+00	2024-12-04 13:59:32.169+00	31trl35v3w1	eedb0aa4-21ad-4a19-b9e0-a30dde6fdaf6	{"data":{"createdAt":"2024-12-04T13:59:32.061Z","updatedAt":"2024-12-04T13:59:32.061Z","project_id":5,"id":4,"name":"hhh","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-04T13:59:31.998Z","updatedAt":"2024-12-04T13:59:31.998Z","id":5,"name":"hhh","sub_title":null,"description":null,"address":"df","total_amount":null,"createdById":null,"updatedById":null}},"stack":[13,14]}	-1	7
 17	2024-12-04 14:22:15.468+00	2024-12-04 14:22:15.537+00	htfnmps0m41	9255101a-5493-41d3-a561-f016bfc7d181	{"data":{"createdAt":"2024-12-04T14:22:15.451Z","updatedAt":"2024-12-04T14:22:15.451Z","id":6,"name":"df","sub_title":null,"description":null,"address":null,"total_amount":null,"createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null}}}	1	2
@@ -5885,14 +6062,74 @@ COPY public.executions (id, "createdAt", "updatedAt", key, "eventKey", context, 
 21	2024-12-04 14:34:56.243+00	2024-12-04 14:34:56.309+00	0f9c722cpnx	aa53a39d-3521-453e-af0e-fd0629ad2b1e	{"data":{"createdAt":"2024-12-04T14:34:56.225Z","updatedAt":"2024-12-04T14:34:56.225Z","project_id":7,"id":6,"name":"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long","target_amount":20000000000,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-04T14:34:56.186Z","updatedAt":"2024-12-04T14:34:56.186Z","id":7,"name":"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long","sub_title":"Dự án nhằm khôi phục và cải thiện đời sống của cộng đồng bị ảnh hưởng bởi lũ lụt tại Đồng bằng Sông Cửu Long, thông qua việc xây dựng cơ sở hạ tầng, cung cấp hỗ trợ tài chính và đào tạo nghề.","description":"Dự án này sẽ tập trung vào các hoạt động sau:\\n\\nXây dựng cơ sở hạ tầng: Nâng cấp đường giao thông, cầu cống và hệ thống thoát nước để giảm thiểu thiệt hại do lũ.\\nHỗ trợ tài chính: Cung cấp khoản vay lãi suất thấp cho các hộ gia đình để khôi phục sản xuất nông nghiệp và kinh doanh nhỏ.\\nĐào tạo nghề: Tổ chức các khóa đào tạo về kỹ năng nghề nghiệp cho thanh niên và người lớn tuổi để tạo cơ hội việc làm bền vững.\\nChương trình bảo vệ môi trường: Khuyến khích người dân tham gia vào các hoạt động bảo vệ môi trường và phát triển bền vững.\\nDự án sẽ được triển khai tại các xã bị ảnh hưởng nặng nề nhất, với sự tham gia của chính quyền địa phương và các tổ chức phi chính phủ.","address":"Đồng bằng Sông Cửu Long, Việt Nam (cụ thể có thể là các tỉnh như An Giang, Đồng Tháp, Kiên Giang).","total_amount":20000000000,"createdById":1,"updatedById":1}},"stack":[20]}	-1	3
 20	2024-12-04 14:34:56.21+00	2024-12-04 14:34:56.245+00	htfnmps0m41	fc0e70fa-16e2-4a47-9bde-a00bf0f131cf	{"data":{"createdAt":"2024-12-04T14:34:56.186Z","updatedAt":"2024-12-04T14:34:56.186Z","id":7,"name":"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long","sub_title":"Dự án nhằm khôi phục và cải thiện đời sống của cộng đồng bị ảnh hưởng bởi lũ lụt tại Đồng bằng Sông Cửu Long, thông qua việc xây dựng cơ sở hạ tầng, cung cấp hỗ trợ tài chính và đào tạo nghề.","description":"Dự án này sẽ tập trung vào các hoạt động sau:\\n\\nXây dựng cơ sở hạ tầng: Nâng cấp đường giao thông, cầu cống và hệ thống thoát nước để giảm thiểu thiệt hại do lũ.\\nHỗ trợ tài chính: Cung cấp khoản vay lãi suất thấp cho các hộ gia đình để khôi phục sản xuất nông nghiệp và kinh doanh nhỏ.\\nĐào tạo nghề: Tổ chức các khóa đào tạo về kỹ năng nghề nghiệp cho thanh niên và người lớn tuổi để tạo cơ hội việc làm bền vững.\\nChương trình bảo vệ môi trường: Khuyến khích người dân tham gia vào các hoạt động bảo vệ môi trường và phát triển bền vững.\\nDự án sẽ được triển khai tại các xã bị ảnh hưởng nặng nề nhất, với sự tham gia của chính quyền địa phương và các tổ chức phi chính phủ.","address":"Đồng bằng Sông Cửu Long, Việt Nam (cụ thể có thể là các tỉnh như An Giang, Đồng Tháp, Kiên Giang).","total_amount":20000000000,"createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null}}}	1	2
 22	2024-12-04 14:34:56.251+00	2024-12-04 14:34:56.327+00	31trl35v3w1	743e368e-ccea-4112-b2b2-56be933e7008	{"data":{"createdAt":"2024-12-04T14:34:56.225Z","updatedAt":"2024-12-04T14:34:56.225Z","project_id":7,"id":6,"name":"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long","target_amount":20000000000,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-04T14:34:56.186Z","updatedAt":"2024-12-04T14:34:56.186Z","id":7,"name":"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long","sub_title":"Dự án nhằm khôi phục và cải thiện đời sống của cộng đồng bị ảnh hưởng bởi lũ lụt tại Đồng bằng Sông Cửu Long, thông qua việc xây dựng cơ sở hạ tầng, cung cấp hỗ trợ tài chính và đào tạo nghề.","description":"Dự án này sẽ tập trung vào các hoạt động sau:\\n\\nXây dựng cơ sở hạ tầng: Nâng cấp đường giao thông, cầu cống và hệ thống thoát nước để giảm thiểu thiệt hại do lũ.\\nHỗ trợ tài chính: Cung cấp khoản vay lãi suất thấp cho các hộ gia đình để khôi phục sản xuất nông nghiệp và kinh doanh nhỏ.\\nĐào tạo nghề: Tổ chức các khóa đào tạo về kỹ năng nghề nghiệp cho thanh niên và người lớn tuổi để tạo cơ hội việc làm bền vững.\\nChương trình bảo vệ môi trường: Khuyến khích người dân tham gia vào các hoạt động bảo vệ môi trường và phát triển bền vững.\\nDự án sẽ được triển khai tại các xã bị ảnh hưởng nặng nề nhất, với sự tham gia của chính quyền địa phương và các tổ chức phi chính phủ.","address":"Đồng bằng Sông Cửu Long, Việt Nam (cụ thể có thể là các tỉnh như An Giang, Đồng Tháp, Kiên Giang).","total_amount":20000000000,"createdById":1,"updatedById":1}},"stack":[20]}	-1	7
+76	2024-12-07 03:28:42.196+00	2024-12-07 03:28:42.261+00	31trl35v3w1	f35cbf3d-9101-4939-b9f2-19e44cb13bbe	{"data":{"createdAt":"2024-12-07T03:28:42.135Z","updatedAt":"2024-12-07T03:28:42.135Z","project_id":19,"id":18,"name":"Cầu Phong Châu - Phú Thọ","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T03:28:42.056Z","updatedAt":"2024-12-07T03:28:42.056Z","id":19,"name":"Cầu Phong Châu - Phú Thọ","sub_title":null,"description":null,"address":"Phú Thọ","total_amount":null,"createdById":null,"updatedById":null}},"stack":[73,74]}	-1	7
 24	2024-12-04 14:43:51.204+00	2024-12-04 14:43:51.273+00	0f9c722cpnx	73bf63c8-990e-4a17-be76-4093ae9daabd	{"data":{"createdAt":"2024-12-04T14:43:51.188Z","updatedAt":"2024-12-04T14:43:51.188Z","project_id":8,"id":7,"name":"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long","target_amount":20000000000,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-04T14:43:51.156Z","updatedAt":"2024-12-04T14:43:51.156Z","id":8,"name":"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long","sub_title":"Dự án nhằm khôi phục và cải thiện đời sống của cộng đồng bị ảnh hưởng bởi lũ lụt tại Đồng bằng Sông Cửu Long, thông qua việc xây dựng cơ sở hạ tầng, cung cấp hỗ trợ tài chính và đào tạo nghề.","description":"Dự án này sẽ tập trung vào các hoạt động sau:\\n\\nXây dựng cơ sở hạ tầng: Nâng cấp đường giao thông, cầu cống và hệ thống thoát nước để giảm thiểu thiệt hại do lũ.\\nHỗ trợ tài chính: Cung cấp khoản vay lãi suất thấp cho các hộ gia đình để khôi phục sản xuất nông nghiệp và kinh doanh nhỏ.\\nĐào tạo nghề: Tổ chức các khóa đào tạo về kỹ năng nghề nghiệp cho thanh niên và người lớn tuổi để tạo cơ hội việc làm bền vững.\\nChương trình bảo vệ môi trường: Khuyến khích người dân tham gia vào các hoạt động bảo vệ môi trường và phát triển bền vững.\\nDự án sẽ được triển khai tại các xã bị ảnh hưởng nặng nề nhất, với sự tham gia của chính quyền địa phương và các tổ chức phi chính phủ.","address":"Đồng bằng Sông Cửu Long, Việt Nam (cụ thể có thể là các tỉnh như An Giang, Đồng Tháp, Kiên Giang).","total_amount":20000000000,"createdById":1,"updatedById":1}},"stack":[23]}	-1	3
 23	2024-12-04 14:43:51.173+00	2024-12-04 14:43:51.211+00	htfnmps0m41	0dafb142-7089-415f-b2f2-94ea96d58948	{"data":{"createdAt":"2024-12-04T14:43:51.156Z","updatedAt":"2024-12-04T14:43:51.156Z","id":8,"name":"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long","sub_title":"Dự án nhằm khôi phục và cải thiện đời sống của cộng đồng bị ảnh hưởng bởi lũ lụt tại Đồng bằng Sông Cửu Long, thông qua việc xây dựng cơ sở hạ tầng, cung cấp hỗ trợ tài chính và đào tạo nghề.","description":"Dự án này sẽ tập trung vào các hoạt động sau:\\n\\nXây dựng cơ sở hạ tầng: Nâng cấp đường giao thông, cầu cống và hệ thống thoát nước để giảm thiểu thiệt hại do lũ.\\nHỗ trợ tài chính: Cung cấp khoản vay lãi suất thấp cho các hộ gia đình để khôi phục sản xuất nông nghiệp và kinh doanh nhỏ.\\nĐào tạo nghề: Tổ chức các khóa đào tạo về kỹ năng nghề nghiệp cho thanh niên và người lớn tuổi để tạo cơ hội việc làm bền vững.\\nChương trình bảo vệ môi trường: Khuyến khích người dân tham gia vào các hoạt động bảo vệ môi trường và phát triển bền vững.\\nDự án sẽ được triển khai tại các xã bị ảnh hưởng nặng nề nhất, với sự tham gia của chính quyền địa phương và các tổ chức phi chính phủ.","address":"Đồng bằng Sông Cửu Long, Việt Nam (cụ thể có thể là các tỉnh như An Giang, Đồng Tháp, Kiên Giang).","total_amount":20000000000,"createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null}}}	1	2
 25	2024-12-04 14:43:51.217+00	2024-12-04 14:43:51.281+00	31trl35v3w1	bf759c8f-451b-41e5-871d-1fbd58ce6714	{"data":{"createdAt":"2024-12-04T14:43:51.188Z","updatedAt":"2024-12-04T14:43:51.188Z","project_id":8,"id":7,"name":"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long","target_amount":20000000000,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-04T14:43:51.156Z","updatedAt":"2024-12-04T14:43:51.156Z","id":8,"name":"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long","sub_title":"Dự án nhằm khôi phục và cải thiện đời sống của cộng đồng bị ảnh hưởng bởi lũ lụt tại Đồng bằng Sông Cửu Long, thông qua việc xây dựng cơ sở hạ tầng, cung cấp hỗ trợ tài chính và đào tạo nghề.","description":"Dự án này sẽ tập trung vào các hoạt động sau:\\n\\nXây dựng cơ sở hạ tầng: Nâng cấp đường giao thông, cầu cống và hệ thống thoát nước để giảm thiểu thiệt hại do lũ.\\nHỗ trợ tài chính: Cung cấp khoản vay lãi suất thấp cho các hộ gia đình để khôi phục sản xuất nông nghiệp và kinh doanh nhỏ.\\nĐào tạo nghề: Tổ chức các khóa đào tạo về kỹ năng nghề nghiệp cho thanh niên và người lớn tuổi để tạo cơ hội việc làm bền vững.\\nChương trình bảo vệ môi trường: Khuyến khích người dân tham gia vào các hoạt động bảo vệ môi trường và phát triển bền vững.\\nDự án sẽ được triển khai tại các xã bị ảnh hưởng nặng nề nhất, với sự tham gia của chính quyền địa phương và các tổ chức phi chính phủ.","address":"Đồng bằng Sông Cửu Long, Việt Nam (cụ thể có thể là các tỉnh như An Giang, Đồng Tháp, Kiên Giang).","total_amount":20000000000,"createdById":1,"updatedById":1}},"stack":[23]}	-1	7
+26	2024-12-06 23:59:39.513+00	2024-12-06 23:59:39.594+00	j62ztm6t709	4e2e60af-a5b4-4bae-b5d2-a947a94e32fc	{"data":{"createdAt":"2024-12-06T23:59:19.677Z","updatedAt":"2024-12-06T23:59:39.471Z","id":10,"name":"Cầu Mây - Hà Giang","status":"APPROVED","address":"Tỉnh Hà Giang, Việt Nam","createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null}}}	1	6
+27	2024-12-06 23:59:39.585+00	2024-12-06 23:59:39.701+00	htfnmps0m41	a4a5046c-62c3-45be-b20a-d0b2d4f5246d	{"data":{"createdAt":"2024-12-06T23:59:39.548Z","updatedAt":"2024-12-06T23:59:39.548Z","id":9,"name":"Cầu Mây - Hà Giang","sub_title":null,"description":null,"address":"Tỉnh Hà Giang, Việt Nam","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null},"stack":[26]}	1	2
+29	2024-12-06 23:59:39.71+00	2024-12-06 23:59:39.778+00	31trl35v3w1	97eb5cd9-6fa1-4564-9442-221e11a30028	{"data":{"createdAt":"2024-12-06T23:59:39.639Z","updatedAt":"2024-12-06T23:59:39.639Z","project_id":9,"id":8,"name":"Cầu Mây - Hà Giang","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-06T23:59:39.548Z","updatedAt":"2024-12-06T23:59:39.548Z","id":9,"name":"Cầu Mây - Hà Giang","sub_title":null,"description":null,"address":"Tỉnh Hà Giang, Việt Nam","total_amount":null,"createdById":null,"updatedById":null}},"stack":[26,27]}	-1	7
+28	2024-12-06 23:59:39.693+00	2024-12-06 23:59:39.768+00	0f9c722cpnx	2a90ec79-d675-4ff0-9007-4784ac78833e	{"data":{"createdAt":"2024-12-06T23:59:39.639Z","updatedAt":"2024-12-06T23:59:39.639Z","project_id":9,"id":8,"name":"Cầu Mây - Hà Giang","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-06T23:59:39.548Z","updatedAt":"2024-12-06T23:59:39.548Z","id":9,"name":"Cầu Mây - Hà Giang","sub_title":null,"description":null,"address":"Tỉnh Hà Giang, Việt Nam","total_amount":null,"createdById":null,"updatedById":null}},"stack":[26,27]}	1	3
+77	2024-12-07 03:29:28.527+00	2024-12-07 03:29:28.585+00	j62ztm6t709	8f66138d-9860-4224-aa7d-b31d5725d65e	{"data":{"createdAt":"2024-12-07T03:29:22.373Z","updatedAt":"2024-12-07T03:29:28.516Z","id":21,"name":"Làng Nũ","status":"APPROVED","address":"Làng Nũ","createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null}}}	1	6
+30	2024-12-07 00:10:59.585+00	2024-12-07 00:10:59.632+00	c03do2s4433	f64fd996-6eea-4023-9e84-c41e0da6510a	{"data":{"createdAt":"2024-12-06T23:59:39.548Z","updatedAt":"2024-12-07T00:10:59.554Z","id":9,"name":"Cầu Mây - Hà Giang","sub_title":"Cầu Mây bị sập do mưa lũ lớn tháng 8, 2023","description":"Cầu Mây, một cây cầu quan trọng nối liền các huyện phía Bắc tỉnh Hà Giang, đã bị hư hại nghiêm trọng trong trận mưa lũ kéo dài vào tháng 8 năm 2023. Việc cầu bị sập đã ảnh hưởng trực tiếp đến giao thông và việc đi lại của người dân vùng cao. Cần xây dựng lại cầu với kết cấu vững chắc hơn, đảm bảo khả năng chịu lực trong điều kiện thời tiết khắc nghiệt.\\n","address":"Tỉnh Hà Giang, Việt Nam","total_amount":70000000000,"createdById":null,"updatedById":1,"fund_id":{"createdAt":"2024-12-06T23:59:39.639Z","updatedAt":"2024-12-06T23:59:39.740Z","project_id":9,"id":8,"name":"Cầu Mây - Hà Giang","target_amount":null,"current_amount":0,"qr_code_url":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%208","createdById":null,"updatedById":null},"progress_images":[],"images":[{"id":14,"createdAt":"2024-12-07T00:07:11.118Z","updatedAt":"2024-12-07T00:07:11.118Z","title":"cau-dan-sinh-71124-2","filename":"5a50fa04c13915b7461abf478be04c98.jpg","extname":".jpg","size":72609,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/5a50fa04c13915b7461abf478be04c98.jpg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T00:07:51.559Z","updatedAt":"2024-12-07T00:07:51.559Z","f_3gyw0m841j1":9,"f_zvvclxyl9dz":14}},{"id":15,"createdAt":"2024-12-07T00:07:11.129Z","updatedAt":"2024-12-07T00:07:11.129Z","title":"img-6553-jpg-1730959849-5857-1730960046","filename":"d2a9894f746f50a575721ce9220d1612.jpg","extname":".jpg","size":209786,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/d2a9894f746f50a575721ce9220d1612.jpg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T00:07:51.559Z","updatedAt":"2024-12-07T00:07:51.559Z","f_3gyw0m841j1":9,"f_zvvclxyl9dz":15}},{"id":16,"createdAt":"2024-12-07T00:07:11.134Z","updatedAt":"2024-12-07T00:07:11.134Z","title":"ttxvn-cau-lung-cang-ha-giang-4-4704.jpg","filename":"b184d834f181e8a370a28a58e8347257.webp","extname":".webp","size":266618,"mimetype":"image/webp","storageId":1,"path":"","meta":{},"url":"/storage/uploads/b184d834f181e8a370a28a58e8347257.webp","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T00:07:51.559Z","updatedAt":"2024-12-07T00:07:51.559Z","f_3gyw0m841j1":9,"f_zvvclxyl9dz":16}}],"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"createdBy":null}}	1	8
+31	2024-12-07 02:08:40.945+00	2024-12-07 02:08:41.021+00	j62ztm6t709	84a078e1-0d96-4a2c-ba46-6317531d8dcb	{"data":{"createdAt":"2024-12-07T02:05:17.638Z","updatedAt":"2024-12-07T02:08:40.914Z","id":11,"name":"Đường Hồ Chí Minh đoạn qua Quảng Trị","status":"APPROVED","address":"Đoạn đường bị sạt lở nặng sau cơn bão số 5 năm 2023.","createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null}}}	1	6
+33	2024-12-07 02:08:41.081+00	2024-12-07 02:08:41.165+00	0f9c722cpnx	da73b09d-cc25-4326-a0cd-113d6fcd4fe4	{"data":{"createdAt":"2024-12-07T02:08:41.049Z","updatedAt":"2024-12-07T02:08:41.049Z","project_id":10,"id":9,"name":"Đường Hồ Chí Minh đoạn qua Quảng Trị","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:08:40.980Z","updatedAt":"2024-12-07T02:08:40.980Z","id":10,"name":"Đường Hồ Chí Minh đoạn qua Quảng Trị","sub_title":null,"description":null,"address":"Đoạn đường bị sạt lở nặng sau cơn bão số 5 năm 2023.","total_amount":null,"createdById":null,"updatedById":null}},"stack":[31,32]}	1	3
+32	2024-12-07 02:08:41.014+00	2024-12-07 02:08:41.09+00	htfnmps0m41	4be97fa3-105e-4651-97cc-46496d5388e5	{"data":{"createdAt":"2024-12-07T02:08:40.980Z","updatedAt":"2024-12-07T02:08:40.980Z","id":10,"name":"Đường Hồ Chí Minh đoạn qua Quảng Trị","sub_title":null,"description":null,"address":"Đoạn đường bị sạt lở nặng sau cơn bão số 5 năm 2023.","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null},"stack":[31]}	1	2
+34	2024-12-07 02:08:41.098+00	2024-12-07 02:08:41.176+00	31trl35v3w1	15253256-e401-48d4-8d84-6b7e014f3c7a	{"data":{"createdAt":"2024-12-07T02:08:41.049Z","updatedAt":"2024-12-07T02:08:41.049Z","project_id":10,"id":9,"name":"Đường Hồ Chí Minh đoạn qua Quảng Trị","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:08:40.980Z","updatedAt":"2024-12-07T02:08:40.980Z","id":10,"name":"Đường Hồ Chí Minh đoạn qua Quảng Trị","sub_title":null,"description":null,"address":"Đoạn đường bị sạt lở nặng sau cơn bão số 5 năm 2023.","total_amount":null,"createdById":null,"updatedById":null}},"stack":[31,32]}	-1	7
+36	2024-12-07 02:08:45.753+00	2024-12-07 02:08:53.623+00	htfnmps0m41	f557a0ee-ba4b-4e49-a43d-9b25f5a93f73	{"data":{"createdAt":"2024-12-07T02:08:45.744Z","updatedAt":"2024-12-07T02:08:45.744Z","id":11,"name":"Trường Tiểu học Tân Cương - Thái Nguyên","sub_title":null,"description":null,"address":"Tỉnh Thái Nguyên","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null},"stack":[35]}	1	2
+40	2024-12-07 02:08:53.631+00	2024-12-07 02:08:53.762+00	31trl35v3w1	dc365b2d-897e-4011-ac3c-fafb28827080	{"data":{"createdAt":"2024-12-07T02:08:53.602Z","updatedAt":"2024-12-07T02:08:53.602Z","project_id":11,"id":10,"name":"Trường Tiểu học Tân Cương - Thái Nguyên","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:08:45.744Z","updatedAt":"2024-12-07T02:08:45.744Z","id":11,"name":"Trường Tiểu học Tân Cương - Thái Nguyên","sub_title":null,"description":null,"address":"Tỉnh Thái Nguyên","total_amount":null,"createdById":null,"updatedById":null}},"stack":[35,36]}	-1	7
+39	2024-12-07 02:08:53.615+00	2024-12-07 02:08:53.752+00	0f9c722cpnx	cf58ccac-c9e4-4978-ac0d-fe7b84d7af4a	{"data":{"createdAt":"2024-12-07T02:08:53.602Z","updatedAt":"2024-12-07T02:08:53.602Z","project_id":11,"id":10,"name":"Trường Tiểu học Tân Cương - Thái Nguyên","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:08:45.744Z","updatedAt":"2024-12-07T02:08:45.744Z","id":11,"name":"Trường Tiểu học Tân Cương - Thái Nguyên","sub_title":null,"description":null,"address":"Tỉnh Thái Nguyên","total_amount":null,"createdById":null,"updatedById":null}},"stack":[35,36]}	1	3
+35	2024-12-07 02:08:45.723+00	2024-12-07 02:08:45.757+00	j62ztm6t709	ad56adbf-534a-4c30-8e44-83291efb06e4	{"data":{"createdAt":"2024-12-07T02:05:28.933Z","updatedAt":"2024-12-07T02:08:45.713Z","id":12,"name":"Trường Tiểu học Tân Cương - Thái Nguyên","status":"APPROVED","address":"Tỉnh Thái Nguyên","createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null}}}	1	6
+46	2024-12-07 02:08:57.689+00	2024-12-07 02:08:57.75+00	31trl35v3w1	792f1e78-cce1-42ca-912e-07a9bf3052f4	{"data":{"createdAt":"2024-12-07T02:08:57.665Z","updatedAt":"2024-12-07T02:08:57.665Z","project_id":13,"id":12,"name":"Cải tạo lại khu dân cư Cửa Đại - Quảng Nam","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:08:57.625Z","updatedAt":"2024-12-07T02:08:57.625Z","id":13,"name":"Cải tạo lại khu dân cư Cửa Đại - Quảng Nam","sub_title":null,"description":null,"address":"Quảng Nam","total_amount":null,"createdById":null,"updatedById":null}},"stack":[43,44]}	-1	7
+37	2024-12-07 02:08:53.535+00	2024-12-07 02:08:53.571+00	j62ztm6t709	e127c095-a9f2-4bc4-b382-caa3a7f12917	{"data":{"createdAt":"2024-12-07T02:05:44.066Z","updatedAt":"2024-12-07T02:08:53.525Z","id":13,"name":"Nhà máy thủy điện Rào Trăng 3 - Thừa Thiên Huế","status":"APPROVED","address":"Thừa Thiên Huế","createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null}}}	1	6
+42	2024-12-07 02:08:53.673+00	2024-12-07 02:08:53.793+00	31trl35v3w1	9ccb2669-2730-4cb2-b6ca-e40fe76b9320	{"data":{"createdAt":"2024-12-07T02:08:53.644Z","updatedAt":"2024-12-07T02:08:53.644Z","project_id":12,"id":11,"name":"Nhà máy thủy điện Rào Trăng 3 - Thừa Thiên Huế","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:08:53.557Z","updatedAt":"2024-12-07T02:08:53.557Z","id":12,"name":"Nhà máy thủy điện Rào Trăng 3 - Thừa Thiên Huế","sub_title":null,"description":null,"address":"Thừa Thiên Huế","total_amount":null,"createdById":null,"updatedById":null}},"stack":[37,38]}	-1	7
+38	2024-12-07 02:08:53.568+00	2024-12-07 02:08:53.665+00	htfnmps0m41	07847989-068d-4010-b8aa-b492de4b1890	{"data":{"createdAt":"2024-12-07T02:08:53.557Z","updatedAt":"2024-12-07T02:08:53.557Z","id":12,"name":"Nhà máy thủy điện Rào Trăng 3 - Thừa Thiên Huế","sub_title":null,"description":null,"address":"Thừa Thiên Huế","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null},"stack":[37]}	1	2
+44	2024-12-07 02:08:57.636+00	2024-12-07 02:08:57.684+00	htfnmps0m41	766c4456-e9e0-42e3-ab14-bb06418ecbba	{"data":{"createdAt":"2024-12-07T02:08:57.625Z","updatedAt":"2024-12-07T02:08:57.625Z","id":13,"name":"Cải tạo lại khu dân cư Cửa Đại - Quảng Nam","sub_title":null,"description":null,"address":"Quảng Nam","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null},"stack":[43]}	1	2
+47	2024-12-07 02:09:02.131+00	2024-12-07 02:09:02.167+00	j62ztm6t709	41d14de5-cb7b-424f-9d4b-6d78d6444364	{"data":{"createdAt":"2024-12-07T02:06:27.587Z","updatedAt":"2024-12-07T02:09:02.115Z","id":15,"name":"Đập thủy lợi Krông H’năng - Đắk Lắk","status":"APPROVED","address":"Tỉnh Đắk Lắk","createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null}}}	1	6
+50	2024-12-07 02:09:02.216+00	2024-12-07 02:09:02.277+00	31trl35v3w1	dcda4266-3a60-4287-b1cd-5cfbd219b9b9	{"data":{"createdAt":"2024-12-07T02:09:02.189Z","updatedAt":"2024-12-07T02:09:02.189Z","project_id":14,"id":13,"name":"Đập thủy lợi Krông H’năng - Đắk Lắk","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:09:02.152Z","updatedAt":"2024-12-07T02:09:02.152Z","id":14,"name":"Đập thủy lợi Krông H’năng - Đắk Lắk","sub_title":null,"description":null,"address":"Tỉnh Đắk Lắk","total_amount":null,"createdById":null,"updatedById":null}},"stack":[47,48]}	-1	7
+49	2024-12-07 02:09:02.205+00	2024-12-07 02:09:02.266+00	0f9c722cpnx	8235d330-c097-404f-b818-26298412da04	{"data":{"createdAt":"2024-12-07T02:09:02.189Z","updatedAt":"2024-12-07T02:09:02.189Z","project_id":14,"id":13,"name":"Đập thủy lợi Krông H’năng - Đắk Lắk","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:09:02.152Z","updatedAt":"2024-12-07T02:09:02.152Z","id":14,"name":"Đập thủy lợi Krông H’năng - Đắk Lắk","sub_title":null,"description":null,"address":"Tỉnh Đắk Lắk","total_amount":null,"createdById":null,"updatedById":null}},"stack":[47,48]}	1	3
+41	2024-12-07 02:08:53.657+00	2024-12-07 02:08:53.741+00	0f9c722cpnx	0244cf01-1894-4e21-bf52-de86bf17d820	{"data":{"createdAt":"2024-12-07T02:08:53.644Z","updatedAt":"2024-12-07T02:08:53.644Z","project_id":12,"id":11,"name":"Nhà máy thủy điện Rào Trăng 3 - Thừa Thiên Huế","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:08:53.557Z","updatedAt":"2024-12-07T02:08:53.557Z","id":12,"name":"Nhà máy thủy điện Rào Trăng 3 - Thừa Thiên Huế","sub_title":null,"description":null,"address":"Thừa Thiên Huế","total_amount":null,"createdById":null,"updatedById":null}},"stack":[37,38]}	1	3
+43	2024-12-07 02:08:57.604+00	2024-12-07 02:08:57.638+00	j62ztm6t709	aa23038c-8a3c-4171-9d11-3f2dd747afdc	{"data":{"createdAt":"2024-12-07T02:05:58.093Z","updatedAt":"2024-12-07T02:08:57.593Z","id":14,"name":"Cải tạo lại khu dân cư Cửa Đại - Quảng Nam","status":"APPROVED","address":"Quảng Nam","createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null}}}	1	6
+58	2024-12-07 02:09:11.195+00	2024-12-07 02:09:11.304+00	31trl35v3w1	5f7e3c0f-d81a-48ec-9025-bb9885bc9355	{"data":{"createdAt":"2024-12-07T02:09:11.167Z","updatedAt":"2024-12-07T02:09:11.167Z","project_id":16,"id":15,"name":"Nhà văn hóa cộng đồng xã Phú Sơn - Quảng Ngãi","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:09:11.072Z","updatedAt":"2024-12-07T02:09:11.072Z","id":16,"name":"Nhà văn hóa cộng đồng xã Phú Sơn - Quảng Ngãi","sub_title":null,"description":null,"address":"Quảng Ngãi","total_amount":null,"createdById":null,"updatedById":null}},"stack":[53,54]}	-1	7
+45	2024-12-07 02:08:57.681+00	2024-12-07 02:08:57.739+00	0f9c722cpnx	abc4db54-73e2-4866-a23f-200206ad9fd5	{"data":{"createdAt":"2024-12-07T02:08:57.665Z","updatedAt":"2024-12-07T02:08:57.665Z","project_id":13,"id":12,"name":"Cải tạo lại khu dân cư Cửa Đại - Quảng Nam","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:08:57.625Z","updatedAt":"2024-12-07T02:08:57.625Z","id":13,"name":"Cải tạo lại khu dân cư Cửa Đại - Quảng Nam","sub_title":null,"description":null,"address":"Quảng Nam","total_amount":null,"createdById":null,"updatedById":null}},"stack":[43,44]}	1	3
+48	2024-12-07 02:09:02.163+00	2024-12-07 02:09:02.211+00	htfnmps0m41	3ab99a46-07e9-4534-a6ef-956377792210	{"data":{"createdAt":"2024-12-07T02:09:02.152Z","updatedAt":"2024-12-07T02:09:02.152Z","id":14,"name":"Đập thủy lợi Krông H’năng - Đắk Lắk","sub_title":null,"description":null,"address":"Tỉnh Đắk Lắk","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null},"stack":[47]}	1	2
+51	2024-12-07 02:09:07.384+00	2024-12-07 02:09:07.419+00	j62ztm6t709	04803df7-d48d-45e8-81a5-7af18c6770ab	{"data":{"createdAt":"2024-12-07T02:06:38.449Z","updatedAt":"2024-12-07T02:09:07.371Z","id":16,"name":"Cầu Trần Quang Khải - Hải Phòng","status":"APPROVED","address":"Hải Phòng","createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null}}}	1	6
+55	2024-12-07 02:09:11.123+00	2024-12-07 02:09:11.205+00	0f9c722cpnx	af597448-093d-43f2-8d29-39886c6dc8c3	{"data":{"createdAt":"2024-12-07T02:09:11.110Z","updatedAt":"2024-12-07T02:09:11.110Z","project_id":15,"id":14,"name":"Cầu Trần Quang Khải - Hải Phòng","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:09:07.405Z","updatedAt":"2024-12-07T02:09:07.405Z","id":15,"name":"Cầu Trần Quang Khải - Hải Phòng","sub_title":null,"description":null,"address":"Hải Phòng","total_amount":null,"createdById":null,"updatedById":null}},"stack":[51,52]}	1	3
+52	2024-12-07 02:09:07.415+00	2024-12-07 02:09:11.129+00	htfnmps0m41	ba72ac14-3de9-4f17-9ca4-3132483116de	{"data":{"createdAt":"2024-12-07T02:09:07.405Z","updatedAt":"2024-12-07T02:09:07.405Z","id":15,"name":"Cầu Trần Quang Khải - Hải Phòng","sub_title":null,"description":null,"address":"Hải Phòng","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null},"stack":[51]}	1	2
+54	2024-12-07 02:09:11.082+00	2024-12-07 02:09:11.187+00	htfnmps0m41	303f5c94-caca-429e-aa6a-32da38c08e48	{"data":{"createdAt":"2024-12-07T02:09:11.072Z","updatedAt":"2024-12-07T02:09:11.072Z","id":16,"name":"Nhà văn hóa cộng đồng xã Phú Sơn - Quảng Ngãi","sub_title":null,"description":null,"address":"Quảng Ngãi","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null},"stack":[53]}	1	2
+62	2024-12-07 02:09:19.546+00	2024-12-07 02:09:19.648+00	htfnmps0m41	216a80c5-af1b-43e8-9f2a-6604cade2063	{"data":{"createdAt":"2024-12-07T02:09:19.535Z","updatedAt":"2024-12-07T02:09:19.535Z","id":18,"name":"Trạm xá xã Phước Thọ - Bình Dương","sub_title":null,"description":null,"address":"Bình Dương","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null},"stack":[61]}	1	2
+53	2024-12-07 02:09:11.048+00	2024-12-07 02:09:11.086+00	j62ztm6t709	4ba40610-70b6-4fda-8650-b23b17230adf	{"data":{"createdAt":"2024-12-07T02:06:50.074Z","updatedAt":"2024-12-07T02:09:11.038Z","id":17,"name":"Nhà văn hóa cộng đồng xã Phú Sơn - Quảng Ngãi","status":"APPROVED","address":"Quảng Ngãi","createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null}}}	1	6
+59	2024-12-07 02:09:15.32+00	2024-12-07 02:09:15.355+00	j62ztm6t709	3e5422f7-f7cf-4a7c-906a-71710ab5a06f	{"data":{"createdAt":"2024-12-07T02:07:04.460Z","updatedAt":"2024-12-07T02:09:15.310Z","id":18,"name":"Khu tái định cư Trung An - An Giang","status":"APPROVED","address":"An Giang","createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null}}}	1	6
+56	2024-12-07 02:09:11.137+00	2024-12-07 02:09:11.256+00	31trl35v3w1	337e7abb-c6da-4174-8649-012ba1a3e013	{"data":{"createdAt":"2024-12-07T02:09:11.110Z","updatedAt":"2024-12-07T02:09:11.110Z","project_id":15,"id":14,"name":"Cầu Trần Quang Khải - Hải Phòng","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:09:07.405Z","updatedAt":"2024-12-07T02:09:07.405Z","id":15,"name":"Cầu Trần Quang Khải - Hải Phòng","sub_title":null,"description":null,"address":"Hải Phòng","total_amount":null,"createdById":null,"updatedById":null}},"stack":[51,52]}	-1	7
+57	2024-12-07 02:09:11.181+00	2024-12-07 02:09:11.29+00	0f9c722cpnx	2d91f1e2-04fd-4030-b094-a44037cf35b0	{"data":{"createdAt":"2024-12-07T02:09:11.167Z","updatedAt":"2024-12-07T02:09:11.167Z","project_id":16,"id":15,"name":"Nhà văn hóa cộng đồng xã Phú Sơn - Quảng Ngãi","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:09:11.072Z","updatedAt":"2024-12-07T02:09:11.072Z","id":16,"name":"Nhà văn hóa cộng đồng xã Phú Sơn - Quảng Ngãi","sub_title":null,"description":null,"address":"Quảng Ngãi","total_amount":null,"createdById":null,"updatedById":null}},"stack":[53,54]}	1	3
+60	2024-12-07 02:09:15.353+00	2024-12-07 02:09:19.588+00	htfnmps0m41	a0a1b8b1-04a2-4aa2-890d-289981f2da8a	{"data":{"createdAt":"2024-12-07T02:09:15.342Z","updatedAt":"2024-12-07T02:09:15.342Z","id":17,"name":"Khu tái định cư Trung An - An Giang","sub_title":null,"description":null,"address":"An Giang","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null},"stack":[59]}	1	2
+61	2024-12-07 02:09:19.514+00	2024-12-07 02:09:19.548+00	j62ztm6t709	9a5058bc-574d-413c-8f3d-6c263727f5ee	{"data":{"createdAt":"2024-12-07T02:07:17.218Z","updatedAt":"2024-12-07T02:09:19.502Z","id":19,"name":"Trạm xá xã Phước Thọ - Bình Dương","status":"APPROVED","address":"Bình Dương","createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null}}}	1	6
+64	2024-12-07 02:09:19.596+00	2024-12-07 02:09:19.703+00	31trl35v3w1	99837c09-96f0-4a5d-8129-67a63b6135d7	{"data":{"createdAt":"2024-12-07T02:09:19.572Z","updatedAt":"2024-12-07T02:09:19.572Z","project_id":17,"id":16,"name":"Khu tái định cư Trung An - An Giang","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:09:15.342Z","updatedAt":"2024-12-07T02:09:15.342Z","id":17,"name":"Khu tái định cư Trung An - An Giang","sub_title":null,"description":null,"address":"An Giang","total_amount":null,"createdById":null,"updatedById":null}},"stack":[59,60]}	-1	7
+65	2024-12-07 02:09:19.643+00	2024-12-07 02:09:19.733+00	0f9c722cpnx	a6d1e9fd-8628-4dbd-a506-6e9d9687c131	{"data":{"createdAt":"2024-12-07T02:09:19.628Z","updatedAt":"2024-12-07T02:09:19.628Z","project_id":18,"id":17,"name":"Trạm xá xã Phước Thọ - Bình Dương","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:09:19.535Z","updatedAt":"2024-12-07T02:09:19.535Z","id":18,"name":"Trạm xá xã Phước Thọ - Bình Dương","sub_title":null,"description":null,"address":"Bình Dương","total_amount":null,"createdById":null,"updatedById":null}},"stack":[61,62]}	1	3
+63	2024-12-07 02:09:19.583+00	2024-12-07 02:09:19.662+00	0f9c722cpnx	8353195f-2529-42b5-8e9d-d525bff421a4	{"data":{"createdAt":"2024-12-07T02:09:19.572Z","updatedAt":"2024-12-07T02:09:19.572Z","project_id":17,"id":16,"name":"Khu tái định cư Trung An - An Giang","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:09:15.342Z","updatedAt":"2024-12-07T02:09:15.342Z","id":17,"name":"Khu tái định cư Trung An - An Giang","sub_title":null,"description":null,"address":"An Giang","total_amount":null,"createdById":null,"updatedById":null}},"stack":[59,60]}	1	3
+66	2024-12-07 02:09:19.654+00	2024-12-07 02:09:19.743+00	31trl35v3w1	3d816769-a667-4d29-8fdb-eb2f5d173a70	{"data":{"createdAt":"2024-12-07T02:09:19.628Z","updatedAt":"2024-12-07T02:09:19.628Z","project_id":18,"id":17,"name":"Trạm xá xã Phước Thọ - Bình Dương","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:09:19.535Z","updatedAt":"2024-12-07T02:09:19.535Z","id":18,"name":"Trạm xá xã Phước Thọ - Bình Dương","sub_title":null,"description":null,"address":"Bình Dương","total_amount":null,"createdById":null,"updatedById":null}},"stack":[61,62]}	-1	7
+73	2024-12-07 03:28:41.891+00	2024-12-07 03:28:42.108+00	j62ztm6t709	cc6822ae-8c9e-4a03-9e7f-1caa270233c1	{"data":{"createdAt":"2024-12-07T03:28:34.585Z","updatedAt":"2024-12-07T03:28:41.877Z","id":20,"name":"Cầu Phong Châu - Phú Thọ","status":"APPROVED","address":"Phú Thọ","createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null}}}	1	6
+67	2024-12-07 02:11:59.438+00	2024-12-07 02:11:59.477+00	c03do2s4433	0981737a-27d2-4047-a945-6c72c723df2e	{"data":{"createdAt":"2024-12-07T02:08:40.980Z","updatedAt":"2024-12-07T02:11:59.415Z","id":10,"name":"Đường Hồ Chí Minh đoạn qua Quảng Trị","sub_title":"Đoạn đường bị sạt lở nặng sau cơn bão số 5 năm 2023","description":"Trong năm 2023, bão số 5 đã đổ bộ vào miền Trung, gây mưa lớn kéo dài và làm xảy ra sạt lở đất nghiêm trọng tại nhiều khu vực, trong đó có một đoạn quan trọng của tuyến đường Hồ Chí Minh đi qua tỉnh Quảng Trị. \\n\\nĐoạn đường này không chỉ là tuyến huyết mạch nối các tỉnh miền Trung mà còn có vai trò quan trọng trong việc vận chuyển hàng hóa, nhất là trong việc đảm bảo an ninh quốc phòng. Sau bão, nhiều đoạn đường bị vùi lấp hoàn toàn, đất đá che khuất mặt đường, gây ách tắc giao thông nghiêm trọng trong nhiều ngày. Mặc dù đã có một số nỗ lực để khắc phục tạm thời, nhưng công trình cần được xây dựng lại hoàn toàn để đảm bảo chất lượng, độ bền và khả năng chống chịu trước các hiện tượng thiên tai trong tương lai. \\n\\nViệc cải tạo sẽ bao gồm gia cố các khu vực dễ bị sạt lở, nâng cấp hệ thống thoát nước và sử dụng vật liệu chống mài mòn để tăng khả năng bền vững cho đường. Ngoài ra, sẽ có sự thiết kế lại với các công trình phụ trợ như hầm chui, cầu cạn để giúp giao thông không bị gián đoạn trong mùa mưa bão tiếp theo.","address":"Đoạn đường bị sạt lở nặng sau cơn bão số 5 năm 2023.","total_amount":150000000000,"createdById":null,"updatedById":1,"fund_id":{"createdAt":"2024-12-07T02:08:41.049Z","updatedAt":"2024-12-07T02:08:41.138Z","project_id":10,"id":9,"name":"Đường Hồ Chí Minh đoạn qua Quảng Trị","target_amount":null,"current_amount":0,"qr_code_url":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%209","createdById":null,"updatedById":null},"progress_images":[],"images":[{"id":17,"createdAt":"2024-12-07T02:11:36.968Z","updatedAt":"2024-12-07T02:11:36.968Z","title":"tải xuống","filename":"cb1692b5ce428437d721866ef151dd45.jpg","extname":".jpg","size":9720,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/cb1692b5ce428437d721866ef151dd45.jpg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T02:11:39.903Z","updatedAt":"2024-12-07T02:11:39.903Z","f_3gyw0m841j1":10,"f_zvvclxyl9dz":17}},{"id":18,"createdAt":"2024-12-07T02:11:36.984Z","updatedAt":"2024-12-07T02:11:36.984Z","title":"125564915_410691283467059_4609940394654218577_n_MBCB","filename":"6443d0963f32dbf3cd1d1bea4285c9f4.jpg","extname":".jpg","size":472940,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/6443d0963f32dbf3cd1d1bea4285c9f4.jpg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T02:11:39.903Z","updatedAt":"2024-12-07T02:11:39.903Z","f_3gyw0m841j1":10,"f_zvvclxyl9dz":18}},{"id":19,"createdAt":"2024-12-07T02:11:36.987Z","updatedAt":"2024-12-07T02:11:36.987Z","title":"1(2)","filename":"ab893a04d276ce15ec4932f5c2748208.jpg","extname":".jpg","size":755014,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/ab893a04d276ce15ec4932f5c2748208.jpg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T02:11:39.903Z","updatedAt":"2024-12-07T02:11:39.903Z","f_3gyw0m841j1":10,"f_zvvclxyl9dz":19}}],"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"createdBy":null}}	1	8
+68	2024-12-07 02:14:28.044+00	2024-12-07 02:14:28.082+00	c03do2s4433	b318e1bf-07c9-408f-a384-94f318e24fc9	{"data":{"createdAt":"2024-12-07T02:08:45.744Z","updatedAt":"2024-12-07T02:14:28.026Z","id":11,"name":"Trường Tiểu học Tân Cương - Thái Nguyên","sub_title":"Trường học bị hư hại nặng trong trận lũ tháng 10, 2023","description":"Trường Tiểu học Tân Cương, nằm ở một khu vực ven sông thuộc tỉnh Thái Nguyên, đã phải đối mặt với thiệt hại nghiêm trọng trong trận lũ lớn tháng 10 năm 2023.\\n\\nMưa lớn và mực nước dâng cao đã gây ra tình trạng ngập úng nghiêm trọng, khiến các lớp học, phòng chức năng, sân chơi và các cơ sở vật chất khác bị hư hại nặng nề. Các sách vở, thiết bị giảng dạy và máy móc của trường đều bị ngập, gây ảnh hưởng trực tiếp đến hoạt động giảng dạy và học tập. Hơn nữa, hệ thống thoát nước trong khuôn viên trường không được thiết kế phù hợp với tình hình mưa bão hiện tại, khiến trường dễ bị ngập trong những mùa mưa lớn.\\n\\nDự án tái thiết lại trường Tiểu học Tân Cương sẽ không chỉ bao gồm việc xây dựng lại các phòng học và cơ sở vật chất, mà còn có kế hoạch cải thiện hệ thống thoát nước, xây dựng bể chứa nước mưa và lắp đặt các thiết bị phòng chống lũ. Trường sẽ được thiết kế lại để có thể chịu đựng được các trận mưa lũ mạnh mẽ hơn trong tương lai, với mục tiêu bảo vệ an toàn cho học sinh và giáo viên trong suốt các mùa mưa bão","address":"Tỉnh Thái Nguyên","total_amount":30000000000,"createdById":null,"updatedById":1,"fund_id":{"createdAt":"2024-12-07T02:08:53.602Z","updatedAt":"2024-12-07T02:08:53.717Z","project_id":11,"id":10,"name":"Trường Tiểu học Tân Cương - Thái Nguyên","target_amount":null,"current_amount":0,"qr_code_url":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2010","createdById":null,"updatedById":null},"progress_images":[],"images":[{"id":20,"createdAt":"2024-12-07T02:14:00.190Z","updatedAt":"2024-12-07T02:14:00.190Z","title":"th-quang-vinh-1-6945","filename":"d82e2e1b0e6fec131af437641dfac39f.webp","extname":".webp","size":152950,"mimetype":"image/webp","storageId":1,"path":"","meta":{},"url":"/storage/uploads/d82e2e1b0e6fec131af437641dfac39f.webp","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T02:14:02.960Z","updatedAt":"2024-12-07T02:14:02.960Z","f_3gyw0m841j1":11,"f_zvvclxyl9dz":20}},{"id":21,"createdAt":"2024-12-07T02:14:00.274Z","updatedAt":"2024-12-07T02:14:00.274Z","title":"ttxvn_truong_hoc_thai_nguyen_1.jpg","filename":"0dff40652c53c5bf2526ab2bb3de1474.webp","extname":".webp","size":100710,"mimetype":"image/webp","storageId":1,"path":"","meta":{},"url":"/storage/uploads/0dff40652c53c5bf2526ab2bb3de1474.webp","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T02:14:02.960Z","updatedAt":"2024-12-07T02:14:02.960Z","f_3gyw0m841j1":11,"f_zvvclxyl9dz":21}}],"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"createdBy":null}}	1	8
+69	2024-12-07 02:16:32.695+00	2024-12-07 02:16:32.726+00	c03do2s4433	c4555775-0f03-4749-9ade-fe7e0f4c9394	{"data":{"createdAt":"2024-12-07T02:08:53.557Z","updatedAt":"2024-12-07T02:16:32.679Z","id":12,"name":"Nhà máy thủy điện Rào Trăng 3 - Thừa Thiên Huế","sub_title":"Nhà máy thủy điện bị tàn phá trong trận lũ lớn và sạt lở đất năm 2020.","description":"Nhà máy thủy điện Rào Trăng 3, nằm tại huyện Phong Điền, tỉnh Thừa Thiên Huế, là một công trình quan trọng trong việc cung cấp điện cho khu vực miền Trung. Tuy nhiên, trong trận lũ lớn vào tháng 10 năm 2020, nhà máy này đã bị tàn phá nghiêm trọng.\\n\\nCác công trình phụ trợ, trạm biến áp, các đường ống dẫn nước và hệ thống máy móc bị hư hại nặng. Mưa lớn, cùng với sạt lở đất do dòng chảy mạnh từ các con suối, đã làm tê liệt hoàn toàn hoạt động của nhà máy. Việc tái thiết nhà máy yêu cầu phải xây dựng lại các công trình cơ sở hạ tầng, trong đó bao gồm các bờ đập, cống thoát nước và các hệ thống điện lực. Đồng thời, cần triển khai các biện pháp bảo vệ chống sạt lở và gia cố các yếu tố xây dựng để nhà máy có thể hoạt động ổn định trong các điều kiện thời tiết khắc nghiệt.\\n\\nDự án cũng sẽ tiến hành lắp đặt hệ thống giám sát và cảnh báo sớm để có thể phát hiện các dấu hiệu nguy hiểm như sạt lở đất và lũ lụt, nhằm đảm bảo an toàn cho công trình và khu vực lân cận.","address":"Thừa Thiên Huế","total_amount":200000000000,"createdById":null,"updatedById":1,"fund_id":{"createdAt":"2024-12-07T02:08:53.644Z","updatedAt":"2024-12-07T02:08:53.695Z","project_id":12,"id":11,"name":"Nhà máy thủy điện Rào Trăng 3 - Thừa Thiên Huế","target_amount":null,"current_amount":0,"qr_code_url":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2011","createdById":null,"updatedById":null},"progress_images":[],"images":[{"id":22,"createdAt":"2024-12-07T02:16:30.597Z","updatedAt":"2024-12-07T02:16:30.597Z","title":"tải xuống (1)","filename":"0cf22c1a5f00340ac0dab6c6c1b82adc.jpg","extname":".jpg","size":11425,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/0cf22c1a5f00340ac0dab6c6c1b82adc.jpg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T02:16:32.681Z","updatedAt":"2024-12-07T02:16:32.681Z","f_3gyw0m841j1":12,"f_zvvclxyl9dz":22}},{"id":23,"createdAt":"2024-12-07T02:16:30.600Z","updatedAt":"2024-12-07T02:16:30.600Z","title":"tải xuống (2)","filename":"ec06f89b76e1c05dd03ad053c42c1464.jpg","extname":".jpg","size":9473,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/ec06f89b76e1c05dd03ad053c42c1464.jpg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T02:16:32.681Z","updatedAt":"2024-12-07T02:16:32.681Z","f_3gyw0m841j1":12,"f_zvvclxyl9dz":23}},{"id":24,"createdAt":"2024-12-07T02:16:30.607Z","updatedAt":"2024-12-07T02:16:30.607Z","title":"tải xuống (3)","filename":"fb58e3c75e3a90a7df1d7e32ce179713.jpg","extname":".jpg","size":13024,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/fb58e3c75e3a90a7df1d7e32ce179713.jpg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T02:16:32.681Z","updatedAt":"2024-12-07T02:16:32.681Z","f_3gyw0m841j1":12,"f_zvvclxyl9dz":24}}],"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"createdBy":null}}	1	8
+74	2024-12-07 03:28:42.089+00	2024-12-07 03:28:42.184+00	htfnmps0m41	e55926ad-2eb4-4646-9d04-fbf570b9000f	{"data":{"createdAt":"2024-12-07T03:28:42.056Z","updatedAt":"2024-12-07T03:28:42.056Z","id":19,"name":"Cầu Phong Châu - Phú Thọ","sub_title":null,"description":null,"address":"Phú Thọ","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null},"stack":[73]}	1	2
+70	2024-12-07 03:09:23.088+00	2024-12-07 03:09:23.134+00	c03do2s4433	1b251523-c8f6-40af-b763-0184b68fb3f3	{"data":{"createdAt":"2024-12-07T02:08:57.625Z","updatedAt":"2024-12-07T03:09:23.051Z","id":13,"name":"Cải tạo lại khu dân cư Cửa Đại - Quảng Nam","sub_title":"Khu dân cư bị thiệt hại do bão số 9 (2020)","description":"Cửa Đại, thuộc tỉnh Quảng Nam, là một khu vực ven biển chịu ảnh hưởng nặng nề từ các cơn bão, đặc biệt là bão số 9 vào năm 2020.\\n\\nTrong trận bão này, sóng biển lớn đã cuốn trôi nhiều ngôi nhà của người dân, xói mòn đất đai, gây thiệt hại lớn về tài sản và gây hoang mang cho cộng đồng. Việc tái thiết khu dân cư Cửa Đại yêu cầu không chỉ là xây dựng lại các ngôi nhà bị hư hại, mà còn phải giải quyết vấn đề xói lở bờ biển và ngập úng trong mùa mưa bão. Các biện pháp bảo vệ bờ biển, như xây dựng đê chắn sóng, kè biển và các công trình phòng chống xói mòn, sẽ được triển khai để bảo vệ khu dân cư khỏi các tác động của thiên tai. Bên cạnh đó, các ngôi nhà mới sẽ được xây dựng bằng vật liệu chống chịu bão và sóng, với hệ thống điện và nước được thiết kế lại để đảm bảo an toàn trong các tình huống khẩn cấp.\\n\\nCác tiện ích công cộng như trường học, trạm y tế và chợ sẽ được nâng cấp để phục vụ nhu cầu sinh hoạt của người dân trong khu vực.","address":"Quảng Nam","total_amount":120000000000,"createdById":null,"updatedById":1,"fund_id":{"createdAt":"2024-12-07T02:08:57.665Z","updatedAt":"2024-12-07T02:08:57.716Z","project_id":13,"id":12,"name":"Cải tạo lại khu dân cư Cửa Đại - Quảng Nam","target_amount":null,"current_amount":0,"qr_code_url":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2012","createdById":null,"updatedById":null},"progress_images":[],"images":[{"id":25,"createdAt":"2024-12-07T03:09:21.527Z","updatedAt":"2024-12-07T03:09:21.527Z","title":"quangnamhinh","filename":"fe0594a20cb280752d0168475e7c9256.jpg","extname":".jpg","size":99015,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/fe0594a20cb280752d0168475e7c9256.jpg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T03:09:23.059Z","updatedAt":"2024-12-07T03:09:23.059Z","f_3gyw0m841j1":13,"f_zvvclxyl9dz":25}},{"id":26,"createdAt":"2024-12-07T03:09:21.544Z","updatedAt":"2024-12-07T03:09:21.544Z","title":"tải xuống (4)","filename":"5e5cd6b434c608944da4cabd47205559.jpg","extname":".jpg","size":10688,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/5e5cd6b434c608944da4cabd47205559.jpg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T03:09:23.058Z","updatedAt":"2024-12-07T03:09:23.058Z","f_3gyw0m841j1":13,"f_zvvclxyl9dz":26}},{"id":27,"createdAt":"2024-12-07T03:09:21.546Z","updatedAt":"2024-12-07T03:09:21.546Z","title":"FB_IMG_1603852462757","filename":"9cd875d3e7dcde13e6820677d90dfc2a.jpg","extname":".jpg","size":28491,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/9cd875d3e7dcde13e6820677d90dfc2a.jpg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T03:09:23.058Z","updatedAt":"2024-12-07T03:09:23.058Z","f_3gyw0m841j1":13,"f_zvvclxyl9dz":27}},{"id":28,"createdAt":"2024-12-07T03:09:21.577Z","updatedAt":"2024-12-07T03:09:21.577Z","title":"nhung-hinh-anh-thiet-hai-dau-tien-do-bao-so-3-o-ha-long-1535","filename":"5cf741bb45a5104cd7b313d821d18008.jpeg","extname":".jpeg","size":838401,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/5cf741bb45a5104cd7b313d821d18008.jpeg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T03:09:23.059Z","updatedAt":"2024-12-07T03:09:23.059Z","f_3gyw0m841j1":13,"f_zvvclxyl9dz":28}}],"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"createdBy":null}}	1	8
+71	2024-12-07 03:13:01.479+00	2024-12-07 03:13:01.534+00	c03do2s4433	941baa52-5703-4720-823b-ae0bff6d3a7f	{"data":{"createdAt":"2024-12-07T02:09:02.152Z","updatedAt":"2024-12-07T03:13:01.449Z","id":14,"name":"Đập thủy lợi Krông H’năng - Đắk Lắk","sub_title":"Đập thủy lợi bị hư hại do mưa lớn và lũ vào năm 2022","description":"Đập thủy lợi Krông H’năng đóng vai trò quan trọng trong việc cung cấp nước tưới cho hàng nghìn hecta đất nông nghiệp tại Đắk Lắk, đặc biệt là cho các vùng trồng cà phê và tiêu. \\n\\nTuy nhiên, vào năm 2022, trận mưa lớn kéo dài và lũ lụt đã làm đập này bị hư hại nghiêm trọng. Một phần bờ đập bị sạt lở, kết cấu bê tông bị vỡ nứt, ảnh hưởng trực tiếp đến việc điều tiết nước và bảo vệ các vùng nông nghiệp.\\n\\nSự cố này đã gây ra khủng hoảng cho hàng nghìn nông dân trong vùng khi mùa màng không thể tiếp tục được tưới nước đầy đủ. Dự án tái thiết sẽ bao gồm việc gia cố bờ đập, tái thiết các cấu kiện bê tông bị hư hỏng và nâng cấp hệ thống điều tiết nước để đập có thể hoạt động hiệu quả trong mùa lũ. Bên cạnh đó, cần xây dựng thêm các công trình phụ trợ như các khu trữ nước tạm thời để đảm bảo nguồn nước cho sản xuất nông nghiệp, cũng như một hệ thống cảnh báo sớm để giám sát tình hình của đập trong mùa mưa. \\n\\nCông trình sẽ sử dụng vật liệu chống mài mòn và có khả năng chịu lực tốt hơn, đặc biệt là khi phải đối mặt với những trận mưa lũ ngày càng dữ dội.","address":"Tỉnh Đắk Lắk","total_amount":85000000000,"createdById":null,"updatedById":1,"fund_id":{"createdAt":"2024-12-07T02:09:02.189Z","updatedAt":"2024-12-07T02:09:02.242Z","project_id":14,"id":13,"name":"Đập thủy lợi Krông H’năng - Đắk Lắk","target_amount":null,"current_amount":0,"qr_code_url":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2013","createdById":null,"updatedById":null},"progress_images":[],"images":[{"id":29,"createdAt":"2024-12-07T03:12:59.757Z","updatedAt":"2024-12-07T03:12:59.757Z","title":"08584112062017","filename":"44ae7e81fa866782495ce40eb499db74.jpg","extname":".jpg","size":78501,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/44ae7e81fa866782495ce40eb499db74.jpg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T03:13:01.454Z","updatedAt":"2024-12-07T03:13:01.454Z","f_3gyw0m841j1":14,"f_zvvclxyl9dz":29}},{"id":30,"createdAt":"2024-12-07T03:12:59.794Z","updatedAt":"2024-12-07T03:12:59.794Z","title":"dak-lak-lam-ro-trach-nhiem-vi-de-suy-giam-244-ha-rung-o-du-an-ho-thuy-loi-nghin-ti-3582","filename":"5c30ecabf196949dbcba467a460e8f40.jpg","extname":".jpg","size":260206,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/5c30ecabf196949dbcba467a460e8f40.jpg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T03:13:01.454Z","updatedAt":"2024-12-07T03:13:01.454Z","f_3gyw0m841j1":14,"f_zvvclxyl9dz":30}},{"id":31,"createdAt":"2024-12-07T03:12:59.796Z","updatedAt":"2024-12-07T03:12:59.796Z","title":"8-Ho-Dap","filename":"e91610258523be989873dd83124c96bb.jpg","extname":".jpg","size":118937,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/e91610258523be989873dd83124c96bb.jpg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T03:13:01.454Z","updatedAt":"2024-12-07T03:13:01.454Z","f_3gyw0m841j1":14,"f_zvvclxyl9dz":31}}],"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"createdBy":null}}	1	8
+72	2024-12-07 03:22:35.708+00	2024-12-07 03:22:35.746+00	c03do2s4433	27b937b9-a0aa-4691-b175-95af5c539ae4	{"data":{"createdAt":"2024-12-07T02:09:07.405Z","updatedAt":"2024-12-07T03:22:35.688Z","id":15,"name":"Cầu Trần Quang Khải - Hải Phòng","sub_title":"Cầu bị hư hỏng sau cơn bão số 12 năm 2017","description":"Cầu Trần Quang Khải là một tuyến giao thông quan trọng nối khu vực trung tâm Hải Phòng với các khu công nghiệp và khu dân cư phía Bắc thành phố.\\n\\nSau cơn bão số 12 vào năm 2017, cầu đã bị hư hại nghiêm trọng do sức gió mạnh và mưa lớn. Các trụ cầu bị ảnh hưởng nặng, kết cấu của cầu bị biến dạng, ảnh hưởng trực tiếp đến giao thông và an toàn của người dân. Cầu Trần Quang Khải là tuyến đường duy nhất có thể chịu tải trọng lớn, phục vụ cho vận chuyển hàng hóa và đi lại của người dân trong khu vực. Vì vậy, việc tái thiết cầu này đòi hỏi phải có một giải pháp kỹ thuật đặc biệt để bảo đảm độ bền vững và khả năng chống chịu trước các thảm họa tự nhiên trong tương lai.\\n\\n Cầu sẽ được thiết kế lại với cấu trúc vững chắc hơn, sử dụng bê tông cốt thép chất lượng cao và hệ thống dầm cầu chịu lực tốt hơn. Ngoài ra, việc gia cố hệ thống thoát nước dọc hai bên cầu và xây dựng các hầm chui tránh ách tắc giao thông cũng sẽ được triển khai. Tất cả những cải tiến này nhằm đảm bảo cầu có thể hoạt động ổn định và an toàn ngay cả trong điều kiện thời tiết khắc nghiệt.","address":"Hải Phòng","total_amount":100000000000,"createdById":null,"updatedById":1,"fund_id":{"createdAt":"2024-12-07T02:09:11.110Z","updatedAt":"2024-12-07T02:09:11.159Z","project_id":15,"id":14,"name":"Cầu Trần Quang Khải - Hải Phòng","target_amount":null,"current_amount":0,"qr_code_url":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2014","createdById":null,"updatedById":null},"progress_images":[],"images":[{"id":32,"createdAt":"2024-12-07T03:22:33.576Z","updatedAt":"2024-12-07T03:22:33.576Z","title":"z58069262926888c01fe787d6b3470be7876bb5944beab-172570623406339516614-1725706638606-1725706639075134753531","filename":"8343e7a508858e718f7114a5a471e65b.webp","extname":".webp","size":45346,"mimetype":"image/webp","storageId":1,"path":"","meta":{},"url":"/storage/uploads/8343e7a508858e718f7114a5a471e65b.webp","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T03:22:35.692Z","updatedAt":"2024-12-07T03:22:35.692Z","f_3gyw0m841j1":15,"f_zvvclxyl9dz":32}},{"id":33,"createdAt":"2024-12-07T03:22:33.586Z","updatedAt":"2024-12-07T03:22:33.586Z","title":"tải xuống (5)","filename":"87d73396ad6a5651207f569d11689ed1.jpg","extname":".jpg","size":8378,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/87d73396ad6a5651207f569d11689ed1.jpg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T03:22:35.692Z","updatedAt":"2024-12-07T03:22:35.692Z","f_3gyw0m841j1":15,"f_zvvclxyl9dz":33}}],"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"createdBy":null}}	1	8
+75	2024-12-07 03:28:42.178+00	2024-12-07 03:28:42.248+00	0f9c722cpnx	9e832709-7993-4e3e-ba5c-e755a0c7a250	{"data":{"createdAt":"2024-12-07T03:28:42.135Z","updatedAt":"2024-12-07T03:28:42.135Z","project_id":19,"id":18,"name":"Cầu Phong Châu - Phú Thọ","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T03:28:42.056Z","updatedAt":"2024-12-07T03:28:42.056Z","id":19,"name":"Cầu Phong Châu - Phú Thọ","sub_title":null,"description":null,"address":"Phú Thọ","total_amount":null,"createdById":null,"updatedById":null}},"stack":[73,74]}	1	3
+79	2024-12-07 03:29:28.615+00	2024-12-07 03:29:28.67+00	0f9c722cpnx	45f0dabd-4553-41f8-8d70-c2afb4a18e1c	{"data":{"createdAt":"2024-12-07T03:29:28.603Z","updatedAt":"2024-12-07T03:29:28.603Z","project_id":20,"id":19,"name":"Làng Nũ","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T03:29:28.552Z","updatedAt":"2024-12-07T03:29:28.552Z","id":20,"name":"Làng Nũ","sub_title":null,"description":null,"address":"Làng Nũ","total_amount":null,"createdById":null,"updatedById":null}},"stack":[77,78]}	1	3
+80	2024-12-07 03:29:28.628+00	2024-12-07 03:29:28.68+00	31trl35v3w1	cb0adc35-c873-4ce8-949e-736775888935	{"data":{"createdAt":"2024-12-07T03:29:28.603Z","updatedAt":"2024-12-07T03:29:28.603Z","project_id":20,"id":19,"name":"Làng Nũ","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T03:29:28.552Z","updatedAt":"2024-12-07T03:29:28.552Z","id":20,"name":"Làng Nũ","sub_title":null,"description":null,"address":"Làng Nũ","total_amount":null,"createdById":null,"updatedById":null}},"stack":[77,78]}	-1	7
+81	2024-12-07 03:30:02.559+00	2024-12-07 03:30:02.613+00	j62ztm6t709	8088d4cc-7bfa-47de-9b6f-bbb3e5f14a37	{"data":{"createdAt":"2024-12-07T03:29:54.633Z","updatedAt":"2024-12-07T03:30:02.548Z","id":22,"name":"Xây dựng lại nhà dân bị thiệt hại tại Hà Nội sau bão Yagi","status":"APPROVED","address":"Hà Nội","createdById":1,"updatedById":1,"createdBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null}}}	1	6
+85	2024-12-07 03:31:32.17+00	2024-12-07 03:31:32.214+00	c03do2s4433	401c39e3-914f-4329-8375-e79c3d11153e	{"data":{"createdAt":"2024-12-07T03:28:42.056Z","updatedAt":"2024-12-07T03:31:32.149Z","id":19,"name":"Cầu Phong Châu - Phú Thọ","sub_title":"Cầu Phong Châu bị hư hại do mưa lớn và lũ lụt sau cơn bão Yagi","description":"Cầu Phong Châu là một công trình trọng yếu nối liền các huyện Phù Ninh và Thanh Sơn, đặc biệt là một tuyến giao thông quan trọng để vận chuyển nông sản và kết nối các khu vực miền núi với trung tâm tỉnh Phú Thọ.\\n\\nSau cơn bão Yagi, cầu đã bị thiệt hại nghiêm trọng khi mưa lớn kết hợp với lũ lụt dâng cao đã làm nước sông Phong Châu tràn qua, gây ra xói mòn và làm hư hỏng một số phần của cầu, đặc biệt là phần trụ cầu và mặt cầu bị nứt vỡ. Để đảm bảo an toàn và phục hồi giao thông, việc xây dựng lại cầu là rất cần thiết. Dự án tái thiết sẽ bao gồm việc gia cố trụ cầu bằng bê tông cốt thép, lắp đặt các kết cấu chịu lực tốt hơn và sử dụng các vật liệu chống mài mòn, chống chịu với môi trường khắc nghiệt của sông. \\n\\nCầu mới sẽ được thiết kế để có khả năng chống lại các trận lũ lụt tương tự trong tương lai, với hệ thống thoát nước và kiểm soát dòng chảy hợp lý để tránh hiện tượng xói mòn bờ cầu. Thêm vào đó, một số khu vực xung quanh cầu sẽ được gia cố và nâng cao để bảo vệ cầu khỏi sự ảnh hưởng của lũ lụt.","address":"Phú Thọ","total_amount":800000000000,"createdById":null,"updatedById":1,"fund_id":{"createdAt":"2024-12-07T03:28:42.135Z","updatedAt":"2024-12-07T03:28:42.223Z","project_id":19,"id":18,"name":"Cầu Phong Châu - Phú Thọ","target_amount":null,"current_amount":0,"qr_code_url":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2018","createdById":null,"updatedById":null},"progress_images":[],"images":[{"id":34,"createdAt":"2024-12-07T03:31:10.243Z","updatedAt":"2024-12-07T03:31:10.243Z","title":"img-6553-jpg-1730959849-5857-1730960046","filename":"05feb1dcaad3a4e5a043315a894ef451.jpg","extname":".jpg","size":209786,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/05feb1dcaad3a4e5a043315a894ef451.jpg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T03:31:12.371Z","updatedAt":"2024-12-07T03:31:12.371Z","f_3gyw0m841j1":19,"f_zvvclxyl9dz":34}},{"id":35,"createdAt":"2024-12-07T03:31:10.249Z","updatedAt":"2024-12-07T03:31:10.249Z","title":"ttxvn-cau-lung-cang-ha-giang-4-4704.jpg","filename":"352a9059c62ea230ac17bf613b615c4b.webp","extname":".webp","size":266618,"mimetype":"image/webp","storageId":1,"path":"","meta":{},"url":"/storage/uploads/352a9059c62ea230ac17bf613b615c4b.webp","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T03:31:12.371Z","updatedAt":"2024-12-07T03:31:12.371Z","f_3gyw0m841j1":19,"f_zvvclxyl9dz":35}},{"id":36,"createdAt":"2024-12-07T03:31:10.267Z","updatedAt":"2024-12-07T03:31:10.267Z","title":"1-1725862536-1112-1725862567","filename":"94596c831d6e5be5f48209811b6da453.jpg","extname":".jpg","size":635760,"mimetype":"image/jpeg","storageId":1,"path":"","meta":{},"url":"/storage/uploads/94596c831d6e5be5f48209811b6da453.jpg","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T03:31:12.371Z","updatedAt":"2024-12-07T03:31:12.371Z","f_3gyw0m841j1":19,"f_zvvclxyl9dz":36}}],"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"createdBy":null}}	1	8
+82	2024-12-07 03:30:02.596+00	2024-12-07 03:30:02.646+00	htfnmps0m41	add341f9-073a-4e5c-ab65-37a45f12465a	{"data":{"createdAt":"2024-12-07T03:30:02.584Z","updatedAt":"2024-12-07T03:30:02.584Z","id":21,"name":"Xây dựng lại nhà dân bị thiệt hại tại Hà Nội sau bão Yagi","sub_title":null,"description":null,"address":"Hà Nội","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null},"stack":[81]}	1	2
+83	2024-12-07 03:30:02.643+00	2024-12-07 03:30:02.7+00	0f9c722cpnx	abdf5e30-ea5e-4c1c-9476-5e0e9a0751d2	{"data":{"createdAt":"2024-12-07T03:30:02.629Z","updatedAt":"2024-12-07T03:30:02.629Z","project_id":21,"id":20,"name":"Xây dựng lại nhà dân bị thiệt hại tại Hà Nội sau bão Yagi","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T03:30:02.584Z","updatedAt":"2024-12-07T03:30:02.584Z","id":21,"name":"Xây dựng lại nhà dân bị thiệt hại tại Hà Nội sau bão Yagi","sub_title":null,"description":null,"address":"Hà Nội","total_amount":null,"createdById":null,"updatedById":null}},"stack":[81,82]}	1	3
+84	2024-12-07 03:30:02.653+00	2024-12-07 03:30:02.709+00	31trl35v3w1	5d119782-8f49-4f1d-a241-5ae0862b65b4	{"data":{"createdAt":"2024-12-07T03:30:02.629Z","updatedAt":"2024-12-07T03:30:02.629Z","project_id":21,"id":20,"name":"Xây dựng lại nhà dân bị thiệt hại tại Hà Nội sau bão Yagi","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T03:30:02.584Z","updatedAt":"2024-12-07T03:30:02.584Z","id":21,"name":"Xây dựng lại nhà dân bị thiệt hại tại Hà Nội sau bão Yagi","sub_title":null,"description":null,"address":"Hà Nội","total_amount":null,"createdById":null,"updatedById":null}},"stack":[81,82]}	-1	7
+86	2024-12-07 03:34:42.077+00	2024-12-07 03:34:42.123+00	c03do2s4433	1d25ac20-6728-471b-a64f-34e6a81dc8f0	{"data":{"createdAt":"2024-12-07T03:29:28.552Z","updatedAt":"2024-12-07T03:34:42.053Z","id":20,"name":"Làng Nũ","sub_title":"Làng Nũ bị ảnh hưởng nặng nề sau bão Yagi, nhiều nhà dân san lấp do sạt lỡ.\\n","description":"Làng Nũ là một làng quê yên bình, nơi người dân chủ yếu sinh sống nhờ nông nghiệp và thủ công mỹ nghệ.\\n\\n Tuy nhiên, sau cơn bão Yagi, khu vực này đã phải đối mặt với những thiệt hại lớn, đặc biệt là trong việc mất mát nhà cửa và cơ sở vật chất. Gió bão mạnh đã làm tốc mái hàng trăm ngôi nhà, trong khi mưa lớn gây ngập lụt nhiều khu vực, làm hư hại không chỉ nhà cửa mà còn các công trình công cộng như trường học và trạm y tế. Kinh tế địa phương đã bị ảnh hưởng nặng nề, nhiều người dân không thể sinh hoạt bình thường và thiếu thốn lương thực. Dự án tái thiết làng Nũ sẽ bao gồm việc xây dựng lại nhà ở cho người dân với các vật liệu chịu bão, có khả năng chống mưa lũ mạnh mẽ, đồng thời cải tạo lại các cơ sở hạ tầng như trường học, chợ và các công trình công cộng khác.\\n\\nNhà dân sẽ được xây dựng với nền móng cao, cửa sổ và mái nhà được thiết kế đặc biệt để chịu được gió mạnh và mưa lớn. Các tuyến đường trong làng sẽ được nâng cấp, đồng thời hệ thống thoát nước và kè chống lũ cũng sẽ được cải thiện để ngăn ngập lụt trong những mùa mưa bão tiếp theo. Ngoài ra, dự án còn bao gồm các chương trình hỗ trợ người dân phục hồi kinh tế và trồng lại cây trồng nông sản để vực dậy nền kinh tế địa phương.","address":"Làng Nũ","total_amount":50000000000,"createdById":null,"updatedById":1,"fund_id":{"createdAt":"2024-12-07T03:29:28.603Z","updatedAt":"2024-12-07T03:29:28.649Z","project_id":20,"id":19,"name":"Làng Nũ","target_amount":null,"current_amount":0,"qr_code_url":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2019","createdById":null,"updatedById":null},"progress_images":[],"images":[{"id":37,"createdAt":"2024-12-07T03:34:27.161Z","updatedAt":"2024-12-07T03:34:27.161Z","title":"screen-shot-2024-10-08-at-110629-1728360468474568244100-20-0-415-632-crop-172836051705479693444","filename":"60171568659bb17f8448f47ecae02989.webp","extname":".webp","size":137162,"mimetype":"image/webp","storageId":1,"path":"","meta":{},"url":"/storage/uploads/60171568659bb17f8448f47ecae02989.webp","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T03:34:29.137Z","updatedAt":"2024-12-07T03:34:29.137Z","f_3gyw0m841j1":20,"f_zvvclxyl9dz":37}},{"id":38,"createdAt":"2024-12-07T03:34:27.189Z","updatedAt":"2024-12-07T03:34:27.189Z","title":"sat-lo-o-lao-cai-12-1726023156417-1726028626387","filename":"bbe264811e909df1df4b93273e5d67a0.webp","extname":".webp","size":1327716,"mimetype":"image/webp","storageId":1,"path":"","meta":{},"url":"/storage/uploads/bbe264811e909df1df4b93273e5d67a0.webp","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T03:34:29.137Z","updatedAt":"2024-12-07T03:34:29.137Z","f_3gyw0m841j1":20,"f_zvvclxyl9dz":38}},{"id":39,"createdAt":"2024-12-07T03:34:27.202Z","updatedAt":"2024-12-07T03:34:27.202Z","title":"z5821061594787c3bf00290463c681346553fea77bf478-172606455745514052784","filename":"ebb9da64ef9f942bb00dcbd1db1e6783.webp","extname":".webp","size":1853408,"mimetype":"image/webp","storageId":1,"path":"","meta":{},"url":"/storage/uploads/ebb9da64ef9f942bb00dcbd1db1e6783.webp","createdById":1,"updatedById":1,"t_1vx9kyb7k1h":{"createdAt":"2024-12-07T03:34:29.137Z","updatedAt":"2024-12-07T03:34:29.137Z","f_3gyw0m841j1":20,"f_zvvclxyl9dz":39}}],"updatedBy":{"id":1,"nickname":"Super Admin","username":"nocobase","email":"admin@nocobase.com","phone":null,"password":"0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4","appLang":null,"resetToken":null,"systemSettings":{},"createdAt":"2024-12-04T09:18:59.855Z","updatedAt":"2024-12-04T09:18:59.855Z","sort":1,"createdById":null,"updatedById":null},"createdBy":null}}	1	8
 \.
 
 
 --
--- TOC entry 3878 (class 0 OID 33978)
+-- TOC entry 3894 (class 0 OID 17065)
 -- Dependencies: 246
 -- Data for Name: fields; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -5939,6 +6176,7 @@ cx5a8vom8ne	group_id	string	input	\N	kafka_configs	\N	\N	{"uiSchema":{"type":"st
 9nv7i563chi	client_id	string	input	\N	kafka_configs	\N	\N	{"uiSchema":{"type":"string","title":"Client Id","x-component":"Input","required":true}}	3
 q9gr603l641	id	bigInt	integer	\N	proposes	\N	\N	{"autoIncrement":true,"primaryKey":true,"allowNull":false,"uiSchema":{"type":"number","title":"{{t(\\"ID\\")}}","x-component":"InputNumber","x-read-pretty":true}}	1
 9qdk1bf1too	createdAt	date	createdAt	\N	proposes	\N	\N	{"field":"createdAt","uiSchema":{"type":"datetime","title":"{{t(\\"Created at\\")}}","x-component":"DatePicker","x-component-props":{},"x-read-pretty":true}}	2
+lmgi2u8xytr	updatedAt	date	updatedAt	\N	videos	\N	\N	{"field":"updatedAt","uiSchema":{"type":"string","title":"{{t(\\"Last updated at\\")}}","x-component":"DatePicker","x-component-props":{},"x-read-pretty":true}}	4
 e1rmjw16r0k	createdBy	belongsTo	createdBy	\N	proposes	\N	\N	{"target":"users","foreignKey":"createdById","uiSchema":{"type":"object","title":"{{t(\\"Created by\\")}}","x-component":"AssociationField","x-component-props":{"fieldNames":{"value":"id","label":"nickname"}},"x-read-pretty":true},"targetKey":"id"}	3
 8wudwtq78xg	updatedAt	date	updatedAt	\N	proposes	\N	\N	{"field":"updatedAt","uiSchema":{"type":"string","title":"{{t(\\"Last updated at\\")}}","x-component":"DatePicker","x-component-props":{},"x-read-pretty":true}}	4
 udtg2aj63yt	updatedBy	belongsTo	updatedBy	\N	proposes	\N	\N	{"target":"users","foreignKey":"updatedById","uiSchema":{"type":"object","title":"{{t(\\"Last updated by\\")}}","x-component":"AssociationField","x-component-props":{"fieldNames":{"value":"id","label":"nickname"}},"x-read-pretty":true},"targetKey":"id"}	5
@@ -5983,15 +6221,37 @@ x7mvf5k1ye0	qr_code_url	text	url	\N	funds	\N	\N	{"uiSchema":{"type":"string","x-
 2xgvvipsjk4	from_account_name	string	input	\N	transactions	\N	\N	{"uiSchema":{"type":"string","x-component":"Input","title":"Tên người chuyển đến"}}	11
 hwxaiw38b06	from_bank_name	string	input	\N	transactions	\N	\N	{"uiSchema":{"type":"string","x-component":"Input","title":"Ngân hàng"}}	12
 jokivbgdzil	fund_id	bigInt	integer	\N	transactions	\N	\N	{"isForeignKey":true,"uiSchema":{"type":"number","title":"Mã quỹ dự án","x-component":"InputNumber","x-read-pretty":true}}	1
-006o05wzchr	id	uuid	input	\N	smart_contracts	\N	\N	{"primaryKey":true,"autoIncrement":false,"uiSchema":{"type":"string","title":"ID","x-component":"Input","required":true}}	1
-ck08zj8d8ex	script	string	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":"string","title":"Script","x-component":"Input","required":true}}	2
-vinoaebbajp	abi	json	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":"json","title":"ABI","x-component":"Input","required":false}}	3
-1cmjb0m7utr	bytecode	string	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":"string","title":"Bytecode","x-component":"Input","required":false}}	4
+xu5k2fm0v3z	id	bigInt	integer	\N	transactions_config	\N	\N	{"autoIncrement":true,"primaryKey":true,"allowNull":false,"uiSchema":{"type":"number","title":"{{t(\\"ID\\")}}","x-component":"InputNumber","x-read-pretty":true}}	1
+wj28r34hvpy	createdAt	date	createdAt	\N	transactions_config	\N	\N	{"field":"createdAt","uiSchema":{"type":"datetime","title":"{{t(\\"Created at\\")}}","x-component":"DatePicker","x-component-props":{},"x-read-pretty":true}}	2
+fg8530iurwo	createdBy	belongsTo	createdBy	\N	transactions_config	\N	\N	{"target":"users","foreignKey":"createdById","uiSchema":{"type":"object","title":"{{t(\\"Created by\\")}}","x-component":"AssociationField","x-component-props":{"fieldNames":{"value":"id","label":"nickname"}},"x-read-pretty":true},"targetKey":"id"}	3
+kqaniiw0b6e	updatedAt	date	updatedAt	\N	transactions_config	\N	\N	{"field":"updatedAt","uiSchema":{"type":"string","title":"{{t(\\"Last updated at\\")}}","x-component":"DatePicker","x-component-props":{},"x-read-pretty":true}}	4
+q1f4rwcli2o	updatedBy	belongsTo	updatedBy	\N	transactions_config	\N	\N	{"target":"users","foreignKey":"updatedById","uiSchema":{"type":"object","title":"{{t(\\"Last updated by\\")}}","x-component":"AssociationField","x-component-props":{"fieldNames":{"value":"id","label":"nickname"}},"x-read-pretty":true},"targetKey":"id"}	5
+7eowrl5d63c	contractAddress	text	textarea	\N	transactions_config	\N	\N	{"uiSchema":{"type":"string","x-component":"Input.TextArea","title":"Contract Address"}}	6
+d6g4b4b1fdq	private_key	text	textarea	\N	transactions_config	\N	\N	{"uiSchema":{"type":"string","x-component":"Input.TextArea","title":"Private Key"}}	7
+m6bjpmt0gzw	provider	text	textarea	\N	transactions_config	\N	\N	{"uiSchema":{"type":"string","x-component":"Input.TextArea","title":"Provider"}}	8
+o8e45ylgoow	abi	json	json	\N	transactions_config	\N	\N	{"defaultValue":null,"uiSchema":{"type":"object","x-component":"Input.JSON","x-component-props":{"autoSize":{"minRows":5}},"default":null,"title":"ABI"}}	9
+rjpqx9gz6ub	id	uuid	input	\N	smart_contracts	\N	\N	{"primaryKey":true,"autoIncrement":false,"uiSchema":{"type":"string","title":"ID","x-component":"Input","required":true}}	1
+0tvypjsrfci	script	string	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":"string","title":"Script","x-component":"Input","required":true}}	2
+iuhlserkfkn	abi	json	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":"json","title":"ABI","x-component":"Input","required":false}}	3
+env1144w50h	bytecode	string	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":"string","title":"Bytecode","x-component":"Input","required":false}}	4
+rthce2o5pvk	contractAddress	string	textarea	\N	smart_contracts	\N	\N	{"uiSchema":{"type":"string","title":"Contract Address","x-component":"Input","required":false}}	5
+itu9ql080ni	id	bigInt	integer	\N	videos	\N	\N	{"autoIncrement":true,"primaryKey":true,"allowNull":false,"uiSchema":{"type":"number","title":"{{t(\\"ID\\")}}","x-component":"InputNumber","x-read-pretty":true}}	1
+dnn3dir06rc	createdAt	date	createdAt	\N	videos	\N	\N	{"field":"createdAt","uiSchema":{"type":"datetime","title":"{{t(\\"Created at\\")}}","x-component":"DatePicker","x-component-props":{},"x-read-pretty":true}}	2
+9rbcczyqz8x	createdBy	belongsTo	createdBy	\N	videos	\N	\N	{"target":"users","foreignKey":"createdById","uiSchema":{"type":"object","title":"{{t(\\"Created by\\")}}","x-component":"AssociationField","x-component-props":{"fieldNames":{"value":"id","label":"nickname"}},"x-read-pretty":true},"targetKey":"id"}	3
+rcbuinpqz59	updatedBy	belongsTo	updatedBy	\N	videos	\N	\N	{"target":"users","foreignKey":"updatedById","uiSchema":{"type":"object","title":"{{t(\\"Last updated by\\")}}","x-component":"AssociationField","x-component-props":{"fieldNames":{"value":"id","label":"nickname"}},"x-read-pretty":true},"targetKey":"id"}	5
+750estoeefr	title	string	input	\N	videos	\N	\N	{"uiSchema":{"type":"string","x-component":"Input","title":"Tiêu đề"}}	6
+5ykvn2ibiml	filename	string	input	\N	videos	\N	\N	{"uiSchema":{"type":"string","x-component":"Input","title":"Tên tệp"}}	7
+o5ycbq60w3g	extname	string	input	\N	videos	\N	\N	{"uiSchema":{"type":"string","x-component":"Input","title":"Tiện ích mở rộng"}}	8
+zscxaj9ugez	size	bigInt	integer	\N	videos	\N	\N	{"uiSchema":{"type":"number","x-component":"InputNumber","x-component-props":{"stringMode":true,"step":"1"},"x-validator":"integer","title":"Kích thước"}}	9
+4gy9nerwg6o	mimetype	string	input	\N	videos	\N	\N	{"uiSchema":{"type":"string","x-component":"Input","title":"Loại MIME"}}	10
+7xgrlgfhq2g	path	string	input	\N	videos	\N	\N	{"uiSchema":{"type":"string","x-component":"Input","title":"Đường dẫn"}}	11
+gcefw6gk70y	url	text	url	\N	videos	\N	\N	{"uiSchema":{"type":"string","x-component":"Input.URL","title":"Gốc"}}	12
+6buzunhg4x1	preview	text	url	\N	videos	\N	\N	{"uiSchema":{"type":"string","x-component":"Input.URL","title":"Đã xử lý"}}	13
 \.
 
 
 --
--- TOC entry 3879 (class 0 OID 33984)
+-- TOC entry 3895 (class 0 OID 17071)
 -- Dependencies: 247
 -- Data for Name: flow_nodes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6001,33 +6261,44 @@ COPY public.flow_nodes (id, "createdAt", "updatedAt", key, title, "upstreamId", 
 3	2024-12-04 12:31:48.97+00	2024-12-04 12:33:52.393+00	k3uiv7ac1lx	Cập nhật QR đóng góp	\N	\N	\N	request	{"method":"POST","contentType":"application/json","headers":[],"params":[],"data":{"fund_id":"{{$context.data.id}}","fund_name":"{{$context.data.name}}","user_id":""},"url":"http://localhost:13000/api/qr-donate"}	3
 7	2024-12-04 13:12:38.849+00	2024-12-04 13:12:38.849+00	jt2v6492ck4	Thêm mới dự án	\N	\N	\N	create	{"usingAssignFormSchema":true,"assignFormSchema":{"_isJSONSchemaObject":true,"version":"2.0","name":"8546b3utchu","type":"void","x-component":"Grid","x-initializer":"assignFieldValuesForm:configureFields","properties":{"daoxc4ur560":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","properties":{"tpeowppevck":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","properties":{"name":{"_isJSONSchemaObject":true,"version":"2.0","type":"string","name":"name","title":"Tên dự án","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"AssignedField","x-decorator":"FormItem","x-collection-field":"projects.name"}},"name":"tpeowppevck"}},"name":"daoxc4ur560"},"ulp2izc9ki3":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","properties":{"i5nuay0jwfv":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","properties":{"address":{"_isJSONSchemaObject":true,"version":"2.0","type":"string","name":"address","title":"Địa điểm xây dựng","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"AssignedField","x-decorator":"FormItem","x-collection-field":"projects.address"}},"name":"i5nuay0jwfv"}},"name":"ulp2izc9ki3"}}},"params":{"values":{"name":"{{$context.data.name}}","address":"{{$context.data.address}}"},"appends":["createdBy","updatedBy"]},"collection":"projects"}	6
 8	2024-12-04 13:14:08.985+00	2024-12-04 13:15:55.216+00	k3uiv7ac1lx	Cập nhật QR đóng góp	\N	\N	\N	request	{"method":"POST","contentType":"application/json","headers":[],"params":[],"data":{"fund_id":"{{$context.data.id}}","fund_name":"{{$context.data.name}}","user_id":""},"url":"http://localhost:12000/api/qr-donate"}	7
+9	2024-12-07 00:09:26.36+00	2024-12-07 00:10:22.132+00	nv447y93knz	Cập nhật mục tiêu đóng góp	\N	\N	\N	update	{"usingAssignFormSchema":true,"assignFormSchema":{"_isJSONSchemaObject":true,"version":"2.0","name":"kgy03xc11xc","type":"void","x-component":"Grid","x-initializer":"assignFieldValuesForm:configureFields","properties":{"ejcdogbdt5x":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","properties":{"nn1j5ol0c86":{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","properties":{"target_amount":{"_isJSONSchemaObject":true,"version":"2.0","type":"string","name":"target_amount","title":"Mục tiêu đóng góp","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"AssignedField","x-decorator":"FormItem","x-collection-field":"funds.target_amount"}},"name":"nn1j5ol0c86"}},"name":"ejcdogbdt5x"}}},"collection":"funds","params":{"individualHooks":true,"filter":{"$and":[{"project":{"id":{"$eq":"{{$context.data.id}}"}}}]},"values":{"target_amount":"{{$context.data.total_amount}}"}}}	8
+10	2024-12-07 03:40:47.998+00	2024-12-07 03:40:53.216+00	g37qs8cvvwa	Cập nhật số tiền quỹ dự án	\N	\N	\N	update	{"usingAssignFormSchema":true,"assignFormSchema":{}}	9
 \.
 
 
 --
--- TOC entry 3881 (class 0 OID 33991)
+-- TOC entry 3897 (class 0 OID 17078)
 -- Dependencies: 249
 -- Data for Name: funds; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.funds ("createdAt", "updatedAt", id, "createdById", "updatedById", name, target_amount, current_amount, project_id, qr_code_url) FROM stdin;
-2024-12-04 14:43:51.188+00	2024-12-04 21:56:19.985+00	7	\N	1	Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long	20000000000	9500000000	8	\N
+2024-12-07 03:28:42.135+00	2024-12-07 03:31:32.207+00	18	\N	\N	Cầu Phong Châu - Phú Thọ	800000000000	0	19	https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2018
+2024-12-07 03:29:28.603+00	2024-12-07 03:34:42.117+00	19	\N	\N	Làng Nũ	50000000000	0	20	https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2019
+2024-12-07 02:08:41.049+00	2024-12-07 04:08:36.693+00	9	\N	1	Đường Hồ Chí Minh đoạn qua Quảng Trị	150000000000	6000000000	10	https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%209
+2024-12-07 02:08:53.602+00	2024-12-07 04:08:59.761+00	10	\N	1	Trường Tiểu học Tân Cương - Thái Nguyên	30000000000	9400000000	11	https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2010
+2024-12-07 02:08:53.644+00	2024-12-07 04:09:46.944+00	11	\N	1	Nhà máy thủy điện Rào Trăng 3 - Thừa Thiên Huế	200000000000	3400000000	12	https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2011
+2024-12-06 23:59:39.639+00	2024-12-07 04:13:29.165+00	8	\N	1	Cầu Mây - Hà Giang	70000000000	40500000000	9	https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%208
+2024-12-07 02:08:57.665+00	2024-12-07 03:09:23.128+00	12	\N	\N	Cải tạo lại khu dân cư Cửa Đại - Quảng Nam	120000000000	0	13	https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2012
+2024-12-07 02:09:02.189+00	2024-12-07 03:13:01.524+00	13	\N	\N	Đập thủy lợi Krông H’năng - Đắk Lắk	85000000000	0	14	https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2013
+2024-12-07 02:09:11.11+00	2024-12-07 03:22:35.737+00	14	\N	\N	Cầu Trần Quang Khải - Hải Phòng	100000000000	0	15	https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2014
 \.
 
 
 --
--- TOC entry 3883 (class 0 OID 33999)
+-- TOC entry 3899 (class 0 OID 17086)
 -- Dependencies: 251
 -- Data for Name: iframeHtml; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."iframeHtml" (id, "createdAt", "updatedAt", html, "createdById", "updatedById") FROM stdin;
 y8wo4qdjyby	2024-12-04 14:39:53.438+00	2024-12-04 14:39:53.438+00	<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>QR Code Simple Card</title>\n    <style>\n        * {\n            margin: 0;\n            padding: 0;\n            box-sizing: border-box;\n        }\n\n        body {\n            min-height: 100vh;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            background: #f0f2f5;\n            font-family: Arial, sans-serif;\n        }\n\n        .qr-card {\n            background: white;\n            padding: 20px;\n            border-radius: 10px;\n            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1),\n                        0 8px 16px rgba(0, 0, 0, 0.1);\n            width: 280px;\n        }\n\n        .qr-border {\n            border: 2px dashed #e0e0e0;\n            border-radius: 8px;\n            padding: 15px;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n        }\n\n        .qr-image {\n            width: 200px;\n            height: 200px;\n            object-fit: contain;\n        }\n\n        @media (max-width: 320px) {\n            .qr-card {\n                width: 90%;\n            }\n            \n            .qr-image {\n                width: 150px;\n                height: 150px;\n            }\n        }\n    </style>\n</head>\n<body>\n    <div class="qr-card">\n        <div class="qr-border">\n            <!-- Thay thế src bằng đường dẫn ảnh QR code của bạn -->\n            <img src="{{$nPopupRecord.fund_id.qr_code_url}}" alt="QR Code" class="qr-image">\n        </div>\n    </div>\n</body>\n</html>	1	1
+zptdr68vzey	2024-12-07 00:52:40.392+00	2024-12-07 00:52:40.392+00	<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>QR Code Simple Card</title>\n    <style>\n        * {\n            margin: 0;\n            padding: 0;\n            box-sizing: border-box;\n        }\n\n        body {\n            min-height: 100vh;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            background: #f0f2f5;\n            font-family: Arial, sans-serif;\n        }\n\n        .qr-card {\n            background: white;\n            padding: 20px;\n            border-radius: 10px;\n            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1),\n                        0 8px 16px rgba(0, 0, 0, 0.1);\n            width: 280px;\n        }\n\n        .qr-border {\n            border: 2px dashed #e0e0e0;\n            border-radius: 8px;\n            padding: 15px;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n        }\n\n        .qr-image {\n            width: 200px;\n            height: 200px;\n            object-fit: contain;\n        }\n\n        @media (max-width: 320px) {\n            .qr-card {\n                width: 90%;\n            }\n            \n            .qr-image {\n                width: 150px;\n                height: 150px;\n            }\n        }\n    </style>\n</head>\n<body>\n    <div class="qr-card">\n        <div class="qr-border">\n            <!-- Thay thế src bằng đường dẫn ảnh QR code của bạn -->\n            <img src="{{$nPopupRecord.fund_id.qr_code_url}}" alt="QR Code" class="qr-image">\n        </div>\n    </div>\n</body>\n</html>	1	1
 \.
 
 
 --
--- TOC entry 3884 (class 0 OID 34004)
+-- TOC entry 3900 (class 0 OID 17091)
 -- Dependencies: 252
 -- Data for Name: jobs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6051,16 +6322,77 @@ COPY public.jobs (id, "createdAt", "updatedAt", "executionId", "nodeId", "nodeKe
 18	2024-12-04 14:22:15.556+00	2024-12-04 14:22:15.594+00	18	3	k3uiv7ac1lx	\N	-1	{"message":"Request failed with status code 404","stack":"Error: Request failed with status code 404\\n    at createError (/app/nocobase/node_modules/axios/lib/core/createError.js:16:15)\\n    at settle (/app/nocobase/node_modules/axios/lib/core/settle.js:17:12)\\n    at IncomingMessage.handleStreamEnd (/app/nocobase/node_modules/axios/lib/adapters/http.js:322:11)\\n    at IncomingMessage.emit (node:events:529:35)\\n    at IncomingMessage.emit (node:domain:489:12)\\n    at endReadableNT (node:internal/streams/readable:1400:12)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)","status":404,"statusText":"Not Found","headers":{"x-request-id":"a32c5b65-791d-4fa5-a167-516e87974206","vary":"Origin","content-type":"text/plain; charset=utf-8","content-length":"9","date":"Wed, 04 Dec 2024 14:22:15 GMT","connection":"close"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":43},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":5,\\"fund_name\\":\\"df\\",\\"user_id\\":\\"\\"}"},"data":"Not Found"}
 19	2024-12-04 14:22:15.584+00	2024-12-04 14:22:15.607+00	19	8	k3uiv7ac1lx	\N	-1	{"message":"connect ECONNREFUSED 127.0.0.1:12000","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:12000\\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)","config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":43},"url":"http://localhost:12000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":5,\\"fund_name\\":\\"df\\",\\"user_id\\":\\"\\"}"},"code":"ECONNREFUSED","status":null}
 20	2024-12-04 14:34:56.241+00	2024-12-04 14:34:56.241+00	20	2	gu0yt8nh00x	\N	1	{"createdAt":"2024-12-04T14:34:56.225Z","updatedAt":"2024-12-04T14:34:56.225Z","project_id":7,"id":6,"name":"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long","target_amount":20000000000,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-04T14:34:56.186Z","updatedAt":"2024-12-04T14:34:56.186Z","id":7,"name":"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long","sub_title":"Dự án nhằm khôi phục và cải thiện đời sống của cộng đồng bị ảnh hưởng bởi lũ lụt tại Đồng bằng Sông Cửu Long, thông qua việc xây dựng cơ sở hạ tầng, cung cấp hỗ trợ tài chính và đào tạo nghề.","description":"Dự án này sẽ tập trung vào các hoạt động sau:\\n\\nXây dựng cơ sở hạ tầng: Nâng cấp đường giao thông, cầu cống và hệ thống thoát nước để giảm thiểu thiệt hại do lũ.\\nHỗ trợ tài chính: Cung cấp khoản vay lãi suất thấp cho các hộ gia đình để khôi phục sản xuất nông nghiệp và kinh doanh nhỏ.\\nĐào tạo nghề: Tổ chức các khóa đào tạo về kỹ năng nghề nghiệp cho thanh niên và người lớn tuổi để tạo cơ hội việc làm bền vững.\\nChương trình bảo vệ môi trường: Khuyến khích người dân tham gia vào các hoạt động bảo vệ môi trường và phát triển bền vững.\\nDự án sẽ được triển khai tại các xã bị ảnh hưởng nặng nề nhất, với sự tham gia của chính quyền địa phương và các tổ chức phi chính phủ.","address":"Đồng bằng Sông Cửu Long, Việt Nam (cụ thể có thể là các tỉnh như An Giang, Đồng Tháp, Kiên Giang).","total_amount":20000000000,"createdById":1,"updatedById":1}}
+52	2024-12-07 02:09:11.083+00	2024-12-07 02:09:11.083+00	53	7	jt2v6492ck4	\N	1	{"createdAt":"2024-12-07T02:09:11.072Z","updatedAt":"2024-12-07T02:09:11.072Z","id":16,"name":"Nhà văn hóa cộng đồng xã Phú Sơn - Quảng Ngãi","sub_title":null,"description":null,"address":"Quảng Ngãi","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null}
 21	2024-12-04 14:34:56.262+00	2024-12-04 14:34:56.302+00	21	3	k3uiv7ac1lx	\N	-1	{"message":"Request failed with status code 404","stack":"Error: Request failed with status code 404\\n    at createError (/app/nocobase/node_modules/axios/lib/core/createError.js:16:15)\\n    at settle (/app/nocobase/node_modules/axios/lib/core/settle.js:17:12)\\n    at IncomingMessage.handleStreamEnd (/app/nocobase/node_modules/axios/lib/adapters/http.js:322:11)\\n    at IncomingMessage.emit (node:events:529:35)\\n    at IncomingMessage.emit (node:domain:489:12)\\n    at endReadableNT (node:internal/streams/readable:1400:12)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)","status":404,"statusText":"Not Found","headers":{"x-request-id":"3f184384-f7fd-47be-a11c-c4304175d84b","vary":"Origin","content-type":"text/plain; charset=utf-8","content-length":"9","date":"Wed, 04 Dec 2024 14:34:56 GMT","connection":"close"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":126},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":6,\\"fund_name\\":\\"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long\\",\\"user_id\\":\\"\\"}"},"data":"Not Found"}
 22	2024-12-04 14:34:56.291+00	2024-12-04 14:34:56.324+00	22	8	k3uiv7ac1lx	\N	-1	{"message":"connect ECONNREFUSED 127.0.0.1:12000","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:12000\\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)","config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":126},"url":"http://localhost:12000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":6,\\"fund_name\\":\\"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long\\",\\"user_id\\":\\"\\"}"},"code":"ECONNREFUSED","status":null}
 23	2024-12-04 14:43:51.206+00	2024-12-04 14:43:51.206+00	23	2	gu0yt8nh00x	\N	1	{"createdAt":"2024-12-04T14:43:51.188Z","updatedAt":"2024-12-04T14:43:51.188Z","project_id":8,"id":7,"name":"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long","target_amount":20000000000,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-04T14:43:51.156Z","updatedAt":"2024-12-04T14:43:51.156Z","id":8,"name":"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long","sub_title":"Dự án nhằm khôi phục và cải thiện đời sống của cộng đồng bị ảnh hưởng bởi lũ lụt tại Đồng bằng Sông Cửu Long, thông qua việc xây dựng cơ sở hạ tầng, cung cấp hỗ trợ tài chính và đào tạo nghề.","description":"Dự án này sẽ tập trung vào các hoạt động sau:\\n\\nXây dựng cơ sở hạ tầng: Nâng cấp đường giao thông, cầu cống và hệ thống thoát nước để giảm thiểu thiệt hại do lũ.\\nHỗ trợ tài chính: Cung cấp khoản vay lãi suất thấp cho các hộ gia đình để khôi phục sản xuất nông nghiệp và kinh doanh nhỏ.\\nĐào tạo nghề: Tổ chức các khóa đào tạo về kỹ năng nghề nghiệp cho thanh niên và người lớn tuổi để tạo cơ hội việc làm bền vững.\\nChương trình bảo vệ môi trường: Khuyến khích người dân tham gia vào các hoạt động bảo vệ môi trường và phát triển bền vững.\\nDự án sẽ được triển khai tại các xã bị ảnh hưởng nặng nề nhất, với sự tham gia của chính quyền địa phương và các tổ chức phi chính phủ.","address":"Đồng bằng Sông Cửu Long, Việt Nam (cụ thể có thể là các tỉnh như An Giang, Đồng Tháp, Kiên Giang).","total_amount":20000000000,"createdById":1,"updatedById":1}}
 24	2024-12-04 14:43:51.224+00	2024-12-04 14:43:51.269+00	24	3	k3uiv7ac1lx	\N	-1	{"message":"Request failed with status code 404","stack":"Error: Request failed with status code 404\\n    at createError (/app/nocobase/node_modules/axios/lib/core/createError.js:16:15)\\n    at settle (/app/nocobase/node_modules/axios/lib/core/settle.js:17:12)\\n    at IncomingMessage.handleStreamEnd (/app/nocobase/node_modules/axios/lib/adapters/http.js:322:11)\\n    at IncomingMessage.emit (node:events:529:35)\\n    at IncomingMessage.emit (node:domain:489:12)\\n    at endReadableNT (node:internal/streams/readable:1400:12)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)","status":404,"statusText":"Not Found","headers":{"x-request-id":"3d30aef3-eab0-4fb7-81b5-b3db32b4cafb","vary":"Origin","content-type":"text/plain; charset=utf-8","content-length":"9","date":"Wed, 04 Dec 2024 14:43:51 GMT","connection":"close"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":126},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":7,\\"fund_name\\":\\"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long\\",\\"user_id\\":\\"\\"}"},"data":"Not Found"}
 25	2024-12-04 14:43:51.253+00	2024-12-04 14:43:51.279+00	25	8	k3uiv7ac1lx	\N	-1	{"message":"connect ECONNREFUSED 127.0.0.1:12000","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:12000\\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)","config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":126},"url":"http://localhost:12000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":7,\\"fund_name\\":\\"Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long\\",\\"user_id\\":\\"\\"}"},"code":"ECONNREFUSED","status":null}
+26	2024-12-06 23:59:39.59+00	2024-12-06 23:59:39.59+00	26	7	jt2v6492ck4	\N	1	{"createdAt":"2024-12-06T23:59:39.548Z","updatedAt":"2024-12-06T23:59:39.548Z","id":9,"name":"Cầu Mây - Hà Giang","sub_title":null,"description":null,"address":"Tỉnh Hà Giang, Việt Nam","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null}
+27	2024-12-06 23:59:39.697+00	2024-12-06 23:59:39.697+00	27	2	gu0yt8nh00x	\N	1	{"createdAt":"2024-12-06T23:59:39.639Z","updatedAt":"2024-12-06T23:59:39.639Z","project_id":9,"id":8,"name":"Cầu Mây - Hà Giang","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-06T23:59:39.548Z","updatedAt":"2024-12-06T23:59:39.548Z","id":9,"name":"Cầu Mây - Hà Giang","sub_title":null,"description":null,"address":"Tỉnh Hà Giang, Việt Nam","total_amount":null,"createdById":null,"updatedById":null}}
+28	2024-12-06 23:59:39.716+00	2024-12-06 23:59:39.763+00	28	3	k3uiv7ac1lx	\N	1	{"status":200,"statusText":"OK","headers":{"x-request-id":"940011d5-799b-4761-ab63-e3963aa80c2d","content-type":"application/json; charset=utf-8","content-length":"275","date":"Fri, 06 Dec 2024 23:59:39 GMT","connection":"close"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":63},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":8,\\"fund_name\\":\\"Cầu Mây - Hà Giang\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%208","meta":{"fund_id":8,"fund_name":"Cầu Mây - Hà Giang","user_id":null}}}
+29	2024-12-06 23:59:39.742+00	2024-12-06 23:59:39.775+00	29	8	k3uiv7ac1lx	\N	-1	{"message":"connect ECONNREFUSED 127.0.0.1:12000","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:12000\\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)","config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":63},"url":"http://localhost:12000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":8,\\"fund_name\\":\\"Cầu Mây - Hà Giang\\",\\"user_id\\":\\"\\"}"},"code":"ECONNREFUSED","status":null}
+30	2024-12-07 00:10:59.628+00	2024-12-07 00:10:59.628+00	30	9	nv447y93knz	\N	1	1
+31	2024-12-07 02:08:41.016+00	2024-12-07 02:08:41.016+00	31	7	jt2v6492ck4	\N	1	{"createdAt":"2024-12-07T02:08:40.980Z","updatedAt":"2024-12-07T02:08:40.980Z","id":10,"name":"Đường Hồ Chí Minh đoạn qua Quảng Trị","sub_title":null,"description":null,"address":"Đoạn đường bị sạt lở nặng sau cơn bão số 5 năm 2023.","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null}
+32	2024-12-07 02:08:41.087+00	2024-12-07 02:08:41.087+00	32	2	gu0yt8nh00x	\N	1	{"createdAt":"2024-12-07T02:08:41.049Z","updatedAt":"2024-12-07T02:08:41.049Z","project_id":10,"id":9,"name":"Đường Hồ Chí Minh đoạn qua Quảng Trị","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:08:40.980Z","updatedAt":"2024-12-07T02:08:40.980Z","id":10,"name":"Đường Hồ Chí Minh đoạn qua Quảng Trị","sub_title":null,"description":null,"address":"Đoạn đường bị sạt lở nặng sau cơn bão số 5 năm 2023.","total_amount":null,"createdById":null,"updatedById":null}}
+33	2024-12-07 02:08:41.108+00	2024-12-07 02:08:41.162+00	33	3	k3uiv7ac1lx	\N	1	{"status":200,"statusText":"OK","headers":{"x-request-id":"f1721e3b-7456-4ca1-b1ae-9c054e3a3a41","content-type":"application/json; charset=utf-8","content-length":"303","date":"Sat, 07 Dec 2024 02:08:41 GMT","connection":"close"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":91},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":9,\\"fund_name\\":\\"Đường Hồ Chí Minh đoạn qua Quảng Trị\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%209","meta":{"fund_id":9,"fund_name":"Đường Hồ Chí Minh đoạn qua Quảng Trị","user_id":null}}}
+34	2024-12-07 02:08:41.139+00	2024-12-07 02:08:41.173+00	34	8	k3uiv7ac1lx	\N	-1	{"message":"connect ECONNREFUSED 127.0.0.1:12000","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:12000\\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)","config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":91},"url":"http://localhost:12000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":9,\\"fund_name\\":\\"Đường Hồ Chí Minh đoạn qua Quảng Trị\\",\\"user_id\\":\\"\\"}"},"code":"ECONNREFUSED","status":null}
+35	2024-12-07 02:08:45.754+00	2024-12-07 02:08:45.754+00	35	7	jt2v6492ck4	\N	1	{"createdAt":"2024-12-07T02:08:45.744Z","updatedAt":"2024-12-07T02:08:45.744Z","id":11,"name":"Trường Tiểu học Tân Cương - Thái Nguyên","sub_title":null,"description":null,"address":"Tỉnh Thái Nguyên","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null}
+36	2024-12-07 02:08:53.569+00	2024-12-07 02:08:53.569+00	37	7	jt2v6492ck4	\N	1	{"createdAt":"2024-12-07T02:08:53.557Z","updatedAt":"2024-12-07T02:08:53.557Z","id":12,"name":"Nhà máy thủy điện Rào Trăng 3 - Thừa Thiên Huế","sub_title":null,"description":null,"address":"Thừa Thiên Huế","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null}
+37	2024-12-07 02:08:53.62+00	2024-12-07 02:08:53.62+00	36	2	gu0yt8nh00x	\N	1	{"createdAt":"2024-12-07T02:08:53.602Z","updatedAt":"2024-12-07T02:08:53.602Z","project_id":11,"id":10,"name":"Trường Tiểu học Tân Cương - Thái Nguyên","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:08:45.744Z","updatedAt":"2024-12-07T02:08:45.744Z","id":11,"name":"Trường Tiểu học Tân Cương - Thái Nguyên","sub_title":null,"description":null,"address":"Tỉnh Thái Nguyên","total_amount":null,"createdById":null,"updatedById":null}}
+38	2024-12-07 02:08:53.661+00	2024-12-07 02:08:53.661+00	38	2	gu0yt8nh00x	\N	1	{"createdAt":"2024-12-07T02:08:53.644Z","updatedAt":"2024-12-07T02:08:53.644Z","project_id":12,"id":11,"name":"Nhà máy thủy điện Rào Trăng 3 - Thừa Thiên Huế","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:08:53.557Z","updatedAt":"2024-12-07T02:08:53.557Z","id":12,"name":"Nhà máy thủy điện Rào Trăng 3 - Thừa Thiên Huế","sub_title":null,"description":null,"address":"Thừa Thiên Huế","total_amount":null,"createdById":null,"updatedById":null}}
+44	2024-12-07 02:08:57.682+00	2024-12-07 02:08:57.682+00	44	2	gu0yt8nh00x	\N	1	{"createdAt":"2024-12-07T02:08:57.665Z","updatedAt":"2024-12-07T02:08:57.665Z","project_id":13,"id":12,"name":"Cải tạo lại khu dân cư Cửa Đại - Quảng Nam","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:08:57.625Z","updatedAt":"2024-12-07T02:08:57.625Z","id":13,"name":"Cải tạo lại khu dân cư Cửa Đại - Quảng Nam","sub_title":null,"description":null,"address":"Quảng Nam","total_amount":null,"createdById":null,"updatedById":null}}
+47	2024-12-07 02:09:02.164+00	2024-12-07 02:09:02.164+00	47	7	jt2v6492ck4	\N	1	{"createdAt":"2024-12-07T02:09:02.152Z","updatedAt":"2024-12-07T02:09:02.152Z","id":14,"name":"Đập thủy lợi Krông H’năng - Đắk Lắk","sub_title":null,"description":null,"address":"Tỉnh Đắk Lắk","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null}
+49	2024-12-07 02:09:02.229+00	2024-12-07 02:09:02.262+00	49	3	k3uiv7ac1lx	\N	1	{"status":200,"statusText":"OK","headers":{"x-request-id":"99e8becc-162c-4189-b3cd-0eec99d4ad6c","content-type":"application/json; charset=utf-8","content-length":"306","date":"Sat, 07 Dec 2024 02:09:02 GMT","connection":"close"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":93},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":13,\\"fund_name\\":\\"Đập thủy lợi Krông H’năng - Đắk Lắk\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2013","meta":{"fund_id":13,"fund_name":"Đập thủy lợi Krông H’năng - Đắk Lắk","user_id":null}}}
+50	2024-12-07 02:09:02.246+00	2024-12-07 02:09:02.275+00	50	8	k3uiv7ac1lx	\N	-1	{"message":"connect ECONNREFUSED 127.0.0.1:12000","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:12000\\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)","config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":93},"url":"http://localhost:12000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":13,\\"fund_name\\":\\"Đập thủy lợi Krông H’năng - Đắk Lắk\\",\\"user_id\\":\\"\\"}"},"code":"ECONNREFUSED","status":null}
+39	2024-12-07 02:08:53.681+00	2024-12-07 02:08:53.737+00	41	3	k3uiv7ac1lx	\N	1	{"status":200,"statusText":"OK","headers":{"x-request-id":"25d136a4-6368-4436-8e34-0787ebd1cca0","content-type":"application/json; charset=utf-8","content-length":"315","date":"Sat, 07 Dec 2024 02:08:53 GMT","connection":"close"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":102},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":11,\\"fund_name\\":\\"Nhà máy thủy điện Rào Trăng 3 - Thừa Thiên Huế\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2011","meta":{"fund_id":11,"fund_name":"Nhà máy thủy điện Rào Trăng 3 - Thừa Thiên Huế","user_id":null}}}
+40	2024-12-07 02:08:53.698+00	2024-12-07 02:08:53.749+00	39	3	k3uiv7ac1lx	\N	1	{"status":200,"statusText":"OK","headers":{"x-request-id":"0eb804ea-a826-4a18-90e6-7fc18accd4f8","content-type":"application/json; charset=utf-8","content-length":"306","date":"Sat, 07 Dec 2024 02:08:53 GMT","connection":"close"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":93},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":10,\\"fund_name\\":\\"Trường Tiểu học Tân Cương - Thái Nguyên\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2010","meta":{"fund_id":10,"fund_name":"Trường Tiểu học Tân Cương - Thái Nguyên","user_id":null}}}
+41	2024-12-07 02:08:53.72+00	2024-12-07 02:08:53.759+00	40	8	k3uiv7ac1lx	\N	-1	{"message":"connect ECONNREFUSED 127.0.0.1:12000","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:12000\\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)","config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":93},"url":"http://localhost:12000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":10,\\"fund_name\\":\\"Trường Tiểu học Tân Cương - Thái Nguyên\\",\\"user_id\\":\\"\\"}"},"code":"ECONNREFUSED","status":null}
+42	2024-12-07 02:08:53.776+00	2024-12-07 02:08:53.791+00	42	8	k3uiv7ac1lx	\N	-1	{"message":"connect ECONNREFUSED 127.0.0.1:12000","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:12000\\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)","config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":102},"url":"http://localhost:12000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":11,\\"fund_name\\":\\"Nhà máy thủy điện Rào Trăng 3 - Thừa Thiên Huế\\",\\"user_id\\":\\"\\"}"},"code":"ECONNREFUSED","status":null}
+43	2024-12-07 02:08:57.635+00	2024-12-07 02:08:57.635+00	43	7	jt2v6492ck4	\N	1	{"createdAt":"2024-12-07T02:08:57.625Z","updatedAt":"2024-12-07T02:08:57.625Z","id":13,"name":"Cải tạo lại khu dân cư Cửa Đại - Quảng Nam","sub_title":null,"description":null,"address":"Quảng Nam","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null}
+45	2024-12-07 02:08:57.699+00	2024-12-07 02:08:57.736+00	45	3	k3uiv7ac1lx	\N	1	{"status":200,"statusText":"OK","headers":{"x-request-id":"3e65eaea-b20f-4415-a79b-6c7cf54411c2","content-type":"application/json; charset=utf-8","content-length":"312","date":"Sat, 07 Dec 2024 02:08:57 GMT","connection":"close"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":99},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":12,\\"fund_name\\":\\"Cải tạo lại khu dân cư Cửa Đại - Quảng Nam\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2012","meta":{"fund_id":12,"fund_name":"Cải tạo lại khu dân cư Cửa Đại - Quảng Nam","user_id":null}}}
+46	2024-12-07 02:08:57.722+00	2024-12-07 02:08:57.747+00	46	8	k3uiv7ac1lx	\N	-1	{"message":"connect ECONNREFUSED 127.0.0.1:12000","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:12000\\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)","config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":99},"url":"http://localhost:12000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":12,\\"fund_name\\":\\"Cải tạo lại khu dân cư Cửa Đại - Quảng Nam\\",\\"user_id\\":\\"\\"}"},"code":"ECONNREFUSED","status":null}
+48	2024-12-07 02:09:02.208+00	2024-12-07 02:09:02.208+00	48	2	gu0yt8nh00x	\N	1	{"createdAt":"2024-12-07T02:09:02.189Z","updatedAt":"2024-12-07T02:09:02.189Z","project_id":14,"id":13,"name":"Đập thủy lợi Krông H’năng - Đắk Lắk","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:09:02.152Z","updatedAt":"2024-12-07T02:09:02.152Z","id":14,"name":"Đập thủy lợi Krông H’năng - Đắk Lắk","sub_title":null,"description":null,"address":"Tỉnh Đắk Lắk","total_amount":null,"createdById":null,"updatedById":null}}
+51	2024-12-07 02:09:07.416+00	2024-12-07 02:09:07.416+00	51	7	jt2v6492ck4	\N	1	{"createdAt":"2024-12-07T02:09:07.405Z","updatedAt":"2024-12-07T02:09:07.405Z","id":15,"name":"Cầu Trần Quang Khải - Hải Phòng","sub_title":null,"description":null,"address":"Hải Phòng","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null}
+53	2024-12-07 02:09:11.125+00	2024-12-07 02:09:11.125+00	52	2	gu0yt8nh00x	\N	1	{"createdAt":"2024-12-07T02:09:11.110Z","updatedAt":"2024-12-07T02:09:11.110Z","project_id":15,"id":14,"name":"Cầu Trần Quang Khải - Hải Phòng","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:09:07.405Z","updatedAt":"2024-12-07T02:09:07.405Z","id":15,"name":"Cầu Trần Quang Khải - Hải Phòng","sub_title":null,"description":null,"address":"Hải Phòng","total_amount":null,"createdById":null,"updatedById":null}}
+54	2024-12-07 02:09:11.142+00	2024-12-07 02:09:11.202+00	55	3	k3uiv7ac1lx	\N	1	{"status":200,"statusText":"OK","headers":{"x-request-id":"92f5e7b3-5167-42fe-bfff-7fb50fa55269","content-type":"application/json; charset=utf-8","content-length":"295","date":"Sat, 07 Dec 2024 02:09:11 GMT","connection":"close"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":82},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":14,\\"fund_name\\":\\"Cầu Trần Quang Khải - Hải Phòng\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2014","meta":{"fund_id":14,"fund_name":"Cầu Trần Quang Khải - Hải Phòng","user_id":null}}}
+56	2024-12-07 02:09:11.221+00	2024-12-07 02:09:11.247+00	56	8	k3uiv7ac1lx	\N	-1	{"message":"connect ECONNREFUSED 127.0.0.1:12000","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:12000\\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)","config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":82},"url":"http://localhost:12000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":14,\\"fund_name\\":\\"Cầu Trần Quang Khải - Hải Phòng\\",\\"user_id\\":\\"\\"}"},"code":"ECONNREFUSED","status":null}
+57	2024-12-07 02:09:11.239+00	2024-12-07 02:09:11.286+00	57	3	k3uiv7ac1lx	\N	1	{"status":200,"statusText":"OK","headers":{"x-request-id":"1c2a5a42-ec78-4044-927a-e539550278a8","content-type":"application/json; charset=utf-8","content-length":"314","date":"Sat, 07 Dec 2024 02:09:11 GMT","connection":"close"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":101},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":15,\\"fund_name\\":\\"Nhà văn hóa cộng đồng xã Phú Sơn - Quảng Ngãi\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2015","meta":{"fund_id":15,"fund_name":"Nhà văn hóa cộng đồng xã Phú Sơn - Quảng Ngãi","user_id":null}}}
+58	2024-12-07 02:09:11.278+00	2024-12-07 02:09:11.3+00	58	8	k3uiv7ac1lx	\N	-1	{"message":"connect ECONNREFUSED 127.0.0.1:12000","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:12000\\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)","config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":101},"url":"http://localhost:12000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":15,\\"fund_name\\":\\"Nhà văn hóa cộng đồng xã Phú Sơn - Quảng Ngãi\\",\\"user_id\\":\\"\\"}"},"code":"ECONNREFUSED","status":null}
+59	2024-12-07 02:09:15.352+00	2024-12-07 02:09:15.352+00	59	7	jt2v6492ck4	\N	1	{"createdAt":"2024-12-07T02:09:15.342Z","updatedAt":"2024-12-07T02:09:15.342Z","id":17,"name":"Khu tái định cư Trung An - An Giang","sub_title":null,"description":null,"address":"An Giang","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null}
+60	2024-12-07 02:09:19.545+00	2024-12-07 02:09:19.545+00	61	7	jt2v6492ck4	\N	1	{"createdAt":"2024-12-07T02:09:19.535Z","updatedAt":"2024-12-07T02:09:19.535Z","id":18,"name":"Trạm xá xã Phước Thọ - Bình Dương","sub_title":null,"description":null,"address":"Bình Dương","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null}
+61	2024-12-07 02:09:19.586+00	2024-12-07 02:09:19.586+00	60	2	gu0yt8nh00x	\N	1	{"createdAt":"2024-12-07T02:09:19.572Z","updatedAt":"2024-12-07T02:09:19.572Z","project_id":17,"id":16,"name":"Khu tái định cư Trung An - An Giang","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:09:15.342Z","updatedAt":"2024-12-07T02:09:15.342Z","id":17,"name":"Khu tái định cư Trung An - An Giang","sub_title":null,"description":null,"address":"An Giang","total_amount":null,"createdById":null,"updatedById":null}}
+64	2024-12-07 02:09:19.676+00	2024-12-07 02:09:19.699+00	64	8	k3uiv7ac1lx	\N	-1	{"message":"connect ECONNREFUSED 127.0.0.1:12000","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:12000\\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)","config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":82},"url":"http://localhost:12000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":16,\\"fund_name\\":\\"Khu tái định cư Trung An - An Giang\\",\\"user_id\\":\\"\\"}"},"code":"ECONNREFUSED","status":null}
+55	2024-12-07 02:09:11.184+00	2024-12-07 02:09:11.184+00	54	2	gu0yt8nh00x	\N	1	{"createdAt":"2024-12-07T02:09:11.167Z","updatedAt":"2024-12-07T02:09:11.167Z","project_id":16,"id":15,"name":"Nhà văn hóa cộng đồng xã Phú Sơn - Quảng Ngãi","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:09:11.072Z","updatedAt":"2024-12-07T02:09:11.072Z","id":16,"name":"Nhà văn hóa cộng đồng xã Phú Sơn - Quảng Ngãi","sub_title":null,"description":null,"address":"Quảng Ngãi","total_amount":null,"createdById":null,"updatedById":null}}
+63	2024-12-07 02:09:19.645+00	2024-12-07 02:09:19.645+00	62	2	gu0yt8nh00x	\N	1	{"createdAt":"2024-12-07T02:09:19.628Z","updatedAt":"2024-12-07T02:09:19.628Z","project_id":18,"id":17,"name":"Trạm xá xã Phước Thọ - Bình Dương","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T02:09:19.535Z","updatedAt":"2024-12-07T02:09:19.535Z","id":18,"name":"Trạm xá xã Phước Thọ - Bình Dương","sub_title":null,"description":null,"address":"Bình Dương","total_amount":null,"createdById":null,"updatedById":null}}
+62	2024-12-07 02:09:19.604+00	2024-12-07 02:09:19.659+00	63	3	k3uiv7ac1lx	\N	1	{"status":200,"statusText":"OK","headers":{"x-request-id":"99af5313-b3c7-4d1a-932a-86e85be8b647","content-type":"application/json; charset=utf-8","content-length":"295","date":"Sat, 07 Dec 2024 02:09:19 GMT","connection":"close"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":82},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":16,\\"fund_name\\":\\"Khu tái định cư Trung An - An Giang\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2016","meta":{"fund_id":16,"fund_name":"Khu tái định cư Trung An - An Giang","user_id":null}}}
+65	2024-12-07 02:09:19.691+00	2024-12-07 02:09:19.728+00	65	3	k3uiv7ac1lx	\N	1	{"status":200,"statusText":"OK","headers":{"x-request-id":"3875cf83-ef5c-4024-8065-2d87a2a05785","content-type":"application/json; charset=utf-8","content-length":"300","date":"Sat, 07 Dec 2024 02:09:19 GMT","connection":"close"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":87},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":17,\\"fund_name\\":\\"Trạm xá xã Phước Thọ - Bình Dương\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2017","meta":{"fund_id":17,"fund_name":"Trạm xá xã Phước Thọ - Bình Dương","user_id":null}}}
+66	2024-12-07 02:09:19.72+00	2024-12-07 02:09:19.74+00	66	8	k3uiv7ac1lx	\N	-1	{"message":"connect ECONNREFUSED 127.0.0.1:12000","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:12000\\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)","config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":87},"url":"http://localhost:12000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":17,\\"fund_name\\":\\"Trạm xá xã Phước Thọ - Bình Dương\\",\\"user_id\\":\\"\\"}"},"code":"ECONNREFUSED","status":null}
+67	2024-12-07 02:11:59.474+00	2024-12-07 02:11:59.474+00	67	9	nv447y93knz	\N	1	1
+68	2024-12-07 02:14:28.08+00	2024-12-07 02:14:28.08+00	68	9	nv447y93knz	\N	1	1
+69	2024-12-07 02:16:32.724+00	2024-12-07 02:16:32.724+00	69	9	nv447y93knz	\N	1	1
+70	2024-12-07 03:09:23.131+00	2024-12-07 03:09:23.131+00	70	9	nv447y93knz	\N	1	1
+71	2024-12-07 03:13:01.53+00	2024-12-07 03:13:01.53+00	71	9	nv447y93knz	\N	1	1
+72	2024-12-07 03:22:35.744+00	2024-12-07 03:22:35.744+00	72	9	nv447y93knz	\N	1	1
+73	2024-12-07 03:28:42.103+00	2024-12-07 03:28:42.103+00	73	7	jt2v6492ck4	\N	1	{"createdAt":"2024-12-07T03:28:42.056Z","updatedAt":"2024-12-07T03:28:42.056Z","id":19,"name":"Cầu Phong Châu - Phú Thọ","sub_title":null,"description":null,"address":"Phú Thọ","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null}
+74	2024-12-07 03:28:42.179+00	2024-12-07 03:28:42.179+00	74	2	gu0yt8nh00x	\N	1	{"createdAt":"2024-12-07T03:28:42.135Z","updatedAt":"2024-12-07T03:28:42.135Z","project_id":19,"id":18,"name":"Cầu Phong Châu - Phú Thọ","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T03:28:42.056Z","updatedAt":"2024-12-07T03:28:42.056Z","id":19,"name":"Cầu Phong Châu - Phú Thọ","sub_title":null,"description":null,"address":"Phú Thọ","total_amount":null,"createdById":null,"updatedById":null}}
+75	2024-12-07 03:28:42.206+00	2024-12-07 03:28:42.243+00	75	3	k3uiv7ac1lx	\N	1	{"status":200,"statusText":"OK","headers":{"x-request-id":"74d61b66-77d5-4697-a67c-c55624bd5cf6","content-type":"application/json; charset=utf-8","content-length":"285","date":"Sat, 07 Dec 2024 03:28:42 GMT","connection":"close"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":72},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":18,\\"fund_name\\":\\"Cầu Phong Châu - Phú Thọ\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2018","meta":{"fund_id":18,"fund_name":"Cầu Phong Châu - Phú Thọ","user_id":null}}}
+76	2024-12-07 03:28:42.235+00	2024-12-07 03:28:42.257+00	76	8	k3uiv7ac1lx	\N	-1	{"message":"connect ECONNREFUSED 127.0.0.1:12000","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:12000\\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)","config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":72},"url":"http://localhost:12000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":18,\\"fund_name\\":\\"Cầu Phong Châu - Phú Thọ\\",\\"user_id\\":\\"\\"}"},"code":"ECONNREFUSED","status":null}
+77	2024-12-07 03:29:28.578+00	2024-12-07 03:29:28.578+00	77	7	jt2v6492ck4	\N	1	{"createdAt":"2024-12-07T03:29:28.552Z","updatedAt":"2024-12-07T03:29:28.552Z","id":20,"name":"Làng Nũ","sub_title":null,"description":null,"address":"Làng Nũ","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null}
+78	2024-12-07 03:29:28.617+00	2024-12-07 03:29:28.617+00	78	2	gu0yt8nh00x	\N	1	{"createdAt":"2024-12-07T03:29:28.603Z","updatedAt":"2024-12-07T03:29:28.603Z","project_id":20,"id":19,"name":"Làng Nũ","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T03:29:28.552Z","updatedAt":"2024-12-07T03:29:28.552Z","id":20,"name":"Làng Nũ","sub_title":null,"description":null,"address":"Làng Nũ","total_amount":null,"createdById":null,"updatedById":null}}
+80	2024-12-07 03:29:28.652+00	2024-12-07 03:29:28.677+00	80	8	k3uiv7ac1lx	\N	-1	{"message":"connect ECONNREFUSED 127.0.0.1:12000","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:12000\\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)","config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":51},"url":"http://localhost:12000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":19,\\"fund_name\\":\\"Làng Nũ\\",\\"user_id\\":\\"\\"}"},"code":"ECONNREFUSED","status":null}
+79	2024-12-07 03:29:28.633+00	2024-12-07 03:29:28.667+00	79	3	k3uiv7ac1lx	\N	1	{"status":200,"statusText":"OK","headers":{"x-request-id":"6225b823-b2bc-47dc-be3e-8591b331b4dd","content-type":"application/json; charset=utf-8","content-length":"264","date":"Sat, 07 Dec 2024 03:29:28 GMT","connection":"close"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":51},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":19,\\"fund_name\\":\\"Làng Nũ\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2019","meta":{"fund_id":19,"fund_name":"Làng Nũ","user_id":null}}}
+81	2024-12-07 03:30:02.61+00	2024-12-07 03:30:02.61+00	81	7	jt2v6492ck4	\N	1	{"createdAt":"2024-12-07T03:30:02.584Z","updatedAt":"2024-12-07T03:30:02.584Z","id":21,"name":"Xây dựng lại nhà dân bị thiệt hại tại Hà Nội sau bão Yagi","sub_title":null,"description":null,"address":"Hà Nội","total_amount":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null}
+82	2024-12-07 03:30:02.642+00	2024-12-07 03:30:02.642+00	82	2	gu0yt8nh00x	\N	1	{"createdAt":"2024-12-07T03:30:02.629Z","updatedAt":"2024-12-07T03:30:02.629Z","project_id":21,"id":20,"name":"Xây dựng lại nhà dân bị thiệt hại tại Hà Nội sau bão Yagi","target_amount":null,"current_amount":0,"qr_code_url":null,"createdById":null,"updatedById":null,"createdBy":null,"updatedBy":null,"project":{"createdAt":"2024-12-07T03:30:02.584Z","updatedAt":"2024-12-07T03:30:02.584Z","id":21,"name":"Xây dựng lại nhà dân bị thiệt hại tại Hà Nội sau bão Yagi","sub_title":null,"description":null,"address":"Hà Nội","total_amount":null,"createdById":null,"updatedById":null}}
+83	2024-12-07 03:30:02.661+00	2024-12-07 03:30:02.696+00	83	3	k3uiv7ac1lx	\N	1	{"status":200,"statusText":"OK","headers":{"x-request-id":"837fea2b-3e14-43ae-880a-27e4710e76fd","content-type":"application/json; charset=utf-8","content-length":"331","date":"Sat, 07 Dec 2024 03:30:02 GMT","connection":"close"},"config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":118},"url":"http://localhost:13000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":20,\\"fund_name\\":\\"Xây dựng lại nhà dân bị thiệt hại tại Hà Nội sau bão Yagi\\",\\"user_id\\":\\"\\"}"},"data":{"success":true,"message":"Tạo mã QR chuyển tiền thành công.","data":"https://img.vietqr.io/image/970422-6098617062003-FFiaBLN.jpg?addInfo=GREENHOPE%20(HY%20VONG%20XANH)%20-%20MA%20QUY%3A%2020","meta":{"fund_id":20,"fund_name":"Xây dựng lại nhà dân bị thiệt hại tại Hà Nội sau bão Yagi","user_id":null}}}
+84	2024-12-07 03:30:02.684+00	2024-12-07 03:30:02.706+00	84	8	k3uiv7ac1lx	\N	-1	{"message":"connect ECONNREFUSED 127.0.0.1:12000","name":"Error","stack":"Error: connect ECONNREFUSED 127.0.0.1:12000\\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)","config":{"transitional":{"silentJSONParsing":true,"forcedJSONParsing":true,"clarifyTimeoutError":false},"transformRequest":[null],"transformResponse":[null],"timeout":5000,"xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN","maxContentLength":-1,"maxBodyLength":-1,"headers":{"Accept":"application/json, text/plain, */*","Content-Type":"application/json","User-Agent":"axios/0.26.1","Content-Length":118},"url":"http://localhost:12000/api/qr-donate","method":"post","params":{},"data":"{\\"fund_id\\":20,\\"fund_name\\":\\"Xây dựng lại nhà dân bị thiệt hại tại Hà Nội sau bão Yagi\\",\\"user_id\\":\\"\\"}"},"code":"ECONNREFUSED","status":null}
+85	2024-12-07 03:31:32.21+00	2024-12-07 03:31:32.21+00	85	9	nv447y93knz	\N	1	1
+86	2024-12-07 03:34:42.12+00	2024-12-07 03:34:42.12+00	86	9	nv447y93knz	\N	1	1
 \.
 
 
 --
--- TOC entry 3886 (class 0 OID 34010)
+-- TOC entry 3902 (class 0 OID 17097)
 -- Dependencies: 254
 -- Data for Name: kafka_configs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6071,20 +6403,20 @@ COPY public.kafka_configs (id, "createdAt", "updatedAt", group_id, client_id) FR
 
 
 --
--- TOC entry 3887 (class 0 OID 34015)
+-- TOC entry 3903 (class 0 OID 17102)
 -- Dependencies: 255
 -- Data for Name: kafka_topics; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.kafka_topics (id, "createdAt", "updatedAt", broker_host, topic_name, type) FROM stdin;
-d218894f-da15-4fda-abc3-a2d399df872a	2024-12-04 11:50:18.872+00	2024-12-04 11:50:18.872+00	localhost:9092	nocobase-events	producer
-3e06ef13-683e-42fa-9e6a-70a6e3fb19ce	2024-12-05 11:49:11.948+00	2024-12-05 11:49:11.948+00	localhost:9092	compileResponse	consumer
-2095e094-a756-4d23-86d8-ed67537e60aa	2024-12-05 11:49:24.85+00	2024-12-05 11:49:24.85+00	localhost:9092	transactionResponse	consumer
+2095e094-a756-4d23-86d8-ed67537e60aa	2024-12-05 11:49:24.85+00	2024-12-07 15:51:01.487+00	kafka-olp-dtu-2024:9092	transactionResponse	consumer
+3e06ef13-683e-42fa-9e6a-70a6e3fb19ce	2024-12-05 11:49:11.948+00	2024-12-07 15:51:04.551+00	kafka-olp-dtu-2024:9092	compileResponse	consumer
+d218894f-da15-4fda-abc3-a2d399df872a	2024-12-04 11:50:18.872+00	2024-12-07 15:51:07.259+00	kafka-olp-dtu-2024:9092	nocobase-events	producer
 \.
 
 
 --
--- TOC entry 3888 (class 0 OID 34020)
+-- TOC entry 3904 (class 0 OID 17107)
 -- Dependencies: 256
 -- Data for Name: migrations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6096,28 +6428,46 @@ COPY public.migrations (name) FROM stdin;
 
 
 --
--- TOC entry 3889 (class 0 OID 34023)
+-- TOC entry 3905 (class 0 OID 17110)
 -- Dependencies: 257
 -- Data for Name: projects; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.projects ("createdAt", "updatedAt", id, "createdById", "updatedById", name, sub_title, description, address, total_amount) FROM stdin;
-2024-12-04 14:43:51.156+00	2024-12-04 14:43:51.156+00	8	1	1	Dự án Khôi phục Cộng đồng Sau Thảm họa Đồng bằng Sông Cửu Long	Dự án nhằm khôi phục và cải thiện đời sống của cộng đồng bị ảnh hưởng bởi lũ lụt tại Đồng bằng Sông Cửu Long, thông qua việc xây dựng cơ sở hạ tầng, cung cấp hỗ trợ tài chính và đào tạo nghề.	Dự án này sẽ tập trung vào các hoạt động sau:\n\nXây dựng cơ sở hạ tầng: Nâng cấp đường giao thông, cầu cống và hệ thống thoát nước để giảm thiểu thiệt hại do lũ.\nHỗ trợ tài chính: Cung cấp khoản vay lãi suất thấp cho các hộ gia đình để khôi phục sản xuất nông nghiệp và kinh doanh nhỏ.\nĐào tạo nghề: Tổ chức các khóa đào tạo về kỹ năng nghề nghiệp cho thanh niên và người lớn tuổi để tạo cơ hội việc làm bền vững.\nChương trình bảo vệ môi trường: Khuyến khích người dân tham gia vào các hoạt động bảo vệ môi trường và phát triển bền vững.\nDự án sẽ được triển khai tại các xã bị ảnh hưởng nặng nề nhất, với sự tham gia của chính quyền địa phương và các tổ chức phi chính phủ.	Đồng bằng Sông Cửu Long, Việt Nam (cụ thể có thể là các tỉnh như An Giang, Đồng Tháp, Kiên Giang).	20000000000
+2024-12-07 02:08:45.744+00	2024-12-07 02:14:28.026+00	11	\N	1	Trường Tiểu học Tân Cương - Thái Nguyên	Trường học bị hư hại nặng trong trận lũ tháng 10, 2023	Trường Tiểu học Tân Cương, nằm ở một khu vực ven sông thuộc tỉnh Thái Nguyên, đã phải đối mặt với thiệt hại nghiêm trọng trong trận lũ lớn tháng 10 năm 2023.\n\nMưa lớn và mực nước dâng cao đã gây ra tình trạng ngập úng nghiêm trọng, khiến các lớp học, phòng chức năng, sân chơi và các cơ sở vật chất khác bị hư hại nặng nề. Các sách vở, thiết bị giảng dạy và máy móc của trường đều bị ngập, gây ảnh hưởng trực tiếp đến hoạt động giảng dạy và học tập. Hơn nữa, hệ thống thoát nước trong khuôn viên trường không được thiết kế phù hợp với tình hình mưa bão hiện tại, khiến trường dễ bị ngập trong những mùa mưa lớn.\n\nDự án tái thiết lại trường Tiểu học Tân Cương sẽ không chỉ bao gồm việc xây dựng lại các phòng học và cơ sở vật chất, mà còn có kế hoạch cải thiện hệ thống thoát nước, xây dựng bể chứa nước mưa và lắp đặt các thiết bị phòng chống lũ. Trường sẽ được thiết kế lại để có thể chịu đựng được các trận mưa lũ mạnh mẽ hơn trong tương lai, với mục tiêu bảo vệ an toàn cho học sinh và giáo viên trong suốt các mùa mưa bão	Tỉnh Thái Nguyên	30000000000
+2024-12-07 02:08:53.557+00	2024-12-07 02:16:32.679+00	12	\N	1	Nhà máy thủy điện Rào Trăng 3 - Thừa Thiên Huế	Nhà máy thủy điện bị tàn phá trong trận lũ lớn và sạt lở đất năm 2020.	Nhà máy thủy điện Rào Trăng 3, nằm tại huyện Phong Điền, tỉnh Thừa Thiên Huế, là một công trình quan trọng trong việc cung cấp điện cho khu vực miền Trung. Tuy nhiên, trong trận lũ lớn vào tháng 10 năm 2020, nhà máy này đã bị tàn phá nghiêm trọng.\n\nCác công trình phụ trợ, trạm biến áp, các đường ống dẫn nước và hệ thống máy móc bị hư hại nặng. Mưa lớn, cùng với sạt lở đất do dòng chảy mạnh từ các con suối, đã làm tê liệt hoàn toàn hoạt động của nhà máy. Việc tái thiết nhà máy yêu cầu phải xây dựng lại các công trình cơ sở hạ tầng, trong đó bao gồm các bờ đập, cống thoát nước và các hệ thống điện lực. Đồng thời, cần triển khai các biện pháp bảo vệ chống sạt lở và gia cố các yếu tố xây dựng để nhà máy có thể hoạt động ổn định trong các điều kiện thời tiết khắc nghiệt.\n\nDự án cũng sẽ tiến hành lắp đặt hệ thống giám sát và cảnh báo sớm để có thể phát hiện các dấu hiệu nguy hiểm như sạt lở đất và lũ lụt, nhằm đảm bảo an toàn cho công trình và khu vực lân cận.	Thừa Thiên Huế	200000000000
+2024-12-07 02:08:40.98+00	2024-12-07 11:02:47.8+00	10	\N	1	Đường Hồ Chí Minh đoạn qua Quảng Trị	Đoạn đường bị sạt lở nặng sau cơn bão số 5 năm 2023	Trong năm 2023, bão số 5 đã đổ bộ vào miền Trung, gây mưa lớn kéo dài và làm xảy ra sạt lở đất nghiêm trọng tại nhiều khu vực, trong đó có một đoạn quan trọng của tuyến đường Hồ Chí Minh đi qua tỉnh Quảng Trị. \n\nĐoạn đường này không chỉ là tuyến huyết mạch nối các tỉnh miền Trung mà còn có vai trò quan trọng trong việc vận chuyển hàng hóa, nhất là trong việc đảm bảo an ninh quốc phòng. Sau bão, nhiều đoạn đường bị vùi lấp hoàn toàn, đất đá che khuất mặt đường, gây ách tắc giao thông nghiêm trọng trong nhiều ngày. Mặc dù đã có một số nỗ lực để khắc phục tạm thời, nhưng công trình cần được xây dựng lại hoàn toàn để đảm bảo chất lượng, độ bền và khả năng chống chịu trước các hiện tượng thiên tai trong tương lai. \n\nViệc cải tạo sẽ bao gồm gia cố các khu vực dễ bị sạt lở, nâng cấp hệ thống thoát nước và sử dụng vật liệu chống mài mòn để tăng khả năng bền vững cho đường. Ngoài ra, sẽ có sự thiết kế lại với các công trình phụ trợ như hầm chui, cầu cạn để giúp giao thông không bị gián đoạn trong mùa mưa bão tiếp theo.	Đoạn đường Hồ Chí Minh bị sạt lở nặng	150000000000
+2024-12-07 02:09:07.405+00	2024-12-07 03:22:35.688+00	15	\N	1	Cầu Trần Quang Khải - Hải Phòng	Cầu bị hư hỏng sau cơn bão số 12 năm 2017	Cầu Trần Quang Khải là một tuyến giao thông quan trọng nối khu vực trung tâm Hải Phòng với các khu công nghiệp và khu dân cư phía Bắc thành phố.\n\nSau cơn bão số 12 vào năm 2017, cầu đã bị hư hại nghiêm trọng do sức gió mạnh và mưa lớn. Các trụ cầu bị ảnh hưởng nặng, kết cấu của cầu bị biến dạng, ảnh hưởng trực tiếp đến giao thông và an toàn của người dân. Cầu Trần Quang Khải là tuyến đường duy nhất có thể chịu tải trọng lớn, phục vụ cho vận chuyển hàng hóa và đi lại của người dân trong khu vực. Vì vậy, việc tái thiết cầu này đòi hỏi phải có một giải pháp kỹ thuật đặc biệt để bảo đảm độ bền vững và khả năng chống chịu trước các thảm họa tự nhiên trong tương lai.\n\n Cầu sẽ được thiết kế lại với cấu trúc vững chắc hơn, sử dụng bê tông cốt thép chất lượng cao và hệ thống dầm cầu chịu lực tốt hơn. Ngoài ra, việc gia cố hệ thống thoát nước dọc hai bên cầu và xây dựng các hầm chui tránh ách tắc giao thông cũng sẽ được triển khai. Tất cả những cải tiến này nhằm đảm bảo cầu có thể hoạt động ổn định và an toàn ngay cả trong điều kiện thời tiết khắc nghiệt.	Hải Phòng	100000000000
+2024-12-07 03:28:42.056+00	2024-12-07 03:31:32.149+00	19	\N	1	Cầu Phong Châu - Phú Thọ	Cầu Phong Châu bị hư hại do mưa lớn và lũ lụt sau cơn bão Yagi	Cầu Phong Châu là một công trình trọng yếu nối liền các huyện Phù Ninh và Thanh Sơn, đặc biệt là một tuyến giao thông quan trọng để vận chuyển nông sản và kết nối các khu vực miền núi với trung tâm tỉnh Phú Thọ.\n\nSau cơn bão Yagi, cầu đã bị thiệt hại nghiêm trọng khi mưa lớn kết hợp với lũ lụt dâng cao đã làm nước sông Phong Châu tràn qua, gây ra xói mòn và làm hư hỏng một số phần của cầu, đặc biệt là phần trụ cầu và mặt cầu bị nứt vỡ. Để đảm bảo an toàn và phục hồi giao thông, việc xây dựng lại cầu là rất cần thiết. Dự án tái thiết sẽ bao gồm việc gia cố trụ cầu bằng bê tông cốt thép, lắp đặt các kết cấu chịu lực tốt hơn và sử dụng các vật liệu chống mài mòn, chống chịu với môi trường khắc nghiệt của sông. \n\nCầu mới sẽ được thiết kế để có khả năng chống lại các trận lũ lụt tương tự trong tương lai, với hệ thống thoát nước và kiểm soát dòng chảy hợp lý để tránh hiện tượng xói mòn bờ cầu. Thêm vào đó, một số khu vực xung quanh cầu sẽ được gia cố và nâng cao để bảo vệ cầu khỏi sự ảnh hưởng của lũ lụt.	Phú Thọ	800000000000
+2024-12-06 23:59:39.548+00	2024-12-07 11:02:14.804+00	9	\N	1	Cầu Mây - Hà Giang	Cầu Mây bị sập do mưa lũ lớn	Cầu Mây là một trong những công trình cầu quan trọng, giúp kết nối các huyện vùng cao của tỉnh Hà Giang, đặc biệt là giữa huyện Mèo Vạc và các xã vùng sâu vùng xa. \n\nTrong trận mưa lũ nghiêm trọng vào tháng 8, 2023, mực nước tăng cao khiến khu vực xung quanh cầu bị ngập sâu, gây ra hiện tượng cuốn trôi đất và đá làm cầu bị sập hoàn toàn. Hơn 10.000 người dân ở các xã vùng cao đã bị cô lập, giao thông tê liệt hoàn toàn trong nhiều ngày liền. Cầu Mây đóng vai trò thiết yếu trong việc vận chuyển nông sản, lúa gạo và kết nối các dịch vụ y tế, giáo dục đến các cộng đồng dân cư. Việc tái thiết cầu không chỉ yêu cầu xây dựng lại cầu vững chắc với các vật liệu chịu lực cao, mà còn phải tính đến việc bảo vệ cầu khỏi các yếu tố tác động của thiên nhiên như mưa bão và sạt lở đất.\n\nMột kế hoạch gia cố bờ cầu và tăng cường hệ thống thoát nước sẽ giúp cầu có thể chịu đựng được các tác động từ thiên nhiên, giảm thiểu rủi ro cho người dân và giao thông trong tương lai.	Tỉnh Hà Giang, Việt Nam	70000000000
+2024-12-07 02:09:02.152+00	2024-12-07 03:13:01.449+00	14	\N	1	Đập thủy lợi Krông H’năng - Đắk Lắk	Đập thủy lợi bị hư hại do mưa lớn và lũ vào năm 2022	Đập thủy lợi Krông H’năng đóng vai trò quan trọng trong việc cung cấp nước tưới cho hàng nghìn hecta đất nông nghiệp tại Đắk Lắk, đặc biệt là cho các vùng trồng cà phê và tiêu. \n\nTuy nhiên, vào năm 2022, trận mưa lớn kéo dài và lũ lụt đã làm đập này bị hư hại nghiêm trọng. Một phần bờ đập bị sạt lở, kết cấu bê tông bị vỡ nứt, ảnh hưởng trực tiếp đến việc điều tiết nước và bảo vệ các vùng nông nghiệp.\n\nSự cố này đã gây ra khủng hoảng cho hàng nghìn nông dân trong vùng khi mùa màng không thể tiếp tục được tưới nước đầy đủ. Dự án tái thiết sẽ bao gồm việc gia cố bờ đập, tái thiết các cấu kiện bê tông bị hư hỏng và nâng cấp hệ thống điều tiết nước để đập có thể hoạt động hiệu quả trong mùa lũ. Bên cạnh đó, cần xây dựng thêm các công trình phụ trợ như các khu trữ nước tạm thời để đảm bảo nguồn nước cho sản xuất nông nghiệp, cũng như một hệ thống cảnh báo sớm để giám sát tình hình của đập trong mùa mưa. \n\nCông trình sẽ sử dụng vật liệu chống mài mòn và có khả năng chịu lực tốt hơn, đặc biệt là khi phải đối mặt với những trận mưa lũ ngày càng dữ dội.	Tỉnh Đắk Lắk	85000000000
+2024-12-07 02:08:57.625+00	2024-12-07 03:09:23.051+00	13	\N	1	Cải tạo lại khu dân cư Cửa Đại - Quảng Nam	Khu dân cư bị thiệt hại do bão số 9 (2020)	Cửa Đại, thuộc tỉnh Quảng Nam, là một khu vực ven biển chịu ảnh hưởng nặng nề từ các cơn bão, đặc biệt là bão số 9 vào năm 2020.\n\nTrong trận bão này, sóng biển lớn đã cuốn trôi nhiều ngôi nhà của người dân, xói mòn đất đai, gây thiệt hại lớn về tài sản và gây hoang mang cho cộng đồng. Việc tái thiết khu dân cư Cửa Đại yêu cầu không chỉ là xây dựng lại các ngôi nhà bị hư hại, mà còn phải giải quyết vấn đề xói lở bờ biển và ngập úng trong mùa mưa bão. Các biện pháp bảo vệ bờ biển, như xây dựng đê chắn sóng, kè biển và các công trình phòng chống xói mòn, sẽ được triển khai để bảo vệ khu dân cư khỏi các tác động của thiên tai. Bên cạnh đó, các ngôi nhà mới sẽ được xây dựng bằng vật liệu chống chịu bão và sóng, với hệ thống điện và nước được thiết kế lại để đảm bảo an toàn trong các tình huống khẩn cấp.\n\nCác tiện ích công cộng như trường học, trạm y tế và chợ sẽ được nâng cấp để phục vụ nhu cầu sinh hoạt của người dân trong khu vực.	Quảng Nam	120000000000
+2024-12-07 03:29:28.552+00	2024-12-07 11:06:14.576+00	20	\N	1	Làng Nũ	Làng Nũ bị ảnh hưởng nặng nề nhiều nhà dân san lấp do sạt lỡ.\n	Làng Nũ là một làng quê yên bình, nơi người dân chủ yếu sinh sống nhờ nông nghiệp và thủ công mỹ nghệ.\n\n Tuy nhiên, sau cơn bão Yagi, khu vực này đã phải đối mặt với những thiệt hại lớn, đặc biệt là trong việc mất mát nhà cửa và cơ sở vật chất. Gió bão mạnh đã làm tốc mái hàng trăm ngôi nhà, trong khi mưa lớn gây ngập lụt nhiều khu vực, làm hư hại không chỉ nhà cửa mà còn các công trình công cộng như trường học và trạm y tế. Kinh tế địa phương đã bị ảnh hưởng nặng nề, nhiều người dân không thể sinh hoạt bình thường và thiếu thốn lương thực. Dự án tái thiết làng Nũ sẽ bao gồm việc xây dựng lại nhà ở cho người dân với các vật liệu chịu bão, có khả năng chống mưa lũ mạnh mẽ, đồng thời cải tạo lại các cơ sở hạ tầng như trường học, chợ và các công trình công cộng khác.\n\nNhà dân sẽ được xây dựng với nền móng cao, cửa sổ và mái nhà được thiết kế đặc biệt để chịu được gió mạnh và mưa lớn. Các tuyến đường trong làng sẽ được nâng cấp, đồng thời hệ thống thoát nước và kè chống lũ cũng sẽ được cải thiện để ngăn ngập lụt trong những mùa mưa bão tiếp theo. Ngoài ra, dự án còn bao gồm các chương trình hỗ trợ người dân phục hồi kinh tế và trồng lại cây trồng nông sản để vực dậy nền kinh tế địa phương.	Làng Nũ	50000000000
 \.
 
 
 --
--- TOC entry 3891 (class 0 OID 34029)
+-- TOC entry 3907 (class 0 OID 17116)
 -- Dependencies: 259
 -- Data for Name: proposes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.proposes ("createdAt", "updatedAt", id, "createdById", "updatedById", name, status, address) FROM stdin;
+2024-12-06 23:59:19.677+00	2024-12-07 01:28:29.012+00	10	1	1	Cầu Mây - Hà Giang	APPROVED	Tỉnh Hà Giang, Việt Nam
+2024-12-07 02:05:28.933+00	2024-12-07 02:08:45.713+00	12	1	1	Trường Tiểu học Tân Cương - Thái Nguyên	APPROVED	Tỉnh Thái Nguyên
+2024-12-07 02:05:44.066+00	2024-12-07 02:08:53.525+00	13	1	1	Nhà máy thủy điện Rào Trăng 3 - Thừa Thiên Huế	APPROVED	Thừa Thiên Huế
+2024-12-07 02:05:58.093+00	2024-12-07 02:08:57.593+00	14	1	1	Cải tạo lại khu dân cư Cửa Đại - Quảng Nam	APPROVED	Quảng Nam
+2024-12-07 02:06:27.587+00	2024-12-07 02:09:02.115+00	15	1	1	Đập thủy lợi Krông H’năng - Đắk Lắk	APPROVED	Tỉnh Đắk Lắk
+2024-12-07 02:06:38.449+00	2024-12-07 02:09:07.371+00	16	1	1	Cầu Trần Quang Khải - Hải Phòng	APPROVED	Hải Phòng
+2024-12-07 03:28:34.585+00	2024-12-07 03:28:41.877+00	20	1	1	Cầu Phong Châu - Phú Thọ	APPROVED	Phú Thọ
+2024-12-07 03:29:22.373+00	2024-12-07 03:29:28.516+00	21	1	1	Làng Nũ	APPROVED	Làng Nũ
+2024-12-07 03:29:54.633+00	2024-12-07 03:37:39.496+00	22	1	1	Xây dựng lại nhà dân bị thiệt hại tại Hà Nội sau bão Yagi	PENDING	Hà Nội
+2024-12-07 02:05:17.638+00	2024-12-07 11:01:25.8+00	11	1	1	Đường Hồ Chí Minh đoạn qua Quảng Trị	APPROVED	Đoạn đường bị sạt lở nặng sau cơn bão.
 \.
 
 
 --
--- TOC entry 3893 (class 0 OID 34036)
+-- TOC entry 3909 (class 0 OID 17123)
 -- Dependencies: 261
 -- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6130,7 +6480,7 @@ COPY public.roles ("createdAt", "updatedAt", name, title, description, strategy,
 
 
 --
--- TOC entry 3894 (class 0 OID 34044)
+-- TOC entry 3910 (class 0 OID 17131)
 -- Dependencies: 262
 -- Data for Name: rolesResources; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6140,7 +6490,7 @@ COPY public."rolesResources" (id, "createdAt", "updatedAt", "roleName", name, "u
 
 
 --
--- TOC entry 3895 (class 0 OID 34049)
+-- TOC entry 3911 (class 0 OID 17136)
 -- Dependencies: 263
 -- Data for Name: rolesResourcesActions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6150,7 +6500,7 @@ COPY public."rolesResourcesActions" (id, "createdAt", "updatedAt", "rolesResourc
 
 
 --
--- TOC entry 3897 (class 0 OID 34056)
+-- TOC entry 3913 (class 0 OID 17143)
 -- Dependencies: 265
 -- Data for Name: rolesResourcesScopes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6160,7 +6510,7 @@ COPY public."rolesResourcesScopes" (id, "createdAt", "updatedAt", key, name, "re
 
 
 --
--- TOC entry 3900 (class 0 OID 34063)
+-- TOC entry 3916 (class 0 OID 17150)
 -- Dependencies: 268
 -- Data for Name: rolesUischemas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6192,24 +6542,27 @@ COPY public."rolesUischemas" ("createdAt", "updatedAt", "roleName", "uiSchemaXUi
 2024-12-04 14:49:12.491+00	2024-12-04 14:49:12.491+00	member	41zfs8bogys
 2024-12-04 14:51:12.761+00	2024-12-04 14:51:12.761+00	admin	5vjhonzhs45
 2024-12-04 14:51:12.765+00	2024-12-04 14:51:12.765+00	member	5vjhonzhs45
+2024-12-07 00:17:09.528+00	2024-12-07 00:17:09.528+00	admin	nmo9mk3zqna
+2024-12-07 00:17:09.534+00	2024-12-07 00:17:09.534+00	member	nmo9mk3zqna
 \.
 
 
 --
--- TOC entry 3901 (class 0 OID 34068)
+-- TOC entry 3917 (class 0 OID 17155)
 -- Dependencies: 269
 -- Data for Name: rolesUsers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."rolesUsers" ("createdAt", "updatedAt", "default", "roleName", "userId") FROM stdin;
-2024-12-04 09:18:59.892+00	2024-12-04 09:18:59.892+00	\N	member	1
-2024-12-04 09:18:59.963+00	2024-12-04 09:18:59.963+00	\N	admin	1
-2024-12-04 09:18:59.963+00	2024-12-04 09:18:59.967+00	t	root	1
+2024-12-04 09:18:59.963+00	2024-12-07 01:07:09.562+00	f	admin	1
+2024-12-04 09:18:59.892+00	2024-12-07 01:07:25.511+00	f	member	1
+2024-12-04 09:18:59.963+00	2024-12-07 01:07:25.514+00	t	root	1
+2024-12-07 11:24:24.341+00	2024-12-07 11:24:24.341+00	\N	member	2
 \.
 
 
 --
--- TOC entry 3902 (class 0 OID 34071)
+-- TOC entry 3918 (class 0 OID 17158)
 -- Dependencies: 270
 -- Data for Name: sequences; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -6219,18 +6572,19 @@ COPY public.sequences (id, "createdAt", "updatedAt", collection, field, key, cur
 
 
 --
--- TOC entry 3929 (class 0 OID 34431)
--- Dependencies: 297
+-- TOC entry 3920 (class 0 OID 17164)
+-- Dependencies: 272
 -- Data for Name: smart_contracts; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.smart_contracts (id, "createdAt", "updatedAt", script, abi, bytecode) FROM stdin;
+COPY public.smart_contracts (id, "createdAt", "updatedAt", script, abi, bytecode, "contractAddress") FROM stdin;
+65020f58-dbeb-4bcc-941f-366cc4120ac3	2024-12-07 11:09:58.648+00	2024-12-07 15:55:10.159+00	pragma solidity >=0.7.0 <0.9.0;\n\ncontract TransactionManager {\n  struct Transaction {\n    string transaction_code;\n    uint256 amount;\n    string direction;\n    uint256 datetime;\n  }\n\n  Transaction[] public transactions;\n\n  function createTransactions(\n    Transaction[] memory _transactions\n  ) public {\n    for (uint i = 0; i < _transactions.length; i++) {\n      transactions.push(\n        Transaction({\n          transaction_code: _transactions[i].transaction_code,\n          amount: _transactions[i].amount,\n          direction: _transactions[i].direction,\n          datetime: block.timestamp\n        })\n      );\n    }\n  }\n\n  function getAllTransactions() public view returns (Transaction[] memory) {\n    return transactions;\n  }\n}	[{"inputs":[{"components":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"internalType":"struct TransactionManager.Transaction[]","name":"_transactions","type":"tuple[]"}],"name":"createTransactions","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getAllTransactions","outputs":[{"components":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"internalType":"struct TransactionManager.Transaction[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"transactions","outputs":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"stateMutability":"view","type":"function"}]	0x6080604052348015600f57600080fd5b50610e108061001f6000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c806327506f53146100465780632ef8e92d146100645780639ace38c214610080575b600080fd5b61004e6100b3565b60405161005b9190610674565b60405180910390f35b61007e600480360381019061007991906109ab565b61024a565b005b61009a600480360381019061009591906109f4565b61034f565b6040516100aa9493929190610a7a565b60405180910390f35b60606000805480602002602001604051908101604052809291908181526020016000905b82821015610241578382906000526020600020906004020160405180608001604052908160008201805461010a90610afc565b80601f016020809104026020016040519081016040528092919081815260200182805461013690610afc565b80156101835780601f1061015857610100808354040283529160200191610183565b820191906000526020600020905b81548152906001019060200180831161016657829003601f168201915b50505050508152602001600182015481526020016002820180546101a690610afc565b80601f01602080910402602001604051908101604052809291908181526020018280546101d290610afc565b801561021f5780601f106101f45761010080835404028352916020019161021f565b820191906000526020600020905b81548152906001019060200180831161020257829003601f168201915b50505050508152602001600382015481525050815260200190600101906100d7565b50505050905090565b60005b815181101561034b576000604051806080016040528084848151811061027657610275610b2d565b5b602002602001015160000151815260200184848151811061029a57610299610b2d565b5b60200260200101516020015181526020018484815181106102be576102bd610b2d565b5b602002602001015160400151815260200142815250908060018154018082558091505060019003906000526020600020906004020160009091909190915060008201518160000190816103119190610d08565b506020820151816001015560408201518160020190816103319190610d08565b50606082015181600301555050808060010191505061024d565b5050565b6000818154811061035f57600080fd5b906000526020600020906004020160009150905080600001805461038290610afc565b80601f01602080910402602001604051908101604052809291908181526020018280546103ae90610afc565b80156103fb5780601f106103d0576101008083540402835291602001916103fb565b820191906000526020600020905b8154815290600101906020018083116103de57829003601f168201915b50505050509080600101549080600201805461041690610afc565b80601f016020809104026020016040519081016040528092919081815260200182805461044290610afc565b801561048f5780601f106104645761010080835404028352916020019161048f565b820191906000526020600020905b81548152906001019060200180831161047257829003601f168201915b5050505050908060030154905084565b600081519050919050565b600082825260208201905092915050565b6000819050602082019050919050565b600081519050919050565b600082825260208201905092915050565b60005b838110156105055780820151818401526020810190506104ea565b60008484015250505050565b6000601f19601f8301169050919050565b600061052d826104cb565b61053781856104d6565b93506105478185602086016104e7565b61055081610511565b840191505092915050565b6000819050919050565b61056e8161055b565b82525050565b600060808301600083015184820360008601526105918282610522565b91505060208301516105a66020860182610565565b50604083015184820360408601526105be8282610522565b91505060608301516105d36060860182610565565b508091505092915050565b60006105ea8383610574565b905092915050565b6000602082019050919050565b600061060a8261049f565b61061481856104aa565b935083602082028501610626856104bb565b8060005b85811015610662578484038952815161064385826105de565b945061064e836105f2565b925060208a0199505060018101905061062a565b50829750879550505050505092915050565b6000602082019050818103600083015261068e81846105ff565b905092915050565b6000604051905090565b600080fd5b600080fd5b600080fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6106e782610511565b810181811067ffffffffffffffff82111715610706576107056106af565b5b80604052505050565b6000610719610696565b905061072582826106de565b919050565b600067ffffffffffffffff821115610745576107446106af565b5b602082029050602081019050919050565b600080fd5b600080fd5b600080fd5b600080fd5b600067ffffffffffffffff821115610785576107846106af565b5b61078e82610511565b9050602081019050919050565b82818337600083830152505050565b60006107bd6107b88461076a565b61070f565b9050828152602081018484840111156107d9576107d8610765565b5b6107e484828561079b565b509392505050565b600082601f830112610801576108006106aa565b5b81356108118482602086016107aa565b91505092915050565b6108238161055b565b811461082e57600080fd5b50565b6000813590506108408161081a565b92915050565b60006080828403121561085c5761085b61075b565b5b610866608061070f565b9050600082013567ffffffffffffffff81111561088657610885610760565b5b610892848285016107ec565b60008301525060206108a684828501610831565b602083015250604082013567ffffffffffffffff8111156108ca576108c9610760565b5b6108d6848285016107ec565b60408301525060606108ea84828501610831565b60608301525092915050565b60006109096109048461072a565b61070f565b9050808382526020820190506020840283018581111561092c5761092b610756565b5b835b8181101561097357803567ffffffffffffffff811115610951576109506106aa565b5b80860161095e8982610846565b8552602085019450505060208101905061092e565b5050509392505050565b600082601f830112610992576109916106aa565b5b81356109a28482602086016108f6565b91505092915050565b6000602082840312156109c1576109c06106a0565b5b600082013567ffffffffffffffff8111156109df576109de6106a5565b5b6109eb8482850161097d565b91505092915050565b600060208284031215610a0a57610a096106a0565b5b6000610a1884828501610831565b91505092915050565b600082825260208201905092915050565b6000610a3d826104cb565b610a478185610a21565b9350610a578185602086016104e7565b610a6081610511565b840191505092915050565b610a748161055b565b82525050565b60006080820190508181036000830152610a948187610a32565b9050610aa36020830186610a6b565b8181036040830152610ab58185610a32565b9050610ac46060830184610a6b565b95945050505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b60006002820490506001821680610b1457607f821691505b602082108103610b2757610b26610acd565b5b50919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b60008190508160005260206000209050919050565b60006020601f8301049050919050565b600082821b905092915050565b600060088302610bbe7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff82610b81565b610bc88683610b81565b95508019841693508086168417925050509392505050565b6000819050919050565b6000610c05610c00610bfb8461055b565b610be0565b61055b565b9050919050565b6000819050919050565b610c1f83610bea565b610c33610c2b82610c0c565b848454610b8e565b825550505050565b600090565b610c48610c3b565b610c53818484610c16565b505050565b5b81811015610c7757610c6c600082610c40565b600181019050610c59565b5050565b601f821115610cbc57610c8d81610b5c565b610c9684610b71565b81016020851015610ca5578190505b610cb9610cb185610b71565b830182610c58565b50505b505050565b600082821c905092915050565b6000610cdf60001984600802610cc1565b1980831691505092915050565b6000610cf88383610cce565b9150826002028217905092915050565b610d11826104cb565b67ffffffffffffffff811115610d2a57610d296106af565b5b610d348254610afc565b610d3f828285610c7b565b600060209050601f831160018114610d725760008415610d60578287015190505b610d6a8582610cec565b865550610dd2565b601f198416610d8086610b5c565b60005b82811015610da857848901518255600182019150602085019450602081019050610d83565b86831015610dc55784890151610dc1601f891682610cce565b8355505b6001600288020188555050505b50505050505056fea26469706673582212200075dd7affc3db13968f733fc2d0d856fa06859a32028931d36e09eafdafa9c064736f6c634300081c0033	0xD3aA556287Afe63102e5797BFDDd2A1E8DbB3eA5
 \.
 
 
 --
--- TOC entry 3904 (class 0 OID 34082)
--- Dependencies: 272
+-- TOC entry 3921 (class 0 OID 17169)
+-- Dependencies: 273
 -- Data for Name: storages; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6240,8 +6594,8 @@ COPY public.storages (id, "createdAt", "updatedAt", title, name, type, options, 
 
 
 --
--- TOC entry 3907 (class 0 OID 34095)
--- Dependencies: 275
+-- TOC entry 3924 (class 0 OID 17182)
+-- Dependencies: 276
 -- Data for Name: systemSettings; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6251,21 +6605,42 @@ COPY public."systemSettings" (id, "createdAt", "updatedAt", title, "showLogoOnly
 
 
 --
--- TOC entry 3909 (class 0 OID 34105)
--- Dependencies: 277
+-- TOC entry 3926 (class 0 OID 17192)
+-- Dependencies: 278
 -- Data for Name: t_1vx9kyb7k1h; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.t_1vx9kyb7k1h ("createdAt", "updatedAt", f_3gyw0m841j1, f_zvvclxyl9dz) FROM stdin;
-2024-12-04 14:43:51.159+00	2024-12-04 14:43:51.159+00	8	11
-2024-12-04 14:43:51.159+00	2024-12-04 14:43:51.159+00	8	12
-2024-12-04 14:43:51.159+00	2024-12-04 14:43:51.159+00	8	13
+2024-12-07 10:52:42.367+00	2024-12-07 10:52:42.367+00	9	41
+2024-12-07 10:52:42.367+00	2024-12-07 10:52:42.367+00	9	42
+2024-12-07 10:52:42.367+00	2024-12-07 10:52:42.367+00	9	43
+2024-12-07 10:53:58.462+00	2024-12-07 10:53:58.462+00	10	44
+2024-12-07 10:53:58.462+00	2024-12-07 10:53:58.462+00	10	45
+2024-12-07 10:54:27.669+00	2024-12-07 10:54:27.669+00	11	46
+2024-12-07 10:54:27.669+00	2024-12-07 10:54:27.669+00	11	47
+2024-12-07 10:55:55.712+00	2024-12-07 10:55:55.712+00	12	48
+2024-12-07 10:55:55.712+00	2024-12-07 10:55:55.712+00	12	49
+2024-12-07 10:55:55.712+00	2024-12-07 10:55:55.712+00	12	50
+2024-12-07 10:56:53.5+00	2024-12-07 10:56:53.5+00	13	52
+2024-12-07 10:56:53.5+00	2024-12-07 10:56:53.5+00	13	54
+2024-12-07 10:56:53.5+00	2024-12-07 10:56:53.5+00	13	53
+2024-12-07 10:58:15.769+00	2024-12-07 10:58:15.769+00	14	55
+2024-12-07 10:58:15.769+00	2024-12-07 10:58:15.769+00	14	56
+2024-12-07 10:58:15.769+00	2024-12-07 10:58:15.769+00	14	57
+2024-12-07 10:59:12.268+00	2024-12-07 10:59:12.268+00	15	58
+2024-12-07 10:59:12.269+00	2024-12-07 10:59:12.269+00	15	59
+2024-12-07 11:00:08.859+00	2024-12-07 11:00:08.859+00	19	60
+2024-12-07 11:00:08.859+00	2024-12-07 11:00:08.859+00	19	61
+2024-12-07 11:00:08.859+00	2024-12-07 11:00:08.859+00	19	62
+2024-12-07 11:00:29.838+00	2024-12-07 11:00:29.838+00	20	63
+2024-12-07 11:00:29.838+00	2024-12-07 11:00:29.838+00	20	64
+2024-12-07 11:00:29.838+00	2024-12-07 11:00:29.838+00	20	65
 \.
 
 
 --
--- TOC entry 3910 (class 0 OID 34108)
--- Dependencies: 278
+-- TOC entry 3927 (class 0 OID 17195)
+-- Dependencies: 279
 -- Data for Name: t_54opx8rhenu; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6274,29 +6649,59 @@ COPY public.t_54opx8rhenu ("createdAt", "updatedAt", f_jr6kifdk7it, f_ra5knzz1x2
 
 
 --
--- TOC entry 3911 (class 0 OID 34111)
--- Dependencies: 279
+-- TOC entry 3928 (class 0 OID 17198)
+-- Dependencies: 280
 -- Data for Name: tokenBlacklist; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."tokenBlacklist" (id, "createdAt", "updatedAt", token, expiration) FROM stdin;
+1	2024-12-07 11:24:31.172+00	2024-12-07 11:24:31.172+00	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTczMzI5OTc1NSwiZXhwIjoxNzMzOTA0NTU1fQ.UKgHFUCEDN-Wtcsi5IZ-BKBy43sIcrrIFHNNL-c-an0	2024-12-11 08:09:15+00
+2	2024-12-07 11:25:06.369+00	2024-12-07 11:25:06.369+00	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczMzU3MDY4MSwiZXhwIjoxNzM0MTc1NDgxfQ.X3NGifSEhaQRlbquPEoTi1b9jx30NqdrUfn3ETf48m0	2024-12-14 11:24:41+00
 \.
 
 
 --
--- TOC entry 3913 (class 0 OID 34115)
--- Dependencies: 281
+-- TOC entry 3930 (class 0 OID 17202)
+-- Dependencies: 282
 -- Data for Name: transactions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.transactions ("createdAt", "updatedAt", id, "createdById", "updatedById", transaction_code, amount, direction, fund_id, from_account_no, from_account_name, from_bank_name) FROM stdin;
-2024-12-04 21:55:00.83+00	2024-12-04 21:55:00.839+00	1	1	1	FD3263545345	9500000000	INCOMING	7	160720031806	DUY KHANH	VCB
+2024-12-07 03:50:38.769+00	2024-12-07 03:53:31.806+00	3	1	1	MB12345678	5000000000	INCOMING	8	001234567890	Nguyễn Văn A	Vietcombank
+2024-12-07 03:52:18.636+00	2024-12-07 03:53:38.447+00	5	1	1	MB34567890	35000000000	INCOMING	8	002345678901	Trần Thị B	Techcombank
+2024-12-07 03:51:01.417+00	2024-12-07 03:53:43.323+00	4	1	1	MB23456789	2000000000	OUTCOMING	8	\N	\N	\N
+2024-12-07 03:54:36.412+00	2024-12-07 03:54:36.415+00	6	1	1	MB45678901	4000000000	INCOMING	8	003456789012	Phan Minh C	VietinBank
+2024-12-07 03:55:28.895+00	2024-12-07 03:55:28.898+00	7	1	1	MB56789012	6500000000	INCOMING	9	004567890123	Nguyễn Thị D	Vietcombank
+2024-12-07 03:55:59.781+00	2024-12-07 03:55:59.783+00	8	1	1	MB67890123	1500000000	OUTCOMING	9	\N	\N	\N
+2024-12-07 03:56:28.054+00	2024-12-07 03:56:28.057+00	9	1	1	MB78901234	2200000000	INCOMING	9	005678901234	Lê Minh E	Techcombank
+2024-12-07 03:56:54.274+00	2024-12-07 03:56:54.277+00	10	1	1	MB89012345	3000000000	INCOMING	9	006789012345	Phan Văn F	VietinBank
+2024-12-07 03:57:24.846+00	2024-12-07 03:57:45.887+00	11	1	1	MB90123456	4200000000	OUTCOMING	9	\N	\N	\N
+2024-12-07 03:58:49.811+00	2024-12-07 03:58:49.813+00	12	1	1	MB22334455	7500000000	INCOMING	10	007890123456	Trần Thị G	Vietcombank
+2024-12-07 03:59:22.504+00	2024-12-07 03:59:22.506+00	13	1	1	MB11223344	3000000000	OUTCOMING	10	\N	\N	\N
+2024-12-07 03:59:47.116+00	2024-12-07 03:59:47.119+00	14	1	1	MB44556677	6200000000	INCOMING	10	008901234567	Lê Thị H	Techcombank
+2024-12-07 04:00:08.444+00	2024-12-07 04:00:08.449+00	15	1	1	MB33445566	4000000000	OUTCOMING	10	\N	\N	\N
+2024-12-07 04:00:38.454+00	2024-12-07 04:00:38.456+00	16	1	1	MB55667788	5000000000	INCOMING	11	009012345678	Nguyễn Văn I	VietinBank
+2024-12-07 04:01:19.355+00	2024-12-07 04:01:19.357+00	18	1	1	MB77889900	3700000000	INCOMING	11	010123456789	Phan Thị J	Vietcombank
+2024-12-07 04:00:59.025+00	2024-12-07 04:01:27.192+00	17	1	1	MB66778899	2500000000	OUTCOMING	11	\N	\N	\N
+2024-12-07 04:04:36.625+00	2024-12-07 04:04:36.629+00	19	1	1	MB88990011	1800000000	OUTCOMING	11	\N	\N	\N
+2024-12-07 04:05:03.264+00	2024-12-07 04:05:03.267+00	20	1	1	MB99001122	2200000000	INCOMING	11	011234567890	Trần Minh K	Techcombank
 \.
 
 
 --
--- TOC entry 3915 (class 0 OID 34122)
+-- TOC entry 3931 (class 0 OID 17208)
 -- Dependencies: 283
+-- Data for Name: transactions_config; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.transactions_config ("createdAt", "updatedAt", id, "createdById", "updatedById", "contractAddress", private_key, provider, abi) FROM stdin;
+2024-12-07 15:56:33.814+00	2024-12-07 15:56:33.814+00	2	1	1	0xD3aA556287Afe63102e5797BFDDd2A1E8DbB3eA5	0x395df67f0c2d2d9fe1ad08d1bc8b6627011959b79c53d7dd6a3536a33ab8a4fd	http://ganache-olp-dtu-2024:8545	[{"inputs":[{"components":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"internalType":"struct TransactionManager.Transaction[]","name":"_transactions","type":"tuple[]"}],"name":"createTransactions","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getAllTransactions","outputs":[{"components":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"internalType":"struct TransactionManager.Transaction[]","name":"","type":"tuple[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"transactions","outputs":[{"internalType":"string","name":"transaction_code","type":"string"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"string","name":"direction","type":"string"},{"internalType":"uint256","name":"datetime","type":"uint256"}],"stateMutability":"view","type":"function"}]
+\.
+
+
+--
+-- TOC entry 3934 (class 0 OID 17215)
+-- Dependencies: 286
 -- Data for Name: uiSchemaServerHooks; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6305,18 +6710,19 @@ COPY public."uiSchemaServerHooks" (id, type, collection, field, method, params, 
 
 
 --
--- TOC entry 3917 (class 0 OID 34128)
--- Dependencies: 285
+-- TOC entry 3936 (class 0 OID 17221)
+-- Dependencies: 288
 -- Data for Name: uiSchemaTemplates; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."uiSchemaTemplates" ("createdAt", "updatedAt", key, name, "componentName", "associationName", "resourceName", "collectionName", "dataSourceKey", uid) FROM stdin;
+2024-12-07 02:08:10.14+00	2024-12-07 02:08:10.14+00	1nkkcob03hi	Yêu cầu xây dựng_Table	Table	\N	\N	proposes	main	iiek91fm1lg
 \.
 
 
 --
--- TOC entry 3918 (class 0 OID 34133)
--- Dependencies: 286
+-- TOC entry 3937 (class 0 OID 17226)
+-- Dependencies: 289
 -- Data for Name: uiSchemaTreePath; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -6361,10 +6767,6 @@ t39dtlxijbw	t39dtlxijbw	0	f	properties	\N
 7506cogk9zp	t39dtlxijbw	1	\N	\N	1
 ajlhev8hgld	ajlhev8hgld	0	f	properties	\N
 iiek91fm1lg	ajlhev8hgld	2	\N	\N	\N
-9j3mrze0kdh	ajlhev8hgld	3	\N	\N	\N
-r5ux2dhnfq1	ajlhev8hgld	4	\N	\N	\N
-ulw06kfwwn3	ajlhev8hgld	5	\N	\N	\N
-wcib2cpt11z	ajlhev8hgld	6	\N	\N	\N
 xwts1ggw479	xwts1ggw479	0	f	properties	\N
 9yos6i0cjm3	9yos6i0cjm3	0	t	properties	\N
 n3yigbe0k9v	9yos6i0cjm3	1	\N	\N	1
@@ -6404,64 +6806,36 @@ nocobase-admin-menu	eoxofxze047	3	\N	\N	\N
 073buw1m70l	iqddf9bwww2	3	\N	\N	\N
 nocobase-admin-menu	iqddf9bwww2	4	\N	\N	\N
 p3ls96regvr	p3ls96regvr	0	f	properties	\N
-rjo62izvmhu	rjo62izvmhu	0	t	properties	\N
-bljegelqea8	rjo62izvmhu	1	\N	\N	1
-8cbzsnycxqk	8cbzsnycxqk	0	f	properties	\N
-rjo62izvmhu	8cbzsnycxqk	1	\N	\N	1
-bljegelqea8	8cbzsnycxqk	2	\N	\N	1
-nocobase-admin-menu	bljegelqea8	2	\N	\N	\N
-073buw1m70l	rjo62izvmhu	2	\N	\N	\N
-nocobase-admin-menu	rjo62izvmhu	3	\N	\N	\N
-073buw1m70l	8cbzsnycxqk	3	\N	\N	\N
-nocobase-admin-menu	8cbzsnycxqk	4	\N	\N	\N
-bljegelqea8	bljegelqea8	0	f	properties	\N
+l1ipy29yo2a	u80bniwjt35	2	\N	\N	\N
 9j3mrze0kdh	9j3mrze0kdh	0	f	properties	\N
 r5ux2dhnfq1	9j3mrze0kdh	1	\N	\N	1
 iiek91fm1lg	iiek91fm1lg	0	f	properties	\N
-9j3mrze0kdh	iiek91fm1lg	1	\N	\N	1
-r5ux2dhnfq1	iiek91fm1lg	2	\N	\N	1
 uz1e0k6wjf1	uz1e0k6wjf1	0	f	properties	\N
 iiek91fm1lg	uz1e0k6wjf1	1	\N	\N	1
-9j3mrze0kdh	uz1e0k6wjf1	2	\N	\N	1
-r5ux2dhnfq1	uz1e0k6wjf1	3	\N	\N	1
 dwzj4kwyaia	dwzj4kwyaia	0	f	properties	\N
 iiek91fm1lg	dwzj4kwyaia	1	\N	\N	2
-9j3mrze0kdh	dwzj4kwyaia	2	\N	\N	2
-r5ux2dhnfq1	dwzj4kwyaia	3	\N	\N	2
-9udwuhf2o25	9udwuhf2o25	0	f	properties	\N
-dwzj4kwyaia	9udwuhf2o25	1	\N	\N	1
-iiek91fm1lg	9udwuhf2o25	2	\N	\N	1
-9j3mrze0kdh	9udwuhf2o25	3	\N	\N	1
-r5ux2dhnfq1	9udwuhf2o25	4	\N	\N	1
+oyy61gowm8y	oyy61gowm8y	0	f	properties	\N
+cr7ggy2zrl6	oyy61gowm8y	1	\N	\N	1
+tmbbsnq2x5b	tmbbsnq2x5b	0	f	properties	\N
+oyy61gowm8y	tmbbsnq2x5b	1	\N	\N	1
 r5ux2dhnfq1	r5ux2dhnfq1	0	f	properties	\N
 fuvpnwuajhl	fuvpnwuajhl	0	f	properties	\N
 9udwuhf2o25	fuvpnwuajhl	1	\N	\N	1
-dwzj4kwyaia	fuvpnwuajhl	2	\N	\N	1
-iiek91fm1lg	fuvpnwuajhl	3	\N	\N	1
-9j3mrze0kdh	fuvpnwuajhl	4	\N	\N	1
-r5ux2dhnfq1	fuvpnwuajhl	5	\N	\N	1
+cr7ggy2zrl6	tmbbsnq2x5b	2	\N	\N	1
+2oimqa9byrp	2oimqa9byrp	0	f	properties	\N
+tmbbsnq2x5b	2oimqa9byrp	1	\N	\N	1
+oyy61gowm8y	2oimqa9byrp	2	\N	\N	1
 ulw06kfwwn3	9j3mrze0kdh	2	\N	\N	\N
-ulw06kfwwn3	iiek91fm1lg	3	\N	\N	\N
-ulw06kfwwn3	uz1e0k6wjf1	4	\N	\N	\N
-ulw06kfwwn3	dwzj4kwyaia	4	\N	\N	\N
-ulw06kfwwn3	9udwuhf2o25	5	\N	\N	\N
-ulw06kfwwn3	fuvpnwuajhl	6	\N	\N	\N
+cr7ggy2zrl6	2oimqa9byrp	3	\N	\N	1
 wcib2cpt11z	r5ux2dhnfq1	2	\N	\N	\N
 wcib2cpt11z	9j3mrze0kdh	3	\N	\N	\N
-wcib2cpt11z	iiek91fm1lg	4	\N	\N	\N
-wcib2cpt11z	uz1e0k6wjf1	5	\N	\N	\N
-wcib2cpt11z	dwzj4kwyaia	5	\N	\N	\N
-wcib2cpt11z	9udwuhf2o25	6	\N	\N	\N
-wcib2cpt11z	fuvpnwuajhl	7	\N	\N	\N
+730yg8t8myy	730yg8t8myy	0	f	properties	\N
+2oimqa9byrp	730yg8t8myy	1	\N	\N	1
 xwts1ggw479	r5ux2dhnfq1	3	\N	\N	\N
 xwts1ggw479	9j3mrze0kdh	4	\N	\N	\N
-xwts1ggw479	iiek91fm1lg	5	\N	\N	\N
-xwts1ggw479	uz1e0k6wjf1	6	\N	\N	\N
-xwts1ggw479	dwzj4kwyaia	6	\N	\N	\N
-xwts1ggw479	9udwuhf2o25	7	\N	\N	\N
-xwts1ggw479	fuvpnwuajhl	8	\N	\N	\N
+tmbbsnq2x5b	730yg8t8myy	2	\N	\N	1
+oyy61gowm8y	730yg8t8myy	3	\N	\N	1
 ulw06kfwwn3	r5ux2dhnfq1	1	\N	\N	1
-xwts1ggw479	ajlhev8hgld	7	\N	\N	\N
 uz1e0k6wjf1	ajlhev8hgld	1	\N	\N	1
 yqj4tsj0tp5	yqj4tsj0tp5	0	f	properties	\N
 y90c6xine07	yqj4tsj0tp5	1	\N	\N	1
@@ -6478,56 +6852,38 @@ lqc01b4n2xe	2dp1sgeoanq	1	\N	\N	1
 yqj4tsj0tp5	2dp1sgeoanq	3	\N	\N	1
 y90c6xine07	2dp1sgeoanq	4	\N	\N	1
 iiek91fm1lg	y90c6xine07	2	\N	\N	\N
-9j3mrze0kdh	y90c6xine07	3	\N	\N	\N
-r5ux2dhnfq1	y90c6xine07	4	\N	\N	\N
-ulw06kfwwn3	y90c6xine07	5	\N	\N	\N
-wcib2cpt11z	y90c6xine07	6	\N	\N	\N
-xwts1ggw479	y90c6xine07	7	\N	\N	\N
 uz1e0k6wjf1	yqj4tsj0tp5	2	\N	\N	\N
 iiek91fm1lg	yqj4tsj0tp5	3	\N	\N	\N
-9j3mrze0kdh	yqj4tsj0tp5	4	\N	\N	\N
-r5ux2dhnfq1	yqj4tsj0tp5	5	\N	\N	\N
-ulw06kfwwn3	yqj4tsj0tp5	6	\N	\N	\N
-wcib2cpt11z	yqj4tsj0tp5	7	\N	\N	\N
-xwts1ggw479	yqj4tsj0tp5	8	\N	\N	\N
 uz1e0k6wjf1	5i62m584bjk	3	\N	\N	\N
 iiek91fm1lg	5i62m584bjk	4	\N	\N	\N
-9j3mrze0kdh	5i62m584bjk	5	\N	\N	\N
-r5ux2dhnfq1	5i62m584bjk	6	\N	\N	\N
-ulw06kfwwn3	5i62m584bjk	7	\N	\N	\N
-wcib2cpt11z	5i62m584bjk	8	\N	\N	\N
-xwts1ggw479	5i62m584bjk	9	\N	\N	\N
 uz1e0k6wjf1	lqc01b4n2xe	4	\N	\N	\N
 iiek91fm1lg	lqc01b4n2xe	5	\N	\N	\N
-9j3mrze0kdh	lqc01b4n2xe	6	\N	\N	\N
-r5ux2dhnfq1	lqc01b4n2xe	7	\N	\N	\N
-ulw06kfwwn3	lqc01b4n2xe	8	\N	\N	\N
-wcib2cpt11z	lqc01b4n2xe	9	\N	\N	\N
-xwts1ggw479	lqc01b4n2xe	10	\N	\N	\N
+imrhc9he5on	08ul9zdtvmm	1	\N	\N	3
+imrhc9he5on	qu64eoa7amg	1	\N	\N	7
+imrhc9he5on	yjzd6s5ccq4	1	\N	\N	8
 uz1e0k6wjf1	2dp1sgeoanq	5	\N	\N	\N
 iiek91fm1lg	2dp1sgeoanq	6	\N	\N	\N
-9j3mrze0kdh	2dp1sgeoanq	7	\N	\N	\N
-r5ux2dhnfq1	2dp1sgeoanq	8	\N	\N	\N
-ulw06kfwwn3	2dp1sgeoanq	9	\N	\N	\N
-wcib2cpt11z	2dp1sgeoanq	10	\N	\N	\N
-xwts1ggw479	2dp1sgeoanq	11	\N	\N	\N
+8oq39vqqx82	8oq39vqqx82	0	f	properties	\N
+3ohbpid2iz3	8oq39vqqx82	1	\N	\N	1
+bg4rui84lj2	bg4rui84lj2	0	f	properties	\N
+8oq39vqqx82	bg4rui84lj2	1	\N	\N	1
 y90c6xine07	y90c6xine07	0	f	properties	\N
 uz1e0k6wjf1	y90c6xine07	1	\N	\N	2
 3g77tkiq3m4	3g77tkiq3m4	0	f	properties	\N
 iiek91fm1lg	3g77tkiq3m4	2	\N	\N	\N
-9j3mrze0kdh	3g77tkiq3m4	3	\N	\N	\N
-r5ux2dhnfq1	3g77tkiq3m4	4	\N	\N	\N
-ulw06kfwwn3	3g77tkiq3m4	5	\N	\N	\N
-wcib2cpt11z	3g77tkiq3m4	6	\N	\N	\N
-xwts1ggw479	3g77tkiq3m4	7	\N	\N	\N
+3ohbpid2iz3	bg4rui84lj2	2	\N	\N	1
+zeyg628q8t0	zeyg628q8t0	0	f	properties	\N
+bg4rui84lj2	zeyg628q8t0	1	\N	\N	1
+8oq39vqqx82	zeyg628q8t0	2	\N	\N	1
+3ohbpid2iz3	zeyg628q8t0	3	\N	\N	1
 uz1e0k6wjf1	3g77tkiq3m4	1	\N	\N	3
 qbzhqbkp363	qbzhqbkp363	0	f	properties	\N
 iiek91fm1lg	qbzhqbkp363	2	\N	\N	\N
-9j3mrze0kdh	qbzhqbkp363	3	\N	\N	\N
-r5ux2dhnfq1	qbzhqbkp363	4	\N	\N	\N
-ulw06kfwwn3	qbzhqbkp363	5	\N	\N	\N
-wcib2cpt11z	qbzhqbkp363	6	\N	\N	\N
-xwts1ggw479	qbzhqbkp363	7	\N	\N	\N
+84mt4mce1w7	84mt4mce1w7	0	f	properties	\N
+zeyg628q8t0	84mt4mce1w7	1	\N	\N	1
+bg4rui84lj2	84mt4mce1w7	2	\N	\N	1
+8oq39vqqx82	84mt4mce1w7	3	\N	\N	1
+3ohbpid2iz3	84mt4mce1w7	4	\N	\N	1
 uz1e0k6wjf1	qbzhqbkp363	1	\N	\N	4
 a7e860jrx5o	a7e860jrx5o	0	f	properties	\N
 8qtz3wrc8jb	8qtz3wrc8jb	0	f	properties	\N
@@ -6545,49 +6901,68 @@ sge8s8r9kdv	1vvvk5b0mrj	2	\N	\N	1
 8qtz3wrc8jb	1vvvk5b0mrj	3	\N	\N	1
 a2izctpt2dm	1vvvk5b0mrj	4	\N	\N	1
 9udwuhf2o25	a2izctpt2dm	2	\N	\N	\N
-dwzj4kwyaia	a2izctpt2dm	3	\N	\N	\N
-iiek91fm1lg	a2izctpt2dm	4	\N	\N	\N
-9j3mrze0kdh	a2izctpt2dm	5	\N	\N	\N
-r5ux2dhnfq1	a2izctpt2dm	6	\N	\N	\N
-ulw06kfwwn3	a2izctpt2dm	7	\N	\N	\N
-wcib2cpt11z	a2izctpt2dm	8	\N	\N	\N
-xwts1ggw479	a2izctpt2dm	9	\N	\N	\N
+cr7ggy2zrl6	730yg8t8myy	4	\N	\N	1
+foi2992qtlm	foi2992qtlm	0	f	properties	\N
+2oimqa9byrp	foi2992qtlm	1	\N	\N	2
+tmbbsnq2x5b	foi2992qtlm	2	\N	\N	2
+oyy61gowm8y	foi2992qtlm	3	\N	\N	2
+cr7ggy2zrl6	foi2992qtlm	4	\N	\N	2
+s1j0jdf8dnc	s1j0jdf8dnc	0	f	properties	\N
 fuvpnwuajhl	8qtz3wrc8jb	2	\N	\N	\N
 9udwuhf2o25	8qtz3wrc8jb	3	\N	\N	\N
-dwzj4kwyaia	8qtz3wrc8jb	4	\N	\N	\N
-iiek91fm1lg	8qtz3wrc8jb	5	\N	\N	\N
-9j3mrze0kdh	8qtz3wrc8jb	6	\N	\N	\N
-r5ux2dhnfq1	8qtz3wrc8jb	7	\N	\N	\N
-ulw06kfwwn3	8qtz3wrc8jb	8	\N	\N	\N
-wcib2cpt11z	8qtz3wrc8jb	9	\N	\N	\N
-xwts1ggw479	8qtz3wrc8jb	10	\N	\N	\N
+9cngdl646v0	oyy61gowm8y	2	\N	\N	\N
+9cngdl646v0	tmbbsnq2x5b	3	\N	\N	\N
+9cngdl646v0	2oimqa9byrp	4	\N	\N	\N
+9cngdl646v0	730yg8t8myy	5	\N	\N	\N
+9cngdl646v0	foi2992qtlm	5	\N	\N	\N
+ybdxp7v91jn	cr7ggy2zrl6	2	\N	\N	\N
+ybdxp7v91jn	oyy61gowm8y	3	\N	\N	\N
 fuvpnwuajhl	sge8s8r9kdv	3	\N	\N	\N
 9udwuhf2o25	sge8s8r9kdv	4	\N	\N	\N
-dwzj4kwyaia	sge8s8r9kdv	5	\N	\N	\N
-iiek91fm1lg	sge8s8r9kdv	6	\N	\N	\N
-9j3mrze0kdh	sge8s8r9kdv	7	\N	\N	\N
-r5ux2dhnfq1	sge8s8r9kdv	8	\N	\N	\N
-ulw06kfwwn3	sge8s8r9kdv	9	\N	\N	\N
-wcib2cpt11z	sge8s8r9kdv	10	\N	\N	\N
-xwts1ggw479	sge8s8r9kdv	11	\N	\N	\N
+ybdxp7v91jn	tmbbsnq2x5b	4	\N	\N	\N
+ybdxp7v91jn	2oimqa9byrp	5	\N	\N	\N
+ybdxp7v91jn	730yg8t8myy	6	\N	\N	\N
+ybdxp7v91jn	foi2992qtlm	6	\N	\N	\N
+muv6h06t8mi	cr7ggy2zrl6	3	\N	\N	\N
+muv6h06t8mi	oyy61gowm8y	4	\N	\N	\N
+muv6h06t8mi	tmbbsnq2x5b	5	\N	\N	\N
 fuvpnwuajhl	0pc9xw649k4	4	\N	\N	\N
 9udwuhf2o25	0pc9xw649k4	5	\N	\N	\N
-dwzj4kwyaia	0pc9xw649k4	6	\N	\N	\N
-iiek91fm1lg	0pc9xw649k4	7	\N	\N	\N
-9j3mrze0kdh	0pc9xw649k4	8	\N	\N	\N
-r5ux2dhnfq1	0pc9xw649k4	9	\N	\N	\N
-ulw06kfwwn3	0pc9xw649k4	10	\N	\N	\N
-wcib2cpt11z	0pc9xw649k4	11	\N	\N	\N
-xwts1ggw479	0pc9xw649k4	12	\N	\N	\N
+muv6h06t8mi	2oimqa9byrp	6	\N	\N	\N
+muv6h06t8mi	730yg8t8myy	7	\N	\N	\N
+muv6h06t8mi	foi2992qtlm	7	\N	\N	\N
+8i28yvimg4p	cr7ggy2zrl6	4	\N	\N	\N
+8i28yvimg4p	oyy61gowm8y	5	\N	\N	\N
+8i28yvimg4p	tmbbsnq2x5b	6	\N	\N	\N
+8i28yvimg4p	2oimqa9byrp	7	\N	\N	\N
 fuvpnwuajhl	1vvvk5b0mrj	5	\N	\N	\N
 9udwuhf2o25	1vvvk5b0mrj	6	\N	\N	\N
-dwzj4kwyaia	1vvvk5b0mrj	7	\N	\N	\N
-iiek91fm1lg	1vvvk5b0mrj	8	\N	\N	\N
-9j3mrze0kdh	1vvvk5b0mrj	9	\N	\N	\N
-r5ux2dhnfq1	1vvvk5b0mrj	10	\N	\N	\N
-ulw06kfwwn3	1vvvk5b0mrj	11	\N	\N	\N
-wcib2cpt11z	1vvvk5b0mrj	12	\N	\N	\N
-xwts1ggw479	1vvvk5b0mrj	13	\N	\N	\N
+8i28yvimg4p	730yg8t8myy	8	\N	\N	\N
+8i28yvimg4p	foi2992qtlm	8	\N	\N	\N
+66xqkev137r	cr7ggy2zrl6	5	\N	\N	\N
+8sehmqjx6y1	8oq39vqqx82	2	\N	\N	\N
+8sehmqjx6y1	bg4rui84lj2	3	\N	\N	\N
+8sehmqjx6y1	zeyg628q8t0	4	\N	\N	\N
+8sehmqjx6y1	84mt4mce1w7	5	\N	\N	\N
+9vahgw6b2zc	3ohbpid2iz3	2	\N	\N	\N
+9vahgw6b2zc	8oq39vqqx82	3	\N	\N	\N
+9vahgw6b2zc	bg4rui84lj2	4	\N	\N	\N
+9vahgw6b2zc	zeyg628q8t0	5	\N	\N	\N
+9vahgw6b2zc	84mt4mce1w7	6	\N	\N	\N
+v3o080ka847	3ohbpid2iz3	3	\N	\N	\N
+v3o080ka847	8oq39vqqx82	4	\N	\N	\N
+v3o080ka847	bg4rui84lj2	5	\N	\N	\N
+v3o080ka847	zeyg628q8t0	6	\N	\N	\N
+v3o080ka847	84mt4mce1w7	7	\N	\N	\N
+culzjbos9r3	3ohbpid2iz3	4	\N	\N	\N
+culzjbos9r3	8oq39vqqx82	5	\N	\N	\N
+culzjbos9r3	bg4rui84lj2	6	\N	\N	\N
+culzjbos9r3	zeyg628q8t0	7	\N	\N	\N
+culzjbos9r3	84mt4mce1w7	8	\N	\N	\N
+66xqkev137r	oyy61gowm8y	6	\N	\N	\N
+66xqkev137r	tmbbsnq2x5b	7	\N	\N	\N
+66xqkev137r	2oimqa9byrp	8	\N	\N	\N
+66xqkev137r	730yg8t8myy	9	\N	\N	\N
 a2izctpt2dm	a2izctpt2dm	0	f	properties	\N
 fuvpnwuajhl	a2izctpt2dm	1	\N	\N	1
 zxh1oe1qx5t	a7e860jrx5o	1	\N	\N	1
@@ -6602,17 +6977,10 @@ i0bqeajbvwo	i0bqeajbvwo	0	f	properties	\N
 pdot2ybyfc0	i0bqeajbvwo	1	\N	\N	2
 a7e860jrx5o	i0bqeajbvwo	2	\N	\N	2
 zxh1oe1qx5t	i0bqeajbvwo	3	\N	\N	2
-e87ogy2w48b	e87ogy2w48b	0	f	properties	\N
-i0bqeajbvwo	e87ogy2w48b	1	\N	\N	1
-pdot2ybyfc0	e87ogy2w48b	2	\N	\N	1
-a7e860jrx5o	e87ogy2w48b	3	\N	\N	1
-zxh1oe1qx5t	e87ogy2w48b	4	\N	\N	1
+40nktpbceua	s1j0jdf8dnc	1	\N	\N	1
+mclja8pd27f	u80bniwjt35	3	\N	\N	\N
 galt7hbd78y	galt7hbd78y	0	f	properties	\N
 e87ogy2w48b	galt7hbd78y	1	\N	\N	1
-i0bqeajbvwo	galt7hbd78y	2	\N	\N	1
-pdot2ybyfc0	galt7hbd78y	3	\N	\N	1
-a7e860jrx5o	galt7hbd78y	4	\N	\N	1
-zxh1oe1qx5t	galt7hbd78y	5	\N	\N	1
 861gmcfwhia	a7e860jrx5o	2	\N	\N	\N
 9yos6i0cjm3	a7e860jrx5o	3	\N	\N	\N
 n3yigbe0k9v	a7e860jrx5o	4	\N	\N	\N
@@ -6623,16 +6991,6 @@ nocobase-admin-menu	a7e860jrx5o	6	\N	\N	\N
 n3yigbe0k9v	baqq2v2fong	6	\N	\N	\N
 073buw1m70l	baqq2v2fong	7	\N	\N	\N
 nocobase-admin-menu	baqq2v2fong	8	\N	\N	\N
-861gmcfwhia	e87ogy2w48b	5	\N	\N	\N
-9yos6i0cjm3	e87ogy2w48b	6	\N	\N	\N
-n3yigbe0k9v	e87ogy2w48b	7	\N	\N	\N
-073buw1m70l	e87ogy2w48b	8	\N	\N	\N
-nocobase-admin-menu	e87ogy2w48b	9	\N	\N	\N
-861gmcfwhia	galt7hbd78y	6	\N	\N	\N
-9yos6i0cjm3	galt7hbd78y	7	\N	\N	\N
-n3yigbe0k9v	galt7hbd78y	8	\N	\N	\N
-073buw1m70l	galt7hbd78y	9	\N	\N	\N
-nocobase-admin-menu	galt7hbd78y	10	\N	\N	\N
 861gmcfwhia	i0bqeajbvwo	4	\N	\N	\N
 9yos6i0cjm3	i0bqeajbvwo	5	\N	\N	\N
 n3yigbe0k9v	i0bqeajbvwo	6	\N	\N	\N
@@ -6673,62 +7031,53 @@ que1e0cmz1z	wwfnvseziiz	1	\N	\N	1
 ftwn0si2s5e	wwfnvseziiz	2	\N	\N	1
 scx9pufw9ld	wwfnvseziiz	3	\N	\N	1
 7i8vn1nplyc	wwfnvseziiz	4	\N	\N	1
-9udwuhf2o25	7i8vn1nplyc	2	\N	\N	\N
-dwzj4kwyaia	7i8vn1nplyc	3	\N	\N	\N
-iiek91fm1lg	7i8vn1nplyc	4	\N	\N	\N
-9j3mrze0kdh	7i8vn1nplyc	5	\N	\N	\N
-r5ux2dhnfq1	7i8vn1nplyc	6	\N	\N	\N
-ulw06kfwwn3	7i8vn1nplyc	7	\N	\N	\N
-wcib2cpt11z	7i8vn1nplyc	8	\N	\N	\N
-xwts1ggw479	7i8vn1nplyc	9	\N	\N	\N
-fuvpnwuajhl	scx9pufw9ld	2	\N	\N	\N
-9udwuhf2o25	scx9pufw9ld	3	\N	\N	\N
-dwzj4kwyaia	scx9pufw9ld	4	\N	\N	\N
-iiek91fm1lg	scx9pufw9ld	5	\N	\N	\N
-9j3mrze0kdh	scx9pufw9ld	6	\N	\N	\N
-r5ux2dhnfq1	scx9pufw9ld	7	\N	\N	\N
-ulw06kfwwn3	scx9pufw9ld	8	\N	\N	\N
-wcib2cpt11z	scx9pufw9ld	9	\N	\N	\N
-xwts1ggw479	scx9pufw9ld	10	\N	\N	\N
-fuvpnwuajhl	ftwn0si2s5e	3	\N	\N	\N
-9udwuhf2o25	ftwn0si2s5e	4	\N	\N	\N
-dwzj4kwyaia	ftwn0si2s5e	5	\N	\N	\N
-iiek91fm1lg	ftwn0si2s5e	6	\N	\N	\N
-9j3mrze0kdh	ftwn0si2s5e	7	\N	\N	\N
-r5ux2dhnfq1	ftwn0si2s5e	8	\N	\N	\N
-ulw06kfwwn3	ftwn0si2s5e	9	\N	\N	\N
-wcib2cpt11z	ftwn0si2s5e	10	\N	\N	\N
-xwts1ggw479	ftwn0si2s5e	11	\N	\N	\N
-fuvpnwuajhl	que1e0cmz1z	4	\N	\N	\N
-9udwuhf2o25	que1e0cmz1z	5	\N	\N	\N
-dwzj4kwyaia	que1e0cmz1z	6	\N	\N	\N
-iiek91fm1lg	que1e0cmz1z	7	\N	\N	\N
-9j3mrze0kdh	que1e0cmz1z	8	\N	\N	\N
-r5ux2dhnfq1	que1e0cmz1z	9	\N	\N	\N
-ulw06kfwwn3	que1e0cmz1z	10	\N	\N	\N
-wcib2cpt11z	que1e0cmz1z	11	\N	\N	\N
-xwts1ggw479	que1e0cmz1z	12	\N	\N	\N
-fuvpnwuajhl	wwfnvseziiz	5	\N	\N	\N
-9udwuhf2o25	wwfnvseziiz	6	\N	\N	\N
-dwzj4kwyaia	wwfnvseziiz	7	\N	\N	\N
-iiek91fm1lg	wwfnvseziiz	8	\N	\N	\N
-9j3mrze0kdh	wwfnvseziiz	9	\N	\N	\N
-r5ux2dhnfq1	wwfnvseziiz	10	\N	\N	\N
-ulw06kfwwn3	wwfnvseziiz	11	\N	\N	\N
-wcib2cpt11z	wwfnvseziiz	12	\N	\N	\N
-xwts1ggw479	wwfnvseziiz	13	\N	\N	\N
-7i8vn1nplyc	7i8vn1nplyc	0	f	properties	\N
-fuvpnwuajhl	7i8vn1nplyc	1	\N	\N	3
+66xqkev137r	foi2992qtlm	9	\N	\N	\N
+40nktpbceua	40nktpbceua	0	f	properties	\N
+l9ys75laoy9	l9ys75laoy9	0	f	properties	\N
+6fiymfhu4i9	l9ys75laoy9	1	\N	\N	1
+58gpo0mxaav	58gpo0mxaav	0	f	properties	\N
+l9ys75laoy9	58gpo0mxaav	1	\N	\N	1
+6fiymfhu4i9	58gpo0mxaav	2	\N	\N	1
+7s4541t6mnz	7s4541t6mnz	0	f	properties	\N
+58gpo0mxaav	7s4541t6mnz	1	\N	\N	1
+l9ys75laoy9	7s4541t6mnz	2	\N	\N	1
+6fiymfhu4i9	7s4541t6mnz	3	\N	\N	1
+yyevygbo1uu	yyevygbo1uu	0	f	properties	\N
+7s4541t6mnz	yyevygbo1uu	1	\N	\N	1
+58gpo0mxaav	yyevygbo1uu	2	\N	\N	1
+l9ys75laoy9	yyevygbo1uu	3	\N	\N	1
+6fiymfhu4i9	yyevygbo1uu	4	\N	\N	1
+efkn3sb524k	l9ys75laoy9	2	\N	\N	\N
+efkn3sb524k	58gpo0mxaav	3	\N	\N	\N
+efkn3sb524k	7s4541t6mnz	4	\N	\N	\N
+efkn3sb524k	yyevygbo1uu	5	\N	\N	\N
+hinf8z4a0c0	6fiymfhu4i9	2	\N	\N	\N
+hinf8z4a0c0	l9ys75laoy9	3	\N	\N	\N
+hinf8z4a0c0	58gpo0mxaav	4	\N	\N	\N
+hinf8z4a0c0	7s4541t6mnz	5	\N	\N	\N
+hinf8z4a0c0	yyevygbo1uu	6	\N	\N	\N
+2r8rihvxbxo	6fiymfhu4i9	3	\N	\N	\N
+2r8rihvxbxo	l9ys75laoy9	4	\N	\N	\N
+2r8rihvxbxo	58gpo0mxaav	5	\N	\N	\N
+2r8rihvxbxo	7s4541t6mnz	6	\N	\N	\N
+2r8rihvxbxo	yyevygbo1uu	7	\N	\N	\N
+byou5tpcmg3	6fiymfhu4i9	4	\N	\N	\N
+byou5tpcmg3	l9ys75laoy9	5	\N	\N	\N
+byou5tpcmg3	58gpo0mxaav	6	\N	\N	\N
+byou5tpcmg3	7s4541t6mnz	7	\N	\N	\N
+byou5tpcmg3	yyevygbo1uu	8	\N	\N	\N
+evtz6ljqxdq	6fiymfhu4i9	5	\N	\N	\N
+evtz6ljqxdq	l9ys75laoy9	6	\N	\N	\N
+evtz6ljqxdq	58gpo0mxaav	7	\N	\N	\N
 gf7yu1fk5fu	gf7yu1fk5fu	0	f	properties	\N
 9udwuhf2o25	gf7yu1fk5fu	2	\N	\N	\N
-dwzj4kwyaia	gf7yu1fk5fu	3	\N	\N	\N
-iiek91fm1lg	gf7yu1fk5fu	4	\N	\N	\N
-9j3mrze0kdh	gf7yu1fk5fu	5	\N	\N	\N
-r5ux2dhnfq1	gf7yu1fk5fu	6	\N	\N	\N
-ulw06kfwwn3	gf7yu1fk5fu	7	\N	\N	\N
-wcib2cpt11z	gf7yu1fk5fu	8	\N	\N	\N
-xwts1ggw479	gf7yu1fk5fu	9	\N	\N	\N
-fuvpnwuajhl	gf7yu1fk5fu	1	\N	\N	4
+cm30c5qrll3	s1j0jdf8dnc	2	\N	\N	\N
+fuvpnwuajhl	gf7yu1fk5fu	1	\N	\N	5
+0pf6qa0lzh7	s1j0jdf8dnc	3	\N	\N	\N
+0pf6qa0lzh7	40nktpbceua	2	\N	\N	\N
+a8q5n051fdr	s1j0jdf8dnc	4	\N	\N	\N
+a8q5n051fdr	40nktpbceua	3	\N	\N	\N
+39vgsrzpqyp	s1j0jdf8dnc	5	\N	\N	\N
 861gmcfwhia	zbn0vslk90o	6	\N	\N	\N
 9yos6i0cjm3	a6lzbst8sz6	6	\N	\N	\N
 9yos6i0cjm3	zbn0vslk90o	7	\N	\N	\N
@@ -6798,57 +7147,27 @@ hg9tvy6yuph	4gdmc9g083s	3	\N	\N	1
 bzirblya7qw	4gdmc9g083s	4	\N	\N	1
 galt7hbd78y	4gdmc9g083s	5	\N	\N	\N
 e87ogy2w48b	4gdmc9g083s	6	\N	\N	\N
-i0bqeajbvwo	4gdmc9g083s	7	\N	\N	\N
-pdot2ybyfc0	4gdmc9g083s	8	\N	\N	\N
+39vgsrzpqyp	40nktpbceua	4	\N	\N	\N
+2mxzcpz5cle	s1j0jdf8dnc	6	\N	\N	\N
 lm0dfpdoltg	lm0dfpdoltg	0	f	properties	\N
 6ex1fiqbfa8	lm0dfpdoltg	1	\N	\N	1
 iiek91fm1lg	6ex1fiqbfa8	2	\N	\N	\N
-9j3mrze0kdh	6ex1fiqbfa8	3	\N	\N	\N
-r5ux2dhnfq1	6ex1fiqbfa8	4	\N	\N	\N
-ulw06kfwwn3	6ex1fiqbfa8	5	\N	\N	\N
-wcib2cpt11z	6ex1fiqbfa8	6	\N	\N	\N
-xwts1ggw479	6ex1fiqbfa8	7	\N	\N	\N
 dwzj4kwyaia	lm0dfpdoltg	2	\N	\N	\N
 iiek91fm1lg	lm0dfpdoltg	3	\N	\N	\N
-9j3mrze0kdh	lm0dfpdoltg	4	\N	\N	\N
-r5ux2dhnfq1	lm0dfpdoltg	5	\N	\N	\N
-ulw06kfwwn3	lm0dfpdoltg	6	\N	\N	\N
-wcib2cpt11z	lm0dfpdoltg	7	\N	\N	\N
-xwts1ggw479	lm0dfpdoltg	8	\N	\N	\N
 6ex1fiqbfa8	6ex1fiqbfa8	0	f	properties	\N
 dwzj4kwyaia	6ex1fiqbfa8	1	\N	\N	2
 6idlds4jdgv	6idlds4jdgv	0	f	properties	\N
 dqssxed8op7	6idlds4jdgv	1	\N	\N	1
 dwzj4kwyaia	6idlds4jdgv	2	\N	\N	\N
 iiek91fm1lg	6idlds4jdgv	3	\N	\N	\N
-9j3mrze0kdh	6idlds4jdgv	4	\N	\N	\N
-r5ux2dhnfq1	6idlds4jdgv	5	\N	\N	\N
-ulw06kfwwn3	6idlds4jdgv	6	\N	\N	\N
-wcib2cpt11z	6idlds4jdgv	7	\N	\N	\N
-xwts1ggw479	6idlds4jdgv	8	\N	\N	\N
 iiek91fm1lg	dqssxed8op7	2	\N	\N	\N
-9j3mrze0kdh	dqssxed8op7	3	\N	\N	\N
-r5ux2dhnfq1	dqssxed8op7	4	\N	\N	\N
-ulw06kfwwn3	dqssxed8op7	5	\N	\N	\N
-wcib2cpt11z	dqssxed8op7	6	\N	\N	\N
-xwts1ggw479	dqssxed8op7	7	\N	\N	\N
 dqssxed8op7	dqssxed8op7	0	f	properties	\N
 dwzj4kwyaia	dqssxed8op7	1	\N	\N	3
 mk0btnborli	mk0btnborli	0	f	properties	\N
 bq12jdwqsm7	mk0btnborli	1	\N	\N	1
 iiek91fm1lg	bq12jdwqsm7	2	\N	\N	\N
-9j3mrze0kdh	bq12jdwqsm7	3	\N	\N	\N
-r5ux2dhnfq1	bq12jdwqsm7	4	\N	\N	\N
-ulw06kfwwn3	bq12jdwqsm7	5	\N	\N	\N
-wcib2cpt11z	bq12jdwqsm7	6	\N	\N	\N
-xwts1ggw479	bq12jdwqsm7	7	\N	\N	\N
 dwzj4kwyaia	mk0btnborli	2	\N	\N	\N
 iiek91fm1lg	mk0btnborli	3	\N	\N	\N
-9j3mrze0kdh	mk0btnborli	4	\N	\N	\N
-r5ux2dhnfq1	mk0btnborli	5	\N	\N	\N
-ulw06kfwwn3	mk0btnborli	6	\N	\N	\N
-wcib2cpt11z	mk0btnborli	7	\N	\N	\N
-xwts1ggw479	mk0btnborli	8	\N	\N	\N
 bq12jdwqsm7	bq12jdwqsm7	0	f	properties	\N
 dwzj4kwyaia	bq12jdwqsm7	1	\N	\N	4
 ii9oyxsb8c5	ii9oyxsb8c5	0	f	properties	\N
@@ -6876,11 +7195,6 @@ yqj4tsj0tp5	511oe1h7d0q	4	\N	\N	\N
 y90c6xine07	511oe1h7d0q	5	\N	\N	\N
 uz1e0k6wjf1	511oe1h7d0q	6	\N	\N	\N
 iiek91fm1lg	511oe1h7d0q	7	\N	\N	\N
-9j3mrze0kdh	511oe1h7d0q	8	\N	\N	\N
-r5ux2dhnfq1	511oe1h7d0q	9	\N	\N	\N
-ulw06kfwwn3	511oe1h7d0q	10	\N	\N	\N
-wcib2cpt11z	511oe1h7d0q	11	\N	\N	\N
-xwts1ggw479	511oe1h7d0q	12	\N	\N	\N
 2dp1sgeoanq	7wvztesg1l9	5	\N	\N	\N
 lqc01b4n2xe	7wvztesg1l9	6	\N	\N	\N
 5i62m584bjk	7wvztesg1l9	7	\N	\N	\N
@@ -6888,18 +7202,13 @@ yqj4tsj0tp5	7wvztesg1l9	8	\N	\N	\N
 y90c6xine07	7wvztesg1l9	9	\N	\N	\N
 511oe1h7d0q	511oe1h7d0q	0	f	properties	\N
 2dp1sgeoanq	511oe1h7d0q	1	\N	\N	1
-a7e860jrx5o	4gdmc9g083s	9	\N	\N	\N
-zxh1oe1qx5t	4gdmc9g083s	10	\N	\N	\N
-861gmcfwhia	4gdmc9g083s	11	\N	\N	\N
-9yos6i0cjm3	4gdmc9g083s	12	\N	\N	\N
-n3yigbe0k9v	4gdmc9g083s	13	\N	\N	\N
+2mxzcpz5cle	40nktpbceua	5	\N	\N	\N
+jqr7lgri2e0	s1j0jdf8dnc	7	\N	\N	\N
+jqr7lgri2e0	40nktpbceua	6	\N	\N	\N
+5vjhonzhs45	s1j0jdf8dnc	8	\N	\N	\N
+5vjhonzhs45	40nktpbceua	7	\N	\N	\N
 uz1e0k6wjf1	7wvztesg1l9	10	\N	\N	\N
 iiek91fm1lg	7wvztesg1l9	11	\N	\N	\N
-9j3mrze0kdh	7wvztesg1l9	12	\N	\N	\N
-r5ux2dhnfq1	7wvztesg1l9	13	\N	\N	\N
-ulw06kfwwn3	7wvztesg1l9	14	\N	\N	\N
-wcib2cpt11z	7wvztesg1l9	15	\N	\N	\N
-xwts1ggw479	7wvztesg1l9	16	\N	\N	\N
 2dp1sgeoanq	9lqwydcclbh	5	\N	\N	\N
 lqc01b4n2xe	9lqwydcclbh	6	\N	\N	\N
 5i62m584bjk	9lqwydcclbh	7	\N	\N	\N
@@ -6907,11 +7216,6 @@ yqj4tsj0tp5	9lqwydcclbh	8	\N	\N	\N
 y90c6xine07	9lqwydcclbh	9	\N	\N	\N
 uz1e0k6wjf1	9lqwydcclbh	10	\N	\N	\N
 iiek91fm1lg	9lqwydcclbh	11	\N	\N	\N
-9j3mrze0kdh	9lqwydcclbh	12	\N	\N	\N
-r5ux2dhnfq1	9lqwydcclbh	13	\N	\N	\N
-ulw06kfwwn3	9lqwydcclbh	14	\N	\N	\N
-wcib2cpt11z	9lqwydcclbh	15	\N	\N	\N
-xwts1ggw479	9lqwydcclbh	16	\N	\N	\N
 2dp1sgeoanq	bjya50ieh5c	3	\N	\N	\N
 lqc01b4n2xe	bjya50ieh5c	4	\N	\N	\N
 5i62m584bjk	bjya50ieh5c	5	\N	\N	\N
@@ -6919,11 +7223,6 @@ yqj4tsj0tp5	bjya50ieh5c	6	\N	\N	\N
 y90c6xine07	bjya50ieh5c	7	\N	\N	\N
 uz1e0k6wjf1	bjya50ieh5c	8	\N	\N	\N
 iiek91fm1lg	bjya50ieh5c	9	\N	\N	\N
-9j3mrze0kdh	bjya50ieh5c	10	\N	\N	\N
-r5ux2dhnfq1	bjya50ieh5c	11	\N	\N	\N
-ulw06kfwwn3	bjya50ieh5c	12	\N	\N	\N
-wcib2cpt11z	bjya50ieh5c	13	\N	\N	\N
-xwts1ggw479	bjya50ieh5c	14	\N	\N	\N
 2dp1sgeoanq	ii9oyxsb8c5	2	\N	\N	\N
 lqc01b4n2xe	ii9oyxsb8c5	3	\N	\N	\N
 5i62m584bjk	ii9oyxsb8c5	4	\N	\N	\N
@@ -6931,11 +7230,6 @@ yqj4tsj0tp5	ii9oyxsb8c5	5	\N	\N	\N
 y90c6xine07	ii9oyxsb8c5	6	\N	\N	\N
 uz1e0k6wjf1	ii9oyxsb8c5	7	\N	\N	\N
 iiek91fm1lg	ii9oyxsb8c5	8	\N	\N	\N
-9j3mrze0kdh	ii9oyxsb8c5	9	\N	\N	\N
-r5ux2dhnfq1	ii9oyxsb8c5	10	\N	\N	\N
-ulw06kfwwn3	ii9oyxsb8c5	11	\N	\N	\N
-wcib2cpt11z	ii9oyxsb8c5	12	\N	\N	\N
-xwts1ggw479	ii9oyxsb8c5	13	\N	\N	\N
 2dp1sgeoanq	qusl2hqi7gk	4	\N	\N	\N
 lqc01b4n2xe	qusl2hqi7gk	5	\N	\N	\N
 5i62m584bjk	qusl2hqi7gk	6	\N	\N	\N
@@ -6943,11 +7237,6 @@ yqj4tsj0tp5	qusl2hqi7gk	7	\N	\N	\N
 y90c6xine07	qusl2hqi7gk	8	\N	\N	\N
 uz1e0k6wjf1	qusl2hqi7gk	9	\N	\N	\N
 iiek91fm1lg	qusl2hqi7gk	10	\N	\N	\N
-9j3mrze0kdh	qusl2hqi7gk	11	\N	\N	\N
-r5ux2dhnfq1	qusl2hqi7gk	12	\N	\N	\N
-ulw06kfwwn3	qusl2hqi7gk	13	\N	\N	\N
-wcib2cpt11z	qusl2hqi7gk	14	\N	\N	\N
-xwts1ggw479	qusl2hqi7gk	15	\N	\N	\N
 xh6ua2oy0ak	xh6ua2oy0ak	0	f	properties	\N
 5xc37z6hvd7	xh6ua2oy0ak	1	\N	\N	1
 h12h75lwjjk	h12h75lwjjk	0	f	properties	\N
@@ -6988,21 +7277,6 @@ uz1e0k6wjf1	xh6ua2oy0ak	12	\N	\N	\N
 iiek91fm1lg	5xc37z6hvd7	12	\N	\N	\N
 iiek91fm1lg	h12h75lwjjk	14	\N	\N	\N
 iiek91fm1lg	xh6ua2oy0ak	13	\N	\N	\N
-9j3mrze0kdh	5xc37z6hvd7	13	\N	\N	\N
-9j3mrze0kdh	h12h75lwjjk	15	\N	\N	\N
-9j3mrze0kdh	xh6ua2oy0ak	14	\N	\N	\N
-r5ux2dhnfq1	5xc37z6hvd7	14	\N	\N	\N
-r5ux2dhnfq1	h12h75lwjjk	16	\N	\N	\N
-r5ux2dhnfq1	xh6ua2oy0ak	15	\N	\N	\N
-ulw06kfwwn3	5xc37z6hvd7	15	\N	\N	\N
-ulw06kfwwn3	h12h75lwjjk	17	\N	\N	\N
-ulw06kfwwn3	xh6ua2oy0ak	16	\N	\N	\N
-wcib2cpt11z	5xc37z6hvd7	16	\N	\N	\N
-wcib2cpt11z	h12h75lwjjk	18	\N	\N	\N
-wcib2cpt11z	xh6ua2oy0ak	17	\N	\N	\N
-xwts1ggw479	5xc37z6hvd7	17	\N	\N	\N
-xwts1ggw479	h12h75lwjjk	19	\N	\N	\N
-xwts1ggw479	xh6ua2oy0ak	18	\N	\N	\N
 5xc37z6hvd7	5xc37z6hvd7	0	f	properties	\N
 7wvztesg1l9	5xc37z6hvd7	1	\N	\N	1
 ix3eneqbhqt	ix3eneqbhqt	0	f	properties	\N
@@ -7026,38 +7300,36 @@ nocobase-admin-menu	b7zq62km2nh	9	\N	\N	\N
 nocobase-admin-menu	ix3eneqbhqt	10	\N	\N	\N
 b7zq62km2nh	b7zq62km2nh	0	f	properties	\N
 i0bqeajbvwo	b7zq62km2nh	1	\N	\N	5
-073buw1m70l	4gdmc9g083s	14	\N	\N	\N
-nocobase-admin-menu	4gdmc9g083s	15	\N	\N	\N
+073buw1m70l	s1j0jdf8dnc	9	\N	\N	\N
+073buw1m70l	40nktpbceua	8	\N	\N	\N
 e87ogy2w48b	bzirblya7qw	2	\N	\N	\N
-i0bqeajbvwo	bzirblya7qw	3	\N	\N	\N
-pdot2ybyfc0	bzirblya7qw	4	\N	\N	\N
-a7e860jrx5o	bzirblya7qw	5	\N	\N	\N
-zxh1oe1qx5t	bzirblya7qw	6	\N	\N	\N
-861gmcfwhia	bzirblya7qw	7	\N	\N	\N
-9yos6i0cjm3	bzirblya7qw	8	\N	\N	\N
-n3yigbe0k9v	bzirblya7qw	9	\N	\N	\N
-073buw1m70l	bzirblya7qw	10	\N	\N	\N
-nocobase-admin-menu	bzirblya7qw	11	\N	\N	\N
+nocobase-admin-menu	s1j0jdf8dnc	10	\N	\N	\N
+nocobase-admin-menu	40nktpbceua	9	\N	\N	\N
+cm30c5qrll3	40nktpbceua	1	\N	\N	3
+oab97ze0n2o	oab97ze0n2o	0	f	properties	\N
+ukbvo0sx6s7	oab97ze0n2o	1	\N	\N	1
+cm30c5qrll3	oab97ze0n2o	2	\N	\N	\N
+0pf6qa0lzh7	ukbvo0sx6s7	2	\N	\N	\N
 galt7hbd78y	ebu29iqsaqx	4	\N	\N	\N
 e87ogy2w48b	ebu29iqsaqx	5	\N	\N	\N
-i0bqeajbvwo	ebu29iqsaqx	6	\N	\N	\N
-pdot2ybyfc0	ebu29iqsaqx	7	\N	\N	\N
-a7e860jrx5o	ebu29iqsaqx	8	\N	\N	\N
-zxh1oe1qx5t	ebu29iqsaqx	9	\N	\N	\N
-861gmcfwhia	ebu29iqsaqx	10	\N	\N	\N
-9yos6i0cjm3	ebu29iqsaqx	11	\N	\N	\N
-n3yigbe0k9v	ebu29iqsaqx	12	\N	\N	\N
-073buw1m70l	ebu29iqsaqx	13	\N	\N	\N
-nocobase-admin-menu	ebu29iqsaqx	14	\N	\N	\N
+0pf6qa0lzh7	oab97ze0n2o	3	\N	\N	\N
+a8q5n051fdr	ukbvo0sx6s7	3	\N	\N	\N
+a8q5n051fdr	oab97ze0n2o	4	\N	\N	\N
+39vgsrzpqyp	ukbvo0sx6s7	4	\N	\N	\N
+39vgsrzpqyp	oab97ze0n2o	5	\N	\N	\N
+2mxzcpz5cle	ukbvo0sx6s7	5	\N	\N	\N
+2mxzcpz5cle	oab97ze0n2o	6	\N	\N	\N
+jqr7lgri2e0	ukbvo0sx6s7	6	\N	\N	\N
+jqr7lgri2e0	oab97ze0n2o	7	\N	\N	\N
 galt7hbd78y	hg9tvy6yuph	2	\N	\N	\N
 e87ogy2w48b	hg9tvy6yuph	3	\N	\N	\N
-i0bqeajbvwo	hg9tvy6yuph	4	\N	\N	\N
-pdot2ybyfc0	hg9tvy6yuph	5	\N	\N	\N
-a7e860jrx5o	hg9tvy6yuph	6	\N	\N	\N
-zxh1oe1qx5t	hg9tvy6yuph	7	\N	\N	\N
-861gmcfwhia	hg9tvy6yuph	8	\N	\N	\N
-9yos6i0cjm3	hg9tvy6yuph	9	\N	\N	\N
-n3yigbe0k9v	hg9tvy6yuph	10	\N	\N	\N
+5vjhonzhs45	ukbvo0sx6s7	7	\N	\N	\N
+5vjhonzhs45	oab97ze0n2o	8	\N	\N	\N
+073buw1m70l	ukbvo0sx6s7	8	\N	\N	\N
+073buw1m70l	oab97ze0n2o	9	\N	\N	\N
+nocobase-admin-menu	ukbvo0sx6s7	9	\N	\N	\N
+nocobase-admin-menu	oab97ze0n2o	10	\N	\N	\N
+ukbvo0sx6s7	ukbvo0sx6s7	0	f	properties	\N
 v5n63r5xizu	v5n63r5xizu	0	f	properties	\N
 qam3nz2fvrb	qam3nz2fvrb	0	f	properties	\N
 neokhhxlkag	qam3nz2fvrb	1	\N	\N	1
@@ -7099,26 +7371,12 @@ uz1e0k6wjf1	qam3nz2fvrb	12	\N	\N	\N
 iiek91fm1lg	kwi6avb0snz	14	\N	\N	\N
 iiek91fm1lg	neokhhxlkag	12	\N	\N	\N
 iiek91fm1lg	qam3nz2fvrb	13	\N	\N	\N
-9j3mrze0kdh	kwi6avb0snz	15	\N	\N	\N
-9j3mrze0kdh	neokhhxlkag	13	\N	\N	\N
-9j3mrze0kdh	qam3nz2fvrb	14	\N	\N	\N
-r5ux2dhnfq1	kwi6avb0snz	16	\N	\N	\N
-r5ux2dhnfq1	neokhhxlkag	14	\N	\N	\N
-r5ux2dhnfq1	qam3nz2fvrb	15	\N	\N	\N
-ulw06kfwwn3	kwi6avb0snz	17	\N	\N	\N
-ulw06kfwwn3	neokhhxlkag	15	\N	\N	\N
-ulw06kfwwn3	qam3nz2fvrb	16	\N	\N	\N
-wcib2cpt11z	kwi6avb0snz	18	\N	\N	\N
-wcib2cpt11z	neokhhxlkag	16	\N	\N	\N
-wcib2cpt11z	qam3nz2fvrb	17	\N	\N	\N
-xwts1ggw479	kwi6avb0snz	19	\N	\N	\N
-xwts1ggw479	neokhhxlkag	17	\N	\N	\N
-xwts1ggw479	qam3nz2fvrb	18	\N	\N	\N
 neokhhxlkag	neokhhxlkag	0	f	properties	\N
 7wvztesg1l9	neokhhxlkag	1	\N	\N	3
 qusl2hqi7gk	v5n63r5xizu	2	\N	\N	\N
 bjya50ieh5c	v5n63r5xizu	3	\N	\N	\N
 ii9oyxsb8c5	v5n63r5xizu	4	\N	\N	\N
+z7ksqgxvuzy	u80bniwjt35	4	\N	\N	\N
 511oe1h7d0q	v5n63r5xizu	5	\N	\N	\N
 2dp1sgeoanq	v5n63r5xizu	6	\N	\N	\N
 lqc01b4n2xe	v5n63r5xizu	7	\N	\N	\N
@@ -7127,25 +7385,18 @@ yqj4tsj0tp5	v5n63r5xizu	9	\N	\N	\N
 y90c6xine07	v5n63r5xizu	10	\N	\N	\N
 uz1e0k6wjf1	v5n63r5xizu	11	\N	\N	\N
 iiek91fm1lg	v5n63r5xizu	12	\N	\N	\N
-9j3mrze0kdh	v5n63r5xizu	13	\N	\N	\N
-r5ux2dhnfq1	v5n63r5xizu	14	\N	\N	\N
-ulw06kfwwn3	v5n63r5xizu	15	\N	\N	\N
-wcib2cpt11z	v5n63r5xizu	16	\N	\N	\N
-xwts1ggw479	v5n63r5xizu	17	\N	\N	\N
 9lqwydcclbh	v5n63r5xizu	1	\N	\N	1
-073buw1m70l	hg9tvy6yuph	11	\N	\N	\N
-nocobase-admin-menu	hg9tvy6yuph	12	\N	\N	\N
+cm30c5qrll3	ukbvo0sx6s7	1	\N	\N	5
 galt7hbd78y	k4kftsn5ht7	3	\N	\N	\N
 e87ogy2w48b	k4kftsn5ht7	4	\N	\N	\N
-i0bqeajbvwo	k4kftsn5ht7	5	\N	\N	\N
-pdot2ybyfc0	k4kftsn5ht7	6	\N	\N	\N
-a7e860jrx5o	k4kftsn5ht7	7	\N	\N	\N
-zxh1oe1qx5t	k4kftsn5ht7	8	\N	\N	\N
-861gmcfwhia	k4kftsn5ht7	9	\N	\N	\N
-9yos6i0cjm3	k4kftsn5ht7	10	\N	\N	\N
-n3yigbe0k9v	k4kftsn5ht7	11	\N	\N	\N
-073buw1m70l	k4kftsn5ht7	12	\N	\N	\N
-nocobase-admin-menu	k4kftsn5ht7	13	\N	\N	\N
+wcrqjis5vk6	wcrqjis5vk6	0	f	properties	\N
+ukbvo0sx6s7	wcrqjis5vk6	2	\N	\N	\N
+cm30c5qrll3	wcrqjis5vk6	3	\N	\N	\N
+0pf6qa0lzh7	wcrqjis5vk6	4	\N	\N	\N
+a8q5n051fdr	wcrqjis5vk6	5	\N	\N	\N
+39vgsrzpqyp	wcrqjis5vk6	6	\N	\N	\N
+2mxzcpz5cle	wcrqjis5vk6	7	\N	\N	\N
+jqr7lgri2e0	wcrqjis5vk6	8	\N	\N	\N
 bzirblya7qw	bzirblya7qw	0	f	properties	\N
 galt7hbd78y	bzirblya7qw	1	\N	\N	1
 8i28yvimg4p	8i28yvimg4p	0	f	properties	\N
@@ -7162,74 +7413,59 @@ ybdxp7v91jn	9cngdl646v0	1	\N	\N	1
 muv6h06t8mi	9cngdl646v0	2	\N	\N	1
 8i28yvimg4p	9cngdl646v0	3	\N	\N	1
 66xqkev137r	9cngdl646v0	4	\N	\N	1
-e87ogy2w48b	66xqkev137r	2	\N	\N	\N
-i0bqeajbvwo	66xqkev137r	3	\N	\N	\N
-pdot2ybyfc0	66xqkev137r	4	\N	\N	\N
-a7e860jrx5o	66xqkev137r	5	\N	\N	\N
-zxh1oe1qx5t	66xqkev137r	6	\N	\N	\N
-861gmcfwhia	66xqkev137r	7	\N	\N	\N
-9yos6i0cjm3	66xqkev137r	8	\N	\N	\N
-n3yigbe0k9v	66xqkev137r	9	\N	\N	\N
-073buw1m70l	66xqkev137r	10	\N	\N	\N
-nocobase-admin-menu	66xqkev137r	11	\N	\N	\N
-galt7hbd78y	8i28yvimg4p	2	\N	\N	\N
-e87ogy2w48b	8i28yvimg4p	3	\N	\N	\N
-i0bqeajbvwo	8i28yvimg4p	4	\N	\N	\N
-pdot2ybyfc0	8i28yvimg4p	5	\N	\N	\N
-a7e860jrx5o	8i28yvimg4p	6	\N	\N	\N
-zxh1oe1qx5t	8i28yvimg4p	7	\N	\N	\N
-861gmcfwhia	8i28yvimg4p	8	\N	\N	\N
-9yos6i0cjm3	8i28yvimg4p	9	\N	\N	\N
-n3yigbe0k9v	8i28yvimg4p	10	\N	\N	\N
-073buw1m70l	8i28yvimg4p	11	\N	\N	\N
-nocobase-admin-menu	8i28yvimg4p	12	\N	\N	\N
-galt7hbd78y	9cngdl646v0	5	\N	\N	\N
-e87ogy2w48b	9cngdl646v0	6	\N	\N	\N
-i0bqeajbvwo	9cngdl646v0	7	\N	\N	\N
-pdot2ybyfc0	9cngdl646v0	8	\N	\N	\N
-a7e860jrx5o	9cngdl646v0	9	\N	\N	\N
-zxh1oe1qx5t	9cngdl646v0	10	\N	\N	\N
-861gmcfwhia	9cngdl646v0	11	\N	\N	\N
-9yos6i0cjm3	9cngdl646v0	12	\N	\N	\N
-n3yigbe0k9v	9cngdl646v0	13	\N	\N	\N
-073buw1m70l	9cngdl646v0	14	\N	\N	\N
-nocobase-admin-menu	9cngdl646v0	15	\N	\N	\N
-galt7hbd78y	muv6h06t8mi	3	\N	\N	\N
-e87ogy2w48b	muv6h06t8mi	4	\N	\N	\N
-i0bqeajbvwo	muv6h06t8mi	5	\N	\N	\N
-pdot2ybyfc0	muv6h06t8mi	6	\N	\N	\N
-a7e860jrx5o	muv6h06t8mi	7	\N	\N	\N
-zxh1oe1qx5t	muv6h06t8mi	8	\N	\N	\N
-861gmcfwhia	muv6h06t8mi	9	\N	\N	\N
-9yos6i0cjm3	muv6h06t8mi	10	\N	\N	\N
-n3yigbe0k9v	muv6h06t8mi	11	\N	\N	\N
-073buw1m70l	muv6h06t8mi	12	\N	\N	\N
-nocobase-admin-menu	muv6h06t8mi	13	\N	\N	\N
-galt7hbd78y	ybdxp7v91jn	4	\N	\N	\N
-e87ogy2w48b	ybdxp7v91jn	5	\N	\N	\N
-i0bqeajbvwo	ybdxp7v91jn	6	\N	\N	\N
-pdot2ybyfc0	ybdxp7v91jn	7	\N	\N	\N
-a7e860jrx5o	ybdxp7v91jn	8	\N	\N	\N
-zxh1oe1qx5t	ybdxp7v91jn	9	\N	\N	\N
-861gmcfwhia	ybdxp7v91jn	10	\N	\N	\N
-9yos6i0cjm3	ybdxp7v91jn	11	\N	\N	\N
-n3yigbe0k9v	ybdxp7v91jn	12	\N	\N	\N
-073buw1m70l	ybdxp7v91jn	13	\N	\N	\N
-nocobase-admin-menu	ybdxp7v91jn	14	\N	\N	\N
-66xqkev137r	66xqkev137r	0	f	properties	\N
-galt7hbd78y	66xqkev137r	1	\N	\N	2
+5vjhonzhs45	wcrqjis5vk6	9	\N	\N	\N
+073buw1m70l	wcrqjis5vk6	10	\N	\N	\N
+nocobase-admin-menu	wcrqjis5vk6	11	\N	\N	\N
+oab97ze0n2o	wcrqjis5vk6	1	\N	\N	1
+evtz6ljqxdq	7s4541t6mnz	8	\N	\N	\N
+evtz6ljqxdq	yyevygbo1uu	9	\N	\N	\N
+i80vemflinb	6fiymfhu4i9	6	\N	\N	\N
+i80vemflinb	l9ys75laoy9	7	\N	\N	\N
+i80vemflinb	58gpo0mxaav	8	\N	\N	\N
+i80vemflinb	7s4541t6mnz	9	\N	\N	\N
+i80vemflinb	yyevygbo1uu	10	\N	\N	\N
+5bru92qlyrq	6fiymfhu4i9	7	\N	\N	\N
+5bru92qlyrq	l9ys75laoy9	8	\N	\N	\N
+5bru92qlyrq	58gpo0mxaav	9	\N	\N	\N
+5bru92qlyrq	7s4541t6mnz	10	\N	\N	\N
+5bru92qlyrq	yyevygbo1uu	11	\N	\N	\N
+obl2auujo32	6fiymfhu4i9	8	\N	\N	\N
+obl2auujo32	l9ys75laoy9	9	\N	\N	\N
+obl2auujo32	58gpo0mxaav	10	\N	\N	\N
+obl2auujo32	7s4541t6mnz	11	\N	\N	\N
+obl2auujo32	yyevygbo1uu	12	\N	\N	\N
+nocobase-admin-menu	6fiymfhu4i9	9	\N	\N	\N
+nocobase-admin-menu	l9ys75laoy9	10	\N	\N	\N
+nocobase-admin-menu	58gpo0mxaav	11	\N	\N	\N
+nocobase-admin-menu	7s4541t6mnz	12	\N	\N	\N
+nocobase-admin-menu	yyevygbo1uu	13	\N	\N	\N
+6fiymfhu4i9	6fiymfhu4i9	0	f	properties	\N
+efkn3sb524k	6fiymfhu4i9	1	\N	\N	1
+6hxxlzxmifr	u80bniwjt35	5	\N	\N	\N
+bt575py2m17	kfshzp2e8w3	1	\N	\N	1
+4gdmc9g083s	u80bniwjt35	6	\N	\N	\N
+seoty3c8shi	kfshzp2e8w3	2	\N	\N	\N
+zg36b96ttmj	bt575py2m17	2	\N	\N	\N
+ebu29iqsaqx	u80bniwjt35	7	\N	\N	\N
+zg36b96ttmj	kfshzp2e8w3	3	\N	\N	\N
+jkjog6plqji	bt575py2m17	3	\N	\N	\N
+k4kftsn5ht7	u80bniwjt35	8	\N	\N	\N
+jkjog6plqji	kfshzp2e8w3	4	\N	\N	\N
+fi2ue9h7mq4	bt575py2m17	4	\N	\N	\N
+hg9tvy6yuph	u80bniwjt35	9	\N	\N	\N
+fi2ue9h7mq4	kfshzp2e8w3	5	\N	\N	\N
+43941gf2n0y	bt575py2m17	5	\N	\N	\N
 lgkny2plcta	lgkny2plcta	0	f	properties	\N
 e87ogy2w48b	lgkny2plcta	2	\N	\N	\N
-i0bqeajbvwo	lgkny2plcta	3	\N	\N	\N
-pdot2ybyfc0	lgkny2plcta	4	\N	\N	\N
-a7e860jrx5o	lgkny2plcta	5	\N	\N	\N
-zxh1oe1qx5t	lgkny2plcta	6	\N	\N	\N
-861gmcfwhia	lgkny2plcta	7	\N	\N	\N
-9yos6i0cjm3	lgkny2plcta	8	\N	\N	\N
-n3yigbe0k9v	lgkny2plcta	9	\N	\N	\N
-073buw1m70l	lgkny2plcta	10	\N	\N	\N
-nocobase-admin-menu	lgkny2plcta	11	\N	\N	\N
-galt7hbd78y	lgkny2plcta	1	\N	\N	3
+bzirblya7qw	u80bniwjt35	10	\N	\N	\N
+43941gf2n0y	kfshzp2e8w3	6	\N	\N	\N
+wp3edt8ujq4	bt575py2m17	6	\N	\N	\N
+galt7hbd78y	u80bniwjt35	11	\N	\N	\N
+wp3edt8ujq4	kfshzp2e8w3	7	\N	\N	\N
+mlqmnjhazhe	bt575py2m17	7	\N	\N	\N
+e87ogy2w48b	u80bniwjt35	12	\N	\N	\N
+mlqmnjhazhe	kfshzp2e8w3	8	\N	\N	\N
+wj9ij1yidio	bt575py2m17	8	\N	\N	\N
 0m1gm5ozwh9	0m1gm5ozwh9	0	f	properties	\N
 pdot2ybyfc0	0m1gm5ozwh9	2	\N	\N	\N
 a7e860jrx5o	0m1gm5ozwh9	3	\N	\N	\N
@@ -7252,6 +7488,8 @@ vukfpwp37qn	alnwl1ouj3h	3	\N	\N	1
 adxntkyyx2m	adxntkyyx2m	0	f	properties	\N
 alnwl1ouj3h	adxntkyyx2m	1	\N	\N	1
 3gtgg35z6e8	adxntkyyx2m	2	\N	\N	1
+i0bqeajbvwo	u80bniwjt35	13	\N	\N	\N
+wj9ij1yidio	kfshzp2e8w3	9	\N	\N	\N
 xfwxsmz494e	adxntkyyx2m	3	\N	\N	1
 vukfpwp37qn	adxntkyyx2m	4	\N	\N	1
 baqq2v2fong	3gtgg35z6e8	3	\N	\N	\N
@@ -7259,6 +7497,7 @@ pdot2ybyfc0	3gtgg35z6e8	4	\N	\N	\N
 a7e860jrx5o	3gtgg35z6e8	5	\N	\N	\N
 zxh1oe1qx5t	3gtgg35z6e8	6	\N	\N	\N
 861gmcfwhia	3gtgg35z6e8	7	\N	\N	\N
+galt7hbd78y	lgkny2plcta	1	\N	\N	4
 9yos6i0cjm3	3gtgg35z6e8	8	\N	\N	\N
 n3yigbe0k9v	3gtgg35z6e8	9	\N	\N	\N
 073buw1m70l	3gtgg35z6e8	10	\N	\N	\N
@@ -7333,17 +7572,16 @@ imrhc9he5on	imrhc9he5on	0	f	properties	\N
 82ikkgrog2y	imrhc9he5on	1	\N	\N	2
 mmj417nrjpa	imrhc9he5on	2	\N	\N	2
 lmgnrgroovk	imrhc9he5on	3	\N	\N	2
-yjzd6s5ccq4	yjzd6s5ccq4	0	f	properties	\N
-imrhc9he5on	yjzd6s5ccq4	1	\N	\N	1
-82ikkgrog2y	yjzd6s5ccq4	2	\N	\N	1
-mmj417nrjpa	yjzd6s5ccq4	3	\N	\N	1
-lmgnrgroovk	yjzd6s5ccq4	4	\N	\N	1
+60f4r8b0er6	bt575py2m17	9	\N	\N	\N
+l94gox2g6sk	l94gox2g6sk	0	f	properties	\N
+bffo2i5n7zb	l94gox2g6sk	1	\N	\N	1
+04nart2ippj	04nart2ippj	0	f	properties	\N
 ji9t3fgnkc0	ji9t3fgnkc0	0	f	properties	\N
 yjzd6s5ccq4	ji9t3fgnkc0	1	\N	\N	1
-imrhc9he5on	ji9t3fgnkc0	2	\N	\N	1
-82ikkgrog2y	ji9t3fgnkc0	3	\N	\N	1
-mmj417nrjpa	ji9t3fgnkc0	4	\N	\N	1
-lmgnrgroovk	ji9t3fgnkc0	5	\N	\N	1
+bffo2i5n7zb	04nart2ippj	2	\N	\N	\N
+pdot2ybyfc0	u80bniwjt35	14	\N	\N	\N
+l94gox2g6sk	04nart2ippj	1	\N	\N	1
+60f4r8b0er6	kfshzp2e8w3	10	\N	\N	\N
 4cx141n1lb4	6kbk2ko53xi	4	\N	\N	\N
 k6pr2jh3wgd	6kbk2ko53xi	5	\N	\N	\N
 hchm15rxv74	6kbk2ko53xi	6	\N	\N	\N
@@ -7359,11 +7597,11 @@ k6pr2jh3wgd	imrhc9he5on	5	\N	\N	\N
 hchm15rxv74	imrhc9he5on	6	\N	\N	\N
 073buw1m70l	imrhc9he5on	7	\N	\N	\N
 nocobase-admin-menu	imrhc9he5on	8	\N	\N	\N
-4cx141n1lb4	ji9t3fgnkc0	6	\N	\N	\N
-k6pr2jh3wgd	ji9t3fgnkc0	7	\N	\N	\N
-hchm15rxv74	ji9t3fgnkc0	8	\N	\N	\N
-073buw1m70l	ji9t3fgnkc0	9	\N	\N	\N
-nocobase-admin-menu	ji9t3fgnkc0	10	\N	\N	\N
+22pnzqtybji	l94gox2g6sk	2	\N	\N	\N
+22pnzqtybji	04nart2ippj	3	\N	\N	\N
+mqma0oexw7v	bffo2i5n7zb	2	\N	\N	\N
+mqma0oexw7v	l94gox2g6sk	3	\N	\N	\N
+mqma0oexw7v	04nart2ippj	4	\N	\N	\N
 k6pr2jh3wgd	lmgnrgroovk	2	\N	\N	\N
 hchm15rxv74	lmgnrgroovk	3	\N	\N	\N
 073buw1m70l	lmgnrgroovk	4	\N	\N	\N
@@ -7373,17 +7611,18 @@ k6pr2jh3wgd	mmj417nrjpa	3	\N	\N	\N
 hchm15rxv74	mmj417nrjpa	4	\N	\N	\N
 073buw1m70l	mmj417nrjpa	5	\N	\N	\N
 nocobase-admin-menu	mmj417nrjpa	6	\N	\N	\N
-4cx141n1lb4	yjzd6s5ccq4	5	\N	\N	\N
-k6pr2jh3wgd	yjzd6s5ccq4	6	\N	\N	\N
-hchm15rxv74	yjzd6s5ccq4	7	\N	\N	\N
-073buw1m70l	yjzd6s5ccq4	8	\N	\N	\N
-nocobase-admin-menu	yjzd6s5ccq4	9	\N	\N	\N
+09yy6b78jxi	bffo2i5n7zb	3	\N	\N	\N
+09yy6b78jxi	l94gox2g6sk	4	\N	\N	\N
+09yy6b78jxi	04nart2ippj	5	\N	\N	\N
+1whdhzzrodk	bffo2i5n7zb	4	\N	\N	\N
+1whdhzzrodk	l94gox2g6sk	5	\N	\N	\N
 lmgnrgroovk	lmgnrgroovk	0	f	properties	\N
 4cx141n1lb4	lmgnrgroovk	1	\N	\N	1
 e2bz79kfn39	e2bz79kfn39	0	f	properties	\N
 2bwco99n47x	e2bz79kfn39	1	\N	\N	1
 2w360eurk19	2w360eurk19	0	f	properties	\N
 e2bz79kfn39	2w360eurk19	1	\N	\N	1
+qbrsluqev37	bt575py2m17	10	\N	\N	\N
 2bwco99n47x	2w360eurk19	2	\N	\N	1
 85c8uxmskwh	85c8uxmskwh	0	f	properties	\N
 2w360eurk19	85c8uxmskwh	1	\N	\N	1
@@ -7396,59 +7635,56 @@ e2bz79kfn39	eolrwpo9lyf	3	\N	\N	1
 2bwco99n47x	2bwco99n47x	0	f	properties	\N
 2bwco99n47x	eolrwpo9lyf	4	\N	\N	1
 yjzd6s5ccq4	2bwco99n47x	2	\N	\N	\N
-imrhc9he5on	2bwco99n47x	3	\N	\N	\N
-82ikkgrog2y	2bwco99n47x	4	\N	\N	\N
-mmj417nrjpa	2bwco99n47x	5	\N	\N	\N
-lmgnrgroovk	2bwco99n47x	6	\N	\N	\N
-4cx141n1lb4	2bwco99n47x	7	\N	\N	\N
-k6pr2jh3wgd	2bwco99n47x	8	\N	\N	\N
-hchm15rxv74	2bwco99n47x	9	\N	\N	\N
-073buw1m70l	2bwco99n47x	10	\N	\N	\N
-nocobase-admin-menu	2bwco99n47x	11	\N	\N	\N
+1whdhzzrodk	04nart2ippj	6	\N	\N	\N
+f205ix4mjg8	bffo2i5n7zb	5	\N	\N	\N
+f205ix4mjg8	l94gox2g6sk	6	\N	\N	\N
+f205ix4mjg8	04nart2ippj	7	\N	\N	\N
+fvx7g50y58n	bffo2i5n7zb	6	\N	\N	\N
+fvx7g50y58n	l94gox2g6sk	7	\N	\N	\N
+cr7ggy2zrl6	cr7ggy2zrl6	0	f	properties	\N
+9cngdl646v0	cr7ggy2zrl6	1	\N	\N	1
 ji9t3fgnkc0	2w360eurk19	3	\N	\N	\N
 yjzd6s5ccq4	2w360eurk19	4	\N	\N	\N
-imrhc9he5on	2w360eurk19	5	\N	\N	\N
-82ikkgrog2y	2w360eurk19	6	\N	\N	\N
-mmj417nrjpa	2w360eurk19	7	\N	\N	\N
-lmgnrgroovk	2w360eurk19	8	\N	\N	\N
-4cx141n1lb4	2w360eurk19	9	\N	\N	\N
-k6pr2jh3wgd	2w360eurk19	10	\N	\N	\N
-hchm15rxv74	2w360eurk19	11	\N	\N	\N
-073buw1m70l	2w360eurk19	12	\N	\N	\N
-nocobase-admin-menu	2w360eurk19	13	\N	\N	\N
+s10y0pbvftv	s10y0pbvftv	0	f	properties	\N
+x4kjbk4wyiq	s10y0pbvftv	1	\N	\N	1
+2h4y1wh8hgp	2h4y1wh8hgp	0	f	properties	\N
+s10y0pbvftv	2h4y1wh8hgp	1	\N	\N	1
+x4kjbk4wyiq	2h4y1wh8hgp	2	\N	\N	1
+730yg8t8myy	s10y0pbvftv	2	\N	\N	\N
+730yg8t8myy	2h4y1wh8hgp	3	\N	\N	\N
+2oimqa9byrp	x4kjbk4wyiq	2	\N	\N	\N
 ji9t3fgnkc0	85c8uxmskwh	4	\N	\N	\N
 yjzd6s5ccq4	85c8uxmskwh	5	\N	\N	\N
-imrhc9he5on	85c8uxmskwh	6	\N	\N	\N
-82ikkgrog2y	85c8uxmskwh	7	\N	\N	\N
-mmj417nrjpa	85c8uxmskwh	8	\N	\N	\N
-lmgnrgroovk	85c8uxmskwh	9	\N	\N	\N
-4cx141n1lb4	85c8uxmskwh	10	\N	\N	\N
-k6pr2jh3wgd	85c8uxmskwh	11	\N	\N	\N
-hchm15rxv74	85c8uxmskwh	12	\N	\N	\N
-073buw1m70l	85c8uxmskwh	13	\N	\N	\N
-nocobase-admin-menu	85c8uxmskwh	14	\N	\N	\N
+2oimqa9byrp	s10y0pbvftv	3	\N	\N	\N
+2oimqa9byrp	2h4y1wh8hgp	4	\N	\N	\N
+tmbbsnq2x5b	x4kjbk4wyiq	3	\N	\N	\N
+tmbbsnq2x5b	s10y0pbvftv	4	\N	\N	\N
+tmbbsnq2x5b	2h4y1wh8hgp	5	\N	\N	\N
+oyy61gowm8y	x4kjbk4wyiq	4	\N	\N	\N
+oyy61gowm8y	s10y0pbvftv	5	\N	\N	\N
+oyy61gowm8y	2h4y1wh8hgp	6	\N	\N	\N
+cr7ggy2zrl6	x4kjbk4wyiq	5	\N	\N	\N
 ji9t3fgnkc0	e2bz79kfn39	2	\N	\N	\N
 yjzd6s5ccq4	e2bz79kfn39	3	\N	\N	\N
-imrhc9he5on	e2bz79kfn39	4	\N	\N	\N
-82ikkgrog2y	e2bz79kfn39	5	\N	\N	\N
-mmj417nrjpa	e2bz79kfn39	6	\N	\N	\N
-lmgnrgroovk	e2bz79kfn39	7	\N	\N	\N
-4cx141n1lb4	e2bz79kfn39	8	\N	\N	\N
-k6pr2jh3wgd	e2bz79kfn39	9	\N	\N	\N
-hchm15rxv74	e2bz79kfn39	10	\N	\N	\N
-073buw1m70l	e2bz79kfn39	11	\N	\N	\N
-nocobase-admin-menu	e2bz79kfn39	12	\N	\N	\N
+cr7ggy2zrl6	s10y0pbvftv	6	\N	\N	\N
+cr7ggy2zrl6	2h4y1wh8hgp	7	\N	\N	\N
+9cngdl646v0	x4kjbk4wyiq	6	\N	\N	\N
+9cngdl646v0	s10y0pbvftv	7	\N	\N	\N
+9cngdl646v0	2h4y1wh8hgp	8	\N	\N	\N
+ybdxp7v91jn	x4kjbk4wyiq	7	\N	\N	\N
+ybdxp7v91jn	s10y0pbvftv	8	\N	\N	\N
+ybdxp7v91jn	2h4y1wh8hgp	9	\N	\N	\N
+muv6h06t8mi	x4kjbk4wyiq	8	\N	\N	\N
 ji9t3fgnkc0	eolrwpo9lyf	5	\N	\N	\N
 yjzd6s5ccq4	eolrwpo9lyf	6	\N	\N	\N
-imrhc9he5on	eolrwpo9lyf	7	\N	\N	\N
-82ikkgrog2y	eolrwpo9lyf	8	\N	\N	\N
-mmj417nrjpa	eolrwpo9lyf	9	\N	\N	\N
-lmgnrgroovk	eolrwpo9lyf	10	\N	\N	\N
-4cx141n1lb4	eolrwpo9lyf	11	\N	\N	\N
-k6pr2jh3wgd	eolrwpo9lyf	12	\N	\N	\N
-hchm15rxv74	eolrwpo9lyf	13	\N	\N	\N
-073buw1m70l	eolrwpo9lyf	14	\N	\N	\N
-nocobase-admin-menu	eolrwpo9lyf	15	\N	\N	\N
+muv6h06t8mi	s10y0pbvftv	9	\N	\N	\N
+muv6h06t8mi	2h4y1wh8hgp	10	\N	\N	\N
+8i28yvimg4p	x4kjbk4wyiq	9	\N	\N	\N
+8i28yvimg4p	s10y0pbvftv	10	\N	\N	\N
+8i28yvimg4p	2h4y1wh8hgp	11	\N	\N	\N
+66xqkev137r	x4kjbk4wyiq	10	\N	\N	\N
+66xqkev137r	s10y0pbvftv	11	\N	\N	\N
+66xqkev137r	2h4y1wh8hgp	12	\N	\N	\N
 ji9t3fgnkc0	2bwco99n47x	1	\N	\N	1
 pvmgj00ippd	pvmgj00ippd	0	f	properties	\N
 szv3v13lwap	pvmgj00ippd	1	\N	\N	1
@@ -7466,71 +7702,68 @@ pvmgj00ippd	u4pz1nv2zu7	3	\N	\N	1
 szv3v13lwap	u4pz1nv2zu7	4	\N	\N	1
 ji9t3fgnkc0	iniy0emerbt	4	\N	\N	\N
 yjzd6s5ccq4	iniy0emerbt	5	\N	\N	\N
-imrhc9he5on	iniy0emerbt	6	\N	\N	\N
-82ikkgrog2y	iniy0emerbt	7	\N	\N	\N
-mmj417nrjpa	iniy0emerbt	8	\N	\N	\N
-lmgnrgroovk	iniy0emerbt	9	\N	\N	\N
-4cx141n1lb4	iniy0emerbt	10	\N	\N	\N
-k6pr2jh3wgd	iniy0emerbt	11	\N	\N	\N
-hchm15rxv74	iniy0emerbt	12	\N	\N	\N
-073buw1m70l	iniy0emerbt	13	\N	\N	\N
-nocobase-admin-menu	iniy0emerbt	14	\N	\N	\N
+fvx7g50y58n	04nart2ippj	8	\N	\N	\N
+833uu3rb1nm	bffo2i5n7zb	7	\N	\N	\N
+833uu3rb1nm	l94gox2g6sk	8	\N	\N	\N
+833uu3rb1nm	04nart2ippj	9	\N	\N	\N
 ji9t3fgnkc0	pvmgj00ippd	2	\N	\N	\N
 yjzd6s5ccq4	pvmgj00ippd	3	\N	\N	\N
-imrhc9he5on	pvmgj00ippd	4	\N	\N	\N
-82ikkgrog2y	pvmgj00ippd	5	\N	\N	\N
-mmj417nrjpa	pvmgj00ippd	6	\N	\N	\N
-lmgnrgroovk	pvmgj00ippd	7	\N	\N	\N
-4cx141n1lb4	pvmgj00ippd	8	\N	\N	\N
-k6pr2jh3wgd	pvmgj00ippd	9	\N	\N	\N
-hchm15rxv74	pvmgj00ippd	10	\N	\N	\N
-073buw1m70l	pvmgj00ippd	11	\N	\N	\N
-nocobase-admin-menu	pvmgj00ippd	12	\N	\N	\N
+ik0zt15yup2	bffo2i5n7zb	8	\N	\N	\N
+ik0zt15yup2	l94gox2g6sk	9	\N	\N	\N
+ik0zt15yup2	04nart2ippj	10	\N	\N	\N
+w1vttmfcjic	bffo2i5n7zb	9	\N	\N	\N
+w1vttmfcjic	l94gox2g6sk	10	\N	\N	\N
+w1vttmfcjic	04nart2ippj	11	\N	\N	\N
+nocobase-admin-menu	bffo2i5n7zb	10	\N	\N	\N
+nocobase-admin-menu	l94gox2g6sk	11	\N	\N	\N
+nocobase-admin-menu	04nart2ippj	12	\N	\N	\N
 yjzd6s5ccq4	szv3v13lwap	2	\N	\N	\N
-imrhc9he5on	szv3v13lwap	3	\N	\N	\N
-82ikkgrog2y	szv3v13lwap	4	\N	\N	\N
-mmj417nrjpa	szv3v13lwap	5	\N	\N	\N
-lmgnrgroovk	szv3v13lwap	6	\N	\N	\N
-4cx141n1lb4	szv3v13lwap	7	\N	\N	\N
-k6pr2jh3wgd	szv3v13lwap	8	\N	\N	\N
-hchm15rxv74	szv3v13lwap	9	\N	\N	\N
-073buw1m70l	szv3v13lwap	10	\N	\N	\N
-nocobase-admin-menu	szv3v13lwap	11	\N	\N	\N
+bffo2i5n7zb	bffo2i5n7zb	0	f	properties	\N
+a7e860jrx5o	u80bniwjt35	15	\N	\N	\N
+b91w7gjtydd	b91w7gjtydd	0	f	properties	\N
+gwo3711lqyc	b91w7gjtydd	1	\N	\N	1
+qcs2ctmr4zo	qcs2ctmr4zo	0	f	properties	\N
+b91w7gjtydd	qcs2ctmr4zo	1	\N	\N	1
+gwo3711lqyc	qcs2ctmr4zo	2	\N	\N	1
 ji9t3fgnkc0	u4pz1nv2zu7	5	\N	\N	\N
 yjzd6s5ccq4	u4pz1nv2zu7	6	\N	\N	\N
-imrhc9he5on	u4pz1nv2zu7	7	\N	\N	\N
-82ikkgrog2y	u4pz1nv2zu7	8	\N	\N	\N
-mmj417nrjpa	u4pz1nv2zu7	9	\N	\N	\N
-lmgnrgroovk	u4pz1nv2zu7	10	\N	\N	\N
-4cx141n1lb4	u4pz1nv2zu7	11	\N	\N	\N
-k6pr2jh3wgd	u4pz1nv2zu7	12	\N	\N	\N
-hchm15rxv74	u4pz1nv2zu7	13	\N	\N	\N
-073buw1m70l	u4pz1nv2zu7	14	\N	\N	\N
-nocobase-admin-menu	u4pz1nv2zu7	15	\N	\N	\N
+qbrsluqev37	kfshzp2e8w3	11	\N	\N	\N
+yyevygbo1uu	b91w7gjtydd	2	\N	\N	\N
+yyevygbo1uu	qcs2ctmr4zo	3	\N	\N	\N
+7s4541t6mnz	gwo3711lqyc	2	\N	\N	\N
+7s4541t6mnz	b91w7gjtydd	3	\N	\N	\N
+x4kjbk4wyiq	x4kjbk4wyiq	0	f	properties	\N
+730yg8t8myy	x4kjbk4wyiq	1	\N	\N	1
+7s4541t6mnz	qcs2ctmr4zo	4	\N	\N	\N
+ftinb1yr6ki	ftinb1yr6ki	0	f	properties	\N
 ji9t3fgnkc0	zkmofdtbl6m	3	\N	\N	\N
 yjzd6s5ccq4	zkmofdtbl6m	4	\N	\N	\N
-imrhc9he5on	zkmofdtbl6m	5	\N	\N	\N
-82ikkgrog2y	zkmofdtbl6m	6	\N	\N	\N
-mmj417nrjpa	zkmofdtbl6m	7	\N	\N	\N
-lmgnrgroovk	zkmofdtbl6m	8	\N	\N	\N
-4cx141n1lb4	zkmofdtbl6m	9	\N	\N	\N
-k6pr2jh3wgd	zkmofdtbl6m	10	\N	\N	\N
-hchm15rxv74	zkmofdtbl6m	11	\N	\N	\N
-073buw1m70l	zkmofdtbl6m	12	\N	\N	\N
-nocobase-admin-menu	zkmofdtbl6m	13	\N	\N	\N
+n6yds6ez043	ftinb1yr6ki	1	\N	\N	1
+utrw9hfhybk	utrw9hfhybk	0	f	properties	\N
+ftinb1yr6ki	utrw9hfhybk	1	\N	\N	1
+n6yds6ez043	utrw9hfhybk	2	\N	\N	1
+58gpo0mxaav	gwo3711lqyc	3	\N	\N	\N
+730yg8t8myy	ftinb1yr6ki	2	\N	\N	\N
+730yg8t8myy	utrw9hfhybk	3	\N	\N	\N
+2oimqa9byrp	n6yds6ez043	2	\N	\N	\N
+2oimqa9byrp	ftinb1yr6ki	3	\N	\N	\N
+2oimqa9byrp	utrw9hfhybk	4	\N	\N	\N
+58gpo0mxaav	b91w7gjtydd	4	\N	\N	\N
+tmbbsnq2x5b	n6yds6ez043	3	\N	\N	\N
 szv3v13lwap	szv3v13lwap	0	f	properties	\N
 ji9t3fgnkc0	szv3v13lwap	1	\N	\N	2
 ugbscwjg6mp	ugbscwjg6mp	0	f	properties	\N
 yjzd6s5ccq4	ugbscwjg6mp	2	\N	\N	\N
-imrhc9he5on	ugbscwjg6mp	3	\N	\N	\N
-82ikkgrog2y	ugbscwjg6mp	4	\N	\N	\N
-mmj417nrjpa	ugbscwjg6mp	5	\N	\N	\N
-lmgnrgroovk	ugbscwjg6mp	6	\N	\N	\N
-4cx141n1lb4	ugbscwjg6mp	7	\N	\N	\N
-k6pr2jh3wgd	ugbscwjg6mp	8	\N	\N	\N
-hchm15rxv74	ugbscwjg6mp	9	\N	\N	\N
-073buw1m70l	ugbscwjg6mp	10	\N	\N	\N
-nocobase-admin-menu	ugbscwjg6mp	11	\N	\N	\N
+tmbbsnq2x5b	ftinb1yr6ki	4	\N	\N	\N
+tmbbsnq2x5b	utrw9hfhybk	5	\N	\N	\N
+22pnzqtybji	bffo2i5n7zb	1	\N	\N	22
+oyy61gowm8y	n6yds6ez043	4	\N	\N	\N
+oyy61gowm8y	ftinb1yr6ki	5	\N	\N	\N
+oyy61gowm8y	utrw9hfhybk	6	\N	\N	\N
+cr7ggy2zrl6	n6yds6ez043	5	\N	\N	\N
+cr7ggy2zrl6	ftinb1yr6ki	6	\N	\N	\N
+cr7ggy2zrl6	utrw9hfhybk	7	\N	\N	\N
+9cngdl646v0	n6yds6ez043	6	\N	\N	\N
 ji9t3fgnkc0	ugbscwjg6mp	1	\N	\N	3
 ykxbmnj3qtf	ykxbmnj3qtf	0	f	properties	\N
 82ikkgrog2y	ykxbmnj3qtf	2	\N	\N	\N
@@ -7542,66 +7775,6 @@ hchm15rxv74	ykxbmnj3qtf	7	\N	\N	\N
 073buw1m70l	ykxbmnj3qtf	8	\N	\N	\N
 nocobase-admin-menu	ykxbmnj3qtf	9	\N	\N	\N
 6kbk2ko53xi	ykxbmnj3qtf	1	\N	\N	1
-kxwxa5snxqj	kxwxa5snxqj	0	f	properties	\N
-hrottqihhik	kxwxa5snxqj	1	\N	\N	1
-kaqxzol2uzz	kaqxzol2uzz	0	f	properties	\N
-kxwxa5snxqj	kaqxzol2uzz	1	\N	\N	1
-hrottqihhik	kaqxzol2uzz	2	\N	\N	1
-49vizxk9deo	49vizxk9deo	0	f	properties	\N
-kaqxzol2uzz	49vizxk9deo	1	\N	\N	1
-kxwxa5snxqj	49vizxk9deo	2	\N	\N	1
-hrottqihhik	49vizxk9deo	3	\N	\N	1
-kn2leva9pcs	kn2leva9pcs	0	f	properties	\N
-49vizxk9deo	kn2leva9pcs	1	\N	\N	1
-kaqxzol2uzz	kn2leva9pcs	2	\N	\N	1
-kxwxa5snxqj	kn2leva9pcs	3	\N	\N	1
-hrottqihhik	kn2leva9pcs	4	\N	\N	1
-6kbk2ko53xi	49vizxk9deo	4	\N	\N	\N
-82ikkgrog2y	49vizxk9deo	5	\N	\N	\N
-mmj417nrjpa	49vizxk9deo	6	\N	\N	\N
-lmgnrgroovk	49vizxk9deo	7	\N	\N	\N
-4cx141n1lb4	49vizxk9deo	8	\N	\N	\N
-k6pr2jh3wgd	49vizxk9deo	9	\N	\N	\N
-hchm15rxv74	49vizxk9deo	10	\N	\N	\N
-073buw1m70l	49vizxk9deo	11	\N	\N	\N
-nocobase-admin-menu	49vizxk9deo	12	\N	\N	\N
-82ikkgrog2y	hrottqihhik	2	\N	\N	\N
-mmj417nrjpa	hrottqihhik	3	\N	\N	\N
-lmgnrgroovk	hrottqihhik	4	\N	\N	\N
-4cx141n1lb4	hrottqihhik	5	\N	\N	\N
-k6pr2jh3wgd	hrottqihhik	6	\N	\N	\N
-hchm15rxv74	hrottqihhik	7	\N	\N	\N
-073buw1m70l	hrottqihhik	8	\N	\N	\N
-nocobase-admin-menu	hrottqihhik	9	\N	\N	\N
-6kbk2ko53xi	kaqxzol2uzz	3	\N	\N	\N
-82ikkgrog2y	kaqxzol2uzz	4	\N	\N	\N
-mmj417nrjpa	kaqxzol2uzz	5	\N	\N	\N
-lmgnrgroovk	kaqxzol2uzz	6	\N	\N	\N
-4cx141n1lb4	kaqxzol2uzz	7	\N	\N	\N
-k6pr2jh3wgd	kaqxzol2uzz	8	\N	\N	\N
-hchm15rxv74	kaqxzol2uzz	9	\N	\N	\N
-073buw1m70l	kaqxzol2uzz	10	\N	\N	\N
-nocobase-admin-menu	kaqxzol2uzz	11	\N	\N	\N
-6kbk2ko53xi	kn2leva9pcs	5	\N	\N	\N
-82ikkgrog2y	kn2leva9pcs	6	\N	\N	\N
-mmj417nrjpa	kn2leva9pcs	7	\N	\N	\N
-lmgnrgroovk	kn2leva9pcs	8	\N	\N	\N
-4cx141n1lb4	kn2leva9pcs	9	\N	\N	\N
-k6pr2jh3wgd	kn2leva9pcs	10	\N	\N	\N
-hchm15rxv74	kn2leva9pcs	11	\N	\N	\N
-073buw1m70l	kn2leva9pcs	12	\N	\N	\N
-nocobase-admin-menu	kn2leva9pcs	13	\N	\N	\N
-6kbk2ko53xi	kxwxa5snxqj	2	\N	\N	\N
-82ikkgrog2y	kxwxa5snxqj	3	\N	\N	\N
-mmj417nrjpa	kxwxa5snxqj	4	\N	\N	\N
-lmgnrgroovk	kxwxa5snxqj	5	\N	\N	\N
-4cx141n1lb4	kxwxa5snxqj	6	\N	\N	\N
-k6pr2jh3wgd	kxwxa5snxqj	7	\N	\N	\N
-hchm15rxv74	kxwxa5snxqj	8	\N	\N	\N
-073buw1m70l	kxwxa5snxqj	9	\N	\N	\N
-nocobase-admin-menu	kxwxa5snxqj	10	\N	\N	\N
-hrottqihhik	hrottqihhik	0	f	properties	\N
-6kbk2ko53xi	hrottqihhik	1	\N	\N	2
 m22ogp0s8dv	m22ogp0s8dv	0	f	properties	\N
 82ikkgrog2y	m22ogp0s8dv	2	\N	\N	\N
 mmj417nrjpa	m22ogp0s8dv	3	\N	\N	\N
@@ -7642,13 +7815,13 @@ hchm15rxv74	0ykb0dwa7qn	8	\N	\N	\N
 073buw1m70l	0ykb0dwa7qn	9	\N	\N	\N
 nocobase-admin-menu	0ykb0dwa7qn	10	\N	\N	\N
 08ul9zdtvmm	08ul9zdtvmm	0	f	properties	\N
-imrhc9he5on	08ul9zdtvmm	1	\N	\N	2
 sbo1xc9b65s	sbo1xc9b65s	0	f	properties	\N
 2l1dxgil9m0	sbo1xc9b65s	1	\N	\N	1
 82ikkgrog2y	2l1dxgil9m0	2	\N	\N	\N
 mmj417nrjpa	2l1dxgil9m0	3	\N	\N	\N
 lmgnrgroovk	2l1dxgil9m0	4	\N	\N	\N
 4cx141n1lb4	2l1dxgil9m0	5	\N	\N	\N
+9cngdl646v0	ftinb1yr6ki	7	\N	\N	\N
 k6pr2jh3wgd	2l1dxgil9m0	6	\N	\N	\N
 hchm15rxv74	2l1dxgil9m0	7	\N	\N	\N
 073buw1m70l	2l1dxgil9m0	8	\N	\N	\N
@@ -7663,7 +7836,6 @@ hchm15rxv74	sbo1xc9b65s	8	\N	\N	\N
 073buw1m70l	sbo1xc9b65s	9	\N	\N	\N
 nocobase-admin-menu	sbo1xc9b65s	10	\N	\N	\N
 2l1dxgil9m0	2l1dxgil9m0	0	f	properties	\N
-imrhc9he5on	2l1dxgil9m0	1	\N	\N	3
 h9b6ss6g5n5	h9b6ss6g5n5	0	f	properties	\N
 2yp2l3a5rvg	h9b6ss6g5n5	1	\N	\N	1
 82ikkgrog2y	2yp2l3a5rvg	2	\N	\N	\N
@@ -7684,7 +7856,6 @@ hchm15rxv74	h9b6ss6g5n5	8	\N	\N	\N
 073buw1m70l	h9b6ss6g5n5	9	\N	\N	\N
 nocobase-admin-menu	h9b6ss6g5n5	10	\N	\N	\N
 2yp2l3a5rvg	2yp2l3a5rvg	0	f	properties	\N
-imrhc9he5on	2yp2l3a5rvg	1	\N	\N	4
 bj7dti4exso	bj7dti4exso	0	f	properties	\N
 r15lkroggz5	bj7dti4exso	1	\N	\N	1
 imrhc9he5on	bj7dti4exso	2	\N	\N	\N
@@ -7705,7 +7876,6 @@ hchm15rxv74	r15lkroggz5	7	\N	\N	\N
 073buw1m70l	r15lkroggz5	8	\N	\N	\N
 nocobase-admin-menu	r15lkroggz5	9	\N	\N	\N
 r15lkroggz5	r15lkroggz5	0	f	properties	\N
-imrhc9he5on	r15lkroggz5	1	\N	\N	5
 nocobase-admin-menu	xwts1ggw479	2	\N	\N	\N
 073buw1m70l	wcib2cpt11z	2	\N	\N	\N
 nocobase-admin-menu	wcib2cpt11z	3	\N	\N	\N
@@ -7715,97 +7885,36 @@ nocobase-admin-menu	ulw06kfwwn3	4	\N	\N	\N
 nocobase-admin-menu	r5ux2dhnfq1	5	\N	\N	\N
 073buw1m70l	9j3mrze0kdh	5	\N	\N	\N
 nocobase-admin-menu	9j3mrze0kdh	6	\N	\N	\N
-073buw1m70l	iiek91fm1lg	6	\N	\N	\N
-nocobase-admin-menu	iiek91fm1lg	7	\N	\N	\N
-073buw1m70l	uz1e0k6wjf1	7	\N	\N	\N
-nocobase-admin-menu	uz1e0k6wjf1	8	\N	\N	\N
-073buw1m70l	dwzj4kwyaia	7	\N	\N	\N
-nocobase-admin-menu	dwzj4kwyaia	8	\N	\N	\N
-073buw1m70l	9udwuhf2o25	8	\N	\N	\N
-nocobase-admin-menu	9udwuhf2o25	9	\N	\N	\N
-073buw1m70l	fuvpnwuajhl	9	\N	\N	\N
-nocobase-admin-menu	fuvpnwuajhl	10	\N	\N	\N
-073buw1m70l	ajlhev8hgld	8	\N	\N	\N
-nocobase-admin-menu	ajlhev8hgld	9	\N	\N	\N
-073buw1m70l	y90c6xine07	8	\N	\N	\N
-nocobase-admin-menu	y90c6xine07	9	\N	\N	\N
-073buw1m70l	yqj4tsj0tp5	9	\N	\N	\N
-nocobase-admin-menu	yqj4tsj0tp5	10	\N	\N	\N
-073buw1m70l	5i62m584bjk	10	\N	\N	\N
-nocobase-admin-menu	5i62m584bjk	11	\N	\N	\N
-073buw1m70l	lqc01b4n2xe	11	\N	\N	\N
-nocobase-admin-menu	lqc01b4n2xe	12	\N	\N	\N
-073buw1m70l	2dp1sgeoanq	12	\N	\N	\N
-nocobase-admin-menu	2dp1sgeoanq	13	\N	\N	\N
-073buw1m70l	3g77tkiq3m4	8	\N	\N	\N
-nocobase-admin-menu	3g77tkiq3m4	9	\N	\N	\N
-073buw1m70l	qbzhqbkp363	8	\N	\N	\N
-nocobase-admin-menu	qbzhqbkp363	9	\N	\N	\N
-073buw1m70l	a2izctpt2dm	10	\N	\N	\N
-nocobase-admin-menu	a2izctpt2dm	11	\N	\N	\N
-073buw1m70l	8qtz3wrc8jb	11	\N	\N	\N
-nocobase-admin-menu	8qtz3wrc8jb	12	\N	\N	\N
-073buw1m70l	sge8s8r9kdv	12	\N	\N	\N
-nocobase-admin-menu	sge8s8r9kdv	13	\N	\N	\N
-073buw1m70l	0pc9xw649k4	13	\N	\N	\N
-nocobase-admin-menu	0pc9xw649k4	14	\N	\N	\N
-073buw1m70l	1vvvk5b0mrj	14	\N	\N	\N
-nocobase-admin-menu	1vvvk5b0mrj	15	\N	\N	\N
-073buw1m70l	7i8vn1nplyc	10	\N	\N	\N
-nocobase-admin-menu	7i8vn1nplyc	11	\N	\N	\N
-073buw1m70l	scx9pufw9ld	11	\N	\N	\N
-nocobase-admin-menu	scx9pufw9ld	12	\N	\N	\N
-073buw1m70l	ftwn0si2s5e	12	\N	\N	\N
-nocobase-admin-menu	ftwn0si2s5e	13	\N	\N	\N
-073buw1m70l	que1e0cmz1z	13	\N	\N	\N
-nocobase-admin-menu	que1e0cmz1z	14	\N	\N	\N
-073buw1m70l	wwfnvseziiz	14	\N	\N	\N
-nocobase-admin-menu	wwfnvseziiz	15	\N	\N	\N
-073buw1m70l	gf7yu1fk5fu	10	\N	\N	\N
-nocobase-admin-menu	gf7yu1fk5fu	11	\N	\N	\N
-073buw1m70l	6ex1fiqbfa8	8	\N	\N	\N
-nocobase-admin-menu	6ex1fiqbfa8	9	\N	\N	\N
-073buw1m70l	lm0dfpdoltg	9	\N	\N	\N
-nocobase-admin-menu	lm0dfpdoltg	10	\N	\N	\N
-073buw1m70l	6idlds4jdgv	9	\N	\N	\N
-nocobase-admin-menu	6idlds4jdgv	10	\N	\N	\N
-073buw1m70l	dqssxed8op7	8	\N	\N	\N
-nocobase-admin-menu	dqssxed8op7	9	\N	\N	\N
-073buw1m70l	bq12jdwqsm7	8	\N	\N	\N
-nocobase-admin-menu	bq12jdwqsm7	9	\N	\N	\N
-073buw1m70l	mk0btnborli	9	\N	\N	\N
-nocobase-admin-menu	mk0btnborli	10	\N	\N	\N
-073buw1m70l	511oe1h7d0q	13	\N	\N	\N
-nocobase-admin-menu	511oe1h7d0q	14	\N	\N	\N
-073buw1m70l	7wvztesg1l9	17	\N	\N	\N
+imrhc9he5on	2l1dxgil9m0	1	\N	\N	4
+imrhc9he5on	2yp2l3a5rvg	1	\N	\N	5
+imrhc9he5on	r15lkroggz5	1	\N	\N	6
+9cngdl646v0	utrw9hfhybk	8	\N	\N	\N
+ybdxp7v91jn	n6yds6ez043	7	\N	\N	\N
+ybdxp7v91jn	ftinb1yr6ki	8	\N	\N	\N
+ybdxp7v91jn	utrw9hfhybk	9	\N	\N	\N
+muv6h06t8mi	n6yds6ez043	8	\N	\N	\N
+muv6h06t8mi	ftinb1yr6ki	9	\N	\N	\N
+muv6h06t8mi	utrw9hfhybk	10	\N	\N	\N
+8i28yvimg4p	n6yds6ez043	9	\N	\N	\N
+8i28yvimg4p	ftinb1yr6ki	10	\N	\N	\N
+8i28yvimg4p	utrw9hfhybk	11	\N	\N	\N
+66xqkev137r	n6yds6ez043	10	\N	\N	\N
+66xqkev137r	ftinb1yr6ki	11	\N	\N	\N
+66xqkev137r	utrw9hfhybk	12	\N	\N	\N
+fl6193tpei8	bt575py2m17	11	\N	\N	\N
+zxh1oe1qx5t	u80bniwjt35	16	\N	\N	\N
+fl6193tpei8	kfshzp2e8w3	12	\N	\N	\N
+m291sv0y712	bt575py2m17	12	\N	\N	\N
+861gmcfwhia	u80bniwjt35	17	\N	\N	\N
+m291sv0y712	kfshzp2e8w3	13	\N	\N	\N
+3d4bg9et9gc	bt575py2m17	13	\N	\N	\N
+9yos6i0cjm3	u80bniwjt35	18	\N	\N	\N
+3d4bg9et9gc	kfshzp2e8w3	14	\N	\N	\N
 073buw1m70l	xwts1ggw479	1	\N	\N	1
-nocobase-admin-menu	7wvztesg1l9	18	\N	\N	\N
-073buw1m70l	9lqwydcclbh	17	\N	\N	\N
-nocobase-admin-menu	9lqwydcclbh	18	\N	\N	\N
-073buw1m70l	bjya50ieh5c	15	\N	\N	\N
-nocobase-admin-menu	bjya50ieh5c	16	\N	\N	\N
-073buw1m70l	ii9oyxsb8c5	14	\N	\N	\N
-nocobase-admin-menu	ii9oyxsb8c5	15	\N	\N	\N
-073buw1m70l	qusl2hqi7gk	16	\N	\N	\N
-nocobase-admin-menu	qusl2hqi7gk	17	\N	\N	\N
-073buw1m70l	5xc37z6hvd7	18	\N	\N	\N
-nocobase-admin-menu	5xc37z6hvd7	19	\N	\N	\N
-073buw1m70l	h12h75lwjjk	20	\N	\N	\N
-nocobase-admin-menu	h12h75lwjjk	21	\N	\N	\N
-073buw1m70l	xh6ua2oy0ak	19	\N	\N	\N
-nocobase-admin-menu	xh6ua2oy0ak	20	\N	\N	\N
-073buw1m70l	kwi6avb0snz	20	\N	\N	\N
-nocobase-admin-menu	kwi6avb0snz	21	\N	\N	\N
-073buw1m70l	neokhhxlkag	18	\N	\N	\N
-nocobase-admin-menu	neokhhxlkag	19	\N	\N	\N
-073buw1m70l	qam3nz2fvrb	19	\N	\N	\N
-nocobase-admin-menu	qam3nz2fvrb	20	\N	\N	\N
-073buw1m70l	v5n63r5xizu	18	\N	\N	\N
-nocobase-admin-menu	v5n63r5xizu	19	\N	\N	\N
 073buw1m70l	n3yigbe0k9v	1	\N	\N	2
 073buw1m70l	hchm15rxv74	1	\N	\N	4
 073buw1m70l	p3ls96regvr	1	\N	\N	5
-073buw1m70l	bljegelqea8	1	\N	\N	6
+pdtxkxhi0px	bt575py2m17	14	\N	\N	\N
 ic7u2lri0wu	ic7u2lri0wu	0	f	properties	\N
 6hd31g8yv4w	ic7u2lri0wu	1	\N	\N	1
 4z1o600a2we	4z1o600a2we	0	f	properties	\N
@@ -7830,96 +7939,90 @@ que1e0cmz1z	4z1o600a2we	4	\N	\N	\N
 ftwn0si2s5e	4z1o600a2we	5	\N	\N	\N
 scx9pufw9ld	4z1o600a2we	6	\N	\N	\N
 7i8vn1nplyc	4z1o600a2we	7	\N	\N	\N
-fuvpnwuajhl	4z1o600a2we	8	\N	\N	\N
-9udwuhf2o25	4z1o600a2we	9	\N	\N	\N
-dwzj4kwyaia	4z1o600a2we	10	\N	\N	\N
-iiek91fm1lg	4z1o600a2we	11	\N	\N	\N
-9j3mrze0kdh	4z1o600a2we	12	\N	\N	\N
-r5ux2dhnfq1	4z1o600a2we	13	\N	\N	\N
-ulw06kfwwn3	4z1o600a2we	14	\N	\N	\N
-wcib2cpt11z	4z1o600a2we	15	\N	\N	\N
-xwts1ggw479	4z1o600a2we	16	\N	\N	\N
-073buw1m70l	4z1o600a2we	17	\N	\N	\N
-nocobase-admin-menu	4z1o600a2we	18	\N	\N	\N
+pdtxkxhi0px	kfshzp2e8w3	15	\N	\N	\N
+9kxizfoklw7	bt575py2m17	15	\N	\N	\N
+n3yigbe0k9v	u80bniwjt35	19	\N	\N	\N
+9kxizfoklw7	kfshzp2e8w3	16	\N	\N	\N
+puz5i9w50bl	bt575py2m17	16	\N	\N	\N
+073buw1m70l	u80bniwjt35	20	\N	\N	\N
+puz5i9w50bl	kfshzp2e8w3	17	\N	\N	\N
+idfhxat5qg6	bt575py2m17	17	\N	\N	\N
+nocobase-admin-menu	u80bniwjt35	21	\N	\N	\N
 que1e0cmz1z	6hd31g8yv4w	2	\N	\N	\N
 ftwn0si2s5e	6hd31g8yv4w	3	\N	\N	\N
 scx9pufw9ld	6hd31g8yv4w	4	\N	\N	\N
 7i8vn1nplyc	6hd31g8yv4w	5	\N	\N	\N
-fuvpnwuajhl	6hd31g8yv4w	6	\N	\N	\N
-9udwuhf2o25	6hd31g8yv4w	7	\N	\N	\N
-dwzj4kwyaia	6hd31g8yv4w	8	\N	\N	\N
-iiek91fm1lg	6hd31g8yv4w	9	\N	\N	\N
-9j3mrze0kdh	6hd31g8yv4w	10	\N	\N	\N
-r5ux2dhnfq1	6hd31g8yv4w	11	\N	\N	\N
-ulw06kfwwn3	6hd31g8yv4w	12	\N	\N	\N
-wcib2cpt11z	6hd31g8yv4w	13	\N	\N	\N
-xwts1ggw479	6hd31g8yv4w	14	\N	\N	\N
-073buw1m70l	6hd31g8yv4w	15	\N	\N	\N
-nocobase-admin-menu	6hd31g8yv4w	16	\N	\N	\N
+idfhxat5qg6	kfshzp2e8w3	18	\N	\N	\N
+iqddf9bwww2	bt575py2m17	18	\N	\N	\N
+iqddf9bwww2	kfshzp2e8w3	19	\N	\N	\N
+eoxofxze047	bt575py2m17	19	\N	\N	\N
+p3st627y95d	p3st627y95d	0	f	properties	\N
+u80bniwjt35	u80bniwjt35	0	f	properties	\N
+xrp5qlqau5q	u80bniwjt35	1	\N	\N	13
+mqma0oexw7v	y3668x0h41o	2	\N	\N	\N
+eoxofxze047	kfshzp2e8w3	20	\N	\N	\N
+p3ls96regvr	bt575py2m17	20	\N	\N	\N
+p3ls96regvr	kfshzp2e8w3	21	\N	\N	\N
 wwfnvseziiz	bbqntpvrcj9	5	\N	\N	\N
 que1e0cmz1z	bbqntpvrcj9	6	\N	\N	\N
 ftwn0si2s5e	bbqntpvrcj9	7	\N	\N	\N
 scx9pufw9ld	bbqntpvrcj9	8	\N	\N	\N
 7i8vn1nplyc	bbqntpvrcj9	9	\N	\N	\N
-fuvpnwuajhl	bbqntpvrcj9	10	\N	\N	\N
-9udwuhf2o25	bbqntpvrcj9	11	\N	\N	\N
-dwzj4kwyaia	bbqntpvrcj9	12	\N	\N	\N
-iiek91fm1lg	bbqntpvrcj9	13	\N	\N	\N
-9j3mrze0kdh	bbqntpvrcj9	14	\N	\N	\N
-r5ux2dhnfq1	bbqntpvrcj9	15	\N	\N	\N
-ulw06kfwwn3	bbqntpvrcj9	16	\N	\N	\N
-wcib2cpt11z	bbqntpvrcj9	17	\N	\N	\N
-xwts1ggw479	bbqntpvrcj9	18	\N	\N	\N
-073buw1m70l	bbqntpvrcj9	19	\N	\N	\N
-nocobase-admin-menu	bbqntpvrcj9	20	\N	\N	\N
+073buw1m70l	bt575py2m17	21	\N	\N	\N
+073buw1m70l	kfshzp2e8w3	22	\N	\N	\N
+n6yds6ez043	n6yds6ez043	0	f	properties	\N
+nocobase-admin-menu	bt575py2m17	22	\N	\N	\N
+u8scozktrmw	u8scozktrmw	0	f	properties	\N
+lwcllr1qdag	u8scozktrmw	1	\N	\N	1
+zo0rdear4lv	zo0rdear4lv	0	f	properties	\N
+u8scozktrmw	zo0rdear4lv	1	\N	\N	1
+lwcllr1qdag	zo0rdear4lv	2	\N	\N	1
+nocobase-admin-menu	kfshzp2e8w3	23	\N	\N	\N
 wwfnvseziiz	ic7u2lri0wu	2	\N	\N	\N
 que1e0cmz1z	ic7u2lri0wu	3	\N	\N	\N
 ftwn0si2s5e	ic7u2lri0wu	4	\N	\N	\N
 scx9pufw9ld	ic7u2lri0wu	5	\N	\N	\N
 7i8vn1nplyc	ic7u2lri0wu	6	\N	\N	\N
-fuvpnwuajhl	ic7u2lri0wu	7	\N	\N	\N
-9udwuhf2o25	ic7u2lri0wu	8	\N	\N	\N
-dwzj4kwyaia	ic7u2lri0wu	9	\N	\N	\N
-iiek91fm1lg	ic7u2lri0wu	10	\N	\N	\N
-9j3mrze0kdh	ic7u2lri0wu	11	\N	\N	\N
-r5ux2dhnfq1	ic7u2lri0wu	12	\N	\N	\N
-ulw06kfwwn3	ic7u2lri0wu	13	\N	\N	\N
-wcib2cpt11z	ic7u2lri0wu	14	\N	\N	\N
-xwts1ggw479	ic7u2lri0wu	15	\N	\N	\N
-073buw1m70l	ic7u2lri0wu	16	\N	\N	\N
-nocobase-admin-menu	ic7u2lri0wu	17	\N	\N	\N
+bt575py2m17	bt575py2m17	0	f	properties	\N
+seoty3c8shi	bt575py2m17	1	\N	\N	2
+730yg8t8myy	u8scozktrmw	2	\N	\N	\N
+730yg8t8myy	zo0rdear4lv	3	\N	\N	\N
+2oimqa9byrp	lwcllr1qdag	2	\N	\N	\N
+2oimqa9byrp	u8scozktrmw	3	\N	\N	\N
+2oimqa9byrp	zo0rdear4lv	4	\N	\N	\N
+tmbbsnq2x5b	lwcllr1qdag	3	\N	\N	\N
+tmbbsnq2x5b	u8scozktrmw	4	\N	\N	\N
+tmbbsnq2x5b	zo0rdear4lv	5	\N	\N	\N
+oyy61gowm8y	lwcllr1qdag	4	\N	\N	\N
 wwfnvseziiz	j6u3fnp1gf7	5	\N	\N	\N
 que1e0cmz1z	j6u3fnp1gf7	6	\N	\N	\N
 ftwn0si2s5e	j6u3fnp1gf7	7	\N	\N	\N
 scx9pufw9ld	j6u3fnp1gf7	8	\N	\N	\N
 7i8vn1nplyc	j6u3fnp1gf7	9	\N	\N	\N
-fuvpnwuajhl	j6u3fnp1gf7	10	\N	\N	\N
-9udwuhf2o25	j6u3fnp1gf7	11	\N	\N	\N
-dwzj4kwyaia	j6u3fnp1gf7	12	\N	\N	\N
-iiek91fm1lg	j6u3fnp1gf7	13	\N	\N	\N
-9j3mrze0kdh	j6u3fnp1gf7	14	\N	\N	\N
-r5ux2dhnfq1	j6u3fnp1gf7	15	\N	\N	\N
-ulw06kfwwn3	j6u3fnp1gf7	16	\N	\N	\N
-wcib2cpt11z	j6u3fnp1gf7	17	\N	\N	\N
-xwts1ggw479	j6u3fnp1gf7	18	\N	\N	\N
-073buw1m70l	j6u3fnp1gf7	19	\N	\N	\N
-nocobase-admin-menu	j6u3fnp1gf7	20	\N	\N	\N
+oyy61gowm8y	u8scozktrmw	5	\N	\N	\N
+oyy61gowm8y	zo0rdear4lv	6	\N	\N	\N
+cr7ggy2zrl6	lwcllr1qdag	5	\N	\N	\N
+cr7ggy2zrl6	u8scozktrmw	6	\N	\N	\N
+cr7ggy2zrl6	zo0rdear4lv	7	\N	\N	\N
+9cngdl646v0	lwcllr1qdag	6	\N	\N	\N
+9cngdl646v0	u8scozktrmw	7	\N	\N	\N
+9cngdl646v0	zo0rdear4lv	8	\N	\N	\N
+ybdxp7v91jn	lwcllr1qdag	7	\N	\N	\N
 wwfnvseziiz	qiff3fagpbp	4	\N	\N	\N
 que1e0cmz1z	qiff3fagpbp	5	\N	\N	\N
 ftwn0si2s5e	qiff3fagpbp	6	\N	\N	\N
 scx9pufw9ld	qiff3fagpbp	7	\N	\N	\N
 7i8vn1nplyc	qiff3fagpbp	8	\N	\N	\N
-fuvpnwuajhl	qiff3fagpbp	9	\N	\N	\N
-9udwuhf2o25	qiff3fagpbp	10	\N	\N	\N
-dwzj4kwyaia	qiff3fagpbp	11	\N	\N	\N
-iiek91fm1lg	qiff3fagpbp	12	\N	\N	\N
-9j3mrze0kdh	qiff3fagpbp	13	\N	\N	\N
-r5ux2dhnfq1	qiff3fagpbp	14	\N	\N	\N
-ulw06kfwwn3	qiff3fagpbp	15	\N	\N	\N
-wcib2cpt11z	qiff3fagpbp	16	\N	\N	\N
-xwts1ggw479	qiff3fagpbp	17	\N	\N	\N
-073buw1m70l	qiff3fagpbp	18	\N	\N	\N
-nocobase-admin-menu	qiff3fagpbp	19	\N	\N	\N
+730yg8t8myy	n6yds6ez043	1	\N	\N	4
+ybdxp7v91jn	u8scozktrmw	8	\N	\N	\N
+ybdxp7v91jn	zo0rdear4lv	9	\N	\N	\N
+muv6h06t8mi	lwcllr1qdag	8	\N	\N	\N
+muv6h06t8mi	u8scozktrmw	9	\N	\N	\N
+muv6h06t8mi	zo0rdear4lv	10	\N	\N	\N
+8i28yvimg4p	lwcllr1qdag	9	\N	\N	\N
+8i28yvimg4p	u8scozktrmw	10	\N	\N	\N
+8i28yvimg4p	zo0rdear4lv	11	\N	\N	\N
+66xqkev137r	lwcllr1qdag	10	\N	\N	\N
 6hd31g8yv4w	6hd31g8yv4w	0	f	properties	\N
 wwfnvseziiz	6hd31g8yv4w	1	\N	\N	1
 11v507faua9	11v507faua9	0	f	properties	\N
@@ -7937,17 +8040,8 @@ que1e0cmz1z	11v507faua9	8	\N	\N	\N
 ftwn0si2s5e	11v507faua9	9	\N	\N	\N
 scx9pufw9ld	11v507faua9	10	\N	\N	\N
 7i8vn1nplyc	11v507faua9	11	\N	\N	\N
-fuvpnwuajhl	11v507faua9	12	\N	\N	\N
-9udwuhf2o25	11v507faua9	13	\N	\N	\N
-dwzj4kwyaia	11v507faua9	14	\N	\N	\N
-iiek91fm1lg	11v507faua9	15	\N	\N	\N
-9j3mrze0kdh	11v507faua9	16	\N	\N	\N
-r5ux2dhnfq1	11v507faua9	17	\N	\N	\N
-ulw06kfwwn3	11v507faua9	18	\N	\N	\N
-wcib2cpt11z	11v507faua9	19	\N	\N	\N
-xwts1ggw479	11v507faua9	20	\N	\N	\N
-073buw1m70l	11v507faua9	21	\N	\N	\N
-nocobase-admin-menu	11v507faua9	22	\N	\N	\N
+66xqkev137r	u8scozktrmw	11	\N	\N	\N
+66xqkev137r	zo0rdear4lv	12	\N	\N	\N
 j6u3fnp1gf7	64hct65otbl	3	\N	\N	\N
 qiff3fagpbp	64hct65otbl	4	\N	\N	\N
 4z1o600a2we	64hct65otbl	5	\N	\N	\N
@@ -7958,17 +8052,12 @@ que1e0cmz1z	64hct65otbl	9	\N	\N	\N
 ftwn0si2s5e	64hct65otbl	10	\N	\N	\N
 scx9pufw9ld	64hct65otbl	11	\N	\N	\N
 7i8vn1nplyc	64hct65otbl	12	\N	\N	\N
-fuvpnwuajhl	64hct65otbl	13	\N	\N	\N
-9udwuhf2o25	64hct65otbl	14	\N	\N	\N
-dwzj4kwyaia	64hct65otbl	15	\N	\N	\N
-iiek91fm1lg	64hct65otbl	16	\N	\N	\N
-9j3mrze0kdh	64hct65otbl	17	\N	\N	\N
-r5ux2dhnfq1	64hct65otbl	18	\N	\N	\N
-ulw06kfwwn3	64hct65otbl	19	\N	\N	\N
-wcib2cpt11z	64hct65otbl	20	\N	\N	\N
-xwts1ggw479	64hct65otbl	21	\N	\N	\N
-073buw1m70l	64hct65otbl	22	\N	\N	\N
-nocobase-admin-menu	64hct65otbl	23	\N	\N	\N
+09yy6b78jxi	y3668x0h41o	3	\N	\N	\N
+igpbp2pemzb	igpbp2pemzb	0	f	properties	\N
+kqnzmy29uch	igpbp2pemzb	1	\N	\N	1
+kqnzmy29uch	vwn6lemtpg5	2	\N	\N	\N
+igpbp2pemzb	vwn6lemtpg5	1	\N	\N	1
+1whdhzzrodk	y3668x0h41o	4	\N	\N	\N
 qiff3fagpbp	6ldkeouiqu6	2	\N	\N	\N
 4z1o600a2we	6ldkeouiqu6	3	\N	\N	\N
 ic7u2lri0wu	6ldkeouiqu6	4	\N	\N	\N
@@ -7978,17 +8067,15 @@ que1e0cmz1z	6ldkeouiqu6	7	\N	\N	\N
 ftwn0si2s5e	6ldkeouiqu6	8	\N	\N	\N
 scx9pufw9ld	6ldkeouiqu6	9	\N	\N	\N
 7i8vn1nplyc	6ldkeouiqu6	10	\N	\N	\N
-fuvpnwuajhl	6ldkeouiqu6	11	\N	\N	\N
-9udwuhf2o25	6ldkeouiqu6	12	\N	\N	\N
-dwzj4kwyaia	6ldkeouiqu6	13	\N	\N	\N
-iiek91fm1lg	6ldkeouiqu6	14	\N	\N	\N
-9j3mrze0kdh	6ldkeouiqu6	15	\N	\N	\N
-r5ux2dhnfq1	6ldkeouiqu6	16	\N	\N	\N
-ulw06kfwwn3	6ldkeouiqu6	17	\N	\N	\N
-wcib2cpt11z	6ldkeouiqu6	18	\N	\N	\N
-xwts1ggw479	6ldkeouiqu6	19	\N	\N	\N
-073buw1m70l	6ldkeouiqu6	20	\N	\N	\N
-nocobase-admin-menu	6ldkeouiqu6	21	\N	\N	\N
+xrp5qlqau5q	igpbp2pemzb	2	\N	\N	\N
+xrp5qlqau5q	vwn6lemtpg5	3	\N	\N	\N
+l1ipy29yo2a	kqnzmy29uch	2	\N	\N	\N
+l1ipy29yo2a	igpbp2pemzb	3	\N	\N	\N
+l1ipy29yo2a	vwn6lemtpg5	4	\N	\N	\N
+f205ix4mjg8	y3668x0h41o	5	\N	\N	\N
+mclja8pd27f	kqnzmy29uch	3	\N	\N	\N
+mclja8pd27f	igpbp2pemzb	4	\N	\N	\N
+mclja8pd27f	vwn6lemtpg5	5	\N	\N	\N
 6ldkeouiqu6	6ldkeouiqu6	0	f	properties	\N
 j6u3fnp1gf7	6ldkeouiqu6	1	\N	\N	1
 7bgianrailm	7bgianrailm	0	f	properties	\N
@@ -8006,17 +8093,15 @@ que1e0cmz1z	7ac5fvdsvhv	9	\N	\N	\N
 ftwn0si2s5e	7ac5fvdsvhv	10	\N	\N	\N
 scx9pufw9ld	7ac5fvdsvhv	11	\N	\N	\N
 7i8vn1nplyc	7ac5fvdsvhv	12	\N	\N	\N
-fuvpnwuajhl	7ac5fvdsvhv	13	\N	\N	\N
-9udwuhf2o25	7ac5fvdsvhv	14	\N	\N	\N
-dwzj4kwyaia	7ac5fvdsvhv	15	\N	\N	\N
-iiek91fm1lg	7ac5fvdsvhv	16	\N	\N	\N
-9j3mrze0kdh	7ac5fvdsvhv	17	\N	\N	\N
-r5ux2dhnfq1	7ac5fvdsvhv	18	\N	\N	\N
-ulw06kfwwn3	7ac5fvdsvhv	19	\N	\N	\N
-wcib2cpt11z	7ac5fvdsvhv	20	\N	\N	\N
-xwts1ggw479	7ac5fvdsvhv	21	\N	\N	\N
-073buw1m70l	7ac5fvdsvhv	22	\N	\N	\N
-nocobase-admin-menu	7ac5fvdsvhv	23	\N	\N	\N
+z7ksqgxvuzy	kqnzmy29uch	4	\N	\N	\N
+z7ksqgxvuzy	igpbp2pemzb	5	\N	\N	\N
+z7ksqgxvuzy	vwn6lemtpg5	6	\N	\N	\N
+fvx7g50y58n	y3668x0h41o	6	\N	\N	\N
+6hxxlzxmifr	kqnzmy29uch	5	\N	\N	\N
+6hxxlzxmifr	igpbp2pemzb	6	\N	\N	\N
+6hxxlzxmifr	vwn6lemtpg5	7	\N	\N	\N
+4gdmc9g083s	kqnzmy29uch	6	\N	\N	\N
+lwcllr1qdag	lwcllr1qdag	0	f	properties	\N
 j6u3fnp1gf7	7bgianrailm	2	\N	\N	\N
 qiff3fagpbp	7bgianrailm	3	\N	\N	\N
 4z1o600a2we	7bgianrailm	4	\N	\N	\N
@@ -8027,17 +8112,14 @@ que1e0cmz1z	7bgianrailm	8	\N	\N	\N
 ftwn0si2s5e	7bgianrailm	9	\N	\N	\N
 scx9pufw9ld	7bgianrailm	10	\N	\N	\N
 7i8vn1nplyc	7bgianrailm	11	\N	\N	\N
-fuvpnwuajhl	7bgianrailm	12	\N	\N	\N
-9udwuhf2o25	7bgianrailm	13	\N	\N	\N
-dwzj4kwyaia	7bgianrailm	14	\N	\N	\N
-iiek91fm1lg	7bgianrailm	15	\N	\N	\N
-9j3mrze0kdh	7bgianrailm	16	\N	\N	\N
-r5ux2dhnfq1	7bgianrailm	17	\N	\N	\N
-ulw06kfwwn3	7bgianrailm	18	\N	\N	\N
-wcib2cpt11z	7bgianrailm	19	\N	\N	\N
-xwts1ggw479	7bgianrailm	20	\N	\N	\N
-073buw1m70l	7bgianrailm	21	\N	\N	\N
-nocobase-admin-menu	7bgianrailm	22	\N	\N	\N
+4gdmc9g083s	igpbp2pemzb	7	\N	\N	\N
+k8z10036m6x	k8z10036m6x	0	f	properties	\N
+ma2di65n17c	k8z10036m6x	1	\N	\N	1
+na0ex1r025g	na0ex1r025g	0	f	properties	\N
+k8z10036m6x	na0ex1r025g	1	\N	\N	1
+ma2di65n17c	na0ex1r025g	2	\N	\N	1
+4gdmc9g083s	vwn6lemtpg5	8	\N	\N	\N
+730yg8t8myy	k8z10036m6x	2	\N	\N	\N
 qiff3fagpbp	s9lar6nxkb9	2	\N	\N	\N
 4z1o600a2we	s9lar6nxkb9	3	\N	\N	\N
 s9lar6nxkb9	s9lar6nxkb9	0	f	properties	\N
@@ -8045,21 +8127,20 @@ j6u3fnp1gf7	s9lar6nxkb9	1	\N	\N	2
 ic7u2lri0wu	s9lar6nxkb9	4	\N	\N	\N
 6hd31g8yv4w	s9lar6nxkb9	5	\N	\N	\N
 wwfnvseziiz	s9lar6nxkb9	6	\N	\N	\N
+730yg8t8myy	lwcllr1qdag	1	\N	\N	5
 que1e0cmz1z	s9lar6nxkb9	7	\N	\N	\N
 ftwn0si2s5e	s9lar6nxkb9	8	\N	\N	\N
 scx9pufw9ld	s9lar6nxkb9	9	\N	\N	\N
 7i8vn1nplyc	s9lar6nxkb9	10	\N	\N	\N
-fuvpnwuajhl	s9lar6nxkb9	11	\N	\N	\N
-9udwuhf2o25	s9lar6nxkb9	12	\N	\N	\N
-dwzj4kwyaia	s9lar6nxkb9	13	\N	\N	\N
-iiek91fm1lg	s9lar6nxkb9	14	\N	\N	\N
-9j3mrze0kdh	s9lar6nxkb9	15	\N	\N	\N
-r5ux2dhnfq1	s9lar6nxkb9	16	\N	\N	\N
-ulw06kfwwn3	s9lar6nxkb9	17	\N	\N	\N
-wcib2cpt11z	s9lar6nxkb9	18	\N	\N	\N
-xwts1ggw479	s9lar6nxkb9	19	\N	\N	\N
-073buw1m70l	s9lar6nxkb9	20	\N	\N	\N
-nocobase-admin-menu	s9lar6nxkb9	21	\N	\N	\N
+730yg8t8myy	na0ex1r025g	3	\N	\N	\N
+2oimqa9byrp	ma2di65n17c	2	\N	\N	\N
+2oimqa9byrp	k8z10036m6x	3	\N	\N	\N
+2oimqa9byrp	na0ex1r025g	4	\N	\N	\N
+tmbbsnq2x5b	ma2di65n17c	3	\N	\N	\N
+tmbbsnq2x5b	k8z10036m6x	4	\N	\N	\N
+tmbbsnq2x5b	na0ex1r025g	5	\N	\N	\N
+oyy61gowm8y	ma2di65n17c	4	\N	\N	\N
+oyy61gowm8y	k8z10036m6x	5	\N	\N	\N
 x747kf9mxwc	x747kf9mxwc	0	f	properties	\N
 34dbxdespfo	x747kf9mxwc	1	\N	\N	1
 p6s217wf7ct	p6s217wf7ct	0	f	properties	\N
@@ -8074,17 +8155,15 @@ que1e0cmz1z	34dbxdespfo	7	\N	\N	\N
 ftwn0si2s5e	34dbxdespfo	8	\N	\N	\N
 scx9pufw9ld	34dbxdespfo	9	\N	\N	\N
 7i8vn1nplyc	34dbxdespfo	10	\N	\N	\N
-fuvpnwuajhl	34dbxdespfo	11	\N	\N	\N
-9udwuhf2o25	34dbxdespfo	12	\N	\N	\N
-dwzj4kwyaia	34dbxdespfo	13	\N	\N	\N
-iiek91fm1lg	34dbxdespfo	14	\N	\N	\N
-9j3mrze0kdh	34dbxdespfo	15	\N	\N	\N
-r5ux2dhnfq1	34dbxdespfo	16	\N	\N	\N
-ulw06kfwwn3	34dbxdespfo	17	\N	\N	\N
-wcib2cpt11z	34dbxdespfo	18	\N	\N	\N
-xwts1ggw479	34dbxdespfo	19	\N	\N	\N
-073buw1m70l	34dbxdespfo	20	\N	\N	\N
-nocobase-admin-menu	34dbxdespfo	21	\N	\N	\N
+oyy61gowm8y	na0ex1r025g	6	\N	\N	\N
+cr7ggy2zrl6	ma2di65n17c	5	\N	\N	\N
+cr7ggy2zrl6	k8z10036m6x	6	\N	\N	\N
+cr7ggy2zrl6	na0ex1r025g	7	\N	\N	\N
+9cngdl646v0	ma2di65n17c	6	\N	\N	\N
+9cngdl646v0	k8z10036m6x	7	\N	\N	\N
+9cngdl646v0	na0ex1r025g	8	\N	\N	\N
+ybdxp7v91jn	ma2di65n17c	7	\N	\N	\N
+ybdxp7v91jn	k8z10036m6x	8	\N	\N	\N
 j6u3fnp1gf7	p6s217wf7ct	3	\N	\N	\N
 qiff3fagpbp	p6s217wf7ct	4	\N	\N	\N
 4z1o600a2we	p6s217wf7ct	5	\N	\N	\N
@@ -8095,17 +8174,15 @@ que1e0cmz1z	p6s217wf7ct	9	\N	\N	\N
 ftwn0si2s5e	p6s217wf7ct	10	\N	\N	\N
 scx9pufw9ld	p6s217wf7ct	11	\N	\N	\N
 7i8vn1nplyc	p6s217wf7ct	12	\N	\N	\N
-fuvpnwuajhl	p6s217wf7ct	13	\N	\N	\N
-9udwuhf2o25	p6s217wf7ct	14	\N	\N	\N
-dwzj4kwyaia	p6s217wf7ct	15	\N	\N	\N
-iiek91fm1lg	p6s217wf7ct	16	\N	\N	\N
-9j3mrze0kdh	p6s217wf7ct	17	\N	\N	\N
-r5ux2dhnfq1	p6s217wf7ct	18	\N	\N	\N
-ulw06kfwwn3	p6s217wf7ct	19	\N	\N	\N
-wcib2cpt11z	p6s217wf7ct	20	\N	\N	\N
-xwts1ggw479	p6s217wf7ct	21	\N	\N	\N
-073buw1m70l	p6s217wf7ct	22	\N	\N	\N
-nocobase-admin-menu	p6s217wf7ct	23	\N	\N	\N
+ybdxp7v91jn	na0ex1r025g	9	\N	\N	\N
+muv6h06t8mi	ma2di65n17c	8	\N	\N	\N
+muv6h06t8mi	k8z10036m6x	9	\N	\N	\N
+muv6h06t8mi	na0ex1r025g	10	\N	\N	\N
+8i28yvimg4p	ma2di65n17c	9	\N	\N	\N
+8i28yvimg4p	k8z10036m6x	10	\N	\N	\N
+8i28yvimg4p	na0ex1r025g	11	\N	\N	\N
+66xqkev137r	ma2di65n17c	10	\N	\N	\N
+66xqkev137r	k8z10036m6x	11	\N	\N	\N
 j6u3fnp1gf7	x747kf9mxwc	2	\N	\N	\N
 qiff3fagpbp	x747kf9mxwc	3	\N	\N	\N
 4z1o600a2we	x747kf9mxwc	4	\N	\N	\N
@@ -8116,17 +8193,9 @@ que1e0cmz1z	x747kf9mxwc	8	\N	\N	\N
 ftwn0si2s5e	x747kf9mxwc	9	\N	\N	\N
 scx9pufw9ld	x747kf9mxwc	10	\N	\N	\N
 7i8vn1nplyc	x747kf9mxwc	11	\N	\N	\N
-fuvpnwuajhl	x747kf9mxwc	12	\N	\N	\N
-9udwuhf2o25	x747kf9mxwc	13	\N	\N	\N
-dwzj4kwyaia	x747kf9mxwc	14	\N	\N	\N
-iiek91fm1lg	x747kf9mxwc	15	\N	\N	\N
-9j3mrze0kdh	x747kf9mxwc	16	\N	\N	\N
-r5ux2dhnfq1	x747kf9mxwc	17	\N	\N	\N
-ulw06kfwwn3	x747kf9mxwc	18	\N	\N	\N
-wcib2cpt11z	x747kf9mxwc	19	\N	\N	\N
-xwts1ggw479	x747kf9mxwc	20	\N	\N	\N
-073buw1m70l	x747kf9mxwc	21	\N	\N	\N
-nocobase-admin-menu	x747kf9mxwc	22	\N	\N	\N
+66xqkev137r	na0ex1r025g	12	\N	\N	\N
+833uu3rb1nm	y3668x0h41o	7	\N	\N	\N
+ebu29iqsaqx	kqnzmy29uch	7	\N	\N	\N
 34dbxdespfo	34dbxdespfo	0	f	properties	\N
 j6u3fnp1gf7	34dbxdespfo	1	\N	\N	3
 49du3kw1vk3	49du3kw1vk3	0	f	properties	\N
@@ -8139,17 +8208,15 @@ que1e0cmz1z	49du3kw1vk3	7	\N	\N	\N
 ftwn0si2s5e	49du3kw1vk3	8	\N	\N	\N
 scx9pufw9ld	49du3kw1vk3	9	\N	\N	\N
 7i8vn1nplyc	49du3kw1vk3	10	\N	\N	\N
-fuvpnwuajhl	49du3kw1vk3	11	\N	\N	\N
-9udwuhf2o25	49du3kw1vk3	12	\N	\N	\N
-dwzj4kwyaia	49du3kw1vk3	13	\N	\N	\N
-iiek91fm1lg	49du3kw1vk3	14	\N	\N	\N
-9j3mrze0kdh	49du3kw1vk3	15	\N	\N	\N
-r5ux2dhnfq1	49du3kw1vk3	16	\N	\N	\N
-ulw06kfwwn3	49du3kw1vk3	17	\N	\N	\N
-wcib2cpt11z	49du3kw1vk3	18	\N	\N	\N
-xwts1ggw479	49du3kw1vk3	19	\N	\N	\N
-073buw1m70l	49du3kw1vk3	20	\N	\N	\N
-nocobase-admin-menu	49du3kw1vk3	21	\N	\N	\N
+ebu29iqsaqx	igpbp2pemzb	8	\N	\N	\N
+ebu29iqsaqx	vwn6lemtpg5	9	\N	\N	\N
+k4kftsn5ht7	kqnzmy29uch	8	\N	\N	\N
+k4kftsn5ht7	igpbp2pemzb	9	\N	\N	\N
+k4kftsn5ht7	vwn6lemtpg5	10	\N	\N	\N
+ik0zt15yup2	y3668x0h41o	8	\N	\N	\N
+hg9tvy6yuph	kqnzmy29uch	9	\N	\N	\N
+hg9tvy6yuph	igpbp2pemzb	10	\N	\N	\N
+hg9tvy6yuph	vwn6lemtpg5	11	\N	\N	\N
 bbqntpvrcj9	49du3kw1vk3	1	\N	\N	1
 3wjttvlbvom	3wjttvlbvom	0	f	properties	\N
 7608d2qrms5	3wjttvlbvom	1	\N	\N	1
@@ -8421,7 +8488,6 @@ hchm15rxv74	9t4p5s7w6b5	8	\N	\N	\N
 nocobase-admin-menu	qu64eoa7amg	9	\N	\N	\N
 nocobase-admin-menu	9t4p5s7w6b5	10	\N	\N	\N
 qu64eoa7amg	qu64eoa7amg	0	f	properties	\N
-imrhc9he5on	qu64eoa7amg	1	\N	\N	6
 e3eaa6uq9t8	lylp2daxzr6	2	\N	\N	\N
 beq12cybpaz	c8kzc0jfotm	2	\N	\N	\N
 beq12cybpaz	lylp2daxzr6	3	\N	\N	\N
@@ -8623,7 +8689,6 @@ yt77srlsive	eupy33wyahw	6	\N	\N	\N
 826yic3e7bk	mue77s53ug0	4	\N	\N	\N
 826yic3e7bk	agy55hanha3	5	\N	\N	\N
 826yic3e7bk	sfa4kawo4ky	6	\N	\N	\N
-sm99m0bwdty	sm99m0bwdty	0	f	properties	\N
 826yic3e7bk	4sqtmnjqy3l	7	\N	\N	\N
 826yic3e7bk	eupy33wyahw	7	\N	\N	\N
 9c1c2orwoq7	zsylwgqg56a	4	\N	\N	\N
@@ -8700,10 +8765,8 @@ y6sl19mjcff	y6sl19mjcff	0	f	properties	\N
 62kkj5k4vhn	62kkj5k4vhn	0	f	properties	\N
 cjgytsf96xm	62kkj5k4vhn	1	\N	\N	1
 cjgytsf96xm	cjgytsf96xm	0	f	properties	\N
-04nart2ippj	04nart2ippj	0	f	properties	\N
-5idf4nxla3u	5idf4nxla3u	0	f	properties	\N
-22pnzqtybji	e4samnonhij	1	\N	\N	7
-22pnzqtybji	y6sl19mjcff	1	\N	\N	10
+bzirblya7qw	kqnzmy29uch	10	\N	\N	\N
+bzirblya7qw	igpbp2pemzb	11	\N	\N	\N
 41zfs8bogys	mue77s53ug0	13	\N	\N	\N
 22pnzqtybji	62kkj5k4vhn	2	\N	\N	\N
 41zfs8bogys	agy55hanha3	14	\N	\N	\N
@@ -8712,6 +8775,7 @@ mqma0oexw7v	62kkj5k4vhn	3	\N	\N	\N
 41zfs8bogys	sfa4kawo4ky	15	\N	\N	\N
 09yy6b78jxi	cjgytsf96xm	3	\N	\N	\N
 09yy6b78jxi	62kkj5k4vhn	4	\N	\N	\N
+sm99m0bwdty	sm99m0bwdty	0	f	properties	\N
 41zfs8bogys	4sqtmnjqy3l	16	\N	\N	\N
 1whdhzzrodk	cjgytsf96xm	4	\N	\N	\N
 1whdhzzrodk	62kkj5k4vhn	5	\N	\N	\N
@@ -8737,38 +8801,38 @@ nocobase-admin-menu	62kkj5k4vhn	11	\N	\N	\N
 nocobase-admin-menu	zsylwgqg56a	14	\N	\N	\N
 qujstuiy3k2	qujstuiy3k2	0	f	properties	\N
 udmmaahgp9z	qujstuiy3k2	1	\N	\N	1
-p3st627y95d	p3st627y95d	0	f	properties	\N
-qujstuiy3k2	p3st627y95d	1	\N	\N	1
-udmmaahgp9z	p3st627y95d	2	\N	\N	1
+bzirblya7qw	vwn6lemtpg5	12	\N	\N	\N
+galt7hbd78y	kqnzmy29uch	11	\N	\N	\N
+galt7hbd78y	igpbp2pemzb	12	\N	\N	\N
 22pnzqtybji	qujstuiy3k2	2	\N	\N	\N
-22pnzqtybji	p3st627y95d	3	\N	\N	\N
+galt7hbd78y	vwn6lemtpg5	13	\N	\N	\N
 mqma0oexw7v	udmmaahgp9z	2	\N	\N	\N
 mqma0oexw7v	qujstuiy3k2	3	\N	\N	\N
-mqma0oexw7v	p3st627y95d	4	\N	\N	\N
+e87ogy2w48b	kqnzmy29uch	12	\N	\N	\N
 09yy6b78jxi	udmmaahgp9z	3	\N	\N	\N
 09yy6b78jxi	qujstuiy3k2	4	\N	\N	\N
-09yy6b78jxi	p3st627y95d	5	\N	\N	\N
+e87ogy2w48b	igpbp2pemzb	13	\N	\N	\N
 1whdhzzrodk	udmmaahgp9z	4	\N	\N	\N
 1whdhzzrodk	qujstuiy3k2	5	\N	\N	\N
-1whdhzzrodk	p3st627y95d	6	\N	\N	\N
+e87ogy2w48b	vwn6lemtpg5	14	\N	\N	\N
 f205ix4mjg8	udmmaahgp9z	5	\N	\N	\N
 f205ix4mjg8	qujstuiy3k2	6	\N	\N	\N
-f205ix4mjg8	p3st627y95d	7	\N	\N	\N
+i0bqeajbvwo	kqnzmy29uch	13	\N	\N	\N
 fvx7g50y58n	udmmaahgp9z	6	\N	\N	\N
 fvx7g50y58n	qujstuiy3k2	7	\N	\N	\N
-fvx7g50y58n	p3st627y95d	8	\N	\N	\N
+i0bqeajbvwo	igpbp2pemzb	14	\N	\N	\N
 833uu3rb1nm	udmmaahgp9z	7	\N	\N	\N
 833uu3rb1nm	qujstuiy3k2	8	\N	\N	\N
-833uu3rb1nm	p3st627y95d	9	\N	\N	\N
+i0bqeajbvwo	vwn6lemtpg5	15	\N	\N	\N
 ik0zt15yup2	udmmaahgp9z	8	\N	\N	\N
 ik0zt15yup2	qujstuiy3k2	9	\N	\N	\N
-ik0zt15yup2	p3st627y95d	10	\N	\N	\N
+pdot2ybyfc0	kqnzmy29uch	14	\N	\N	\N
 w1vttmfcjic	udmmaahgp9z	9	\N	\N	\N
 w1vttmfcjic	qujstuiy3k2	10	\N	\N	\N
-w1vttmfcjic	p3st627y95d	11	\N	\N	\N
+pdot2ybyfc0	igpbp2pemzb	15	\N	\N	\N
 nocobase-admin-menu	udmmaahgp9z	10	\N	\N	\N
 nocobase-admin-menu	qujstuiy3k2	11	\N	\N	\N
-nocobase-admin-menu	p3st627y95d	12	\N	\N	\N
+pdot2ybyfc0	vwn6lemtpg5	16	\N	\N	\N
 udmmaahgp9z	udmmaahgp9z	0	f	properties	\N
 nocobase-admin-menu	mue77s53ug0	15	\N	\N	\N
 e43yauc7npg	e43yauc7npg	0	f	properties	\N
@@ -8812,51 +8876,40 @@ nocobase-admin-menu	1bwhaq1v3y8	9	\N	\N	\N
 nocobase-admin-menu	jjgq2nh2ik3	10	\N	\N	\N
 1bwhaq1v3y8	1bwhaq1v3y8	0	f	properties	\N
 i0bqeajbvwo	1bwhaq1v3y8	1	\N	\N	7
-5pjzqrzcwxl	5pjzqrzcwxl	0	f	properties	\N
-vrwoxsmqz7z	5pjzqrzcwxl	1	\N	\N	1
-i0bqeajbvwo	5pjzqrzcwxl	2	\N	\N	\N
-pdot2ybyfc0	vrwoxsmqz7z	2	\N	\N	\N
-pdot2ybyfc0	5pjzqrzcwxl	3	\N	\N	\N
-a7e860jrx5o	vrwoxsmqz7z	3	\N	\N	\N
-a7e860jrx5o	5pjzqrzcwxl	4	\N	\N	\N
-zxh1oe1qx5t	vrwoxsmqz7z	4	\N	\N	\N
-zxh1oe1qx5t	5pjzqrzcwxl	5	\N	\N	\N
-861gmcfwhia	vrwoxsmqz7z	5	\N	\N	\N
-861gmcfwhia	5pjzqrzcwxl	6	\N	\N	\N
-9yos6i0cjm3	vrwoxsmqz7z	6	\N	\N	\N
-9yos6i0cjm3	5pjzqrzcwxl	7	\N	\N	\N
-n3yigbe0k9v	vrwoxsmqz7z	7	\N	\N	\N
-n3yigbe0k9v	5pjzqrzcwxl	8	\N	\N	\N
-vrwoxsmqz7z	vrwoxsmqz7z	0	f	properties	\N
-i0bqeajbvwo	vrwoxsmqz7z	1	\N	\N	8
+a7e860jrx5o	kqnzmy29uch	15	\N	\N	\N
+a7e860jrx5o	igpbp2pemzb	16	\N	\N	\N
+a7e860jrx5o	vwn6lemtpg5	17	\N	\N	\N
+zxh1oe1qx5t	kqnzmy29uch	16	\N	\N	\N
+zxh1oe1qx5t	igpbp2pemzb	17	\N	\N	\N
+zxh1oe1qx5t	vwn6lemtpg5	18	\N	\N	\N
+861gmcfwhia	kqnzmy29uch	17	\N	\N	\N
+861gmcfwhia	igpbp2pemzb	18	\N	\N	\N
+861gmcfwhia	vwn6lemtpg5	19	\N	\N	\N
+9yos6i0cjm3	kqnzmy29uch	18	\N	\N	\N
+9yos6i0cjm3	igpbp2pemzb	19	\N	\N	\N
+9yos6i0cjm3	vwn6lemtpg5	20	\N	\N	\N
+n3yigbe0k9v	kqnzmy29uch	19	\N	\N	\N
+n3yigbe0k9v	igpbp2pemzb	20	\N	\N	\N
+n3yigbe0k9v	vwn6lemtpg5	21	\N	\N	\N
+073buw1m70l	kqnzmy29uch	20	\N	\N	\N
+073buw1m70l	igpbp2pemzb	21	\N	\N	\N
 jjset43gbyy	jjset43gbyy	0	f	properties	\N
 agy55hanha3	nlou4s5aouj	5	\N	\N	\N
-22pnzqtybji	cjgytsf96xm	1	\N	\N	11
-22pnzqtybji	udmmaahgp9z	1	\N	\N	12
-073buw1m70l	vrwoxsmqz7z	8	\N	\N	\N
-073buw1m70l	5pjzqrzcwxl	9	\N	\N	\N
-nocobase-admin-menu	vrwoxsmqz7z	9	\N	\N	\N
-nocobase-admin-menu	5pjzqrzcwxl	10	\N	\N	\N
-u4x9wfxqbko	u4x9wfxqbko	0	f	properties	\N
-o8jbt34ilny	u4x9wfxqbko	1	\N	\N	1
-i0bqeajbvwo	u4x9wfxqbko	2	\N	\N	\N
-pdot2ybyfc0	o8jbt34ilny	2	\N	\N	\N
-pdot2ybyfc0	u4x9wfxqbko	3	\N	\N	\N
-a7e860jrx5o	o8jbt34ilny	3	\N	\N	\N
-a7e860jrx5o	u4x9wfxqbko	4	\N	\N	\N
-zxh1oe1qx5t	o8jbt34ilny	4	\N	\N	\N
-zxh1oe1qx5t	u4x9wfxqbko	5	\N	\N	\N
-861gmcfwhia	o8jbt34ilny	5	\N	\N	\N
-861gmcfwhia	u4x9wfxqbko	6	\N	\N	\N
-9yos6i0cjm3	o8jbt34ilny	6	\N	\N	\N
-9yos6i0cjm3	u4x9wfxqbko	7	\N	\N	\N
-n3yigbe0k9v	o8jbt34ilny	7	\N	\N	\N
-n3yigbe0k9v	u4x9wfxqbko	8	\N	\N	\N
-073buw1m70l	o8jbt34ilny	8	\N	\N	\N
-073buw1m70l	u4x9wfxqbko	9	\N	\N	\N
-nocobase-admin-menu	o8jbt34ilny	9	\N	\N	\N
-nocobase-admin-menu	u4x9wfxqbko	10	\N	\N	\N
-o8jbt34ilny	o8jbt34ilny	0	f	properties	\N
+073buw1m70l	vwn6lemtpg5	22	\N	\N	\N
+nocobase-admin-menu	kqnzmy29uch	21	\N	\N	\N
+nocobase-admin-menu	igpbp2pemzb	22	\N	\N	\N
+nocobase-admin-menu	vwn6lemtpg5	23	\N	\N	\N
+kqnzmy29uch	kqnzmy29uch	0	f	properties	\N
+xrp5qlqau5q	kqnzmy29uch	1	\N	\N	8
+lxbhdk7z637	lxbhdk7z637	0	f	properties	\N
+qvfyd51819e	lxbhdk7z637	1	\N	\N	1
+qvfyd51819e	bzs04pddyuf	2	\N	\N	\N
+lxbhdk7z637	bzs04pddyuf	1	\N	\N	1
+xrp5qlqau5q	lxbhdk7z637	2	\N	\N	\N
+xrp5qlqau5q	bzs04pddyuf	3	\N	\N	\N
+l1ipy29yo2a	qvfyd51819e	2	\N	\N	\N
+l1ipy29yo2a	lxbhdk7z637	3	\N	\N	\N
+l1ipy29yo2a	bzs04pddyuf	4	\N	\N	\N
 3dk4jf9qcgo	3dk4jf9qcgo	0	f	properties	\N
 i0bqeajbvwo	e43yauc7npg	2	\N	\N	\N
 pdot2ybyfc0	jjset43gbyy	2	\N	\N	\N
@@ -8875,7 +8928,7 @@ n3yigbe0k9v	e43yauc7npg	8	\N	\N	\N
 073buw1m70l	e43yauc7npg	9	\N	\N	\N
 nocobase-admin-menu	jjset43gbyy	9	\N	\N	\N
 nocobase-admin-menu	e43yauc7npg	10	\N	\N	\N
-i0bqeajbvwo	o8jbt34ilny	1	\N	\N	10
+mclja8pd27f	qvfyd51819e	3	\N	\N	\N
 i0bqeajbvwo	jjset43gbyy	1	\N	\N	9
 iibr9bsne2i	iibr9bsne2i	0	f	properties	\N
 zq78mhjzir3	iibr9bsne2i	1	\N	\N	1
@@ -9208,57 +9261,57 @@ sr4x5sl1mby	yfijfhpa0n1	3	\N	\N	1
 p3st627y95d	lhhb4d5lz96	2	\N	\N	\N
 p3st627y95d	mm99ajvazt8	3	\N	\N	\N
 p3st627y95d	yfijfhpa0n1	4	\N	\N	\N
-qujstuiy3k2	sr4x5sl1mby	2	\N	\N	\N
-qujstuiy3k2	lhhb4d5lz96	3	\N	\N	\N
-qujstuiy3k2	mm99ajvazt8	4	\N	\N	\N
-qujstuiy3k2	yfijfhpa0n1	5	\N	\N	\N
-udmmaahgp9z	sr4x5sl1mby	3	\N	\N	\N
-udmmaahgp9z	lhhb4d5lz96	4	\N	\N	\N
-udmmaahgp9z	mm99ajvazt8	5	\N	\N	\N
-udmmaahgp9z	yfijfhpa0n1	6	\N	\N	\N
-22pnzqtybji	sr4x5sl1mby	4	\N	\N	\N
-22pnzqtybji	lhhb4d5lz96	5	\N	\N	\N
-22pnzqtybji	mm99ajvazt8	6	\N	\N	\N
-22pnzqtybji	yfijfhpa0n1	7	\N	\N	\N
-mqma0oexw7v	sr4x5sl1mby	5	\N	\N	\N
-mqma0oexw7v	lhhb4d5lz96	6	\N	\N	\N
-mqma0oexw7v	mm99ajvazt8	7	\N	\N	\N
-mqma0oexw7v	yfijfhpa0n1	8	\N	\N	\N
-09yy6b78jxi	sr4x5sl1mby	6	\N	\N	\N
-09yy6b78jxi	lhhb4d5lz96	7	\N	\N	\N
-09yy6b78jxi	mm99ajvazt8	8	\N	\N	\N
-09yy6b78jxi	yfijfhpa0n1	9	\N	\N	\N
+mclja8pd27f	lxbhdk7z637	4	\N	\N	\N
+mclja8pd27f	bzs04pddyuf	5	\N	\N	\N
+z7ksqgxvuzy	qvfyd51819e	4	\N	\N	\N
+z7ksqgxvuzy	lxbhdk7z637	5	\N	\N	\N
+z7ksqgxvuzy	bzs04pddyuf	6	\N	\N	\N
+6hxxlzxmifr	qvfyd51819e	5	\N	\N	\N
+6hxxlzxmifr	lxbhdk7z637	6	\N	\N	\N
+6hxxlzxmifr	bzs04pddyuf	7	\N	\N	\N
+4gdmc9g083s	qvfyd51819e	6	\N	\N	\N
+4gdmc9g083s	lxbhdk7z637	7	\N	\N	\N
+4gdmc9g083s	bzs04pddyuf	8	\N	\N	\N
+ebu29iqsaqx	qvfyd51819e	7	\N	\N	\N
+ebu29iqsaqx	lxbhdk7z637	8	\N	\N	\N
+ebu29iqsaqx	bzs04pddyuf	9	\N	\N	\N
+k4kftsn5ht7	qvfyd51819e	8	\N	\N	\N
+k4kftsn5ht7	lxbhdk7z637	9	\N	\N	\N
+k4kftsn5ht7	bzs04pddyuf	10	\N	\N	\N
+hg9tvy6yuph	qvfyd51819e	9	\N	\N	\N
+hg9tvy6yuph	lxbhdk7z637	10	\N	\N	\N
+hg9tvy6yuph	bzs04pddyuf	11	\N	\N	\N
 sr4x5sl1mby	sr4x5sl1mby	0	f	properties	\N
 zsylwgqg56a	nk1o1xq6m6v	7	\N	\N	\N
 p3st627y95d	sr4x5sl1mby	1	\N	\N	1
-1whdhzzrodk	sr4x5sl1mby	7	\N	\N	\N
-1whdhzzrodk	lhhb4d5lz96	8	\N	\N	\N
-1whdhzzrodk	mm99ajvazt8	9	\N	\N	\N
-1whdhzzrodk	yfijfhpa0n1	10	\N	\N	\N
-f205ix4mjg8	sr4x5sl1mby	8	\N	\N	\N
-f205ix4mjg8	lhhb4d5lz96	9	\N	\N	\N
-f205ix4mjg8	mm99ajvazt8	10	\N	\N	\N
-f205ix4mjg8	yfijfhpa0n1	11	\N	\N	\N
-fvx7g50y58n	sr4x5sl1mby	9	\N	\N	\N
-fvx7g50y58n	lhhb4d5lz96	10	\N	\N	\N
-fvx7g50y58n	mm99ajvazt8	11	\N	\N	\N
-fvx7g50y58n	yfijfhpa0n1	12	\N	\N	\N
-833uu3rb1nm	sr4x5sl1mby	10	\N	\N	\N
-833uu3rb1nm	lhhb4d5lz96	11	\N	\N	\N
-833uu3rb1nm	mm99ajvazt8	12	\N	\N	\N
-833uu3rb1nm	yfijfhpa0n1	13	\N	\N	\N
-ik0zt15yup2	sr4x5sl1mby	11	\N	\N	\N
-ik0zt15yup2	lhhb4d5lz96	12	\N	\N	\N
-ik0zt15yup2	mm99ajvazt8	13	\N	\N	\N
-ik0zt15yup2	yfijfhpa0n1	14	\N	\N	\N
-w1vttmfcjic	sr4x5sl1mby	12	\N	\N	\N
-w1vttmfcjic	lhhb4d5lz96	13	\N	\N	\N
-w1vttmfcjic	mm99ajvazt8	14	\N	\N	\N
-w1vttmfcjic	yfijfhpa0n1	15	\N	\N	\N
-nocobase-admin-menu	sr4x5sl1mby	13	\N	\N	\N
-nocobase-admin-menu	lhhb4d5lz96	14	\N	\N	\N
-nocobase-admin-menu	mm99ajvazt8	15	\N	\N	\N
-nocobase-admin-menu	yfijfhpa0n1	16	\N	\N	\N
+bzirblya7qw	qvfyd51819e	10	\N	\N	\N
+bzirblya7qw	lxbhdk7z637	11	\N	\N	\N
+bzirblya7qw	bzs04pddyuf	12	\N	\N	\N
+galt7hbd78y	qvfyd51819e	11	\N	\N	\N
+galt7hbd78y	lxbhdk7z637	12	\N	\N	\N
+galt7hbd78y	bzs04pddyuf	13	\N	\N	\N
+e87ogy2w48b	qvfyd51819e	12	\N	\N	\N
+e87ogy2w48b	lxbhdk7z637	13	\N	\N	\N
+e87ogy2w48b	bzs04pddyuf	14	\N	\N	\N
+i0bqeajbvwo	qvfyd51819e	13	\N	\N	\N
+i0bqeajbvwo	lxbhdk7z637	14	\N	\N	\N
+i0bqeajbvwo	bzs04pddyuf	15	\N	\N	\N
+pdot2ybyfc0	qvfyd51819e	14	\N	\N	\N
+pdot2ybyfc0	lxbhdk7z637	15	\N	\N	\N
+pdot2ybyfc0	bzs04pddyuf	16	\N	\N	\N
+a7e860jrx5o	qvfyd51819e	15	\N	\N	\N
+a7e860jrx5o	lxbhdk7z637	16	\N	\N	\N
+a7e860jrx5o	bzs04pddyuf	17	\N	\N	\N
+zxh1oe1qx5t	qvfyd51819e	16	\N	\N	\N
+zxh1oe1qx5t	lxbhdk7z637	17	\N	\N	\N
+zxh1oe1qx5t	bzs04pddyuf	18	\N	\N	\N
+861gmcfwhia	qvfyd51819e	17	\N	\N	\N
+861gmcfwhia	lxbhdk7z637	18	\N	\N	\N
+861gmcfwhia	bzs04pddyuf	19	\N	\N	\N
+9yos6i0cjm3	qvfyd51819e	18	\N	\N	\N
+9yos6i0cjm3	lxbhdk7z637	19	\N	\N	\N
+9yos6i0cjm3	bzs04pddyuf	20	\N	\N	\N
+n3yigbe0k9v	qvfyd51819e	19	\N	\N	\N
 odmrtfsxjp5	odmrtfsxjp5	0	f	properties	\N
 alt2km13pi6	odmrtfsxjp5	1	\N	\N	1
 fo7g83k4wnw	fo7g83k4wnw	0	f	properties	\N
@@ -9378,6 +9431,7 @@ mqma0oexw7v	0jc7b0j4ca8	9	\N	\N	\N
 1whdhzzrodk	xgcak2lw2iz	10	\N	\N	\N
 1whdhzzrodk	0jc7b0j4ca8	11	\N	\N	\N
 f205ix4mjg8	fzzjta8vefz	10	\N	\N	\N
+n3yigbe0k9v	lxbhdk7z637	20	\N	\N	\N
 f205ix4mjg8	xgcak2lw2iz	11	\N	\N	\N
 f205ix4mjg8	0jc7b0j4ca8	12	\N	\N	\N
 fvx7g50y58n	fzzjta8vefz	11	\N	\N	\N
@@ -9402,29 +9456,26 @@ yt77srlsive	30afm9j9mof	7	\N	\N	\N
 yt77srlsive	3k4d6voqqmv	8	\N	\N	\N
 yt77srlsive	nk1o1xq6m6v	9	\N	\N	\N
 826yic3e7bk	30afm9j9mof	8	\N	\N	\N
-qea4hkirot0	qea4hkirot0	0	f	properties	\N
-ml67mod4ivt	qea4hkirot0	1	\N	\N	1
+n3yigbe0k9v	bzs04pddyuf	21	\N	\N	\N
+073buw1m70l	qvfyd51819e	20	\N	\N	\N
 826yic3e7bk	3k4d6voqqmv	9	\N	\N	\N
 826yic3e7bk	nk1o1xq6m6v	10	\N	\N	\N
-fuhvhiwfe1n	fuhvhiwfe1n	0	f	properties	\N
-ml67mod4ivt	fuhvhiwfe1n	1	\N	\N	2
+073buw1m70l	lxbhdk7z637	21	\N	\N	\N
+w1vttmfcjic	y3668x0h41o	9	\N	\N	\N
 9c1c2orwoq7	30afm9j9mof	9	\N	\N	\N
 9c1c2orwoq7	3k4d6voqqmv	10	\N	\N	\N
-r9bunptonmc	r9bunptonmc	0	f	properties	\N
-fuhvhiwfe1n	r9bunptonmc	1	\N	\N	1
-ml67mod4ivt	r9bunptonmc	2	\N	\N	1
+073buw1m70l	bzs04pddyuf	22	\N	\N	\N
+nocobase-admin-menu	qvfyd51819e	21	\N	\N	\N
+nocobase-admin-menu	lxbhdk7z637	22	\N	\N	\N
 9c1c2orwoq7	nk1o1xq6m6v	11	\N	\N	\N
 dknwg9949yr	30afm9j9mof	10	\N	\N	\N
-e2breqfve4x	e2breqfve4x	0	f	properties	\N
-r9bunptonmc	e2breqfve4x	1	\N	\N	1
-fuhvhiwfe1n	e2breqfve4x	2	\N	\N	1
-ml67mod4ivt	e2breqfve4x	3	\N	\N	1
+nocobase-admin-menu	bzs04pddyuf	23	\N	\N	\N
+qvfyd51819e	qvfyd51819e	0	f	properties	\N
+xrp5qlqau5q	qvfyd51819e	1	\N	\N	3
+nocobase-admin-menu	y3668x0h41o	10	\N	\N	\N
 dknwg9949yr	3k4d6voqqmv	11	\N	\N	\N
 dknwg9949yr	nk1o1xq6m6v	12	\N	\N	\N
-iyimw3a9uc2	iyimw3a9uc2	0	f	properties	\N
-r9bunptonmc	iyimw3a9uc2	1	\N	\N	2
-fuhvhiwfe1n	iyimw3a9uc2	2	\N	\N	2
-ml67mod4ivt	iyimw3a9uc2	3	\N	\N	2
+qjp62asznio	ow53peiz14y	1	\N	\N	1
 tw82t2es2ty	30afm9j9mof	11	\N	\N	\N
 tw82t2es2ty	3k4d6voqqmv	12	\N	\N	\N
 tw82t2es2ty	nk1o1xq6m6v	13	\N	\N	\N
@@ -9493,7 +9544,6 @@ yt77srlsive	cyqcbe8h8e3	9	\N	\N	\N
 9c1c2orwoq7	p75pmr75t0d	9	\N	\N	\N
 9c1c2orwoq7	74s44xtfq9i	10	\N	\N	\N
 9c1c2orwoq7	cyqcbe8h8e3	11	\N	\N	\N
-ml67mod4ivt	ml67mod4ivt	0	f	properties	\N
 dknwg9949yr	p75pmr75t0d	10	\N	\N	\N
 dknwg9949yr	74s44xtfq9i	11	\N	\N	\N
 dknwg9949yr	cyqcbe8h8e3	12	\N	\N	\N
@@ -9546,128 +9596,117 @@ tw82t2es2ty	je71b5yiapc	11	\N	\N	\N
 4lk9neaacek	4lk9neaacek	0	f	properties	\N
 g4n9eb2icuo	4lk9neaacek	1	\N	\N	2
 culzjbos9r3	je71b5yiapc	12	\N	\N	\N
-kbm738ecszi	qea4hkirot0	2	\N	\N	\N
-kbm738ecszi	fuhvhiwfe1n	2	\N	\N	\N
-kbm738ecszi	r9bunptonmc	3	\N	\N	\N
-kbm738ecszi	e2breqfve4x	4	\N	\N	\N
-kbm738ecszi	iyimw3a9uc2	4	\N	\N	\N
+tlfnt0boisu	ow53peiz14y	2	\N	\N	\N
+l1ipy29yo2a	qjp62asznio	3	\N	\N	\N
+y3668x0h41o	y3668x0h41o	0	f	properties	\N
 3owowmpqg3i	je71b5yiapc	13	\N	\N	\N
-kbm738ecszi	ml67mod4ivt	1	\N	\N	1
-xaewf0sjo76	kbm738ecszi	3	\N	\N	\N
-xaewf0sjo76	ml67mod4ivt	4	\N	\N	\N
-xaewf0sjo76	qea4hkirot0	5	\N	\N	\N
-xaewf0sjo76	fuhvhiwfe1n	5	\N	\N	\N
-xaewf0sjo76	r9bunptonmc	6	\N	\N	\N
-xaewf0sjo76	e2breqfve4x	7	\N	\N	\N
-xaewf0sjo76	iyimw3a9uc2	7	\N	\N	\N
-fo7g83k4wnw	kbm738ecszi	4	\N	\N	\N
-fo7g83k4wnw	ml67mod4ivt	5	\N	\N	\N
-fo7g83k4wnw	qea4hkirot0	6	\N	\N	\N
-fo7g83k4wnw	fuhvhiwfe1n	6	\N	\N	\N
-fo7g83k4wnw	r9bunptonmc	7	\N	\N	\N
-fo7g83k4wnw	e2breqfve4x	8	\N	\N	\N
-fo7g83k4wnw	iyimw3a9uc2	8	\N	\N	\N
-odmrtfsxjp5	kbm738ecszi	5	\N	\N	\N
-odmrtfsxjp5	ml67mod4ivt	6	\N	\N	\N
-odmrtfsxjp5	qea4hkirot0	7	\N	\N	\N
-odmrtfsxjp5	fuhvhiwfe1n	7	\N	\N	\N
-odmrtfsxjp5	r9bunptonmc	8	\N	\N	\N
-odmrtfsxjp5	e2breqfve4x	9	\N	\N	\N
-odmrtfsxjp5	iyimw3a9uc2	9	\N	\N	\N
-alt2km13pi6	kbm738ecszi	6	\N	\N	\N
-alt2km13pi6	ml67mod4ivt	7	\N	\N	\N
-alt2km13pi6	qea4hkirot0	8	\N	\N	\N
-alt2km13pi6	fuhvhiwfe1n	8	\N	\N	\N
-alt2km13pi6	r9bunptonmc	9	\N	\N	\N
-alt2km13pi6	e2breqfve4x	10	\N	\N	\N
-alt2km13pi6	iyimw3a9uc2	10	\N	\N	\N
-99wrtdh3vjb	kbm738ecszi	7	\N	\N	\N
-99wrtdh3vjb	ml67mod4ivt	8	\N	\N	\N
-99wrtdh3vjb	qea4hkirot0	9	\N	\N	\N
-99wrtdh3vjb	fuhvhiwfe1n	9	\N	\N	\N
-99wrtdh3vjb	r9bunptonmc	10	\N	\N	\N
-99wrtdh3vjb	e2breqfve4x	11	\N	\N	\N
-99wrtdh3vjb	iyimw3a9uc2	11	\N	\N	\N
-mqma0oexw7v	kbm738ecszi	8	\N	\N	\N
-mqma0oexw7v	ml67mod4ivt	9	\N	\N	\N
-mqma0oexw7v	qea4hkirot0	10	\N	\N	\N
-mqma0oexw7v	fuhvhiwfe1n	10	\N	\N	\N
-mqma0oexw7v	r9bunptonmc	11	\N	\N	\N
-mqma0oexw7v	e2breqfve4x	12	\N	\N	\N
-mqma0oexw7v	iyimw3a9uc2	12	\N	\N	\N
-09yy6b78jxi	kbm738ecszi	9	\N	\N	\N
-09yy6b78jxi	ml67mod4ivt	10	\N	\N	\N
-09yy6b78jxi	qea4hkirot0	11	\N	\N	\N
-09yy6b78jxi	fuhvhiwfe1n	11	\N	\N	\N
-09yy6b78jxi	r9bunptonmc	12	\N	\N	\N
-09yy6b78jxi	e2breqfve4x	13	\N	\N	\N
-09yy6b78jxi	iyimw3a9uc2	13	\N	\N	\N
-1whdhzzrodk	kbm738ecszi	10	\N	\N	\N
-1whdhzzrodk	ml67mod4ivt	11	\N	\N	\N
-1whdhzzrodk	qea4hkirot0	12	\N	\N	\N
-1whdhzzrodk	fuhvhiwfe1n	12	\N	\N	\N
-1whdhzzrodk	r9bunptonmc	13	\N	\N	\N
-1whdhzzrodk	e2breqfve4x	14	\N	\N	\N
-1whdhzzrodk	iyimw3a9uc2	14	\N	\N	\N
-f205ix4mjg8	kbm738ecszi	11	\N	\N	\N
-f205ix4mjg8	ml67mod4ivt	12	\N	\N	\N
-f205ix4mjg8	qea4hkirot0	13	\N	\N	\N
-f205ix4mjg8	fuhvhiwfe1n	13	\N	\N	\N
-f205ix4mjg8	r9bunptonmc	14	\N	\N	\N
-f205ix4mjg8	e2breqfve4x	15	\N	\N	\N
-f205ix4mjg8	iyimw3a9uc2	15	\N	\N	\N
-fvx7g50y58n	kbm738ecszi	12	\N	\N	\N
-fvx7g50y58n	ml67mod4ivt	13	\N	\N	\N
-fvx7g50y58n	qea4hkirot0	14	\N	\N	\N
-fvx7g50y58n	fuhvhiwfe1n	14	\N	\N	\N
-fvx7g50y58n	r9bunptonmc	15	\N	\N	\N
-fvx7g50y58n	e2breqfve4x	16	\N	\N	\N
-fvx7g50y58n	iyimw3a9uc2	16	\N	\N	\N
-833uu3rb1nm	kbm738ecszi	13	\N	\N	\N
-833uu3rb1nm	ml67mod4ivt	14	\N	\N	\N
+l1ipy29yo2a	ow53peiz14y	4	\N	\N	\N
+mclja8pd27f	qjp62asznio	4	\N	\N	\N
+yyevygbo1uu	gwo3711lqyc	1	\N	\N	1
+mclja8pd27f	ow53peiz14y	5	\N	\N	\N
+z7ksqgxvuzy	qjp62asznio	5	\N	\N	\N
+z7ksqgxvuzy	ow53peiz14y	6	\N	\N	\N
+6hxxlzxmifr	qjp62asznio	6	\N	\N	\N
+6hxxlzxmifr	ow53peiz14y	7	\N	\N	\N
+4gdmc9g083s	qjp62asznio	7	\N	\N	\N
+4gdmc9g083s	ow53peiz14y	8	\N	\N	\N
+ebu29iqsaqx	qjp62asznio	8	\N	\N	\N
+ebu29iqsaqx	ow53peiz14y	9	\N	\N	\N
+k4kftsn5ht7	qjp62asznio	9	\N	\N	\N
+k4kftsn5ht7	ow53peiz14y	10	\N	\N	\N
+hg9tvy6yuph	qjp62asznio	10	\N	\N	\N
+hg9tvy6yuph	ow53peiz14y	11	\N	\N	\N
+bzirblya7qw	qjp62asznio	11	\N	\N	\N
+bzirblya7qw	ow53peiz14y	12	\N	\N	\N
+galt7hbd78y	qjp62asznio	12	\N	\N	\N
+galt7hbd78y	ow53peiz14y	13	\N	\N	\N
+mqma0oexw7v	dze7wwfv7ug	2	\N	\N	\N
+09yy6b78jxi	dze7wwfv7ug	3	\N	\N	\N
+1whdhzzrodk	dze7wwfv7ug	4	\N	\N	\N
+f205ix4mjg8	dze7wwfv7ug	5	\N	\N	\N
+fvx7g50y58n	dze7wwfv7ug	6	\N	\N	\N
+833uu3rb1nm	dze7wwfv7ug	7	\N	\N	\N
+ik0zt15yup2	dze7wwfv7ug	8	\N	\N	\N
+w1vttmfcjic	dze7wwfv7ug	9	\N	\N	\N
+nocobase-admin-menu	dze7wwfv7ug	10	\N	\N	\N
+dze7wwfv7ug	dze7wwfv7ug	0	f	properties	\N
 wu05wqno6t2	je71b5yiapc	14	\N	\N	\N
 fq548i6jjul	je71b5yiapc	15	\N	\N	\N
-833uu3rb1nm	qea4hkirot0	15	\N	\N	\N
-833uu3rb1nm	fuhvhiwfe1n	15	\N	\N	\N
-833uu3rb1nm	r9bunptonmc	16	\N	\N	\N
-833uu3rb1nm	e2breqfve4x	17	\N	\N	\N
-833uu3rb1nm	iyimw3a9uc2	17	\N	\N	\N
-ik0zt15yup2	kbm738ecszi	14	\N	\N	\N
-ik0zt15yup2	ml67mod4ivt	15	\N	\N	\N
-ik0zt15yup2	qea4hkirot0	16	\N	\N	\N
-ik0zt15yup2	fuhvhiwfe1n	16	\N	\N	\N
-ik0zt15yup2	r9bunptonmc	17	\N	\N	\N
-ik0zt15yup2	e2breqfve4x	18	\N	\N	\N
-ik0zt15yup2	iyimw3a9uc2	18	\N	\N	\N
-w1vttmfcjic	kbm738ecszi	15	\N	\N	\N
-w1vttmfcjic	ml67mod4ivt	16	\N	\N	\N
-w1vttmfcjic	qea4hkirot0	17	\N	\N	\N
-w1vttmfcjic	fuhvhiwfe1n	17	\N	\N	\N
-w1vttmfcjic	r9bunptonmc	18	\N	\N	\N
-w1vttmfcjic	e2breqfve4x	19	\N	\N	\N
-w1vttmfcjic	iyimw3a9uc2	19	\N	\N	\N
-nocobase-admin-menu	kbm738ecszi	16	\N	\N	\N
-nocobase-admin-menu	ml67mod4ivt	17	\N	\N	\N
-nocobase-admin-menu	qea4hkirot0	18	\N	\N	\N
-nocobase-admin-menu	fuhvhiwfe1n	18	\N	\N	\N
-nocobase-admin-menu	r9bunptonmc	19	\N	\N	\N
-nocobase-admin-menu	e2breqfve4x	20	\N	\N	\N
-nocobase-admin-menu	iyimw3a9uc2	20	\N	\N	\N
-fzzjta8vefz	ml67mod4ivt	2	\N	\N	\N
-fzzjta8vefz	qea4hkirot0	3	\N	\N	\N
-fzzjta8vefz	fuhvhiwfe1n	3	\N	\N	\N
-fzzjta8vefz	r9bunptonmc	4	\N	\N	\N
-fzzjta8vefz	e2breqfve4x	5	\N	\N	\N
-fzzjta8vefz	iyimw3a9uc2	5	\N	\N	\N
-g4n9eb2icuo	kbm738ecszi	2	\N	\N	\N
-g4n9eb2icuo	ml67mod4ivt	3	\N	\N	\N
-g4n9eb2icuo	qea4hkirot0	4	\N	\N	\N
-g4n9eb2icuo	fuhvhiwfe1n	4	\N	\N	\N
-g4n9eb2icuo	r9bunptonmc	5	\N	\N	\N
-g4n9eb2icuo	e2breqfve4x	6	\N	\N	\N
-g4n9eb2icuo	iyimw3a9uc2	6	\N	\N	\N
-kbm738ecszi	kbm738ecszi	0	f	properties	\N
-fzzjta8vefz	kbm738ecszi	1	\N	\N	2
+58gpo0mxaav	qcs2ctmr4zo	5	\N	\N	\N
+l9ys75laoy9	gwo3711lqyc	4	\N	\N	\N
+l9ys75laoy9	b91w7gjtydd	5	\N	\N	\N
+l9ys75laoy9	qcs2ctmr4zo	6	\N	\N	\N
+6fiymfhu4i9	gwo3711lqyc	5	\N	\N	\N
+6fiymfhu4i9	b91w7gjtydd	6	\N	\N	\N
+6fiymfhu4i9	qcs2ctmr4zo	7	\N	\N	\N
+efkn3sb524k	gwo3711lqyc	6	\N	\N	\N
+efkn3sb524k	b91w7gjtydd	7	\N	\N	\N
+efkn3sb524k	qcs2ctmr4zo	8	\N	\N	\N
+hinf8z4a0c0	gwo3711lqyc	7	\N	\N	\N
+hinf8z4a0c0	b91w7gjtydd	8	\N	\N	\N
+hinf8z4a0c0	qcs2ctmr4zo	9	\N	\N	\N
+2r8rihvxbxo	gwo3711lqyc	8	\N	\N	\N
+2r8rihvxbxo	b91w7gjtydd	9	\N	\N	\N
+2r8rihvxbxo	qcs2ctmr4zo	10	\N	\N	\N
+byou5tpcmg3	gwo3711lqyc	9	\N	\N	\N
+byou5tpcmg3	b91w7gjtydd	10	\N	\N	\N
+byou5tpcmg3	qcs2ctmr4zo	11	\N	\N	\N
+evtz6ljqxdq	gwo3711lqyc	10	\N	\N	\N
+evtz6ljqxdq	b91w7gjtydd	11	\N	\N	\N
+evtz6ljqxdq	qcs2ctmr4zo	12	\N	\N	\N
+i80vemflinb	gwo3711lqyc	11	\N	\N	\N
+i80vemflinb	b91w7gjtydd	12	\N	\N	\N
+i80vemflinb	qcs2ctmr4zo	13	\N	\N	\N
+5bru92qlyrq	gwo3711lqyc	12	\N	\N	\N
+5bru92qlyrq	b91w7gjtydd	13	\N	\N	\N
+5bru92qlyrq	qcs2ctmr4zo	14	\N	\N	\N
+obl2auujo32	gwo3711lqyc	13	\N	\N	\N
+obl2auujo32	b91w7gjtydd	14	\N	\N	\N
+obl2auujo32	qcs2ctmr4zo	15	\N	\N	\N
+nocobase-admin-menu	gwo3711lqyc	14	\N	\N	\N
+nocobase-admin-menu	b91w7gjtydd	15	\N	\N	\N
+nocobase-admin-menu	qcs2ctmr4zo	16	\N	\N	\N
+gwo3711lqyc	gwo3711lqyc	0	f	properties	\N
+dfrzos4gq19	dfrzos4gq19	0	f	properties	\N
+i7gwmqodnug	dfrzos4gq19	1	\N	\N	2
+7gjosk8ispe	7gjosk8ispe	0	f	properties	\N
+dfrzos4gq19	7gjosk8ispe	1	\N	\N	1
+i7gwmqodnug	7gjosk8ispe	2	\N	\N	\N
+ar4ks05q9gy	dfrzos4gq19	2	\N	\N	\N
+ar4ks05q9gy	7gjosk8ispe	3	\N	\N	\N
+9vll9qbbcql	dfrzos4gq19	3	\N	\N	\N
+22pnzqtybji	dze7wwfv7ug	1	\N	\N	5
+9vll9qbbcql	7gjosk8ispe	4	\N	\N	\N
+8vwr3yh0weq	dfrzos4gq19	4	\N	\N	\N
+8vwr3yh0weq	7gjosk8ispe	5	\N	\N	\N
+o7z0dukywzh	dfrzos4gq19	5	\N	\N	\N
+o7z0dukywzh	7gjosk8ispe	6	\N	\N	\N
+xr71y0bi2gt	dfrzos4gq19	6	\N	\N	\N
+xr71y0bi2gt	7gjosk8ispe	7	\N	\N	\N
+nmo9mk3zqna	dfrzos4gq19	7	\N	\N	\N
+nmo9mk3zqna	7gjosk8ispe	8	\N	\N	\N
+073buw1m70l	dfrzos4gq19	8	\N	\N	\N
+e87ogy2w48b	qjp62asznio	13	\N	\N	\N
+e87ogy2w48b	ow53peiz14y	14	\N	\N	\N
+i0bqeajbvwo	qjp62asznio	14	\N	\N	\N
+i0bqeajbvwo	ow53peiz14y	15	\N	\N	\N
+pdot2ybyfc0	qjp62asznio	15	\N	\N	\N
+pdot2ybyfc0	ow53peiz14y	16	\N	\N	\N
+a7e860jrx5o	qjp62asznio	16	\N	\N	\N
+a7e860jrx5o	ow53peiz14y	17	\N	\N	\N
+zxh1oe1qx5t	qjp62asznio	17	\N	\N	\N
+zxh1oe1qx5t	ow53peiz14y	18	\N	\N	\N
+861gmcfwhia	qjp62asznio	18	\N	\N	\N
+861gmcfwhia	ow53peiz14y	19	\N	\N	\N
+9yos6i0cjm3	qjp62asznio	19	\N	\N	\N
+9yos6i0cjm3	ow53peiz14y	20	\N	\N	\N
+n3yigbe0k9v	qjp62asznio	20	\N	\N	\N
+n3yigbe0k9v	ow53peiz14y	21	\N	\N	\N
+073buw1m70l	qjp62asznio	21	\N	\N	\N
+073buw1m70l	ow53peiz14y	22	\N	\N	\N
+nocobase-admin-menu	qjp62asznio	22	\N	\N	\N
+nocobase-admin-menu	ow53peiz14y	23	\N	\N	\N
+xrp5qlqau5q	qjp62asznio	2	\N	\N	\N
 b8e4crdaije	je71b5yiapc	16	\N	\N	\N
 41zfs8bogys	je71b5yiapc	17	\N	\N	\N
 073buw1m70l	je71b5yiapc	18	\N	\N	\N
@@ -9709,7 +9748,7 @@ dac2j2kt870	9i5rajl4o7f	8	\N	\N	\N
 fq548i6jjul	9261692m4qa	5	\N	\N	\N
 fq548i6jjul	evlfkn2k9ay	6	\N	\N	\N
 fq548i6jjul	siizaqdcc7g	7	\N	\N	\N
-0sygad82cqs	sm99m0bwdty	2	\N	\N	\N
+xrp5qlqau5q	ow53peiz14y	3	\N	\N	\N
 fq548i6jjul	ziv7xyw0rep	8	\N	\N	\N
 fq548i6jjul	9i5rajl4o7f	9	\N	\N	\N
 b8e4crdaije	9261692m4qa	6	\N	\N	\N
@@ -9724,38 +9763,17 @@ b8e4crdaije	9i5rajl4o7f	10	\N	\N	\N
 41zfs8bogys	9i5rajl4o7f	11	\N	\N	\N
 073buw1m70l	9261692m4qa	8	\N	\N	\N
 073buw1m70l	evlfkn2k9ay	9	\N	\N	\N
-0yu3l905f1t	sm99m0bwdty	1	\N	\N	1
-22pnzqtybji	sm99m0bwdty	3	\N	\N	\N
-0yu3l905f1t	0yu3l905f1t	0	f	properties	\N
-0sygad82cqs	0yu3l905f1t	1	\N	\N	1
-22pnzqtybji	0yu3l905f1t	2	\N	\N	\N
-mqma0oexw7v	sm99m0bwdty	4	\N	\N	\N
+qjp62asznio	qjp62asznio	0	f	properties	\N
+tlfnt0boisu	qjp62asznio	1	\N	\N	2
 mqma0oexw7v	0sygad82cqs	2	\N	\N	\N
-mqma0oexw7v	0yu3l905f1t	3	\N	\N	\N
-09yy6b78jxi	sm99m0bwdty	5	\N	\N	\N
 09yy6b78jxi	0sygad82cqs	3	\N	\N	\N
-09yy6b78jxi	0yu3l905f1t	4	\N	\N	\N
-1whdhzzrodk	sm99m0bwdty	6	\N	\N	\N
 1whdhzzrodk	0sygad82cqs	4	\N	\N	\N
-1whdhzzrodk	0yu3l905f1t	5	\N	\N	\N
-f205ix4mjg8	sm99m0bwdty	7	\N	\N	\N
 f205ix4mjg8	0sygad82cqs	5	\N	\N	\N
-f205ix4mjg8	0yu3l905f1t	6	\N	\N	\N
-fvx7g50y58n	sm99m0bwdty	8	\N	\N	\N
 fvx7g50y58n	0sygad82cqs	6	\N	\N	\N
-fvx7g50y58n	0yu3l905f1t	7	\N	\N	\N
-833uu3rb1nm	sm99m0bwdty	9	\N	\N	\N
 833uu3rb1nm	0sygad82cqs	7	\N	\N	\N
-833uu3rb1nm	0yu3l905f1t	8	\N	\N	\N
-ik0zt15yup2	sm99m0bwdty	10	\N	\N	\N
 ik0zt15yup2	0sygad82cqs	8	\N	\N	\N
-ik0zt15yup2	0yu3l905f1t	9	\N	\N	\N
-w1vttmfcjic	sm99m0bwdty	11	\N	\N	\N
 w1vttmfcjic	0sygad82cqs	9	\N	\N	\N
-w1vttmfcjic	0yu3l905f1t	10	\N	\N	\N
-nocobase-admin-menu	sm99m0bwdty	12	\N	\N	\N
 nocobase-admin-menu	0sygad82cqs	10	\N	\N	\N
-nocobase-admin-menu	0yu3l905f1t	11	\N	\N	\N
 0sygad82cqs	0sygad82cqs	0	f	properties	\N
 073buw1m70l	siizaqdcc7g	10	\N	\N	\N
 073buw1m70l	ziv7xyw0rep	11	\N	\N	\N
@@ -9777,44 +9795,13 @@ b8e4crdaije	2is90czs6ox	6	\N	\N	\N
 073buw1m70l	2is90czs6ox	8	\N	\N	\N
 nocobase-admin-menu	2is90czs6ox	9	\N	\N	\N
 h57ad49xfey	2is90czs6ox	1	\N	\N	2
-elx91vnsmjj	elx91vnsmjj	0	f	properties	\N
-xkqldchxl9c	elx91vnsmjj	1	\N	\N	1
-xkqldchxl9c	04nart2ippj	2	\N	\N	\N
-elx91vnsmjj	04nart2ippj	1	\N	\N	1
-22pnzqtybji	elx91vnsmjj	2	\N	\N	\N
-22pnzqtybji	04nart2ippj	3	\N	\N	\N
-mqma0oexw7v	xkqldchxl9c	2	\N	\N	\N
-mqma0oexw7v	elx91vnsmjj	3	\N	\N	\N
-mqma0oexw7v	04nart2ippj	4	\N	\N	\N
-09yy6b78jxi	xkqldchxl9c	3	\N	\N	\N
-09yy6b78jxi	elx91vnsmjj	4	\N	\N	\N
-09yy6b78jxi	04nart2ippj	5	\N	\N	\N
-1whdhzzrodk	xkqldchxl9c	4	\N	\N	\N
-1whdhzzrodk	elx91vnsmjj	5	\N	\N	\N
-1whdhzzrodk	04nart2ippj	6	\N	\N	\N
-f205ix4mjg8	xkqldchxl9c	5	\N	\N	\N
-f205ix4mjg8	elx91vnsmjj	6	\N	\N	\N
-f205ix4mjg8	04nart2ippj	7	\N	\N	\N
-fvx7g50y58n	xkqldchxl9c	6	\N	\N	\N
-fvx7g50y58n	elx91vnsmjj	7	\N	\N	\N
-fvx7g50y58n	04nart2ippj	8	\N	\N	\N
-833uu3rb1nm	xkqldchxl9c	7	\N	\N	\N
-833uu3rb1nm	elx91vnsmjj	8	\N	\N	\N
-833uu3rb1nm	04nart2ippj	9	\N	\N	\N
-ik0zt15yup2	xkqldchxl9c	8	\N	\N	\N
-ik0zt15yup2	elx91vnsmjj	9	\N	\N	\N
-ik0zt15yup2	04nart2ippj	10	\N	\N	\N
-w1vttmfcjic	xkqldchxl9c	9	\N	\N	\N
-w1vttmfcjic	elx91vnsmjj	10	\N	\N	\N
-w1vttmfcjic	04nart2ippj	11	\N	\N	\N
-nocobase-admin-menu	xkqldchxl9c	10	\N	\N	\N
-nocobase-admin-menu	elx91vnsmjj	11	\N	\N	\N
-nocobase-admin-menu	04nart2ippj	12	\N	\N	\N
-xkqldchxl9c	xkqldchxl9c	0	f	properties	\N
+f1o22122e0b	pyehrn2t87k	1	\N	\N	1
+l1ipy29yo2a	f1o22122e0b	3	\N	\N	\N
+l1ipy29yo2a	pyehrn2t87k	4	\N	\N	\N
 hm0dk2bjmly	hm0dk2bjmly	0	f	properties	\N
 beq12cybpaz	hm0dk2bjmly	2	\N	\N	\N
 smd6vh6wzvh	hm0dk2bjmly	3	\N	\N	\N
-k2mxivm0oqa	k2mxivm0oqa	0	f	properties	\N
+mclja8pd27f	f1o22122e0b	4	\N	\N	\N
 4ta56kbw4tp	4ta56kbw4tp	0	f	properties	\N
 dac2j2kt870	hm0dk2bjmly	4	\N	\N	\N
 fq548i6jjul	hm0dk2bjmly	5	\N	\N	\N
@@ -9848,47 +9835,44 @@ mk3xa4vi82o	3yn0m2wrfox	1	\N	\N	1
 ydsit0px4rd	ydsit0px4rd	0	f	properties	\N
 3yn0m2wrfox	ydsit0px4rd	1	\N	\N	1
 mk3xa4vi82o	ydsit0px4rd	2	\N	\N	1
-22pnzqtybji	0sygad82cqs	1	\N	\N	5
 un4uti49os0	un4uti49os0	0	f	properties	\N
 ydsit0px4rd	un4uti49os0	1	\N	\N	1
 3yn0m2wrfox	un4uti49os0	2	\N	\N	1
 mk3xa4vi82o	un4uti49os0	3	\N	\N	1
 mk3xa4vi82o	mk3xa4vi82o	0	f	properties	\N
-4ta56kbw4tp	k2mxivm0oqa	1	\N	\N	1
-4ta56kbw4tp	5idf4nxla3u	2	\N	\N	\N
-k2mxivm0oqa	5idf4nxla3u	1	\N	\N	1
-22pnzqtybji	k2mxivm0oqa	2	\N	\N	\N
-22pnzqtybji	5idf4nxla3u	3	\N	\N	\N
+mclja8pd27f	pyehrn2t87k	5	\N	\N	\N
+z7ksqgxvuzy	f1o22122e0b	5	\N	\N	\N
+z7ksqgxvuzy	pyehrn2t87k	6	\N	\N	\N
+6hxxlzxmifr	f1o22122e0b	6	\N	\N	\N
+6hxxlzxmifr	pyehrn2t87k	7	\N	\N	\N
 mqma0oexw7v	4ta56kbw4tp	2	\N	\N	\N
-mqma0oexw7v	k2mxivm0oqa	3	\N	\N	\N
-mqma0oexw7v	5idf4nxla3u	4	\N	\N	\N
+4gdmc9g083s	f1o22122e0b	7	\N	\N	\N
+4gdmc9g083s	pyehrn2t87k	8	\N	\N	\N
 09yy6b78jxi	4ta56kbw4tp	3	\N	\N	\N
-09yy6b78jxi	k2mxivm0oqa	4	\N	\N	\N
-09yy6b78jxi	5idf4nxla3u	5	\N	\N	\N
+ebu29iqsaqx	f1o22122e0b	8	\N	\N	\N
+ebu29iqsaqx	pyehrn2t87k	9	\N	\N	\N
 1whdhzzrodk	4ta56kbw4tp	4	\N	\N	\N
-1whdhzzrodk	k2mxivm0oqa	5	\N	\N	\N
-1whdhzzrodk	5idf4nxla3u	6	\N	\N	\N
+k4kftsn5ht7	f1o22122e0b	9	\N	\N	\N
+k4kftsn5ht7	pyehrn2t87k	10	\N	\N	\N
 f205ix4mjg8	4ta56kbw4tp	5	\N	\N	\N
-f205ix4mjg8	k2mxivm0oqa	6	\N	\N	\N
-f205ix4mjg8	5idf4nxla3u	7	\N	\N	\N
+hg9tvy6yuph	f1o22122e0b	10	\N	\N	\N
+hg9tvy6yuph	pyehrn2t87k	11	\N	\N	\N
 fvx7g50y58n	4ta56kbw4tp	6	\N	\N	\N
-fvx7g50y58n	k2mxivm0oqa	7	\N	\N	\N
-fvx7g50y58n	5idf4nxla3u	8	\N	\N	\N
+bzirblya7qw	f1o22122e0b	11	\N	\N	\N
+bzirblya7qw	pyehrn2t87k	12	\N	\N	\N
 833uu3rb1nm	4ta56kbw4tp	7	\N	\N	\N
-833uu3rb1nm	k2mxivm0oqa	8	\N	\N	\N
-833uu3rb1nm	5idf4nxla3u	9	\N	\N	\N
+galt7hbd78y	f1o22122e0b	12	\N	\N	\N
+galt7hbd78y	pyehrn2t87k	13	\N	\N	\N
 ik0zt15yup2	4ta56kbw4tp	8	\N	\N	\N
-ik0zt15yup2	k2mxivm0oqa	9	\N	\N	\N
-ik0zt15yup2	5idf4nxla3u	10	\N	\N	\N
+e87ogy2w48b	f1o22122e0b	13	\N	\N	\N
+e87ogy2w48b	pyehrn2t87k	14	\N	\N	\N
 w1vttmfcjic	4ta56kbw4tp	9	\N	\N	\N
-w1vttmfcjic	k2mxivm0oqa	10	\N	\N	\N
-22pnzqtybji	xkqldchxl9c	1	\N	\N	6
-22pnzqtybji	aezmizce5n2	1	\N	\N	4
-22pnzqtybji	4ta56kbw4tp	1	\N	\N	3
-w1vttmfcjic	5idf4nxla3u	11	\N	\N	\N
+i0bqeajbvwo	f1o22122e0b	14	\N	\N	\N
+i0bqeajbvwo	pyehrn2t87k	15	\N	\N	\N
+pdot2ybyfc0	f1o22122e0b	15	\N	\N	\N
 nocobase-admin-menu	4ta56kbw4tp	10	\N	\N	\N
-nocobase-admin-menu	k2mxivm0oqa	11	\N	\N	\N
-nocobase-admin-menu	5idf4nxla3u	12	\N	\N	\N
+pdot2ybyfc0	pyehrn2t87k	16	\N	\N	\N
+f1o22122e0b	f1o22122e0b	0	f	properties	\N
 b8e4crdaije	b8e4crdaije	0	t	properties	\N
 41zfs8bogys	b8e4crdaije	1	\N	\N	1
 fq548i6jjul	fq548i6jjul	0	f	properties	\N
@@ -10834,76 +10818,56 @@ p3ls96regvr	28b4u7eth02	7	\N	\N	\N
 073buw1m70l	28b4u7eth02	8	\N	\N	\N
 nocobase-admin-menu	28b4u7eth02	9	\N	\N	\N
 am0lmjthjqi	28b4u7eth02	1	\N	\N	1
-82e6meyr33d	82e6meyr33d	0	f	properties	\N
-h9kgonsr277	82e6meyr33d	1	\N	\N	1
-r0rbal9gwoa	r0rbal9gwoa	0	f	properties	\N
-82e6meyr33d	r0rbal9gwoa	1	\N	\N	1
-h9kgonsr277	r0rbal9gwoa	2	\N	\N	1
-dlbotzk5ta3	dlbotzk5ta3	0	f	properties	\N
-r0rbal9gwoa	dlbotzk5ta3	1	\N	\N	1
-82e6meyr33d	dlbotzk5ta3	2	\N	\N	1
-h9kgonsr277	dlbotzk5ta3	3	\N	\N	1
-47lzjhwq4e3	47lzjhwq4e3	0	f	properties	\N
-dlbotzk5ta3	47lzjhwq4e3	1	\N	\N	1
-r0rbal9gwoa	47lzjhwq4e3	2	\N	\N	1
-82e6meyr33d	47lzjhwq4e3	3	\N	\N	1
-h9kgonsr277	47lzjhwq4e3	4	\N	\N	1
-am0lmjthjqi	82e6meyr33d	2	\N	\N	\N
-am0lmjthjqi	r0rbal9gwoa	3	\N	\N	\N
-am0lmjthjqi	dlbotzk5ta3	4	\N	\N	\N
-am0lmjthjqi	47lzjhwq4e3	5	\N	\N	\N
-9kxizfoklw7	h9kgonsr277	2	\N	\N	\N
-9kxizfoklw7	82e6meyr33d	3	\N	\N	\N
-9kxizfoklw7	r0rbal9gwoa	4	\N	\N	\N
-9kxizfoklw7	dlbotzk5ta3	5	\N	\N	\N
-9kxizfoklw7	47lzjhwq4e3	6	\N	\N	\N
-puz5i9w50bl	h9kgonsr277	3	\N	\N	\N
-puz5i9w50bl	82e6meyr33d	4	\N	\N	\N
-puz5i9w50bl	r0rbal9gwoa	5	\N	\N	\N
-puz5i9w50bl	dlbotzk5ta3	6	\N	\N	\N
-puz5i9w50bl	47lzjhwq4e3	7	\N	\N	\N
-idfhxat5qg6	h9kgonsr277	4	\N	\N	\N
-idfhxat5qg6	82e6meyr33d	5	\N	\N	\N
-idfhxat5qg6	r0rbal9gwoa	6	\N	\N	\N
-idfhxat5qg6	dlbotzk5ta3	7	\N	\N	\N
-idfhxat5qg6	47lzjhwq4e3	8	\N	\N	\N
-iqddf9bwww2	h9kgonsr277	5	\N	\N	\N
-iqddf9bwww2	82e6meyr33d	6	\N	\N	\N
-iqddf9bwww2	r0rbal9gwoa	7	\N	\N	\N
-iqddf9bwww2	dlbotzk5ta3	8	\N	\N	\N
-iqddf9bwww2	47lzjhwq4e3	9	\N	\N	\N
-eoxofxze047	h9kgonsr277	6	\N	\N	\N
-eoxofxze047	82e6meyr33d	7	\N	\N	\N
-eoxofxze047	r0rbal9gwoa	8	\N	\N	\N
-eoxofxze047	dlbotzk5ta3	9	\N	\N	\N
-eoxofxze047	47lzjhwq4e3	10	\N	\N	\N
-p3ls96regvr	h9kgonsr277	7	\N	\N	\N
-p3ls96regvr	82e6meyr33d	8	\N	\N	\N
-p3ls96regvr	r0rbal9gwoa	9	\N	\N	\N
-p3ls96regvr	dlbotzk5ta3	10	\N	\N	\N
-p3ls96regvr	47lzjhwq4e3	11	\N	\N	\N
-073buw1m70l	h9kgonsr277	8	\N	\N	\N
-073buw1m70l	82e6meyr33d	9	\N	\N	\N
-073buw1m70l	r0rbal9gwoa	10	\N	\N	\N
-073buw1m70l	dlbotzk5ta3	11	\N	\N	\N
-073buw1m70l	47lzjhwq4e3	12	\N	\N	\N
-nocobase-admin-menu	h9kgonsr277	9	\N	\N	\N
-nocobase-admin-menu	82e6meyr33d	10	\N	\N	\N
-nocobase-admin-menu	r0rbal9gwoa	11	\N	\N	\N
-nocobase-admin-menu	dlbotzk5ta3	12	\N	\N	\N
-nocobase-admin-menu	47lzjhwq4e3	13	\N	\N	\N
-h9kgonsr277	h9kgonsr277	0	f	properties	\N
-am0lmjthjqi	h9kgonsr277	1	\N	\N	2
-949ol9g4pk3	949ol9g4pk3	0	f	properties	\N
-9kxizfoklw7	949ol9g4pk3	2	\N	\N	\N
-puz5i9w50bl	949ol9g4pk3	3	\N	\N	\N
-idfhxat5qg6	949ol9g4pk3	4	\N	\N	\N
-iqddf9bwww2	949ol9g4pk3	5	\N	\N	\N
-eoxofxze047	949ol9g4pk3	6	\N	\N	\N
-p3ls96regvr	949ol9g4pk3	7	\N	\N	\N
-073buw1m70l	949ol9g4pk3	8	\N	\N	\N
-nocobase-admin-menu	949ol9g4pk3	9	\N	\N	\N
-am0lmjthjqi	949ol9g4pk3	1	\N	\N	3
+a7e860jrx5o	f1o22122e0b	16	\N	\N	\N
+a7e860jrx5o	pyehrn2t87k	17	\N	\N	\N
+zxh1oe1qx5t	f1o22122e0b	17	\N	\N	\N
+zxh1oe1qx5t	pyehrn2t87k	18	\N	\N	\N
+861gmcfwhia	f1o22122e0b	18	\N	\N	\N
+861gmcfwhia	pyehrn2t87k	19	\N	\N	\N
+9yos6i0cjm3	f1o22122e0b	19	\N	\N	\N
+9yos6i0cjm3	pyehrn2t87k	20	\N	\N	\N
+n3yigbe0k9v	f1o22122e0b	20	\N	\N	\N
+n3yigbe0k9v	pyehrn2t87k	21	\N	\N	\N
+073buw1m70l	f1o22122e0b	21	\N	\N	\N
+073buw1m70l	pyehrn2t87k	22	\N	\N	\N
+nocobase-admin-menu	f1o22122e0b	22	\N	\N	\N
+nocobase-admin-menu	pyehrn2t87k	23	\N	\N	\N
+qvfyd51819e	pyehrn2t87k	2	\N	\N	\N
+ma2di65n17c	ma2di65n17c	0	f	properties	\N
+xrp5qlqau5q	f1o22122e0b	2	\N	\N	\N
+xrp5qlqau5q	pyehrn2t87k	3	\N	\N	\N
+qvfyd51819e	f1o22122e0b	1	\N	\N	2
+z595m38iop1	z595m38iop1	0	f	properties	\N
+exga92l7mh5	z595m38iop1	1	\N	\N	1
+2oimqa9byrp	f2bcdfxqi9r	2	\N	\N	\N
+exga92l7mh5	17zo1wc4bx2	2	\N	\N	\N
+tmbbsnq2x5b	f2bcdfxqi9r	3	\N	\N	\N
+ca17vjb0am6	ca17vjb0am6	0	f	properties	\N
+z595m38iop1	17zo1wc4bx2	1	\N	\N	1
+oyy61gowm8y	f2bcdfxqi9r	4	\N	\N	\N
+xrp5qlqau5q	z595m38iop1	2	\N	\N	\N
+cr7ggy2zrl6	f2bcdfxqi9r	5	\N	\N	\N
+xrp5qlqau5q	17zo1wc4bx2	3	\N	\N	\N
+l1ipy29yo2a	exga92l7mh5	2	\N	\N	\N
+9cngdl646v0	f2bcdfxqi9r	6	\N	\N	\N
+l1ipy29yo2a	z595m38iop1	3	\N	\N	\N
+l1ipy29yo2a	17zo1wc4bx2	4	\N	\N	\N
+ybdxp7v91jn	f2bcdfxqi9r	7	\N	\N	\N
+mclja8pd27f	exga92l7mh5	3	\N	\N	\N
+mclja8pd27f	z595m38iop1	4	\N	\N	\N
+muv6h06t8mi	f2bcdfxqi9r	8	\N	\N	\N
+mclja8pd27f	17zo1wc4bx2	5	\N	\N	\N
+z7ksqgxvuzy	exga92l7mh5	4	\N	\N	\N
+8i28yvimg4p	f2bcdfxqi9r	9	\N	\N	\N
+z7ksqgxvuzy	z595m38iop1	5	\N	\N	\N
+z7ksqgxvuzy	17zo1wc4bx2	6	\N	\N	\N
+66xqkev137r	f2bcdfxqi9r	10	\N	\N	\N
+6hxxlzxmifr	exga92l7mh5	5	\N	\N	\N
+6hxxlzxmifr	z595m38iop1	6	\N	\N	\N
+6hxxlzxmifr	17zo1wc4bx2	7	\N	\N	\N
+4gdmc9g083s	exga92l7mh5	6	\N	\N	\N
+4gdmc9g083s	z595m38iop1	7	\N	\N	\N
+4gdmc9g083s	17zo1wc4bx2	8	\N	\N	\N
 97jnvf1ludu	97jnvf1ludu	0	f	properties	\N
 9kxizfoklw7	97jnvf1ludu	2	\N	\N	\N
 puz5i9w50bl	97jnvf1ludu	3	\N	\N	\N
@@ -10918,7 +10882,7 @@ to668yqpfbk	to668yqpfbk	0	f	properties	\N
 lnl6ixhbtoa	lnl6ixhbtoa	0	f	properties	\N
 pdtxkxhi0px	3d4bg9et9gc	1	\N	\N	10
 to668yqpfbk	lnl6ixhbtoa	1	\N	\N	1
-mi71c1ge6na	mi71c1ge6na	0	f	properties	\N
+ebu29iqsaqx	exga92l7mh5	7	\N	\N	\N
 pdtxkxhi0px	lnl6ixhbtoa	2	\N	\N	\N
 9kxizfoklw7	to668yqpfbk	2	\N	\N	\N
 9kxizfoklw7	lnl6ixhbtoa	3	\N	\N	\N
@@ -10937,575 +10901,303 @@ p3ls96regvr	lnl6ixhbtoa	8	\N	\N	\N
 nocobase-admin-menu	to668yqpfbk	9	\N	\N	\N
 nocobase-admin-menu	lnl6ixhbtoa	10	\N	\N	\N
 pdtxkxhi0px	to668yqpfbk	1	\N	\N	3
-q5uzs9ydsfq	q5uzs9ydsfq	0	f	properties	\N
-mi71c1ge6na	q5uzs9ydsfq	1	\N	\N	1
-zhmd8340u9p	zhmd8340u9p	0	f	properties	\N
-q5uzs9ydsfq	zhmd8340u9p	1	\N	\N	1
-mi71c1ge6na	zhmd8340u9p	2	\N	\N	1
-269ugsobf0q	269ugsobf0q	0	f	properties	\N
-zhmd8340u9p	269ugsobf0q	1	\N	\N	1
-q5uzs9ydsfq	269ugsobf0q	2	\N	\N	1
-mi71c1ge6na	269ugsobf0q	3	\N	\N	1
-1zppis56hgq	1zppis56hgq	0	f	properties	\N
-269ugsobf0q	1zppis56hgq	1	\N	\N	1
-zhmd8340u9p	1zppis56hgq	2	\N	\N	1
-q5uzs9ydsfq	1zppis56hgq	3	\N	\N	1
-mi71c1ge6na	1zppis56hgq	4	\N	\N	1
-2734c1npcd3	2734c1npcd3	0	f	properties	\N
-269ugsobf0q	2734c1npcd3	1	\N	\N	2
-zhmd8340u9p	2734c1npcd3	2	\N	\N	2
-q5uzs9ydsfq	2734c1npcd3	3	\N	\N	2
-mi71c1ge6na	2734c1npcd3	4	\N	\N	2
-47lzjhwq4e3	q5uzs9ydsfq	2	\N	\N	\N
-47lzjhwq4e3	zhmd8340u9p	3	\N	\N	\N
-47lzjhwq4e3	269ugsobf0q	4	\N	\N	\N
-47lzjhwq4e3	1zppis56hgq	5	\N	\N	\N
-47lzjhwq4e3	2734c1npcd3	5	\N	\N	\N
-dlbotzk5ta3	mi71c1ge6na	2	\N	\N	\N
-dlbotzk5ta3	q5uzs9ydsfq	3	\N	\N	\N
-dlbotzk5ta3	zhmd8340u9p	4	\N	\N	\N
-dlbotzk5ta3	269ugsobf0q	5	\N	\N	\N
-dlbotzk5ta3	1zppis56hgq	6	\N	\N	\N
-dlbotzk5ta3	2734c1npcd3	6	\N	\N	\N
-r0rbal9gwoa	mi71c1ge6na	3	\N	\N	\N
-r0rbal9gwoa	q5uzs9ydsfq	4	\N	\N	\N
-r0rbal9gwoa	zhmd8340u9p	5	\N	\N	\N
-r0rbal9gwoa	269ugsobf0q	6	\N	\N	\N
-r0rbal9gwoa	1zppis56hgq	7	\N	\N	\N
-r0rbal9gwoa	2734c1npcd3	7	\N	\N	\N
-82e6meyr33d	mi71c1ge6na	4	\N	\N	\N
-82e6meyr33d	q5uzs9ydsfq	5	\N	\N	\N
-82e6meyr33d	zhmd8340u9p	6	\N	\N	\N
-82e6meyr33d	269ugsobf0q	7	\N	\N	\N
-82e6meyr33d	1zppis56hgq	8	\N	\N	\N
-82e6meyr33d	2734c1npcd3	8	\N	\N	\N
-h9kgonsr277	mi71c1ge6na	5	\N	\N	\N
-h9kgonsr277	q5uzs9ydsfq	6	\N	\N	\N
-h9kgonsr277	zhmd8340u9p	7	\N	\N	\N
-h9kgonsr277	269ugsobf0q	8	\N	\N	\N
-h9kgonsr277	1zppis56hgq	9	\N	\N	\N
-h9kgonsr277	2734c1npcd3	9	\N	\N	\N
-am0lmjthjqi	mi71c1ge6na	6	\N	\N	\N
-am0lmjthjqi	q5uzs9ydsfq	7	\N	\N	\N
-am0lmjthjqi	zhmd8340u9p	8	\N	\N	\N
-am0lmjthjqi	269ugsobf0q	9	\N	\N	\N
-am0lmjthjqi	1zppis56hgq	10	\N	\N	\N
-am0lmjthjqi	2734c1npcd3	10	\N	\N	\N
-9kxizfoklw7	mi71c1ge6na	7	\N	\N	\N
-9kxizfoklw7	q5uzs9ydsfq	8	\N	\N	\N
-9kxizfoklw7	zhmd8340u9p	9	\N	\N	\N
-9kxizfoklw7	269ugsobf0q	10	\N	\N	\N
-9kxizfoklw7	1zppis56hgq	11	\N	\N	\N
-9kxizfoklw7	2734c1npcd3	11	\N	\N	\N
-puz5i9w50bl	mi71c1ge6na	8	\N	\N	\N
-puz5i9w50bl	q5uzs9ydsfq	9	\N	\N	\N
-puz5i9w50bl	zhmd8340u9p	10	\N	\N	\N
-puz5i9w50bl	269ugsobf0q	11	\N	\N	\N
-puz5i9w50bl	1zppis56hgq	12	\N	\N	\N
-puz5i9w50bl	2734c1npcd3	12	\N	\N	\N
-idfhxat5qg6	mi71c1ge6na	9	\N	\N	\N
-idfhxat5qg6	q5uzs9ydsfq	10	\N	\N	\N
-idfhxat5qg6	zhmd8340u9p	11	\N	\N	\N
-idfhxat5qg6	269ugsobf0q	12	\N	\N	\N
-idfhxat5qg6	1zppis56hgq	13	\N	\N	\N
-idfhxat5qg6	2734c1npcd3	13	\N	\N	\N
-iqddf9bwww2	mi71c1ge6na	10	\N	\N	\N
-iqddf9bwww2	q5uzs9ydsfq	11	\N	\N	\N
-iqddf9bwww2	zhmd8340u9p	12	\N	\N	\N
-iqddf9bwww2	269ugsobf0q	13	\N	\N	\N
-iqddf9bwww2	1zppis56hgq	14	\N	\N	\N
-iqddf9bwww2	2734c1npcd3	14	\N	\N	\N
-eoxofxze047	mi71c1ge6na	11	\N	\N	\N
-eoxofxze047	q5uzs9ydsfq	12	\N	\N	\N
-eoxofxze047	zhmd8340u9p	13	\N	\N	\N
-eoxofxze047	269ugsobf0q	14	\N	\N	\N
-eoxofxze047	1zppis56hgq	15	\N	\N	\N
-eoxofxze047	2734c1npcd3	15	\N	\N	\N
-p3ls96regvr	mi71c1ge6na	12	\N	\N	\N
-p3ls96regvr	q5uzs9ydsfq	13	\N	\N	\N
-p3ls96regvr	zhmd8340u9p	14	\N	\N	\N
-p3ls96regvr	269ugsobf0q	15	\N	\N	\N
-p3ls96regvr	1zppis56hgq	16	\N	\N	\N
-p3ls96regvr	2734c1npcd3	16	\N	\N	\N
-073buw1m70l	mi71c1ge6na	13	\N	\N	\N
-073buw1m70l	q5uzs9ydsfq	14	\N	\N	\N
-073buw1m70l	zhmd8340u9p	15	\N	\N	\N
-47lzjhwq4e3	mi71c1ge6na	1	\N	\N	1
-073buw1m70l	269ugsobf0q	16	\N	\N	\N
-073buw1m70l	1zppis56hgq	17	\N	\N	\N
-073buw1m70l	2734c1npcd3	17	\N	\N	\N
-nocobase-admin-menu	mi71c1ge6na	14	\N	\N	\N
-nocobase-admin-menu	q5uzs9ydsfq	15	\N	\N	\N
-nocobase-admin-menu	zhmd8340u9p	16	\N	\N	\N
-nocobase-admin-menu	269ugsobf0q	17	\N	\N	\N
-nocobase-admin-menu	1zppis56hgq	18	\N	\N	\N
-nocobase-admin-menu	2734c1npcd3	18	\N	\N	\N
-k8wly6qev2x	k8wly6qev2x	0	f	properties	\N
-lbqrwbc300m	k8wly6qev2x	1	\N	\N	1
-kuzt62annzq	kuzt62annzq	0	f	properties	\N
-k8wly6qev2x	kuzt62annzq	1	\N	\N	1
-lbqrwbc300m	kuzt62annzq	2	\N	\N	1
-1zppis56hgq	k8wly6qev2x	2	\N	\N	\N
-1zppis56hgq	kuzt62annzq	3	\N	\N	\N
-269ugsobf0q	lbqrwbc300m	2	\N	\N	\N
-269ugsobf0q	k8wly6qev2x	3	\N	\N	\N
-269ugsobf0q	kuzt62annzq	4	\N	\N	\N
-zhmd8340u9p	lbqrwbc300m	3	\N	\N	\N
-zhmd8340u9p	k8wly6qev2x	4	\N	\N	\N
-zhmd8340u9p	kuzt62annzq	5	\N	\N	\N
-q5uzs9ydsfq	lbqrwbc300m	4	\N	\N	\N
-q5uzs9ydsfq	k8wly6qev2x	5	\N	\N	\N
-q5uzs9ydsfq	kuzt62annzq	6	\N	\N	\N
-mi71c1ge6na	lbqrwbc300m	5	\N	\N	\N
-mi71c1ge6na	k8wly6qev2x	6	\N	\N	\N
-mi71c1ge6na	kuzt62annzq	7	\N	\N	\N
-47lzjhwq4e3	lbqrwbc300m	6	\N	\N	\N
-47lzjhwq4e3	k8wly6qev2x	7	\N	\N	\N
-47lzjhwq4e3	kuzt62annzq	8	\N	\N	\N
-dlbotzk5ta3	lbqrwbc300m	7	\N	\N	\N
-dlbotzk5ta3	k8wly6qev2x	8	\N	\N	\N
-dlbotzk5ta3	kuzt62annzq	9	\N	\N	\N
-r0rbal9gwoa	lbqrwbc300m	8	\N	\N	\N
-r0rbal9gwoa	k8wly6qev2x	9	\N	\N	\N
-r0rbal9gwoa	kuzt62annzq	10	\N	\N	\N
-82e6meyr33d	lbqrwbc300m	9	\N	\N	\N
-82e6meyr33d	k8wly6qev2x	10	\N	\N	\N
-82e6meyr33d	kuzt62annzq	11	\N	\N	\N
-h9kgonsr277	lbqrwbc300m	10	\N	\N	\N
-h9kgonsr277	k8wly6qev2x	11	\N	\N	\N
-h9kgonsr277	kuzt62annzq	12	\N	\N	\N
-am0lmjthjqi	lbqrwbc300m	11	\N	\N	\N
-am0lmjthjqi	k8wly6qev2x	12	\N	\N	\N
-am0lmjthjqi	kuzt62annzq	13	\N	\N	\N
-9kxizfoklw7	lbqrwbc300m	12	\N	\N	\N
-9kxizfoklw7	k8wly6qev2x	13	\N	\N	\N
-9kxizfoklw7	kuzt62annzq	14	\N	\N	\N
-puz5i9w50bl	lbqrwbc300m	13	\N	\N	\N
-puz5i9w50bl	k8wly6qev2x	14	\N	\N	\N
-puz5i9w50bl	kuzt62annzq	15	\N	\N	\N
-idfhxat5qg6	lbqrwbc300m	14	\N	\N	\N
-idfhxat5qg6	k8wly6qev2x	15	\N	\N	\N
-idfhxat5qg6	kuzt62annzq	16	\N	\N	\N
-iqddf9bwww2	lbqrwbc300m	15	\N	\N	\N
-iqddf9bwww2	k8wly6qev2x	16	\N	\N	\N
-iqddf9bwww2	kuzt62annzq	17	\N	\N	\N
-eoxofxze047	lbqrwbc300m	16	\N	\N	\N
-eoxofxze047	k8wly6qev2x	17	\N	\N	\N
-eoxofxze047	kuzt62annzq	18	\N	\N	\N
-p3ls96regvr	lbqrwbc300m	17	\N	\N	\N
-p3ls96regvr	k8wly6qev2x	18	\N	\N	\N
-p3ls96regvr	kuzt62annzq	19	\N	\N	\N
-073buw1m70l	lbqrwbc300m	18	\N	\N	\N
-073buw1m70l	k8wly6qev2x	19	\N	\N	\N
-073buw1m70l	kuzt62annzq	20	\N	\N	\N
-nocobase-admin-menu	lbqrwbc300m	19	\N	\N	\N
-nocobase-admin-menu	k8wly6qev2x	20	\N	\N	\N
-nocobase-admin-menu	kuzt62annzq	21	\N	\N	\N
-lbqrwbc300m	lbqrwbc300m	0	f	properties	\N
-1zppis56hgq	lbqrwbc300m	1	\N	\N	1
-o9u7omjfm9v	o9u7omjfm9v	0	f	properties	\N
-1la4yan1f8i	o9u7omjfm9v	1	\N	\N	1
-3l8rauopr1i	3l8rauopr1i	0	f	properties	\N
-o9u7omjfm9v	3l8rauopr1i	1	\N	\N	1
-1la4yan1f8i	3l8rauopr1i	2	\N	\N	1
-1zppis56hgq	o9u7omjfm9v	2	\N	\N	\N
-1zppis56hgq	3l8rauopr1i	3	\N	\N	\N
-269ugsobf0q	1la4yan1f8i	2	\N	\N	\N
-269ugsobf0q	o9u7omjfm9v	3	\N	\N	\N
-269ugsobf0q	3l8rauopr1i	4	\N	\N	\N
-zhmd8340u9p	1la4yan1f8i	3	\N	\N	\N
-zhmd8340u9p	o9u7omjfm9v	4	\N	\N	\N
-zhmd8340u9p	3l8rauopr1i	5	\N	\N	\N
-q5uzs9ydsfq	1la4yan1f8i	4	\N	\N	\N
-q5uzs9ydsfq	o9u7omjfm9v	5	\N	\N	\N
-q5uzs9ydsfq	3l8rauopr1i	6	\N	\N	\N
-mi71c1ge6na	1la4yan1f8i	5	\N	\N	\N
-mi71c1ge6na	o9u7omjfm9v	6	\N	\N	\N
-mi71c1ge6na	3l8rauopr1i	7	\N	\N	\N
-47lzjhwq4e3	1la4yan1f8i	6	\N	\N	\N
-47lzjhwq4e3	o9u7omjfm9v	7	\N	\N	\N
-47lzjhwq4e3	3l8rauopr1i	8	\N	\N	\N
-dlbotzk5ta3	1la4yan1f8i	7	\N	\N	\N
-dlbotzk5ta3	o9u7omjfm9v	8	\N	\N	\N
-dlbotzk5ta3	3l8rauopr1i	9	\N	\N	\N
-r0rbal9gwoa	1la4yan1f8i	8	\N	\N	\N
-r0rbal9gwoa	o9u7omjfm9v	9	\N	\N	\N
-r0rbal9gwoa	3l8rauopr1i	10	\N	\N	\N
-82e6meyr33d	1la4yan1f8i	9	\N	\N	\N
-82e6meyr33d	o9u7omjfm9v	10	\N	\N	\N
-82e6meyr33d	3l8rauopr1i	11	\N	\N	\N
-h9kgonsr277	1la4yan1f8i	10	\N	\N	\N
-h9kgonsr277	o9u7omjfm9v	11	\N	\N	\N
-h9kgonsr277	3l8rauopr1i	12	\N	\N	\N
-am0lmjthjqi	1la4yan1f8i	11	\N	\N	\N
-am0lmjthjqi	o9u7omjfm9v	12	\N	\N	\N
-am0lmjthjqi	3l8rauopr1i	13	\N	\N	\N
-9kxizfoklw7	1la4yan1f8i	12	\N	\N	\N
-9kxizfoklw7	o9u7omjfm9v	13	\N	\N	\N
-9kxizfoklw7	3l8rauopr1i	14	\N	\N	\N
-puz5i9w50bl	1la4yan1f8i	13	\N	\N	\N
-puz5i9w50bl	o9u7omjfm9v	14	\N	\N	\N
-puz5i9w50bl	3l8rauopr1i	15	\N	\N	\N
-idfhxat5qg6	1la4yan1f8i	14	\N	\N	\N
-idfhxat5qg6	o9u7omjfm9v	15	\N	\N	\N
-idfhxat5qg6	3l8rauopr1i	16	\N	\N	\N
-iqddf9bwww2	1la4yan1f8i	15	\N	\N	\N
-iqddf9bwww2	o9u7omjfm9v	16	\N	\N	\N
-iqddf9bwww2	3l8rauopr1i	17	\N	\N	\N
-eoxofxze047	1la4yan1f8i	16	\N	\N	\N
-eoxofxze047	o9u7omjfm9v	17	\N	\N	\N
-eoxofxze047	3l8rauopr1i	18	\N	\N	\N
-p3ls96regvr	1la4yan1f8i	17	\N	\N	\N
-p3ls96regvr	o9u7omjfm9v	18	\N	\N	\N
-p3ls96regvr	3l8rauopr1i	19	\N	\N	\N
-073buw1m70l	1la4yan1f8i	18	\N	\N	\N
-073buw1m70l	o9u7omjfm9v	19	\N	\N	\N
-073buw1m70l	3l8rauopr1i	20	\N	\N	\N
-1la4yan1f8i	1la4yan1f8i	0	f	properties	\N
-1zppis56hgq	1la4yan1f8i	1	\N	\N	2
-nocobase-admin-menu	1la4yan1f8i	19	\N	\N	\N
-nocobase-admin-menu	o9u7omjfm9v	20	\N	\N	\N
-nocobase-admin-menu	3l8rauopr1i	21	\N	\N	\N
-rbo4f75swb8	rbo4f75swb8	0	f	properties	\N
-vlp8rv3bdrm	rbo4f75swb8	1	\N	\N	1
-xp5thab18zp	xp5thab18zp	0	f	properties	\N
-rbo4f75swb8	xp5thab18zp	1	\N	\N	1
-vlp8rv3bdrm	xp5thab18zp	2	\N	\N	1
-1zppis56hgq	rbo4f75swb8	2	\N	\N	\N
-1zppis56hgq	xp5thab18zp	3	\N	\N	\N
-269ugsobf0q	vlp8rv3bdrm	2	\N	\N	\N
-269ugsobf0q	rbo4f75swb8	3	\N	\N	\N
-269ugsobf0q	xp5thab18zp	4	\N	\N	\N
-zhmd8340u9p	vlp8rv3bdrm	3	\N	\N	\N
-zhmd8340u9p	rbo4f75swb8	4	\N	\N	\N
-zhmd8340u9p	xp5thab18zp	5	\N	\N	\N
-q5uzs9ydsfq	vlp8rv3bdrm	4	\N	\N	\N
-q5uzs9ydsfq	rbo4f75swb8	5	\N	\N	\N
-q5uzs9ydsfq	xp5thab18zp	6	\N	\N	\N
-mi71c1ge6na	vlp8rv3bdrm	5	\N	\N	\N
-mi71c1ge6na	rbo4f75swb8	6	\N	\N	\N
-mi71c1ge6na	xp5thab18zp	7	\N	\N	\N
-47lzjhwq4e3	vlp8rv3bdrm	6	\N	\N	\N
-47lzjhwq4e3	rbo4f75swb8	7	\N	\N	\N
-47lzjhwq4e3	xp5thab18zp	8	\N	\N	\N
-dlbotzk5ta3	vlp8rv3bdrm	7	\N	\N	\N
-dlbotzk5ta3	rbo4f75swb8	8	\N	\N	\N
-dlbotzk5ta3	xp5thab18zp	9	\N	\N	\N
-r0rbal9gwoa	vlp8rv3bdrm	8	\N	\N	\N
-r0rbal9gwoa	rbo4f75swb8	9	\N	\N	\N
-r0rbal9gwoa	xp5thab18zp	10	\N	\N	\N
-82e6meyr33d	vlp8rv3bdrm	9	\N	\N	\N
-82e6meyr33d	rbo4f75swb8	10	\N	\N	\N
-82e6meyr33d	xp5thab18zp	11	\N	\N	\N
-h9kgonsr277	vlp8rv3bdrm	10	\N	\N	\N
-h9kgonsr277	rbo4f75swb8	11	\N	\N	\N
-h9kgonsr277	xp5thab18zp	12	\N	\N	\N
-am0lmjthjqi	vlp8rv3bdrm	11	\N	\N	\N
-am0lmjthjqi	rbo4f75swb8	12	\N	\N	\N
-am0lmjthjqi	xp5thab18zp	13	\N	\N	\N
-9kxizfoklw7	vlp8rv3bdrm	12	\N	\N	\N
-9kxizfoklw7	rbo4f75swb8	13	\N	\N	\N
-9kxizfoklw7	xp5thab18zp	14	\N	\N	\N
-puz5i9w50bl	vlp8rv3bdrm	13	\N	\N	\N
-puz5i9w50bl	rbo4f75swb8	14	\N	\N	\N
-puz5i9w50bl	xp5thab18zp	15	\N	\N	\N
-idfhxat5qg6	vlp8rv3bdrm	14	\N	\N	\N
-idfhxat5qg6	rbo4f75swb8	15	\N	\N	\N
-idfhxat5qg6	xp5thab18zp	16	\N	\N	\N
-iqddf9bwww2	vlp8rv3bdrm	15	\N	\N	\N
-iqddf9bwww2	rbo4f75swb8	16	\N	\N	\N
-iqddf9bwww2	xp5thab18zp	17	\N	\N	\N
-eoxofxze047	vlp8rv3bdrm	16	\N	\N	\N
-eoxofxze047	rbo4f75swb8	17	\N	\N	\N
-eoxofxze047	xp5thab18zp	18	\N	\N	\N
-p3ls96regvr	vlp8rv3bdrm	17	\N	\N	\N
-p3ls96regvr	rbo4f75swb8	18	\N	\N	\N
-p3ls96regvr	xp5thab18zp	19	\N	\N	\N
-073buw1m70l	vlp8rv3bdrm	18	\N	\N	\N
-073buw1m70l	rbo4f75swb8	19	\N	\N	\N
-073buw1m70l	xp5thab18zp	20	\N	\N	\N
-nocobase-admin-menu	vlp8rv3bdrm	19	\N	\N	\N
-nocobase-admin-menu	rbo4f75swb8	20	\N	\N	\N
-nocobase-admin-menu	xp5thab18zp	21	\N	\N	\N
-vlp8rv3bdrm	vlp8rv3bdrm	0	f	properties	\N
-1zppis56hgq	vlp8rv3bdrm	1	\N	\N	3
-wf6i0l1rq5h	wf6i0l1rq5h	0	f	properties	\N
-hu4f6iqkias	wf6i0l1rq5h	1	\N	\N	1
-b19flc450d4	b19flc450d4	0	f	properties	\N
-wf6i0l1rq5h	b19flc450d4	1	\N	\N	1
-hu4f6iqkias	b19flc450d4	2	\N	\N	1
-1zppis56hgq	wf6i0l1rq5h	2	\N	\N	\N
-1zppis56hgq	b19flc450d4	3	\N	\N	\N
-269ugsobf0q	hu4f6iqkias	2	\N	\N	\N
-269ugsobf0q	wf6i0l1rq5h	3	\N	\N	\N
-269ugsobf0q	b19flc450d4	4	\N	\N	\N
-zhmd8340u9p	hu4f6iqkias	3	\N	\N	\N
-zhmd8340u9p	wf6i0l1rq5h	4	\N	\N	\N
-zhmd8340u9p	b19flc450d4	5	\N	\N	\N
-q5uzs9ydsfq	hu4f6iqkias	4	\N	\N	\N
-q5uzs9ydsfq	wf6i0l1rq5h	5	\N	\N	\N
-q5uzs9ydsfq	b19flc450d4	6	\N	\N	\N
-mi71c1ge6na	hu4f6iqkias	5	\N	\N	\N
-mi71c1ge6na	wf6i0l1rq5h	6	\N	\N	\N
-mi71c1ge6na	b19flc450d4	7	\N	\N	\N
-47lzjhwq4e3	hu4f6iqkias	6	\N	\N	\N
-47lzjhwq4e3	wf6i0l1rq5h	7	\N	\N	\N
-47lzjhwq4e3	b19flc450d4	8	\N	\N	\N
-dlbotzk5ta3	hu4f6iqkias	7	\N	\N	\N
-dlbotzk5ta3	wf6i0l1rq5h	8	\N	\N	\N
-dlbotzk5ta3	b19flc450d4	9	\N	\N	\N
-r0rbal9gwoa	hu4f6iqkias	8	\N	\N	\N
-r0rbal9gwoa	wf6i0l1rq5h	9	\N	\N	\N
-r0rbal9gwoa	b19flc450d4	10	\N	\N	\N
-82e6meyr33d	hu4f6iqkias	9	\N	\N	\N
-82e6meyr33d	wf6i0l1rq5h	10	\N	\N	\N
-82e6meyr33d	b19flc450d4	11	\N	\N	\N
-h9kgonsr277	hu4f6iqkias	10	\N	\N	\N
-h9kgonsr277	wf6i0l1rq5h	11	\N	\N	\N
-h9kgonsr277	b19flc450d4	12	\N	\N	\N
-am0lmjthjqi	hu4f6iqkias	11	\N	\N	\N
-am0lmjthjqi	wf6i0l1rq5h	12	\N	\N	\N
-am0lmjthjqi	b19flc450d4	13	\N	\N	\N
-9kxizfoklw7	hu4f6iqkias	12	\N	\N	\N
-9kxizfoklw7	wf6i0l1rq5h	13	\N	\N	\N
-9kxizfoklw7	b19flc450d4	14	\N	\N	\N
-puz5i9w50bl	hu4f6iqkias	13	\N	\N	\N
-puz5i9w50bl	wf6i0l1rq5h	14	\N	\N	\N
-puz5i9w50bl	b19flc450d4	15	\N	\N	\N
-idfhxat5qg6	hu4f6iqkias	14	\N	\N	\N
-idfhxat5qg6	wf6i0l1rq5h	15	\N	\N	\N
-idfhxat5qg6	b19flc450d4	16	\N	\N	\N
-iqddf9bwww2	hu4f6iqkias	15	\N	\N	\N
-iqddf9bwww2	wf6i0l1rq5h	16	\N	\N	\N
-iqddf9bwww2	b19flc450d4	17	\N	\N	\N
-eoxofxze047	hu4f6iqkias	16	\N	\N	\N
-eoxofxze047	wf6i0l1rq5h	17	\N	\N	\N
-eoxofxze047	b19flc450d4	18	\N	\N	\N
-p3ls96regvr	hu4f6iqkias	17	\N	\N	\N
-p3ls96regvr	wf6i0l1rq5h	18	\N	\N	\N
-p3ls96regvr	b19flc450d4	19	\N	\N	\N
-073buw1m70l	hu4f6iqkias	18	\N	\N	\N
-073buw1m70l	wf6i0l1rq5h	19	\N	\N	\N
-073buw1m70l	b19flc450d4	20	\N	\N	\N
-nocobase-admin-menu	hu4f6iqkias	19	\N	\N	\N
-nocobase-admin-menu	wf6i0l1rq5h	20	\N	\N	\N
-nocobase-admin-menu	b19flc450d4	21	\N	\N	\N
-hu4f6iqkias	hu4f6iqkias	0	f	properties	\N
-1zppis56hgq	hu4f6iqkias	1	\N	\N	4
-bl5cko9dc2s	bl5cko9dc2s	0	f	properties	\N
-w8z0t7km6y6	w8z0t7km6y6	0	f	properties	\N
-w8z0t7km6y6	bl5cko9dc2s	1	\N	\N	1
-q8iw0s2gord	q8iw0s2gord	0	f	properties	\N
-bl5cko9dc2s	q8iw0s2gord	1	\N	\N	1
-w8z0t7km6y6	q8iw0s2gord	2	\N	\N	1
-1zppis56hgq	bl5cko9dc2s	2	\N	\N	\N
-1zppis56hgq	q8iw0s2gord	3	\N	\N	\N
-269ugsobf0q	w8z0t7km6y6	2	\N	\N	\N
-269ugsobf0q	bl5cko9dc2s	3	\N	\N	\N
-269ugsobf0q	q8iw0s2gord	4	\N	\N	\N
-zhmd8340u9p	w8z0t7km6y6	3	\N	\N	\N
-zhmd8340u9p	bl5cko9dc2s	4	\N	\N	\N
-zhmd8340u9p	q8iw0s2gord	5	\N	\N	\N
-q5uzs9ydsfq	w8z0t7km6y6	4	\N	\N	\N
-q5uzs9ydsfq	bl5cko9dc2s	5	\N	\N	\N
-q5uzs9ydsfq	q8iw0s2gord	6	\N	\N	\N
-mi71c1ge6na	w8z0t7km6y6	5	\N	\N	\N
-mi71c1ge6na	bl5cko9dc2s	6	\N	\N	\N
-mi71c1ge6na	q8iw0s2gord	7	\N	\N	\N
-47lzjhwq4e3	w8z0t7km6y6	6	\N	\N	\N
-47lzjhwq4e3	bl5cko9dc2s	7	\N	\N	\N
-47lzjhwq4e3	q8iw0s2gord	8	\N	\N	\N
-dlbotzk5ta3	w8z0t7km6y6	7	\N	\N	\N
-dlbotzk5ta3	bl5cko9dc2s	8	\N	\N	\N
-dlbotzk5ta3	q8iw0s2gord	9	\N	\N	\N
-r0rbal9gwoa	w8z0t7km6y6	8	\N	\N	\N
-r0rbal9gwoa	bl5cko9dc2s	9	\N	\N	\N
-r0rbal9gwoa	q8iw0s2gord	10	\N	\N	\N
-82e6meyr33d	w8z0t7km6y6	9	\N	\N	\N
-82e6meyr33d	bl5cko9dc2s	10	\N	\N	\N
-82e6meyr33d	q8iw0s2gord	11	\N	\N	\N
-h9kgonsr277	w8z0t7km6y6	10	\N	\N	\N
-h9kgonsr277	bl5cko9dc2s	11	\N	\N	\N
-h9kgonsr277	q8iw0s2gord	12	\N	\N	\N
-am0lmjthjqi	w8z0t7km6y6	11	\N	\N	\N
-am0lmjthjqi	bl5cko9dc2s	12	\N	\N	\N
-am0lmjthjqi	q8iw0s2gord	13	\N	\N	\N
-9kxizfoklw7	w8z0t7km6y6	12	\N	\N	\N
-9kxizfoklw7	bl5cko9dc2s	13	\N	\N	\N
-9kxizfoklw7	q8iw0s2gord	14	\N	\N	\N
-puz5i9w50bl	w8z0t7km6y6	13	\N	\N	\N
-puz5i9w50bl	bl5cko9dc2s	14	\N	\N	\N
-puz5i9w50bl	q8iw0s2gord	15	\N	\N	\N
-idfhxat5qg6	w8z0t7km6y6	14	\N	\N	\N
-idfhxat5qg6	bl5cko9dc2s	15	\N	\N	\N
-idfhxat5qg6	q8iw0s2gord	16	\N	\N	\N
-iqddf9bwww2	w8z0t7km6y6	15	\N	\N	\N
-iqddf9bwww2	bl5cko9dc2s	16	\N	\N	\N
-iqddf9bwww2	q8iw0s2gord	17	\N	\N	\N
-eoxofxze047	w8z0t7km6y6	16	\N	\N	\N
-eoxofxze047	bl5cko9dc2s	17	\N	\N	\N
-eoxofxze047	q8iw0s2gord	18	\N	\N	\N
-p3ls96regvr	w8z0t7km6y6	17	\N	\N	\N
-p3ls96regvr	bl5cko9dc2s	18	\N	\N	\N
-p3ls96regvr	q8iw0s2gord	19	\N	\N	\N
-073buw1m70l	w8z0t7km6y6	18	\N	\N	\N
-073buw1m70l	bl5cko9dc2s	19	\N	\N	\N
-073buw1m70l	q8iw0s2gord	20	\N	\N	\N
-nocobase-admin-menu	w8z0t7km6y6	19	\N	\N	\N
-nocobase-admin-menu	bl5cko9dc2s	20	\N	\N	\N
-nocobase-admin-menu	q8iw0s2gord	21	\N	\N	\N
-1zppis56hgq	w8z0t7km6y6	1	\N	\N	5
-oppm7g32hpv	oppm7g32hpv	0	f	properties	\N
-hnxlnz7kz6g	oppm7g32hpv	1	\N	\N	1
-f4w58chv2n1	f4w58chv2n1	0	f	properties	\N
-oppm7g32hpv	f4w58chv2n1	1	\N	\N	1
-hnxlnz7kz6g	f4w58chv2n1	2	\N	\N	1
-1zppis56hgq	oppm7g32hpv	2	\N	\N	\N
-1zppis56hgq	f4w58chv2n1	3	\N	\N	\N
-269ugsobf0q	hnxlnz7kz6g	2	\N	\N	\N
-269ugsobf0q	oppm7g32hpv	3	\N	\N	\N
-269ugsobf0q	f4w58chv2n1	4	\N	\N	\N
-zhmd8340u9p	hnxlnz7kz6g	3	\N	\N	\N
-zhmd8340u9p	oppm7g32hpv	4	\N	\N	\N
-zhmd8340u9p	f4w58chv2n1	5	\N	\N	\N
-q5uzs9ydsfq	hnxlnz7kz6g	4	\N	\N	\N
-q5uzs9ydsfq	oppm7g32hpv	5	\N	\N	\N
-q5uzs9ydsfq	f4w58chv2n1	6	\N	\N	\N
-mi71c1ge6na	hnxlnz7kz6g	5	\N	\N	\N
-mi71c1ge6na	oppm7g32hpv	6	\N	\N	\N
-mi71c1ge6na	f4w58chv2n1	7	\N	\N	\N
-47lzjhwq4e3	hnxlnz7kz6g	6	\N	\N	\N
-47lzjhwq4e3	oppm7g32hpv	7	\N	\N	\N
-47lzjhwq4e3	f4w58chv2n1	8	\N	\N	\N
-dlbotzk5ta3	hnxlnz7kz6g	7	\N	\N	\N
-dlbotzk5ta3	oppm7g32hpv	8	\N	\N	\N
-dlbotzk5ta3	f4w58chv2n1	9	\N	\N	\N
-r0rbal9gwoa	hnxlnz7kz6g	8	\N	\N	\N
-r0rbal9gwoa	oppm7g32hpv	9	\N	\N	\N
-r0rbal9gwoa	f4w58chv2n1	10	\N	\N	\N
-82e6meyr33d	hnxlnz7kz6g	9	\N	\N	\N
-82e6meyr33d	oppm7g32hpv	10	\N	\N	\N
-82e6meyr33d	f4w58chv2n1	11	\N	\N	\N
-h9kgonsr277	hnxlnz7kz6g	10	\N	\N	\N
-h9kgonsr277	oppm7g32hpv	11	\N	\N	\N
-h9kgonsr277	f4w58chv2n1	12	\N	\N	\N
-am0lmjthjqi	hnxlnz7kz6g	11	\N	\N	\N
-am0lmjthjqi	oppm7g32hpv	12	\N	\N	\N
-am0lmjthjqi	f4w58chv2n1	13	\N	\N	\N
-9kxizfoklw7	hnxlnz7kz6g	12	\N	\N	\N
-9kxizfoklw7	oppm7g32hpv	13	\N	\N	\N
-9kxizfoklw7	f4w58chv2n1	14	\N	\N	\N
-puz5i9w50bl	hnxlnz7kz6g	13	\N	\N	\N
-puz5i9w50bl	oppm7g32hpv	14	\N	\N	\N
-puz5i9w50bl	f4w58chv2n1	15	\N	\N	\N
-idfhxat5qg6	hnxlnz7kz6g	14	\N	\N	\N
-idfhxat5qg6	oppm7g32hpv	15	\N	\N	\N
-idfhxat5qg6	f4w58chv2n1	16	\N	\N	\N
-iqddf9bwww2	hnxlnz7kz6g	15	\N	\N	\N
-iqddf9bwww2	oppm7g32hpv	16	\N	\N	\N
-iqddf9bwww2	f4w58chv2n1	17	\N	\N	\N
-eoxofxze047	hnxlnz7kz6g	16	\N	\N	\N
-eoxofxze047	oppm7g32hpv	17	\N	\N	\N
-eoxofxze047	f4w58chv2n1	18	\N	\N	\N
-p3ls96regvr	hnxlnz7kz6g	17	\N	\N	\N
-p3ls96regvr	oppm7g32hpv	18	\N	\N	\N
-p3ls96regvr	f4w58chv2n1	19	\N	\N	\N
-073buw1m70l	hnxlnz7kz6g	18	\N	\N	\N
-073buw1m70l	oppm7g32hpv	19	\N	\N	\N
-073buw1m70l	f4w58chv2n1	20	\N	\N	\N
-nocobase-admin-menu	hnxlnz7kz6g	19	\N	\N	\N
-nocobase-admin-menu	oppm7g32hpv	20	\N	\N	\N
-nocobase-admin-menu	f4w58chv2n1	21	\N	\N	\N
-hnxlnz7kz6g	hnxlnz7kz6g	0	f	properties	\N
-1zppis56hgq	hnxlnz7kz6g	1	\N	\N	6
-zhznhya5d4k	zhznhya5d4k	0	f	properties	\N
-k3s1inyl7od	zhznhya5d4k	1	\N	\N	1
-wczmtfqkbe7	wczmtfqkbe7	0	f	properties	\N
-zhznhya5d4k	wczmtfqkbe7	1	\N	\N	1
-k3s1inyl7od	wczmtfqkbe7	2	\N	\N	1
-1zppis56hgq	zhznhya5d4k	2	\N	\N	\N
-1zppis56hgq	wczmtfqkbe7	3	\N	\N	\N
-269ugsobf0q	k3s1inyl7od	2	\N	\N	\N
-269ugsobf0q	zhznhya5d4k	3	\N	\N	\N
-269ugsobf0q	wczmtfqkbe7	4	\N	\N	\N
-zhmd8340u9p	k3s1inyl7od	3	\N	\N	\N
-zhmd8340u9p	zhznhya5d4k	4	\N	\N	\N
-zhmd8340u9p	wczmtfqkbe7	5	\N	\N	\N
-q5uzs9ydsfq	k3s1inyl7od	4	\N	\N	\N
-q5uzs9ydsfq	zhznhya5d4k	5	\N	\N	\N
-q5uzs9ydsfq	wczmtfqkbe7	6	\N	\N	\N
-mi71c1ge6na	k3s1inyl7od	5	\N	\N	\N
-mi71c1ge6na	zhznhya5d4k	6	\N	\N	\N
-mi71c1ge6na	wczmtfqkbe7	7	\N	\N	\N
-47lzjhwq4e3	k3s1inyl7od	6	\N	\N	\N
-47lzjhwq4e3	zhznhya5d4k	7	\N	\N	\N
-47lzjhwq4e3	wczmtfqkbe7	8	\N	\N	\N
-dlbotzk5ta3	k3s1inyl7od	7	\N	\N	\N
-dlbotzk5ta3	zhznhya5d4k	8	\N	\N	\N
-dlbotzk5ta3	wczmtfqkbe7	9	\N	\N	\N
-r0rbal9gwoa	k3s1inyl7od	8	\N	\N	\N
-r0rbal9gwoa	zhznhya5d4k	9	\N	\N	\N
-r0rbal9gwoa	wczmtfqkbe7	10	\N	\N	\N
-82e6meyr33d	k3s1inyl7od	9	\N	\N	\N
-82e6meyr33d	zhznhya5d4k	10	\N	\N	\N
-82e6meyr33d	wczmtfqkbe7	11	\N	\N	\N
-h9kgonsr277	k3s1inyl7od	10	\N	\N	\N
-h9kgonsr277	zhznhya5d4k	11	\N	\N	\N
-h9kgonsr277	wczmtfqkbe7	12	\N	\N	\N
-am0lmjthjqi	k3s1inyl7od	11	\N	\N	\N
-am0lmjthjqi	zhznhya5d4k	12	\N	\N	\N
-am0lmjthjqi	wczmtfqkbe7	13	\N	\N	\N
-9kxizfoklw7	k3s1inyl7od	12	\N	\N	\N
-9kxizfoklw7	zhznhya5d4k	13	\N	\N	\N
-9kxizfoklw7	wczmtfqkbe7	14	\N	\N	\N
-puz5i9w50bl	k3s1inyl7od	13	\N	\N	\N
-puz5i9w50bl	zhznhya5d4k	14	\N	\N	\N
-puz5i9w50bl	wczmtfqkbe7	15	\N	\N	\N
-idfhxat5qg6	k3s1inyl7od	14	\N	\N	\N
-idfhxat5qg6	zhznhya5d4k	15	\N	\N	\N
-idfhxat5qg6	wczmtfqkbe7	16	\N	\N	\N
-iqddf9bwww2	k3s1inyl7od	15	\N	\N	\N
-iqddf9bwww2	zhznhya5d4k	16	\N	\N	\N
-iqddf9bwww2	wczmtfqkbe7	17	\N	\N	\N
-eoxofxze047	k3s1inyl7od	16	\N	\N	\N
-eoxofxze047	zhznhya5d4k	17	\N	\N	\N
-eoxofxze047	wczmtfqkbe7	18	\N	\N	\N
-p3ls96regvr	k3s1inyl7od	17	\N	\N	\N
-p3ls96regvr	zhznhya5d4k	18	\N	\N	\N
-p3ls96regvr	wczmtfqkbe7	19	\N	\N	\N
-073buw1m70l	k3s1inyl7od	18	\N	\N	\N
-073buw1m70l	zhznhya5d4k	19	\N	\N	\N
-073buw1m70l	wczmtfqkbe7	20	\N	\N	\N
-nocobase-admin-menu	k3s1inyl7od	19	\N	\N	\N
-nocobase-admin-menu	zhznhya5d4k	20	\N	\N	\N
-nocobase-admin-menu	wczmtfqkbe7	21	\N	\N	\N
-k3s1inyl7od	k3s1inyl7od	0	f	properties	\N
-1zppis56hgq	k3s1inyl7od	1	\N	\N	7
-2dan6q3aj1j	2dan6q3aj1j	0	f	properties	\N
-269ugsobf0q	2dan6q3aj1j	2	\N	\N	\N
-zhmd8340u9p	2dan6q3aj1j	3	\N	\N	\N
-q5uzs9ydsfq	2dan6q3aj1j	4	\N	\N	\N
-mi71c1ge6na	2dan6q3aj1j	5	\N	\N	\N
-47lzjhwq4e3	2dan6q3aj1j	6	\N	\N	\N
-dlbotzk5ta3	2dan6q3aj1j	7	\N	\N	\N
-r0rbal9gwoa	2dan6q3aj1j	8	\N	\N	\N
-82e6meyr33d	2dan6q3aj1j	9	\N	\N	\N
-h9kgonsr277	2dan6q3aj1j	10	\N	\N	\N
-am0lmjthjqi	2dan6q3aj1j	11	\N	\N	\N
-9kxizfoklw7	2dan6q3aj1j	12	\N	\N	\N
-puz5i9w50bl	2dan6q3aj1j	13	\N	\N	\N
-idfhxat5qg6	2dan6q3aj1j	14	\N	\N	\N
-iqddf9bwww2	2dan6q3aj1j	15	\N	\N	\N
-eoxofxze047	2dan6q3aj1j	16	\N	\N	\N
-p3ls96regvr	2dan6q3aj1j	17	\N	\N	\N
-073buw1m70l	2dan6q3aj1j	18	\N	\N	\N
-nocobase-admin-menu	2dan6q3aj1j	19	\N	\N	\N
-2734c1npcd3	2dan6q3aj1j	1	\N	\N	1
+ebu29iqsaqx	z595m38iop1	8	\N	\N	\N
+ebu29iqsaqx	17zo1wc4bx2	9	\N	\N	\N
+k4kftsn5ht7	exga92l7mh5	8	\N	\N	\N
+k4kftsn5ht7	z595m38iop1	9	\N	\N	\N
+k4kftsn5ht7	17zo1wc4bx2	10	\N	\N	\N
+hg9tvy6yuph	exga92l7mh5	9	\N	\N	\N
+8vwr3yh0weq	8vwr3yh0weq	0	f	properties	\N
+9vll9qbbcql	9vll9qbbcql	0	f	properties	\N
+8vwr3yh0weq	9vll9qbbcql	1	\N	\N	1
+ar4ks05q9gy	ar4ks05q9gy	0	f	properties	\N
+9vll9qbbcql	ar4ks05q9gy	1	\N	\N	1
+8vwr3yh0weq	ar4ks05q9gy	2	\N	\N	1
+xo5vgqdp3pj	xo5vgqdp3pj	0	f	properties	\N
+ar4ks05q9gy	xo5vgqdp3pj	1	\N	\N	1
+9vll9qbbcql	xo5vgqdp3pj	2	\N	\N	1
+8vwr3yh0weq	xo5vgqdp3pj	3	\N	\N	1
+i7gwmqodnug	i7gwmqodnug	0	f	properties	\N
+ar4ks05q9gy	i7gwmqodnug	1	\N	\N	2
+9vll9qbbcql	i7gwmqodnug	2	\N	\N	2
+8vwr3yh0weq	i7gwmqodnug	3	\N	\N	2
+f2bcdfxqi9r	f2bcdfxqi9r	0	f	properties	\N
+2mvvg3tfmqn	2mvvg3tfmqn	0	f	properties	\N
+g9filp3q56w	g9filp3q56w	0	f	properties	\N
+ce4ima9tbnd	g9filp3q56w	1	\N	\N	1
+syscnwrifc8	syscnwrifc8	0	f	properties	\N
+ce4ima9tbnd	ce4ima9tbnd	0	f	properties	\N
+730yg8t8myy	ma2di65n17c	1	\N	\N	7
+obr6c35u15y	obr6c35u15y	0	f	properties	\N
+ca17vjb0am6	syscnwrifc8	1	\N	\N	1
+hg9tvy6yuph	z595m38iop1	10	\N	\N	\N
+exga92l7mh5	exga92l7mh5	0	f	properties	\N
+hg9tvy6yuph	17zo1wc4bx2	11	\N	\N	\N
+730yg8t8myy	g9filp3q56w	2	\N	\N	\N
+bzirblya7qw	exga92l7mh5	10	\N	\N	\N
+2oimqa9byrp	ce4ima9tbnd	2	\N	\N	\N
+2oimqa9byrp	g9filp3q56w	3	\N	\N	\N
+bzirblya7qw	z595m38iop1	11	\N	\N	\N
+tmbbsnq2x5b	ce4ima9tbnd	3	\N	\N	\N
+tmbbsnq2x5b	g9filp3q56w	4	\N	\N	\N
+bzirblya7qw	17zo1wc4bx2	12	\N	\N	\N
+oyy61gowm8y	ce4ima9tbnd	4	\N	\N	\N
+oyy61gowm8y	g9filp3q56w	5	\N	\N	\N
+galt7hbd78y	exga92l7mh5	11	\N	\N	\N
+cr7ggy2zrl6	ce4ima9tbnd	5	\N	\N	\N
+cr7ggy2zrl6	g9filp3q56w	6	\N	\N	\N
+galt7hbd78y	z595m38iop1	12	\N	\N	\N
+9cngdl646v0	ce4ima9tbnd	6	\N	\N	\N
+9cngdl646v0	g9filp3q56w	7	\N	\N	\N
+galt7hbd78y	17zo1wc4bx2	13	\N	\N	\N
+ybdxp7v91jn	ce4ima9tbnd	7	\N	\N	\N
+ybdxp7v91jn	g9filp3q56w	8	\N	\N	\N
+e87ogy2w48b	exga92l7mh5	12	\N	\N	\N
+muv6h06t8mi	ce4ima9tbnd	8	\N	\N	\N
+muv6h06t8mi	g9filp3q56w	9	\N	\N	\N
+e87ogy2w48b	z595m38iop1	13	\N	\N	\N
+8i28yvimg4p	ce4ima9tbnd	9	\N	\N	\N
+8i28yvimg4p	g9filp3q56w	10	\N	\N	\N
+e87ogy2w48b	17zo1wc4bx2	14	\N	\N	\N
+66xqkev137r	ce4ima9tbnd	10	\N	\N	\N
+66xqkev137r	g9filp3q56w	11	\N	\N	\N
+i0bqeajbvwo	exga92l7mh5	13	\N	\N	\N
+i0bqeajbvwo	z595m38iop1	14	\N	\N	\N
+i0bqeajbvwo	17zo1wc4bx2	15	\N	\N	\N
+pdot2ybyfc0	exga92l7mh5	14	\N	\N	\N
+pdot2ybyfc0	z595m38iop1	15	\N	\N	\N
+pdot2ybyfc0	17zo1wc4bx2	16	\N	\N	\N
+a7e860jrx5o	exga92l7mh5	15	\N	\N	\N
+a7e860jrx5o	z595m38iop1	16	\N	\N	\N
+a7e860jrx5o	17zo1wc4bx2	17	\N	\N	\N
+zxh1oe1qx5t	exga92l7mh5	16	\N	\N	\N
+zxh1oe1qx5t	z595m38iop1	17	\N	\N	\N
+zxh1oe1qx5t	17zo1wc4bx2	18	\N	\N	\N
+861gmcfwhia	exga92l7mh5	17	\N	\N	\N
+861gmcfwhia	z595m38iop1	18	\N	\N	\N
+861gmcfwhia	17zo1wc4bx2	19	\N	\N	\N
+9yos6i0cjm3	exga92l7mh5	18	\N	\N	\N
+9yos6i0cjm3	z595m38iop1	19	\N	\N	\N
+9yos6i0cjm3	17zo1wc4bx2	20	\N	\N	\N
+n3yigbe0k9v	exga92l7mh5	19	\N	\N	\N
+n3yigbe0k9v	z595m38iop1	20	\N	\N	\N
+n3yigbe0k9v	17zo1wc4bx2	21	\N	\N	\N
+073buw1m70l	exga92l7mh5	20	\N	\N	\N
+073buw1m70l	z595m38iop1	21	\N	\N	\N
+073buw1m70l	17zo1wc4bx2	22	\N	\N	\N
+nocobase-admin-menu	exga92l7mh5	21	\N	\N	\N
+nocobase-admin-menu	z595m38iop1	22	\N	\N	\N
+nocobase-admin-menu	17zo1wc4bx2	23	\N	\N	\N
+xrp5qlqau5q	exga92l7mh5	1	\N	\N	4
+rixb2qdf4cv	rixb2qdf4cv	0	f	properties	\N
+lnegk2e449v	rixb2qdf4cv	1	\N	\N	1
+730yg8t8myy	rixb2qdf4cv	2	\N	\N	\N
+2oimqa9byrp	lnegk2e449v	2	\N	\N	\N
+2oimqa9byrp	rixb2qdf4cv	3	\N	\N	\N
+tmbbsnq2x5b	lnegk2e449v	3	\N	\N	\N
+tmbbsnq2x5b	rixb2qdf4cv	4	\N	\N	\N
+oyy61gowm8y	lnegk2e449v	4	\N	\N	\N
+oyy61gowm8y	rixb2qdf4cv	5	\N	\N	\N
+cr7ggy2zrl6	lnegk2e449v	5	\N	\N	\N
+cr7ggy2zrl6	rixb2qdf4cv	6	\N	\N	\N
+9cngdl646v0	lnegk2e449v	6	\N	\N	\N
+9cngdl646v0	rixb2qdf4cv	7	\N	\N	\N
+ybdxp7v91jn	lnegk2e449v	7	\N	\N	\N
+ybdxp7v91jn	rixb2qdf4cv	8	\N	\N	\N
+muv6h06t8mi	lnegk2e449v	8	\N	\N	\N
+muv6h06t8mi	rixb2qdf4cv	9	\N	\N	\N
+8i28yvimg4p	lnegk2e449v	9	\N	\N	\N
+8i28yvimg4p	rixb2qdf4cv	10	\N	\N	\N
+66xqkev137r	lnegk2e449v	10	\N	\N	\N
+66xqkev137r	rixb2qdf4cv	11	\N	\N	\N
+c59ka4huk49	c59ka4huk49	0	f	properties	\N
+lnegk2e449v	lnegk2e449v	0	f	properties	\N
+mqma0oexw7v	kse6ldex1eg	2	\N	\N	\N
+730yg8t8myy	ce4ima9tbnd	1	\N	\N	9
+912mn4py2yd	912mn4py2yd	0	f	properties	\N
+09yy6b78jxi	kse6ldex1eg	3	\N	\N	\N
+1whdhzzrodk	kse6ldex1eg	4	\N	\N	\N
+f205ix4mjg8	kse6ldex1eg	5	\N	\N	\N
+ky5jq7m1dcv	ky5jq7m1dcv	0	f	properties	\N
+rhl1529zt7b	ky5jq7m1dcv	1	\N	\N	1
+nf3x14p3vf3	nf3x14p3vf3	0	f	properties	\N
+nx706cf6ton	nx706cf6ton	0	f	properties	\N
+730yg8t8myy	lnegk2e449v	1	\N	\N	10
+730yg8t8myy	ky5jq7m1dcv	2	\N	\N	\N
+jf9rc4sketo	nf3x14p3vf3	1	\N	\N	1
+2oimqa9byrp	rhl1529zt7b	2	\N	\N	\N
+2oimqa9byrp	ky5jq7m1dcv	3	\N	\N	\N
+sgmqm607par	sgmqm607par	0	f	properties	\N
+tmbbsnq2x5b	rhl1529zt7b	3	\N	\N	\N
+tmbbsnq2x5b	ky5jq7m1dcv	4	\N	\N	\N
+fvx7g50y58n	kse6ldex1eg	6	\N	\N	\N
+oyy61gowm8y	rhl1529zt7b	4	\N	\N	\N
+oyy61gowm8y	ky5jq7m1dcv	5	\N	\N	\N
+nf3x14p3vf3	sgmqm607par	1	\N	\N	1
+cr7ggy2zrl6	rhl1529zt7b	5	\N	\N	\N
+cr7ggy2zrl6	ky5jq7m1dcv	6	\N	\N	\N
+jf9rc4sketo	sgmqm607par	2	\N	\N	1
+9cngdl646v0	rhl1529zt7b	6	\N	\N	\N
+9cngdl646v0	ky5jq7m1dcv	7	\N	\N	\N
+qjnwfwgzhuv	qjnwfwgzhuv	0	f	properties	\N
+ybdxp7v91jn	rhl1529zt7b	7	\N	\N	\N
+ybdxp7v91jn	ky5jq7m1dcv	8	\N	\N	\N
+sgmqm607par	qjnwfwgzhuv	1	\N	\N	1
+muv6h06t8mi	rhl1529zt7b	8	\N	\N	\N
+muv6h06t8mi	ky5jq7m1dcv	9	\N	\N	\N
+nf3x14p3vf3	qjnwfwgzhuv	2	\N	\N	1
+8i28yvimg4p	rhl1529zt7b	9	\N	\N	\N
+8i28yvimg4p	ky5jq7m1dcv	10	\N	\N	\N
+jf9rc4sketo	qjnwfwgzhuv	3	\N	\N	1
+66xqkev137r	rhl1529zt7b	10	\N	\N	\N
+66xqkev137r	ky5jq7m1dcv	11	\N	\N	\N
+833uu3rb1nm	kse6ldex1eg	7	\N	\N	\N
+fsid1btc6ef	fsid1btc6ef	0	f	properties	\N
+qjnwfwgzhuv	fsid1btc6ef	1	\N	\N	1
+sgmqm607par	fsid1btc6ef	2	\N	\N	1
+nf3x14p3vf3	fsid1btc6ef	3	\N	\N	1
+jf9rc4sketo	fsid1btc6ef	4	\N	\N	1
+ik0zt15yup2	kse6ldex1eg	8	\N	\N	\N
+syscnwrifc8	nf3x14p3vf3	2	\N	\N	\N
+syscnwrifc8	sgmqm607par	3	\N	\N	\N
+syscnwrifc8	qjnwfwgzhuv	4	\N	\N	\N
+syscnwrifc8	fsid1btc6ef	5	\N	\N	\N
+ca17vjb0am6	jf9rc4sketo	2	\N	\N	\N
+ca17vjb0am6	nf3x14p3vf3	3	\N	\N	\N
+w1vttmfcjic	kse6ldex1eg	9	\N	\N	\N
+ca17vjb0am6	sgmqm607par	4	\N	\N	\N
+ca17vjb0am6	qjnwfwgzhuv	5	\N	\N	\N
+ca17vjb0am6	fsid1btc6ef	6	\N	\N	\N
+nocobase-admin-menu	kse6ldex1eg	10	\N	\N	\N
+kse6ldex1eg	kse6ldex1eg	0	f	properties	\N
+rhl1529zt7b	rhl1529zt7b	0	f	properties	\N
+730yg8t8myy	rhl1529zt7b	1	\N	\N	6
+730yg8t8myy	f2bcdfxqi9r	1	\N	\N	8
+czvibg44drs	czvibg44drs	0	f	properties	\N
+nx706cf6ton	czvibg44drs	1	\N	\N	1
+nx706cf6ton	2mvvg3tfmqn	2	\N	\N	\N
+czvibg44drs	2mvvg3tfmqn	1	\N	\N	1
+730yg8t8myy	czvibg44drs	2	\N	\N	\N
+730yg8t8myy	2mvvg3tfmqn	3	\N	\N	\N
+2oimqa9byrp	nx706cf6ton	2	\N	\N	\N
+2oimqa9byrp	czvibg44drs	3	\N	\N	\N
+2oimqa9byrp	2mvvg3tfmqn	4	\N	\N	\N
+tmbbsnq2x5b	nx706cf6ton	3	\N	\N	\N
+tmbbsnq2x5b	czvibg44drs	4	\N	\N	\N
+tmbbsnq2x5b	2mvvg3tfmqn	5	\N	\N	\N
+oyy61gowm8y	nx706cf6ton	4	\N	\N	\N
+oyy61gowm8y	czvibg44drs	5	\N	\N	\N
+oyy61gowm8y	2mvvg3tfmqn	6	\N	\N	\N
+cr7ggy2zrl6	nx706cf6ton	5	\N	\N	\N
+cr7ggy2zrl6	czvibg44drs	6	\N	\N	\N
+cr7ggy2zrl6	2mvvg3tfmqn	7	\N	\N	\N
+9cngdl646v0	nx706cf6ton	6	\N	\N	\N
+9cngdl646v0	czvibg44drs	7	\N	\N	\N
+9cngdl646v0	2mvvg3tfmqn	8	\N	\N	\N
+ybdxp7v91jn	nx706cf6ton	7	\N	\N	\N
+ybdxp7v91jn	czvibg44drs	8	\N	\N	\N
+ybdxp7v91jn	2mvvg3tfmqn	9	\N	\N	\N
+muv6h06t8mi	nx706cf6ton	8	\N	\N	\N
+muv6h06t8mi	czvibg44drs	9	\N	\N	\N
+muv6h06t8mi	2mvvg3tfmqn	10	\N	\N	\N
+8i28yvimg4p	nx706cf6ton	9	\N	\N	\N
+8i28yvimg4p	czvibg44drs	10	\N	\N	\N
+8i28yvimg4p	2mvvg3tfmqn	11	\N	\N	\N
+66xqkev137r	nx706cf6ton	10	\N	\N	\N
+66xqkev137r	czvibg44drs	11	\N	\N	\N
+66xqkev137r	2mvvg3tfmqn	12	\N	\N	\N
+730yg8t8myy	nx706cf6ton	1	\N	\N	2
+jf9rc4sketo	jf9rc4sketo	0	f	properties	\N
+syscnwrifc8	jf9rc4sketo	1	\N	\N	1
+0watzzc6ypj	0watzzc6ypj	0	f	properties	\N
+879a48xod34	0watzzc6ypj	1	\N	\N	1
+9ykupik4f4g	9ykupik4f4g	0	f	properties	\N
+2oimqa9byrp	eauv9tqlcmc	2	\N	\N	\N
+0watzzc6ypj	9ykupik4f4g	1	\N	\N	1
+879a48xod34	9ykupik4f4g	2	\N	\N	1
+tmbbsnq2x5b	eauv9tqlcmc	3	\N	\N	\N
+6zbn1svqu3t	6zbn1svqu3t	0	f	properties	\N
+9ykupik4f4g	6zbn1svqu3t	1	\N	\N	1
+oyy61gowm8y	eauv9tqlcmc	4	\N	\N	\N
+0watzzc6ypj	6zbn1svqu3t	2	\N	\N	1
+879a48xod34	6zbn1svqu3t	3	\N	\N	1
+cr7ggy2zrl6	eauv9tqlcmc	5	\N	\N	\N
+5z3gl0zrzxm	5z3gl0zrzxm	0	f	properties	\N
+6zbn1svqu3t	5z3gl0zrzxm	1	\N	\N	1
+9cngdl646v0	eauv9tqlcmc	6	\N	\N	\N
+9ykupik4f4g	5z3gl0zrzxm	2	\N	\N	1
+0watzzc6ypj	5z3gl0zrzxm	3	\N	\N	1
+ybdxp7v91jn	eauv9tqlcmc	7	\N	\N	\N
+879a48xod34	5z3gl0zrzxm	4	\N	\N	1
+muv6h06t8mi	eauv9tqlcmc	8	\N	\N	\N
+syscnwrifc8	0watzzc6ypj	2	\N	\N	\N
+syscnwrifc8	9ykupik4f4g	3	\N	\N	\N
+8i28yvimg4p	eauv9tqlcmc	9	\N	\N	\N
+syscnwrifc8	6zbn1svqu3t	4	\N	\N	\N
+syscnwrifc8	5z3gl0zrzxm	5	\N	\N	\N
+66xqkev137r	eauv9tqlcmc	10	\N	\N	\N
+ca17vjb0am6	879a48xod34	2	\N	\N	\N
+ca17vjb0am6	0watzzc6ypj	3	\N	\N	\N
+ca17vjb0am6	9ykupik4f4g	4	\N	\N	\N
+ca17vjb0am6	6zbn1svqu3t	5	\N	\N	\N
+ca17vjb0am6	5z3gl0zrzxm	6	\N	\N	\N
+bn77syhm2pe	bn77syhm2pe	0	f	properties	\N
+h55y4nxqk03	bn77syhm2pe	1	\N	\N	1
+jkjog6plqji	nfqlgjzo91t	2	\N	\N	\N
+eauv9tqlcmc	eauv9tqlcmc	0	f	properties	\N
+730yg8t8myy	eauv9tqlcmc	1	\N	\N	3
+i0bqeajbvwo	lgkny2plcta	3	\N	\N	\N
+pdot2ybyfc0	lgkny2plcta	4	\N	\N	\N
+a7e860jrx5o	lgkny2plcta	5	\N	\N	\N
+zxh1oe1qx5t	lgkny2plcta	6	\N	\N	\N
+861gmcfwhia	lgkny2plcta	7	\N	\N	\N
+9yos6i0cjm3	lgkny2plcta	8	\N	\N	\N
+n3yigbe0k9v	lgkny2plcta	9	\N	\N	\N
+073buw1m70l	lgkny2plcta	10	\N	\N	\N
+nocobase-admin-menu	lgkny2plcta	11	\N	\N	\N
+k8qqt79vy2u	k8qqt79vy2u	0	f	properties	\N
+22pnzqtybji	bn77syhm2pe	2	\N	\N	\N
+jyf3gvko6m0	obr6c35u15y	1	\N	\N	1
+2oimqa9byrp	jyf3gvko6m0	3	\N	\N	\N
+2oimqa9byrp	obr6c35u15y	4	\N	\N	\N
+tmbbsnq2x5b	jyf3gvko6m0	4	\N	\N	\N
+tmbbsnq2x5b	obr6c35u15y	5	\N	\N	\N
+oyy61gowm8y	jyf3gvko6m0	5	\N	\N	\N
+oyy61gowm8y	obr6c35u15y	6	\N	\N	\N
+cr7ggy2zrl6	jyf3gvko6m0	6	\N	\N	\N
+cr7ggy2zrl6	obr6c35u15y	7	\N	\N	\N
+9cngdl646v0	jyf3gvko6m0	7	\N	\N	\N
+9cngdl646v0	obr6c35u15y	8	\N	\N	\N
+ybdxp7v91jn	jyf3gvko6m0	8	\N	\N	\N
+ybdxp7v91jn	obr6c35u15y	9	\N	\N	\N
+muv6h06t8mi	jyf3gvko6m0	9	\N	\N	\N
+muv6h06t8mi	obr6c35u15y	10	\N	\N	\N
+8i28yvimg4p	jyf3gvko6m0	10	\N	\N	\N
+8i28yvimg4p	obr6c35u15y	11	\N	\N	\N
+66xqkev137r	jyf3gvko6m0	11	\N	\N	\N
+66xqkev137r	obr6c35u15y	12	\N	\N	\N
+fi2ue9h7mq4	nfqlgjzo91t	3	\N	\N	\N
+43941gf2n0y	nfqlgjzo91t	4	\N	\N	\N
+mqma0oexw7v	h55y4nxqk03	2	\N	\N	\N
+mqma0oexw7v	bn77syhm2pe	3	\N	\N	\N
+wp3edt8ujq4	nfqlgjzo91t	5	\N	\N	\N
+09yy6b78jxi	h55y4nxqk03	3	\N	\N	\N
+09yy6b78jxi	bn77syhm2pe	4	\N	\N	\N
+mlqmnjhazhe	nfqlgjzo91t	6	\N	\N	\N
+22pnzqtybji	kse6ldex1eg	1	\N	\N	8
+wj9ij1yidio	nfqlgjzo91t	7	\N	\N	\N
+ma2di65n17c	obr6c35u15y	2	\N	\N	\N
+730yg8t8myy	jyf3gvko6m0	2	\N	\N	\N
+730yg8t8myy	obr6c35u15y	3	\N	\N	\N
+jyf3gvko6m0	jyf3gvko6m0	0	f	properties	\N
+ma2di65n17c	jyf3gvko6m0	1	\N	\N	2
 5qaj9xi6q1y	5qaj9xi6q1y	0	f	properties	\N
 02fwa86zov7	5qaj9xi6q1y	1	\N	\N	1
 bu7t898gulm	bu7t898gulm	0	f	properties	\N
 5qaj9xi6q1y	bu7t898gulm	1	\N	\N	1
 02fwa86zov7	bu7t898gulm	2	\N	\N	1
+1whdhzzrodk	h55y4nxqk03	4	\N	\N	\N
+1whdhzzrodk	bn77syhm2pe	5	\N	\N	\N
 i4n9asspbd4	i4n9asspbd4	0	f	properties	\N
 bu7t898gulm	i4n9asspbd4	1	\N	\N	1
 5qaj9xi6q1y	i4n9asspbd4	2	\N	\N	1
@@ -11563,60 +11255,41 @@ yjzd6s5ccq4	bu7t898gulm	9	\N	\N	\N
 yjzd6s5ccq4	i4n9asspbd4	10	\N	\N	\N
 yjzd6s5ccq4	5ndh82rjiih	11	\N	\N	\N
 yjzd6s5ccq4	kj70yf1en4o	11	\N	\N	\N
-imrhc9he5on	02fwa86zov7	8	\N	\N	\N
-imrhc9he5on	5qaj9xi6q1y	9	\N	\N	\N
-imrhc9he5on	bu7t898gulm	10	\N	\N	\N
-imrhc9he5on	i4n9asspbd4	11	\N	\N	\N
-imrhc9he5on	5ndh82rjiih	12	\N	\N	\N
-imrhc9he5on	kj70yf1en4o	12	\N	\N	\N
-82ikkgrog2y	02fwa86zov7	9	\N	\N	\N
-82ikkgrog2y	5qaj9xi6q1y	10	\N	\N	\N
-82ikkgrog2y	bu7t898gulm	11	\N	\N	\N
-82ikkgrog2y	i4n9asspbd4	12	\N	\N	\N
-82ikkgrog2y	5ndh82rjiih	13	\N	\N	\N
-82ikkgrog2y	kj70yf1en4o	13	\N	\N	\N
-mmj417nrjpa	02fwa86zov7	10	\N	\N	\N
-mmj417nrjpa	5qaj9xi6q1y	11	\N	\N	\N
-mmj417nrjpa	bu7t898gulm	12	\N	\N	\N
-mmj417nrjpa	i4n9asspbd4	13	\N	\N	\N
-mmj417nrjpa	5ndh82rjiih	14	\N	\N	\N
-mmj417nrjpa	kj70yf1en4o	14	\N	\N	\N
-lmgnrgroovk	02fwa86zov7	11	\N	\N	\N
-lmgnrgroovk	5qaj9xi6q1y	12	\N	\N	\N
-lmgnrgroovk	bu7t898gulm	13	\N	\N	\N
-lmgnrgroovk	i4n9asspbd4	14	\N	\N	\N
-lmgnrgroovk	5ndh82rjiih	15	\N	\N	\N
-lmgnrgroovk	kj70yf1en4o	15	\N	\N	\N
-4cx141n1lb4	02fwa86zov7	12	\N	\N	\N
-4cx141n1lb4	5qaj9xi6q1y	13	\N	\N	\N
-4cx141n1lb4	bu7t898gulm	14	\N	\N	\N
-4cx141n1lb4	i4n9asspbd4	15	\N	\N	\N
-4cx141n1lb4	5ndh82rjiih	16	\N	\N	\N
-4cx141n1lb4	kj70yf1en4o	16	\N	\N	\N
-k6pr2jh3wgd	02fwa86zov7	13	\N	\N	\N
-k6pr2jh3wgd	5qaj9xi6q1y	14	\N	\N	\N
-k6pr2jh3wgd	bu7t898gulm	15	\N	\N	\N
-k6pr2jh3wgd	i4n9asspbd4	16	\N	\N	\N
-k6pr2jh3wgd	5ndh82rjiih	17	\N	\N	\N
-k6pr2jh3wgd	kj70yf1en4o	17	\N	\N	\N
-hchm15rxv74	02fwa86zov7	14	\N	\N	\N
-hchm15rxv74	5qaj9xi6q1y	15	\N	\N	\N
-hchm15rxv74	bu7t898gulm	16	\N	\N	\N
-hchm15rxv74	i4n9asspbd4	17	\N	\N	\N
-hchm15rxv74	5ndh82rjiih	18	\N	\N	\N
-hchm15rxv74	kj70yf1en4o	18	\N	\N	\N
-073buw1m70l	02fwa86zov7	15	\N	\N	\N
-073buw1m70l	5qaj9xi6q1y	16	\N	\N	\N
-073buw1m70l	bu7t898gulm	17	\N	\N	\N
-073buw1m70l	i4n9asspbd4	18	\N	\N	\N
-073buw1m70l	5ndh82rjiih	19	\N	\N	\N
-073buw1m70l	kj70yf1en4o	19	\N	\N	\N
-nocobase-admin-menu	02fwa86zov7	16	\N	\N	\N
-nocobase-admin-menu	5qaj9xi6q1y	17	\N	\N	\N
-nocobase-admin-menu	bu7t898gulm	18	\N	\N	\N
-nocobase-admin-menu	i4n9asspbd4	19	\N	\N	\N
-nocobase-admin-menu	5ndh82rjiih	20	\N	\N	\N
-nocobase-admin-menu	kj70yf1en4o	20	\N	\N	\N
+bawj0uea3a0	912mn4py2yd	1	\N	\N	1
+x4kjbk4wyiq	912mn4py2yd	2	\N	\N	\N
+730yg8t8myy	bawj0uea3a0	2	\N	\N	\N
+730yg8t8myy	912mn4py2yd	3	\N	\N	\N
+2oimqa9byrp	bawj0uea3a0	3	\N	\N	\N
+2oimqa9byrp	912mn4py2yd	4	\N	\N	\N
+tmbbsnq2x5b	bawj0uea3a0	4	\N	\N	\N
+tmbbsnq2x5b	912mn4py2yd	5	\N	\N	\N
+oyy61gowm8y	bawj0uea3a0	5	\N	\N	\N
+oyy61gowm8y	912mn4py2yd	6	\N	\N	\N
+cr7ggy2zrl6	bawj0uea3a0	6	\N	\N	\N
+cr7ggy2zrl6	912mn4py2yd	7	\N	\N	\N
+9cngdl646v0	bawj0uea3a0	7	\N	\N	\N
+9cngdl646v0	912mn4py2yd	8	\N	\N	\N
+ybdxp7v91jn	bawj0uea3a0	8	\N	\N	\N
+ybdxp7v91jn	912mn4py2yd	9	\N	\N	\N
+muv6h06t8mi	bawj0uea3a0	9	\N	\N	\N
+muv6h06t8mi	912mn4py2yd	10	\N	\N	\N
+8i28yvimg4p	bawj0uea3a0	10	\N	\N	\N
+8i28yvimg4p	912mn4py2yd	11	\N	\N	\N
+66xqkev137r	bawj0uea3a0	11	\N	\N	\N
+66xqkev137r	912mn4py2yd	12	\N	\N	\N
+60f4r8b0er6	nfqlgjzo91t	8	\N	\N	\N
+879a48xod34	879a48xod34	0	f	properties	\N
+syscnwrifc8	879a48xod34	1	\N	\N	2
+f205ix4mjg8	h55y4nxqk03	5	\N	\N	\N
+f205ix4mjg8	bn77syhm2pe	6	\N	\N	\N
+hpsahlctqoi	hpsahlctqoi	0	f	properties	\N
+ca17vjb0am6	hpsahlctqoi	2	\N	\N	\N
+qbrsluqev37	nfqlgjzo91t	9	\N	\N	\N
+fvx7g50y58n	h55y4nxqk03	6	\N	\N	\N
+fvx7g50y58n	bn77syhm2pe	7	\N	\N	\N
+fl6193tpei8	nfqlgjzo91t	10	\N	\N	\N
+bawj0uea3a0	bawj0uea3a0	0	f	properties	\N
+x4kjbk4wyiq	bawj0uea3a0	1	\N	\N	2
 618tdc60kn1	618tdc60kn1	0	f	properties	\N
 bvvdhzo9s04	618tdc60kn1	1	\N	\N	1
 gfqvdpu1eu4	gfqvdpu1eu4	0	f	properties	\N
@@ -11657,173 +11330,46 @@ ji9t3fgnkc0	gfqvdpu1eu4	13	\N	\N	\N
 yjzd6s5ccq4	bvvdhzo9s04	12	\N	\N	\N
 yjzd6s5ccq4	618tdc60kn1	13	\N	\N	\N
 yjzd6s5ccq4	gfqvdpu1eu4	14	\N	\N	\N
-imrhc9he5on	bvvdhzo9s04	13	\N	\N	\N
-imrhc9he5on	618tdc60kn1	14	\N	\N	\N
-imrhc9he5on	gfqvdpu1eu4	15	\N	\N	\N
-82ikkgrog2y	bvvdhzo9s04	14	\N	\N	\N
-82ikkgrog2y	618tdc60kn1	15	\N	\N	\N
-82ikkgrog2y	gfqvdpu1eu4	16	\N	\N	\N
-mmj417nrjpa	bvvdhzo9s04	15	\N	\N	\N
-mmj417nrjpa	618tdc60kn1	16	\N	\N	\N
-mmj417nrjpa	gfqvdpu1eu4	17	\N	\N	\N
-lmgnrgroovk	bvvdhzo9s04	16	\N	\N	\N
-lmgnrgroovk	618tdc60kn1	17	\N	\N	\N
-lmgnrgroovk	gfqvdpu1eu4	18	\N	\N	\N
-4cx141n1lb4	bvvdhzo9s04	17	\N	\N	\N
-4cx141n1lb4	618tdc60kn1	18	\N	\N	\N
-4cx141n1lb4	gfqvdpu1eu4	19	\N	\N	\N
-k6pr2jh3wgd	bvvdhzo9s04	18	\N	\N	\N
-k6pr2jh3wgd	618tdc60kn1	19	\N	\N	\N
-k6pr2jh3wgd	gfqvdpu1eu4	20	\N	\N	\N
-hchm15rxv74	bvvdhzo9s04	19	\N	\N	\N
-hchm15rxv74	618tdc60kn1	20	\N	\N	\N
-hchm15rxv74	gfqvdpu1eu4	21	\N	\N	\N
-073buw1m70l	bvvdhzo9s04	20	\N	\N	\N
-073buw1m70l	618tdc60kn1	21	\N	\N	\N
-073buw1m70l	gfqvdpu1eu4	22	\N	\N	\N
-nocobase-admin-menu	bvvdhzo9s04	21	\N	\N	\N
-nocobase-admin-menu	618tdc60kn1	22	\N	\N	\N
-nocobase-admin-menu	gfqvdpu1eu4	23	\N	\N	\N
+07jjkjhplo6	07jjkjhplo6	0	f	properties	\N
+2oimqa9byrp	07jjkjhplo6	2	\N	\N	\N
+tmbbsnq2x5b	07jjkjhplo6	3	\N	\N	\N
+oyy61gowm8y	07jjkjhplo6	4	\N	\N	\N
+cr7ggy2zrl6	07jjkjhplo6	5	\N	\N	\N
+9cngdl646v0	07jjkjhplo6	6	\N	\N	\N
+ybdxp7v91jn	07jjkjhplo6	7	\N	\N	\N
+muv6h06t8mi	07jjkjhplo6	8	\N	\N	\N
+8i28yvimg4p	07jjkjhplo6	9	\N	\N	\N
+66xqkev137r	07jjkjhplo6	10	\N	\N	\N
+m291sv0y712	nfqlgjzo91t	11	\N	\N	\N
+833uu3rb1nm	h55y4nxqk03	7	\N	\N	\N
+833uu3rb1nm	bn77syhm2pe	8	\N	\N	\N
+fuvpnwuajhl	scx9pufw9ld	2	\N	\N	\N
+syscnwrifc8	hpsahlctqoi	1	\N	\N	3
+ik0zt15yup2	h55y4nxqk03	8	\N	\N	\N
+foi2992qtlm	07jjkjhplo6	1	\N	\N	1
 bvvdhzo9s04	bvvdhzo9s04	0	f	properties	\N
 5ndh82rjiih	bvvdhzo9s04	1	\N	\N	1
-g910prz5n6j	g910prz5n6j	0	f	properties	\N
-8a8q29s3pam	g910prz5n6j	1	\N	\N	1
-okqx007j2i9	okqx007j2i9	0	f	properties	\N
-8a8q29s3pam	8a8q29s3pam	0	f	properties	\N
-g910prz5n6j	okqx007j2i9	1	\N	\N	1
-8a8q29s3pam	okqx007j2i9	2	\N	\N	1
-5ndh82rjiih	g910prz5n6j	2	\N	\N	\N
-5ndh82rjiih	okqx007j2i9	3	\N	\N	\N
-i4n9asspbd4	8a8q29s3pam	2	\N	\N	\N
-i4n9asspbd4	g910prz5n6j	3	\N	\N	\N
-i4n9asspbd4	okqx007j2i9	4	\N	\N	\N
-bu7t898gulm	8a8q29s3pam	3	\N	\N	\N
-bu7t898gulm	g910prz5n6j	4	\N	\N	\N
-bu7t898gulm	okqx007j2i9	5	\N	\N	\N
-5qaj9xi6q1y	8a8q29s3pam	4	\N	\N	\N
-5qaj9xi6q1y	g910prz5n6j	5	\N	\N	\N
-5qaj9xi6q1y	okqx007j2i9	6	\N	\N	\N
-02fwa86zov7	8a8q29s3pam	5	\N	\N	\N
-02fwa86zov7	g910prz5n6j	6	\N	\N	\N
-02fwa86zov7	okqx007j2i9	7	\N	\N	\N
-u4pz1nv2zu7	8a8q29s3pam	6	\N	\N	\N
-u4pz1nv2zu7	g910prz5n6j	7	\N	\N	\N
-u4pz1nv2zu7	okqx007j2i9	8	\N	\N	\N
-iniy0emerbt	8a8q29s3pam	7	\N	\N	\N
-iniy0emerbt	g910prz5n6j	8	\N	\N	\N
-iniy0emerbt	okqx007j2i9	9	\N	\N	\N
-zkmofdtbl6m	8a8q29s3pam	8	\N	\N	\N
-zkmofdtbl6m	g910prz5n6j	9	\N	\N	\N
-zkmofdtbl6m	okqx007j2i9	10	\N	\N	\N
-pvmgj00ippd	8a8q29s3pam	9	\N	\N	\N
-pvmgj00ippd	g910prz5n6j	10	\N	\N	\N
-pvmgj00ippd	okqx007j2i9	11	\N	\N	\N
-szv3v13lwap	8a8q29s3pam	10	\N	\N	\N
-szv3v13lwap	g910prz5n6j	11	\N	\N	\N
-szv3v13lwap	okqx007j2i9	12	\N	\N	\N
-ji9t3fgnkc0	8a8q29s3pam	11	\N	\N	\N
-ji9t3fgnkc0	g910prz5n6j	12	\N	\N	\N
-ji9t3fgnkc0	okqx007j2i9	13	\N	\N	\N
-yjzd6s5ccq4	8a8q29s3pam	12	\N	\N	\N
-yjzd6s5ccq4	g910prz5n6j	13	\N	\N	\N
-yjzd6s5ccq4	okqx007j2i9	14	\N	\N	\N
-imrhc9he5on	8a8q29s3pam	13	\N	\N	\N
-imrhc9he5on	g910prz5n6j	14	\N	\N	\N
-imrhc9he5on	okqx007j2i9	15	\N	\N	\N
-82ikkgrog2y	8a8q29s3pam	14	\N	\N	\N
-82ikkgrog2y	g910prz5n6j	15	\N	\N	\N
-82ikkgrog2y	okqx007j2i9	16	\N	\N	\N
-mmj417nrjpa	8a8q29s3pam	15	\N	\N	\N
-mmj417nrjpa	g910prz5n6j	16	\N	\N	\N
-mmj417nrjpa	okqx007j2i9	17	\N	\N	\N
-lmgnrgroovk	8a8q29s3pam	16	\N	\N	\N
-lmgnrgroovk	g910prz5n6j	17	\N	\N	\N
-lmgnrgroovk	okqx007j2i9	18	\N	\N	\N
-4cx141n1lb4	8a8q29s3pam	17	\N	\N	\N
-4cx141n1lb4	g910prz5n6j	18	\N	\N	\N
-4cx141n1lb4	okqx007j2i9	19	\N	\N	\N
-k6pr2jh3wgd	8a8q29s3pam	18	\N	\N	\N
-k6pr2jh3wgd	g910prz5n6j	19	\N	\N	\N
-k6pr2jh3wgd	okqx007j2i9	20	\N	\N	\N
-hchm15rxv74	8a8q29s3pam	19	\N	\N	\N
-hchm15rxv74	g910prz5n6j	20	\N	\N	\N
-hchm15rxv74	okqx007j2i9	21	\N	\N	\N
-073buw1m70l	8a8q29s3pam	20	\N	\N	\N
-073buw1m70l	g910prz5n6j	21	\N	\N	\N
-073buw1m70l	okqx007j2i9	22	\N	\N	\N
-nocobase-admin-menu	8a8q29s3pam	21	\N	\N	\N
-nocobase-admin-menu	g910prz5n6j	22	\N	\N	\N
-nocobase-admin-menu	okqx007j2i9	23	\N	\N	\N
-5ndh82rjiih	8a8q29s3pam	1	\N	\N	2
-cksn73owy57	cksn73owy57	0	f	properties	\N
-dxixmathoof	cksn73owy57	1	\N	\N	1
-3fbm9qpyq34	3fbm9qpyq34	0	f	properties	\N
-cksn73owy57	3fbm9qpyq34	1	\N	\N	1
-dxixmathoof	3fbm9qpyq34	2	\N	\N	1
-5ndh82rjiih	cksn73owy57	2	\N	\N	\N
-5ndh82rjiih	3fbm9qpyq34	3	\N	\N	\N
-i4n9asspbd4	dxixmathoof	2	\N	\N	\N
-i4n9asspbd4	cksn73owy57	3	\N	\N	\N
-i4n9asspbd4	3fbm9qpyq34	4	\N	\N	\N
-bu7t898gulm	dxixmathoof	3	\N	\N	\N
-bu7t898gulm	cksn73owy57	4	\N	\N	\N
-bu7t898gulm	3fbm9qpyq34	5	\N	\N	\N
-5qaj9xi6q1y	dxixmathoof	4	\N	\N	\N
-5qaj9xi6q1y	cksn73owy57	5	\N	\N	\N
-5qaj9xi6q1y	3fbm9qpyq34	6	\N	\N	\N
-02fwa86zov7	dxixmathoof	5	\N	\N	\N
-02fwa86zov7	cksn73owy57	6	\N	\N	\N
-02fwa86zov7	3fbm9qpyq34	7	\N	\N	\N
-u4pz1nv2zu7	dxixmathoof	6	\N	\N	\N
-u4pz1nv2zu7	cksn73owy57	7	\N	\N	\N
-u4pz1nv2zu7	3fbm9qpyq34	8	\N	\N	\N
-iniy0emerbt	dxixmathoof	7	\N	\N	\N
-iniy0emerbt	cksn73owy57	8	\N	\N	\N
-iniy0emerbt	3fbm9qpyq34	9	\N	\N	\N
-zkmofdtbl6m	dxixmathoof	8	\N	\N	\N
-zkmofdtbl6m	cksn73owy57	9	\N	\N	\N
-zkmofdtbl6m	3fbm9qpyq34	10	\N	\N	\N
-pvmgj00ippd	dxixmathoof	9	\N	\N	\N
-pvmgj00ippd	cksn73owy57	10	\N	\N	\N
-pvmgj00ippd	3fbm9qpyq34	11	\N	\N	\N
-szv3v13lwap	dxixmathoof	10	\N	\N	\N
-szv3v13lwap	cksn73owy57	11	\N	\N	\N
-szv3v13lwap	3fbm9qpyq34	12	\N	\N	\N
-ji9t3fgnkc0	dxixmathoof	11	\N	\N	\N
-ji9t3fgnkc0	cksn73owy57	12	\N	\N	\N
-ji9t3fgnkc0	3fbm9qpyq34	13	\N	\N	\N
-yjzd6s5ccq4	dxixmathoof	12	\N	\N	\N
-yjzd6s5ccq4	cksn73owy57	13	\N	\N	\N
-yjzd6s5ccq4	3fbm9qpyq34	14	\N	\N	\N
-imrhc9he5on	dxixmathoof	13	\N	\N	\N
-imrhc9he5on	cksn73owy57	14	\N	\N	\N
-imrhc9he5on	3fbm9qpyq34	15	\N	\N	\N
-82ikkgrog2y	dxixmathoof	14	\N	\N	\N
-82ikkgrog2y	cksn73owy57	15	\N	\N	\N
-82ikkgrog2y	3fbm9qpyq34	16	\N	\N	\N
-mmj417nrjpa	dxixmathoof	15	\N	\N	\N
-mmj417nrjpa	cksn73owy57	16	\N	\N	\N
-mmj417nrjpa	3fbm9qpyq34	17	\N	\N	\N
-lmgnrgroovk	dxixmathoof	16	\N	\N	\N
-lmgnrgroovk	cksn73owy57	17	\N	\N	\N
-lmgnrgroovk	3fbm9qpyq34	18	\N	\N	\N
-4cx141n1lb4	dxixmathoof	17	\N	\N	\N
-4cx141n1lb4	cksn73owy57	18	\N	\N	\N
-4cx141n1lb4	3fbm9qpyq34	19	\N	\N	\N
-k6pr2jh3wgd	dxixmathoof	18	\N	\N	\N
-k6pr2jh3wgd	cksn73owy57	19	\N	\N	\N
-k6pr2jh3wgd	3fbm9qpyq34	20	\N	\N	\N
-hchm15rxv74	dxixmathoof	19	\N	\N	\N
-hchm15rxv74	cksn73owy57	20	\N	\N	\N
-hchm15rxv74	3fbm9qpyq34	21	\N	\N	\N
-073buw1m70l	dxixmathoof	20	\N	\N	\N
-073buw1m70l	cksn73owy57	21	\N	\N	\N
-073buw1m70l	3fbm9qpyq34	22	\N	\N	\N
-nocobase-admin-menu	dxixmathoof	21	\N	\N	\N
-nocobase-admin-menu	cksn73owy57	22	\N	\N	\N
-nocobase-admin-menu	3fbm9qpyq34	23	\N	\N	\N
-5ndh82rjiih	dxixmathoof	1	\N	\N	3
-dxixmathoof	dxixmathoof	0	f	properties	\N
+ik0zt15yup2	bn77syhm2pe	9	\N	\N	\N
+cysvcwwaf4c	cysvcwwaf4c	0	f	properties	\N
+fuvpnwuajhl	ftwn0si2s5e	3	\N	\N	\N
+fuvpnwuajhl	que1e0cmz1z	4	\N	\N	\N
+pdot2ybyfc0	e87ogy2w48b	2	\N	\N	\N
+a7e860jrx5o	e87ogy2w48b	3	\N	\N	\N
+zxh1oe1qx5t	e87ogy2w48b	4	\N	\N	\N
+861gmcfwhia	e87ogy2w48b	5	\N	\N	\N
+9yos6i0cjm3	e87ogy2w48b	6	\N	\N	\N
+n3yigbe0k9v	e87ogy2w48b	7	\N	\N	\N
+073buw1m70l	e87ogy2w48b	8	\N	\N	\N
+nocobase-admin-menu	e87ogy2w48b	9	\N	\N	\N
+i0bqeajbvwo	galt7hbd78y	2	\N	\N	\N
+pdot2ybyfc0	galt7hbd78y	3	\N	\N	\N
+a7e860jrx5o	galt7hbd78y	4	\N	\N	\N
+zxh1oe1qx5t	galt7hbd78y	5	\N	\N	\N
+861gmcfwhia	galt7hbd78y	6	\N	\N	\N
+9yos6i0cjm3	galt7hbd78y	7	\N	\N	\N
+n3yigbe0k9v	galt7hbd78y	8	\N	\N	\N
+073buw1m70l	galt7hbd78y	9	\N	\N	\N
+nocobase-admin-menu	galt7hbd78y	10	\N	\N	\N
 kycuv3ul77x	kycuv3ul77x	0	f	properties	\N
 i4n9asspbd4	kycuv3ul77x	2	\N	\N	\N
 bu7t898gulm	kycuv3ul77x	3	\N	\N	\N
@@ -11836,15 +11382,6 @@ pvmgj00ippd	kycuv3ul77x	9	\N	\N	\N
 szv3v13lwap	kycuv3ul77x	10	\N	\N	\N
 ji9t3fgnkc0	kycuv3ul77x	11	\N	\N	\N
 yjzd6s5ccq4	kycuv3ul77x	12	\N	\N	\N
-imrhc9he5on	kycuv3ul77x	13	\N	\N	\N
-82ikkgrog2y	kycuv3ul77x	14	\N	\N	\N
-mmj417nrjpa	kycuv3ul77x	15	\N	\N	\N
-lmgnrgroovk	kycuv3ul77x	16	\N	\N	\N
-4cx141n1lb4	kycuv3ul77x	17	\N	\N	\N
-k6pr2jh3wgd	kycuv3ul77x	18	\N	\N	\N
-hchm15rxv74	kycuv3ul77x	19	\N	\N	\N
-073buw1m70l	kycuv3ul77x	20	\N	\N	\N
-nocobase-admin-menu	kycuv3ul77x	21	\N	\N	\N
 kj70yf1en4o	kycuv3ul77x	1	\N	\N	1
 5uo2qh1l9qt	5uo2qh1l9qt	0	f	properties	\N
 w2xb0a6rkey	5uo2qh1l9qt	1	\N	\N	1
@@ -11866,25 +11403,12 @@ obl2auujo32	xz0vx55hcc4	3	\N	\N	\N
 nocobase-admin-menu	xz0vx55hcc4	4	\N	\N	\N
 xz0vx55hcc4	xz0vx55hcc4	0	f	properties	\N
 i80vemflinb	xz0vx55hcc4	1	\N	\N	4
-wbf59rpu21x	wbf59rpu21x	0	f	properties	\N
-zdule12dho7	zdule12dho7	0	f	properties	\N
-wbf59rpu21x	zdule12dho7	1	\N	\N	1
-h6d3ghccgs1	zdule12dho7	2	\N	\N	1
-vyxprlubesu	wbf59rpu21x	2	\N	\N	\N
-vyxprlubesu	zdule12dho7	3	\N	\N	\N
 ai8i45ojqri	h6d3ghccgs1	2	\N	\N	\N
-ai8i45ojqri	wbf59rpu21x	3	\N	\N	\N
-ai8i45ojqri	zdule12dho7	4	\N	\N	\N
 rsvj3o8613d	h6d3ghccgs1	3	\N	\N	\N
-rsvj3o8613d	wbf59rpu21x	4	\N	\N	\N
-rsvj3o8613d	zdule12dho7	5	\N	\N	\N
 w2xb0a6rkey	h6d3ghccgs1	4	\N	\N	\N
-w2xb0a6rkey	wbf59rpu21x	5	\N	\N	\N
-w2xb0a6rkey	zdule12dho7	6	\N	\N	\N
 h6d3ghccgs1	h6d3ghccgs1	0	f	properties	\N
 vyxprlubesu	h6d3ghccgs1	1	\N	\N	1
 g5s8ryvvhrz	g5s8ryvvhrz	0	f	properties	\N
-h6d3ghccgs1	wbf59rpu21x	1	\N	\N	2
 w2xb0a6rkey	w2xb0a6rkey	0	f	properties	\N
 ai8i45ojqri	g5s8ryvvhrz	2	\N	\N	\N
 rsvj3o8613d	g5s8ryvvhrz	3	\N	\N	\N
@@ -11902,7 +11426,6 @@ rsvj3o8613d	acba1j7epdp	3	\N	\N	\N
 w2xb0a6rkey	acba1j7epdp	4	\N	\N	\N
 mgzf1cosw9o	mgzf1cosw9o	0	f	properties	\N
 6rat324pm10	6rat324pm10	0	f	properties	\N
-14iywme93h8	14iywme93h8	0	f	properties	\N
 rtb84viwmc5	rtb84viwmc5	0	f	properties	\N
 svvvwbieur7	mgzf1cosw9o	1	\N	\N	1
 h6d3ghccgs1	mgzf1cosw9o	2	\N	\N	\N
@@ -11927,17 +11450,6 @@ rsvj3o8613d	6rat324pm10	5	\N	\N	\N
 w2xb0a6rkey	s3eai5hxpps	5	\N	\N	\N
 w2xb0a6rkey	6rat324pm10	6	\N	\N	\N
 s3eai5hxpps	s3eai5hxpps	0	f	properties	\N
-kgtaxni455a	14iywme93h8	1	\N	\N	1
-h6d3ghccgs1	14iywme93h8	2	\N	\N	\N
-vyxprlubesu	kgtaxni455a	2	\N	\N	\N
-vyxprlubesu	14iywme93h8	3	\N	\N	\N
-ai8i45ojqri	kgtaxni455a	3	\N	\N	\N
-ai8i45ojqri	14iywme93h8	4	\N	\N	\N
-rsvj3o8613d	kgtaxni455a	4	\N	\N	\N
-rsvj3o8613d	14iywme93h8	5	\N	\N	\N
-w2xb0a6rkey	kgtaxni455a	5	\N	\N	\N
-w2xb0a6rkey	14iywme93h8	6	\N	\N	\N
-kgtaxni455a	kgtaxni455a	0	f	properties	\N
 ai8i45ojqri	rtb84viwmc5	2	\N	\N	\N
 rsvj3o8613d	rtb84viwmc5	3	\N	\N	\N
 w2xb0a6rkey	rtb84viwmc5	4	\N	\N	\N
@@ -11953,9 +11465,6 @@ rsvj3o8613d	ynl1lraa9vt	5	\N	\N	\N
 w2xb0a6rkey	ivd8t19ab1b	5	\N	\N	\N
 w2xb0a6rkey	ynl1lraa9vt	6	\N	\N	\N
 ivd8t19ab1b	ivd8t19ab1b	0	f	properties	\N
-h6d3ghccgs1	svvvwbieur7	1	\N	\N	3
-h6d3ghccgs1	s3eai5hxpps	1	\N	\N	4
-h6d3ghccgs1	kgtaxni455a	1	\N	\N	5
 h6d3ghccgs1	ivd8t19ab1b	1	\N	\N	1
 x8ujxnhlng7	5uo2qh1l9qt	2	\N	\N	\N
 x8ujxnhlng7	rsvj3o8613d	2	\N	\N	\N
@@ -11963,8 +11472,6 @@ x8ujxnhlng7	ai8i45ojqri	3	\N	\N	\N
 x8ujxnhlng7	vyxprlubesu	4	\N	\N	\N
 x8ujxnhlng7	ln3hk72efta	4	\N	\N	\N
 x8ujxnhlng7	h6d3ghccgs1	5	\N	\N	\N
-x8ujxnhlng7	wbf59rpu21x	6	\N	\N	\N
-x8ujxnhlng7	zdule12dho7	7	\N	\N	\N
 x8ujxnhlng7	g5s8ryvvhrz	5	\N	\N	\N
 x8ujxnhlng7	cpsgd6q8tor	5	\N	\N	\N
 x8ujxnhlng7	acba1j7epdp	5	\N	\N	\N
@@ -11972,8 +11479,6 @@ x8ujxnhlng7	svvvwbieur7	6	\N	\N	\N
 x8ujxnhlng7	mgzf1cosw9o	7	\N	\N	\N
 x8ujxnhlng7	s3eai5hxpps	6	\N	\N	\N
 x8ujxnhlng7	6rat324pm10	7	\N	\N	\N
-x8ujxnhlng7	kgtaxni455a	6	\N	\N	\N
-x8ujxnhlng7	14iywme93h8	7	\N	\N	\N
 x8ujxnhlng7	rtb84viwmc5	5	\N	\N	\N
 x8ujxnhlng7	ivd8t19ab1b	6	\N	\N	\N
 x8ujxnhlng7	ynl1lraa9vt	7	\N	\N	\N
@@ -11985,8 +11490,6 @@ evtz6ljqxdq	ai8i45ojqri	4	\N	\N	\N
 evtz6ljqxdq	vyxprlubesu	5	\N	\N	\N
 evtz6ljqxdq	ln3hk72efta	5	\N	\N	\N
 evtz6ljqxdq	h6d3ghccgs1	6	\N	\N	\N
-evtz6ljqxdq	wbf59rpu21x	7	\N	\N	\N
-evtz6ljqxdq	zdule12dho7	8	\N	\N	\N
 evtz6ljqxdq	g5s8ryvvhrz	6	\N	\N	\N
 evtz6ljqxdq	cpsgd6q8tor	6	\N	\N	\N
 evtz6ljqxdq	acba1j7epdp	6	\N	\N	\N
@@ -11994,8 +11497,6 @@ evtz6ljqxdq	svvvwbieur7	7	\N	\N	\N
 evtz6ljqxdq	mgzf1cosw9o	8	\N	\N	\N
 evtz6ljqxdq	s3eai5hxpps	7	\N	\N	\N
 evtz6ljqxdq	6rat324pm10	8	\N	\N	\N
-evtz6ljqxdq	kgtaxni455a	7	\N	\N	\N
-evtz6ljqxdq	14iywme93h8	8	\N	\N	\N
 evtz6ljqxdq	rtb84viwmc5	6	\N	\N	\N
 evtz6ljqxdq	ivd8t19ab1b	7	\N	\N	\N
 evtz6ljqxdq	ynl1lraa9vt	8	\N	\N	\N
@@ -12007,8 +11508,6 @@ i80vemflinb	ai8i45ojqri	5	\N	\N	\N
 i80vemflinb	vyxprlubesu	6	\N	\N	\N
 i80vemflinb	ln3hk72efta	6	\N	\N	\N
 i80vemflinb	h6d3ghccgs1	7	\N	\N	\N
-i80vemflinb	wbf59rpu21x	8	\N	\N	\N
-i80vemflinb	zdule12dho7	9	\N	\N	\N
 i80vemflinb	g5s8ryvvhrz	7	\N	\N	\N
 i80vemflinb	cpsgd6q8tor	7	\N	\N	\N
 i80vemflinb	acba1j7epdp	7	\N	\N	\N
@@ -12016,8 +11515,6 @@ i80vemflinb	svvvwbieur7	8	\N	\N	\N
 i80vemflinb	mgzf1cosw9o	9	\N	\N	\N
 i80vemflinb	s3eai5hxpps	8	\N	\N	\N
 i80vemflinb	6rat324pm10	9	\N	\N	\N
-i80vemflinb	kgtaxni455a	8	\N	\N	\N
-i80vemflinb	14iywme93h8	9	\N	\N	\N
 i80vemflinb	rtb84viwmc5	7	\N	\N	\N
 i80vemflinb	ivd8t19ab1b	8	\N	\N	\N
 i80vemflinb	ynl1lraa9vt	9	\N	\N	\N
@@ -12029,8 +11526,6 @@ i80vemflinb	ynl1lraa9vt	9	\N	\N	\N
 5bru92qlyrq	vyxprlubesu	7	\N	\N	\N
 5bru92qlyrq	ln3hk72efta	7	\N	\N	\N
 5bru92qlyrq	h6d3ghccgs1	8	\N	\N	\N
-5bru92qlyrq	wbf59rpu21x	9	\N	\N	\N
-5bru92qlyrq	zdule12dho7	10	\N	\N	\N
 5bru92qlyrq	g5s8ryvvhrz	8	\N	\N	\N
 5bru92qlyrq	cpsgd6q8tor	8	\N	\N	\N
 5bru92qlyrq	acba1j7epdp	8	\N	\N	\N
@@ -12038,9 +11533,9 @@ i80vemflinb	ynl1lraa9vt	9	\N	\N	\N
 5bru92qlyrq	mgzf1cosw9o	10	\N	\N	\N
 5bru92qlyrq	s3eai5hxpps	9	\N	\N	\N
 5bru92qlyrq	6rat324pm10	10	\N	\N	\N
-5bru92qlyrq	kgtaxni455a	9	\N	\N	\N
-5bru92qlyrq	14iywme93h8	10	\N	\N	\N
 5bru92qlyrq	rtb84viwmc5	8	\N	\N	\N
+h6d3ghccgs1	svvvwbieur7	1	\N	\N	4
+h6d3ghccgs1	s3eai5hxpps	1	\N	\N	6
 5bru92qlyrq	ivd8t19ab1b	9	\N	\N	\N
 5bru92qlyrq	ynl1lraa9vt	10	\N	\N	\N
 obl2auujo32	x8ujxnhlng7	4	\N	\N	\N
@@ -12051,8 +11546,6 @@ obl2auujo32	ai8i45ojqri	7	\N	\N	\N
 obl2auujo32	vyxprlubesu	8	\N	\N	\N
 obl2auujo32	ln3hk72efta	8	\N	\N	\N
 obl2auujo32	h6d3ghccgs1	9	\N	\N	\N
-obl2auujo32	wbf59rpu21x	10	\N	\N	\N
-obl2auujo32	zdule12dho7	11	\N	\N	\N
 obl2auujo32	g5s8ryvvhrz	9	\N	\N	\N
 obl2auujo32	cpsgd6q8tor	9	\N	\N	\N
 obl2auujo32	acba1j7epdp	9	\N	\N	\N
@@ -12060,8 +11553,6 @@ obl2auujo32	svvvwbieur7	10	\N	\N	\N
 obl2auujo32	mgzf1cosw9o	11	\N	\N	\N
 obl2auujo32	s3eai5hxpps	10	\N	\N	\N
 obl2auujo32	6rat324pm10	11	\N	\N	\N
-obl2auujo32	kgtaxni455a	10	\N	\N	\N
-obl2auujo32	14iywme93h8	11	\N	\N	\N
 obl2auujo32	rtb84viwmc5	9	\N	\N	\N
 obl2auujo32	ivd8t19ab1b	10	\N	\N	\N
 obl2auujo32	ynl1lraa9vt	11	\N	\N	\N
@@ -12073,9 +11564,7 @@ nocobase-admin-menu	ai8i45ojqri	8	\N	\N	\N
 nocobase-admin-menu	vyxprlubesu	9	\N	\N	\N
 nocobase-admin-menu	ln3hk72efta	9	\N	\N	\N
 nocobase-admin-menu	h6d3ghccgs1	10	\N	\N	\N
-nocobase-admin-menu	wbf59rpu21x	11	\N	\N	\N
 x8ujxnhlng7	x8ujxnhlng7	0	f	properties	\N
-nocobase-admin-menu	zdule12dho7	12	\N	\N	\N
 nocobase-admin-menu	g5s8ryvvhrz	10	\N	\N	\N
 nocobase-admin-menu	cpsgd6q8tor	10	\N	\N	\N
 nocobase-admin-menu	acba1j7epdp	10	\N	\N	\N
@@ -12083,8 +11572,6 @@ nocobase-admin-menu	svvvwbieur7	11	\N	\N	\N
 nocobase-admin-menu	mgzf1cosw9o	12	\N	\N	\N
 nocobase-admin-menu	s3eai5hxpps	11	\N	\N	\N
 nocobase-admin-menu	6rat324pm10	12	\N	\N	\N
-nocobase-admin-menu	kgtaxni455a	11	\N	\N	\N
-nocobase-admin-menu	14iywme93h8	12	\N	\N	\N
 nocobase-admin-menu	rtb84viwmc5	10	\N	\N	\N
 nocobase-admin-menu	ivd8t19ab1b	11	\N	\N	\N
 nocobase-admin-menu	ynl1lraa9vt	12	\N	\N	\N
@@ -12148,12 +11635,7935 @@ jqr7lgri2e0	ylb28qrdtcf	6	\N	\N	\N
 073buw1m70l	ylb28qrdtcf	8	\N	\N	\N
 nocobase-admin-menu	ylb28qrdtcf	9	\N	\N	\N
 grji76conif	ylb28qrdtcf	1	\N	\N	2
+iiek91fm1lg	9udwuhf2o25	2	\N	\N	\N
+dwzj4kwyaia	fuvpnwuajhl	2	\N	\N	\N
+iiek91fm1lg	fuvpnwuajhl	3	\N	\N	\N
+dwzj4kwyaia	a2izctpt2dm	3	\N	\N	\N
+iiek91fm1lg	a2izctpt2dm	4	\N	\N	\N
+dwzj4kwyaia	8qtz3wrc8jb	4	\N	\N	\N
+iiek91fm1lg	8qtz3wrc8jb	5	\N	\N	\N
+dwzj4kwyaia	sge8s8r9kdv	5	\N	\N	\N
+iiek91fm1lg	sge8s8r9kdv	6	\N	\N	\N
+dwzj4kwyaia	0pc9xw649k4	6	\N	\N	\N
+iiek91fm1lg	0pc9xw649k4	7	\N	\N	\N
+dwzj4kwyaia	1vvvk5b0mrj	7	\N	\N	\N
+iiek91fm1lg	1vvvk5b0mrj	8	\N	\N	\N
+3d4bg9et9gc	nfqlgjzo91t	12	\N	\N	\N
+pdtxkxhi0px	nfqlgjzo91t	13	\N	\N	\N
+9kxizfoklw7	nfqlgjzo91t	14	\N	\N	\N
+puz5i9w50bl	nfqlgjzo91t	15	\N	\N	\N
+idfhxat5qg6	nfqlgjzo91t	16	\N	\N	\N
+iqddf9bwww2	nfqlgjzo91t	17	\N	\N	\N
+eoxofxze047	nfqlgjzo91t	18	\N	\N	\N
+p3ls96regvr	nfqlgjzo91t	19	\N	\N	\N
+073buw1m70l	nfqlgjzo91t	20	\N	\N	\N
+nocobase-admin-menu	nfqlgjzo91t	21	\N	\N	\N
+nfqlgjzo91t	nfqlgjzo91t	0	f	properties	\N
+dwzj4kwyaia	gf7yu1fk5fu	3	\N	\N	\N
+iiek91fm1lg	gf7yu1fk5fu	4	\N	\N	\N
+zg36b96ttmj	nfqlgjzo91t	1	\N	\N	7
+eb8ywubhlwn	eb8ywubhlwn	0	f	properties	\N
+9udwuhf2o25	9udwuhf2o25	0	f	properties	\N
+dwzj4kwyaia	9udwuhf2o25	1	\N	\N	5
+82ikkgrog2y	yjzd6s5ccq4	2	\N	\N	\N
+mmj417nrjpa	yjzd6s5ccq4	3	\N	\N	\N
+lmgnrgroovk	yjzd6s5ccq4	4	\N	\N	\N
+4cx141n1lb4	yjzd6s5ccq4	5	\N	\N	\N
+k6pr2jh3wgd	yjzd6s5ccq4	6	\N	\N	\N
+hchm15rxv74	yjzd6s5ccq4	7	\N	\N	\N
+073buw1m70l	yjzd6s5ccq4	8	\N	\N	\N
+nocobase-admin-menu	yjzd6s5ccq4	9	\N	\N	\N
+imrhc9he5on	ji9t3fgnkc0	2	\N	\N	\N
+82ikkgrog2y	ji9t3fgnkc0	3	\N	\N	\N
+mmj417nrjpa	ji9t3fgnkc0	4	\N	\N	\N
+lmgnrgroovk	ji9t3fgnkc0	5	\N	\N	\N
+4cx141n1lb4	ji9t3fgnkc0	6	\N	\N	\N
+k6pr2jh3wgd	ji9t3fgnkc0	7	\N	\N	\N
+hchm15rxv74	ji9t3fgnkc0	8	\N	\N	\N
+073buw1m70l	ji9t3fgnkc0	9	\N	\N	\N
+nocobase-admin-menu	ji9t3fgnkc0	10	\N	\N	\N
+imrhc9he5on	2bwco99n47x	3	\N	\N	\N
+82ikkgrog2y	2bwco99n47x	4	\N	\N	\N
+mmj417nrjpa	2bwco99n47x	5	\N	\N	\N
+lmgnrgroovk	2bwco99n47x	6	\N	\N	\N
+4cx141n1lb4	2bwco99n47x	7	\N	\N	\N
+k6pr2jh3wgd	2bwco99n47x	8	\N	\N	\N
+hchm15rxv74	2bwco99n47x	9	\N	\N	\N
+073buw1m70l	2bwco99n47x	10	\N	\N	\N
+nocobase-admin-menu	2bwco99n47x	11	\N	\N	\N
+imrhc9he5on	2w360eurk19	5	\N	\N	\N
+82ikkgrog2y	2w360eurk19	6	\N	\N	\N
+mmj417nrjpa	2w360eurk19	7	\N	\N	\N
+lmgnrgroovk	2w360eurk19	8	\N	\N	\N
+4cx141n1lb4	2w360eurk19	9	\N	\N	\N
+k6pr2jh3wgd	2w360eurk19	10	\N	\N	\N
+hchm15rxv74	2w360eurk19	11	\N	\N	\N
+073buw1m70l	2w360eurk19	12	\N	\N	\N
+nocobase-admin-menu	2w360eurk19	13	\N	\N	\N
+imrhc9he5on	85c8uxmskwh	6	\N	\N	\N
+82ikkgrog2y	85c8uxmskwh	7	\N	\N	\N
+mmj417nrjpa	85c8uxmskwh	8	\N	\N	\N
+lmgnrgroovk	85c8uxmskwh	9	\N	\N	\N
+4cx141n1lb4	85c8uxmskwh	10	\N	\N	\N
+k6pr2jh3wgd	85c8uxmskwh	11	\N	\N	\N
+hchm15rxv74	85c8uxmskwh	12	\N	\N	\N
+073buw1m70l	85c8uxmskwh	13	\N	\N	\N
+nocobase-admin-menu	85c8uxmskwh	14	\N	\N	\N
+imrhc9he5on	e2bz79kfn39	4	\N	\N	\N
+82ikkgrog2y	e2bz79kfn39	5	\N	\N	\N
+mmj417nrjpa	e2bz79kfn39	6	\N	\N	\N
+lmgnrgroovk	e2bz79kfn39	7	\N	\N	\N
+4cx141n1lb4	e2bz79kfn39	8	\N	\N	\N
+k6pr2jh3wgd	e2bz79kfn39	9	\N	\N	\N
+hchm15rxv74	e2bz79kfn39	10	\N	\N	\N
+073buw1m70l	e2bz79kfn39	11	\N	\N	\N
+nocobase-admin-menu	e2bz79kfn39	12	\N	\N	\N
+imrhc9he5on	eolrwpo9lyf	7	\N	\N	\N
+82ikkgrog2y	eolrwpo9lyf	8	\N	\N	\N
+mmj417nrjpa	eolrwpo9lyf	9	\N	\N	\N
+lmgnrgroovk	eolrwpo9lyf	10	\N	\N	\N
+4cx141n1lb4	eolrwpo9lyf	11	\N	\N	\N
+k6pr2jh3wgd	eolrwpo9lyf	12	\N	\N	\N
+hchm15rxv74	eolrwpo9lyf	13	\N	\N	\N
+073buw1m70l	eolrwpo9lyf	14	\N	\N	\N
+nocobase-admin-menu	eolrwpo9lyf	15	\N	\N	\N
+imrhc9he5on	iniy0emerbt	6	\N	\N	\N
+82ikkgrog2y	iniy0emerbt	7	\N	\N	\N
+mmj417nrjpa	iniy0emerbt	8	\N	\N	\N
+lmgnrgroovk	iniy0emerbt	9	\N	\N	\N
+4cx141n1lb4	iniy0emerbt	10	\N	\N	\N
+k6pr2jh3wgd	iniy0emerbt	11	\N	\N	\N
+hchm15rxv74	iniy0emerbt	12	\N	\N	\N
+073buw1m70l	iniy0emerbt	13	\N	\N	\N
+nocobase-admin-menu	iniy0emerbt	14	\N	\N	\N
+imrhc9he5on	pvmgj00ippd	4	\N	\N	\N
+82ikkgrog2y	pvmgj00ippd	5	\N	\N	\N
+mmj417nrjpa	pvmgj00ippd	6	\N	\N	\N
+lmgnrgroovk	pvmgj00ippd	7	\N	\N	\N
+4cx141n1lb4	pvmgj00ippd	8	\N	\N	\N
+k6pr2jh3wgd	pvmgj00ippd	9	\N	\N	\N
+hchm15rxv74	pvmgj00ippd	10	\N	\N	\N
+073buw1m70l	pvmgj00ippd	11	\N	\N	\N
+nocobase-admin-menu	pvmgj00ippd	12	\N	\N	\N
+imrhc9he5on	szv3v13lwap	3	\N	\N	\N
+82ikkgrog2y	szv3v13lwap	4	\N	\N	\N
+mmj417nrjpa	szv3v13lwap	5	\N	\N	\N
+lmgnrgroovk	szv3v13lwap	6	\N	\N	\N
+4cx141n1lb4	szv3v13lwap	7	\N	\N	\N
+k6pr2jh3wgd	szv3v13lwap	8	\N	\N	\N
+hchm15rxv74	szv3v13lwap	9	\N	\N	\N
+073buw1m70l	szv3v13lwap	10	\N	\N	\N
+nocobase-admin-menu	szv3v13lwap	11	\N	\N	\N
+imrhc9he5on	u4pz1nv2zu7	7	\N	\N	\N
+82ikkgrog2y	u4pz1nv2zu7	8	\N	\N	\N
+mmj417nrjpa	u4pz1nv2zu7	9	\N	\N	\N
+lmgnrgroovk	u4pz1nv2zu7	10	\N	\N	\N
+4cx141n1lb4	u4pz1nv2zu7	11	\N	\N	\N
+k6pr2jh3wgd	u4pz1nv2zu7	12	\N	\N	\N
+hchm15rxv74	u4pz1nv2zu7	13	\N	\N	\N
+073buw1m70l	u4pz1nv2zu7	14	\N	\N	\N
+nocobase-admin-menu	u4pz1nv2zu7	15	\N	\N	\N
+imrhc9he5on	zkmofdtbl6m	5	\N	\N	\N
+82ikkgrog2y	zkmofdtbl6m	6	\N	\N	\N
+mmj417nrjpa	zkmofdtbl6m	7	\N	\N	\N
+lmgnrgroovk	zkmofdtbl6m	8	\N	\N	\N
+4cx141n1lb4	zkmofdtbl6m	9	\N	\N	\N
+k6pr2jh3wgd	zkmofdtbl6m	10	\N	\N	\N
+hchm15rxv74	zkmofdtbl6m	11	\N	\N	\N
+073buw1m70l	zkmofdtbl6m	12	\N	\N	\N
+nocobase-admin-menu	zkmofdtbl6m	13	\N	\N	\N
+imrhc9he5on	ugbscwjg6mp	3	\N	\N	\N
+82ikkgrog2y	ugbscwjg6mp	4	\N	\N	\N
+mmj417nrjpa	ugbscwjg6mp	5	\N	\N	\N
+lmgnrgroovk	ugbscwjg6mp	6	\N	\N	\N
+4cx141n1lb4	ugbscwjg6mp	7	\N	\N	\N
+k6pr2jh3wgd	ugbscwjg6mp	8	\N	\N	\N
+hchm15rxv74	ugbscwjg6mp	9	\N	\N	\N
+073buw1m70l	ugbscwjg6mp	10	\N	\N	\N
+nocobase-admin-menu	ugbscwjg6mp	11	\N	\N	\N
+imrhc9he5on	02fwa86zov7	8	\N	\N	\N
+82ikkgrog2y	02fwa86zov7	9	\N	\N	\N
+mmj417nrjpa	02fwa86zov7	10	\N	\N	\N
+lmgnrgroovk	02fwa86zov7	11	\N	\N	\N
+4cx141n1lb4	02fwa86zov7	12	\N	\N	\N
+k6pr2jh3wgd	02fwa86zov7	13	\N	\N	\N
+hchm15rxv74	02fwa86zov7	14	\N	\N	\N
+073buw1m70l	02fwa86zov7	15	\N	\N	\N
+nocobase-admin-menu	02fwa86zov7	16	\N	\N	\N
+imrhc9he5on	5qaj9xi6q1y	9	\N	\N	\N
+82ikkgrog2y	5qaj9xi6q1y	10	\N	\N	\N
+mmj417nrjpa	5qaj9xi6q1y	11	\N	\N	\N
+lmgnrgroovk	5qaj9xi6q1y	12	\N	\N	\N
+4cx141n1lb4	5qaj9xi6q1y	13	\N	\N	\N
+k6pr2jh3wgd	5qaj9xi6q1y	14	\N	\N	\N
+hchm15rxv74	5qaj9xi6q1y	15	\N	\N	\N
+073buw1m70l	5qaj9xi6q1y	16	\N	\N	\N
+nocobase-admin-menu	5qaj9xi6q1y	17	\N	\N	\N
+imrhc9he5on	bu7t898gulm	10	\N	\N	\N
+82ikkgrog2y	bu7t898gulm	11	\N	\N	\N
+mmj417nrjpa	bu7t898gulm	12	\N	\N	\N
+lmgnrgroovk	bu7t898gulm	13	\N	\N	\N
+4cx141n1lb4	bu7t898gulm	14	\N	\N	\N
+k6pr2jh3wgd	bu7t898gulm	15	\N	\N	\N
+hchm15rxv74	bu7t898gulm	16	\N	\N	\N
+073buw1m70l	bu7t898gulm	17	\N	\N	\N
+nocobase-admin-menu	bu7t898gulm	18	\N	\N	\N
+imrhc9he5on	i4n9asspbd4	11	\N	\N	\N
+82ikkgrog2y	i4n9asspbd4	12	\N	\N	\N
+mmj417nrjpa	i4n9asspbd4	13	\N	\N	\N
+lmgnrgroovk	i4n9asspbd4	14	\N	\N	\N
+4cx141n1lb4	i4n9asspbd4	15	\N	\N	\N
+k6pr2jh3wgd	i4n9asspbd4	16	\N	\N	\N
+hchm15rxv74	i4n9asspbd4	17	\N	\N	\N
+073buw1m70l	i4n9asspbd4	18	\N	\N	\N
+nocobase-admin-menu	i4n9asspbd4	19	\N	\N	\N
+imrhc9he5on	5ndh82rjiih	12	\N	\N	\N
+82ikkgrog2y	5ndh82rjiih	13	\N	\N	\N
+mmj417nrjpa	5ndh82rjiih	14	\N	\N	\N
+lmgnrgroovk	5ndh82rjiih	15	\N	\N	\N
+4cx141n1lb4	5ndh82rjiih	16	\N	\N	\N
+k6pr2jh3wgd	5ndh82rjiih	17	\N	\N	\N
+hchm15rxv74	5ndh82rjiih	18	\N	\N	\N
+073buw1m70l	5ndh82rjiih	19	\N	\N	\N
+nocobase-admin-menu	5ndh82rjiih	20	\N	\N	\N
+imrhc9he5on	kj70yf1en4o	12	\N	\N	\N
+82ikkgrog2y	kj70yf1en4o	13	\N	\N	\N
+mmj417nrjpa	kj70yf1en4o	14	\N	\N	\N
+lmgnrgroovk	kj70yf1en4o	15	\N	\N	\N
+4cx141n1lb4	kj70yf1en4o	16	\N	\N	\N
+k6pr2jh3wgd	kj70yf1en4o	17	\N	\N	\N
+hchm15rxv74	kj70yf1en4o	18	\N	\N	\N
+073buw1m70l	kj70yf1en4o	19	\N	\N	\N
+nocobase-admin-menu	kj70yf1en4o	20	\N	\N	\N
+imrhc9he5on	bvvdhzo9s04	13	\N	\N	\N
+82ikkgrog2y	bvvdhzo9s04	14	\N	\N	\N
+mmj417nrjpa	bvvdhzo9s04	15	\N	\N	\N
+lmgnrgroovk	bvvdhzo9s04	16	\N	\N	\N
+4cx141n1lb4	bvvdhzo9s04	17	\N	\N	\N
+k6pr2jh3wgd	bvvdhzo9s04	18	\N	\N	\N
+hchm15rxv74	bvvdhzo9s04	19	\N	\N	\N
+073buw1m70l	bvvdhzo9s04	20	\N	\N	\N
+nocobase-admin-menu	bvvdhzo9s04	21	\N	\N	\N
+imrhc9he5on	618tdc60kn1	14	\N	\N	\N
+82ikkgrog2y	618tdc60kn1	15	\N	\N	\N
+mmj417nrjpa	618tdc60kn1	16	\N	\N	\N
+lmgnrgroovk	618tdc60kn1	17	\N	\N	\N
+4cx141n1lb4	618tdc60kn1	18	\N	\N	\N
+k6pr2jh3wgd	618tdc60kn1	19	\N	\N	\N
+hchm15rxv74	618tdc60kn1	20	\N	\N	\N
+073buw1m70l	618tdc60kn1	21	\N	\N	\N
+nocobase-admin-menu	618tdc60kn1	22	\N	\N	\N
+imrhc9he5on	gfqvdpu1eu4	15	\N	\N	\N
+82ikkgrog2y	gfqvdpu1eu4	16	\N	\N	\N
+mmj417nrjpa	gfqvdpu1eu4	17	\N	\N	\N
+lmgnrgroovk	gfqvdpu1eu4	18	\N	\N	\N
+4cx141n1lb4	gfqvdpu1eu4	19	\N	\N	\N
+k6pr2jh3wgd	gfqvdpu1eu4	20	\N	\N	\N
+hchm15rxv74	gfqvdpu1eu4	21	\N	\N	\N
+073buw1m70l	gfqvdpu1eu4	22	\N	\N	\N
+nocobase-admin-menu	gfqvdpu1eu4	23	\N	\N	\N
+imrhc9he5on	kycuv3ul77x	13	\N	\N	\N
+82ikkgrog2y	kycuv3ul77x	14	\N	\N	\N
+mmj417nrjpa	kycuv3ul77x	15	\N	\N	\N
+lmgnrgroovk	kycuv3ul77x	16	\N	\N	\N
+4cx141n1lb4	kycuv3ul77x	17	\N	\N	\N
+k6pr2jh3wgd	kycuv3ul77x	18	\N	\N	\N
+hchm15rxv74	kycuv3ul77x	19	\N	\N	\N
+073buw1m70l	kycuv3ul77x	20	\N	\N	\N
+nocobase-admin-menu	kycuv3ul77x	21	\N	\N	\N
+yjzd6s5ccq4	yjzd6s5ccq4	0	f	properties	\N
+q7ncd26y5uu	q7ncd26y5uu	0	f	properties	\N
+ufo3e48kfjx	q7ncd26y5uu	1	\N	\N	1
+5icb5ehclhr	5icb5ehclhr	0	f	properties	\N
+q7ncd26y5uu	5icb5ehclhr	1	\N	\N	1
+ufo3e48kfjx	5icb5ehclhr	2	\N	\N	1
+728qrnw1msn	728qrnw1msn	0	f	properties	\N
+5icb5ehclhr	728qrnw1msn	1	\N	\N	1
+q7ncd26y5uu	728qrnw1msn	2	\N	\N	1
+ufo3e48kfjx	728qrnw1msn	3	\N	\N	1
+bj7dti4exso	q7ncd26y5uu	2	\N	\N	\N
+bj7dti4exso	5icb5ehclhr	3	\N	\N	\N
+bj7dti4exso	728qrnw1msn	4	\N	\N	\N
+r15lkroggz5	ufo3e48kfjx	2	\N	\N	\N
+r15lkroggz5	q7ncd26y5uu	3	\N	\N	\N
+r15lkroggz5	5icb5ehclhr	4	\N	\N	\N
+r15lkroggz5	728qrnw1msn	5	\N	\N	\N
+imrhc9he5on	ufo3e48kfjx	3	\N	\N	\N
+imrhc9he5on	q7ncd26y5uu	4	\N	\N	\N
+imrhc9he5on	5icb5ehclhr	5	\N	\N	\N
+imrhc9he5on	728qrnw1msn	6	\N	\N	\N
+82ikkgrog2y	ufo3e48kfjx	4	\N	\N	\N
+82ikkgrog2y	q7ncd26y5uu	5	\N	\N	\N
+82ikkgrog2y	5icb5ehclhr	6	\N	\N	\N
+82ikkgrog2y	728qrnw1msn	7	\N	\N	\N
+mmj417nrjpa	ufo3e48kfjx	5	\N	\N	\N
+mmj417nrjpa	q7ncd26y5uu	6	\N	\N	\N
+mmj417nrjpa	5icb5ehclhr	7	\N	\N	\N
+mmj417nrjpa	728qrnw1msn	8	\N	\N	\N
+lmgnrgroovk	ufo3e48kfjx	6	\N	\N	\N
+lmgnrgroovk	q7ncd26y5uu	7	\N	\N	\N
+lmgnrgroovk	5icb5ehclhr	8	\N	\N	\N
+lmgnrgroovk	728qrnw1msn	9	\N	\N	\N
+4cx141n1lb4	ufo3e48kfjx	7	\N	\N	\N
+4cx141n1lb4	q7ncd26y5uu	8	\N	\N	\N
+4cx141n1lb4	5icb5ehclhr	9	\N	\N	\N
+4cx141n1lb4	728qrnw1msn	10	\N	\N	\N
+k6pr2jh3wgd	ufo3e48kfjx	8	\N	\N	\N
+k6pr2jh3wgd	q7ncd26y5uu	9	\N	\N	\N
+k6pr2jh3wgd	5icb5ehclhr	10	\N	\N	\N
+k6pr2jh3wgd	728qrnw1msn	11	\N	\N	\N
+hchm15rxv74	ufo3e48kfjx	9	\N	\N	\N
+hchm15rxv74	q7ncd26y5uu	10	\N	\N	\N
+hchm15rxv74	5icb5ehclhr	11	\N	\N	\N
+hchm15rxv74	728qrnw1msn	12	\N	\N	\N
+073buw1m70l	ufo3e48kfjx	10	\N	\N	\N
+073buw1m70l	q7ncd26y5uu	11	\N	\N	\N
+073buw1m70l	5icb5ehclhr	12	\N	\N	\N
+073buw1m70l	728qrnw1msn	13	\N	\N	\N
+nocobase-admin-menu	ufo3e48kfjx	11	\N	\N	\N
+nocobase-admin-menu	q7ncd26y5uu	12	\N	\N	\N
+nocobase-admin-menu	5icb5ehclhr	13	\N	\N	\N
+nocobase-admin-menu	728qrnw1msn	14	\N	\N	\N
+ufo3e48kfjx	ufo3e48kfjx	0	f	properties	\N
+bj7dti4exso	ufo3e48kfjx	1	\N	\N	1
+i0bqeajbvwo	4gdmc9g083s	7	\N	\N	\N
+pdot2ybyfc0	4gdmc9g083s	8	\N	\N	\N
+a7e860jrx5o	4gdmc9g083s	9	\N	\N	\N
+zxh1oe1qx5t	4gdmc9g083s	10	\N	\N	\N
+861gmcfwhia	4gdmc9g083s	11	\N	\N	\N
+9yos6i0cjm3	4gdmc9g083s	12	\N	\N	\N
+n3yigbe0k9v	4gdmc9g083s	13	\N	\N	\N
+073buw1m70l	4gdmc9g083s	14	\N	\N	\N
+nocobase-admin-menu	4gdmc9g083s	15	\N	\N	\N
+i0bqeajbvwo	bzirblya7qw	3	\N	\N	\N
+pdot2ybyfc0	bzirblya7qw	4	\N	\N	\N
+a7e860jrx5o	bzirblya7qw	5	\N	\N	\N
+zxh1oe1qx5t	bzirblya7qw	6	\N	\N	\N
+861gmcfwhia	bzirblya7qw	7	\N	\N	\N
+9yos6i0cjm3	bzirblya7qw	8	\N	\N	\N
+n3yigbe0k9v	bzirblya7qw	9	\N	\N	\N
+073buw1m70l	bzirblya7qw	10	\N	\N	\N
+nocobase-admin-menu	bzirblya7qw	11	\N	\N	\N
+i0bqeajbvwo	ebu29iqsaqx	6	\N	\N	\N
+pdot2ybyfc0	ebu29iqsaqx	7	\N	\N	\N
+a7e860jrx5o	ebu29iqsaqx	8	\N	\N	\N
+zxh1oe1qx5t	ebu29iqsaqx	9	\N	\N	\N
+861gmcfwhia	ebu29iqsaqx	10	\N	\N	\N
+9yos6i0cjm3	ebu29iqsaqx	11	\N	\N	\N
+n3yigbe0k9v	ebu29iqsaqx	12	\N	\N	\N
+073buw1m70l	ebu29iqsaqx	13	\N	\N	\N
+nocobase-admin-menu	ebu29iqsaqx	14	\N	\N	\N
+i0bqeajbvwo	hg9tvy6yuph	4	\N	\N	\N
+pdot2ybyfc0	hg9tvy6yuph	5	\N	\N	\N
+a7e860jrx5o	hg9tvy6yuph	6	\N	\N	\N
+zxh1oe1qx5t	hg9tvy6yuph	7	\N	\N	\N
+861gmcfwhia	hg9tvy6yuph	8	\N	\N	\N
+9yos6i0cjm3	hg9tvy6yuph	9	\N	\N	\N
+n3yigbe0k9v	hg9tvy6yuph	10	\N	\N	\N
+073buw1m70l	hg9tvy6yuph	11	\N	\N	\N
+nocobase-admin-menu	hg9tvy6yuph	12	\N	\N	\N
+i0bqeajbvwo	k4kftsn5ht7	5	\N	\N	\N
+pdot2ybyfc0	k4kftsn5ht7	6	\N	\N	\N
+a7e860jrx5o	k4kftsn5ht7	7	\N	\N	\N
+zxh1oe1qx5t	k4kftsn5ht7	8	\N	\N	\N
+861gmcfwhia	k4kftsn5ht7	9	\N	\N	\N
+9yos6i0cjm3	k4kftsn5ht7	10	\N	\N	\N
+n3yigbe0k9v	k4kftsn5ht7	11	\N	\N	\N
+073buw1m70l	k4kftsn5ht7	12	\N	\N	\N
+nocobase-admin-menu	k4kftsn5ht7	13	\N	\N	\N
+e87ogy2w48b	e87ogy2w48b	0	f	properties	\N
+i0bqeajbvwo	e87ogy2w48b	1	\N	\N	11
+ar4ks05q9gy	cysvcwwaf4c	2	\N	\N	\N
+v1gxctci6id	v1gxctci6id	0	f	properties	\N
+9vll9qbbcql	cysvcwwaf4c	3	\N	\N	\N
+8vwr3yh0weq	cysvcwwaf4c	4	\N	\N	\N
+w1vttmfcjic	h55y4nxqk03	9	\N	\N	\N
+w1vttmfcjic	bn77syhm2pe	10	\N	\N	\N
+o7z0dukywzh	cysvcwwaf4c	5	\N	\N	\N
+xr71y0bi2gt	cysvcwwaf4c	6	\N	\N	\N
+nmo9mk3zqna	cysvcwwaf4c	7	\N	\N	\N
+073buw1m70l	cysvcwwaf4c	8	\N	\N	\N
+nocobase-admin-menu	cysvcwwaf4c	9	\N	\N	\N
+nocobase-admin-menu	h55y4nxqk03	10	\N	\N	\N
+nocobase-admin-menu	bn77syhm2pe	11	\N	\N	\N
+xo5vgqdp3pj	cysvcwwaf4c	1	\N	\N	1
+fuvpnwuajhl	wwfnvseziiz	5	\N	\N	\N
+u9fqp7maxs8	u9fqp7maxs8	0	f	properties	\N
+vqty0zmif5g	u9fqp7maxs8	1	\N	\N	1
+5m33jos871r	5m33jos871r	0	f	properties	\N
+h55y4nxqk03	h55y4nxqk03	0	f	properties	\N
+u9fqp7maxs8	5m33jos871r	1	\N	\N	1
+vqty0zmif5g	5m33jos871r	2	\N	\N	1
+1i8j6q1xnzk	1i8j6q1xnzk	0	f	properties	\N
+bb7nfngcfhq	bb7nfngcfhq	0	f	properties	\N
+5j6aldekdhj	bb7nfngcfhq	1	\N	\N	1
+4w66alip7h8	4w66alip7h8	0	f	properties	\N
+5j6aldekdhj	4w66alip7h8	1	\N	\N	2
+3v8laq7zjql	3v8laq7zjql	0	f	properties	\N
+4w66alip7h8	3v8laq7zjql	1	\N	\N	1
+5j6aldekdhj	3v8laq7zjql	2	\N	\N	1
+0xyo5u2dbw5	0xyo5u2dbw5	0	f	properties	\N
+3v8laq7zjql	0xyo5u2dbw5	1	\N	\N	1
+4w66alip7h8	0xyo5u2dbw5	2	\N	\N	1
+5j6aldekdhj	0xyo5u2dbw5	3	\N	\N	1
+qnw2iuej1qj	qnw2iuej1qj	0	f	properties	\N
+3v8laq7zjql	qnw2iuej1qj	1	\N	\N	2
+4w66alip7h8	qnw2iuej1qj	2	\N	\N	2
+5j6aldekdhj	qnw2iuej1qj	3	\N	\N	2
+xaewf0sjo76	v1gxctci6id	2	\N	\N	\N
+fuvpnwuajhl	4z1o600a2we	8	\N	\N	\N
+fuvpnwuajhl	6hd31g8yv4w	6	\N	\N	\N
+fo7g83k4wnw	v1gxctci6id	3	\N	\N	\N
+fuvpnwuajhl	bbqntpvrcj9	10	\N	\N	\N
+fuvpnwuajhl	ic7u2lri0wu	7	\N	\N	\N
+o7z0dukywzh	9vll9qbbcql	2	\N	\N	\N
+o7z0dukywzh	ar4ks05q9gy	3	\N	\N	\N
+o7z0dukywzh	xo5vgqdp3pj	4	\N	\N	\N
+o7z0dukywzh	i7gwmqodnug	4	\N	\N	\N
+odmrtfsxjp5	v1gxctci6id	4	\N	\N	\N
+fuvpnwuajhl	j6u3fnp1gf7	10	\N	\N	\N
+fuvpnwuajhl	qiff3fagpbp	9	\N	\N	\N
+xr71y0bi2gt	8vwr3yh0weq	2	\N	\N	\N
+xr71y0bi2gt	9vll9qbbcql	3	\N	\N	\N
+xr71y0bi2gt	ar4ks05q9gy	4	\N	\N	\N
+xr71y0bi2gt	xo5vgqdp3pj	5	\N	\N	\N
+xr71y0bi2gt	i7gwmqodnug	5	\N	\N	\N
+alt2km13pi6	v1gxctci6id	5	\N	\N	\N
+fuvpnwuajhl	11v507faua9	12	\N	\N	\N
+fuvpnwuajhl	64hct65otbl	13	\N	\N	\N
+nmo9mk3zqna	8vwr3yh0weq	3	\N	\N	\N
+nmo9mk3zqna	9vll9qbbcql	4	\N	\N	\N
+nmo9mk3zqna	ar4ks05q9gy	5	\N	\N	\N
+nmo9mk3zqna	xo5vgqdp3pj	6	\N	\N	\N
+nmo9mk3zqna	i7gwmqodnug	6	\N	\N	\N
+99wrtdh3vjb	v1gxctci6id	6	\N	\N	\N
+fuvpnwuajhl	6ldkeouiqu6	11	\N	\N	\N
+fuvpnwuajhl	7ac5fvdsvhv	13	\N	\N	\N
+073buw1m70l	8vwr3yh0weq	4	\N	\N	\N
+073buw1m70l	9vll9qbbcql	5	\N	\N	\N
+073buw1m70l	ar4ks05q9gy	6	\N	\N	\N
+073buw1m70l	xo5vgqdp3pj	7	\N	\N	\N
+073buw1m70l	i7gwmqodnug	7	\N	\N	\N
+mqma0oexw7v	v1gxctci6id	7	\N	\N	\N
+22pnzqtybji	h55y4nxqk03	1	\N	\N	6
+fuvpnwuajhl	7bgianrailm	12	\N	\N	\N
+fuvpnwuajhl	s9lar6nxkb9	11	\N	\N	\N
+nocobase-admin-menu	8vwr3yh0weq	5	\N	\N	\N
+nocobase-admin-menu	9vll9qbbcql	6	\N	\N	\N
+nocobase-admin-menu	ar4ks05q9gy	7	\N	\N	\N
+nocobase-admin-menu	xo5vgqdp3pj	8	\N	\N	\N
+nocobase-admin-menu	i7gwmqodnug	8	\N	\N	\N
+09yy6b78jxi	v1gxctci6id	8	\N	\N	\N
+fuvpnwuajhl	34dbxdespfo	11	\N	\N	\N
+fuvpnwuajhl	p6s217wf7ct	13	\N	\N	\N
+o7z0dukywzh	8vwr3yh0weq	1	\N	\N	1
+5m33jos871r	1i8j6q1xnzk	1	\N	\N	1
+u9fqp7maxs8	1i8j6q1xnzk	2	\N	\N	1
+vqty0zmif5g	1i8j6q1xnzk	3	\N	\N	1
+ucehls8s69t	ucehls8s69t	0	f	properties	\N
+1whdhzzrodk	v1gxctci6id	9	\N	\N	\N
+1i8j6q1xnzk	ucehls8s69t	1	\N	\N	1
+5m33jos871r	ucehls8s69t	2	\N	\N	1
+u9fqp7maxs8	ucehls8s69t	3	\N	\N	1
+vqty0zmif5g	ucehls8s69t	4	\N	\N	1
+fuvpnwuajhl	x747kf9mxwc	12	\N	\N	\N
+xo5vgqdp3pj	u9fqp7maxs8	2	\N	\N	\N
+xo5vgqdp3pj	5m33jos871r	3	\N	\N	\N
+f205ix4mjg8	v1gxctci6id	10	\N	\N	\N
+xo5vgqdp3pj	1i8j6q1xnzk	4	\N	\N	\N
+xo5vgqdp3pj	ucehls8s69t	5	\N	\N	\N
+ar4ks05q9gy	vqty0zmif5g	2	\N	\N	\N
+ar4ks05q9gy	u9fqp7maxs8	3	\N	\N	\N
+ar4ks05q9gy	5m33jos871r	4	\N	\N	\N
+ar4ks05q9gy	1i8j6q1xnzk	5	\N	\N	\N
+ar4ks05q9gy	ucehls8s69t	6	\N	\N	\N
+fvx7g50y58n	v1gxctci6id	11	\N	\N	\N
+9vll9qbbcql	vqty0zmif5g	3	\N	\N	\N
+9vll9qbbcql	u9fqp7maxs8	4	\N	\N	\N
+9vll9qbbcql	5m33jos871r	5	\N	\N	\N
+9vll9qbbcql	1i8j6q1xnzk	6	\N	\N	\N
+9vll9qbbcql	ucehls8s69t	7	\N	\N	\N
+8vwr3yh0weq	vqty0zmif5g	4	\N	\N	\N
+8vwr3yh0weq	u9fqp7maxs8	5	\N	\N	\N
+833uu3rb1nm	v1gxctci6id	12	\N	\N	\N
+8vwr3yh0weq	5m33jos871r	6	\N	\N	\N
+8vwr3yh0weq	1i8j6q1xnzk	7	\N	\N	\N
+8vwr3yh0weq	ucehls8s69t	8	\N	\N	\N
+o7z0dukywzh	vqty0zmif5g	5	\N	\N	\N
+o7z0dukywzh	u9fqp7maxs8	6	\N	\N	\N
+o7z0dukywzh	5m33jos871r	7	\N	\N	\N
+o7z0dukywzh	1i8j6q1xnzk	8	\N	\N	\N
+ik0zt15yup2	v1gxctci6id	13	\N	\N	\N
+o7z0dukywzh	ucehls8s69t	9	\N	\N	\N
+xr71y0bi2gt	vqty0zmif5g	6	\N	\N	\N
+xr71y0bi2gt	u9fqp7maxs8	7	\N	\N	\N
+xr71y0bi2gt	5m33jos871r	8	\N	\N	\N
+xr71y0bi2gt	1i8j6q1xnzk	9	\N	\N	\N
+xr71y0bi2gt	ucehls8s69t	10	\N	\N	\N
+nmo9mk3zqna	vqty0zmif5g	7	\N	\N	\N
+w1vttmfcjic	v1gxctci6id	14	\N	\N	\N
+nmo9mk3zqna	u9fqp7maxs8	8	\N	\N	\N
+nmo9mk3zqna	5m33jos871r	9	\N	\N	\N
+5j6aldekdhj	5j6aldekdhj	0	f	properties	\N
+h55y4nxqk03	sm99m0bwdty	2	\N	\N	\N
+22pnzqtybji	sm99m0bwdty	3	\N	\N	\N
+mqma0oexw7v	sm99m0bwdty	4	\N	\N	\N
+09yy6b78jxi	sm99m0bwdty	5	\N	\N	\N
+nocobase-admin-menu	v1gxctci6id	15	\N	\N	\N
+1whdhzzrodk	sm99m0bwdty	6	\N	\N	\N
+f205ix4mjg8	sm99m0bwdty	7	\N	\N	\N
+fvx7g50y58n	sm99m0bwdty	8	\N	\N	\N
+833uu3rb1nm	sm99m0bwdty	9	\N	\N	\N
+ik0zt15yup2	sm99m0bwdty	10	\N	\N	\N
+w1vttmfcjic	sm99m0bwdty	11	\N	\N	\N
+nocobase-admin-menu	sm99m0bwdty	12	\N	\N	\N
+g4n9eb2icuo	v1gxctci6id	1	\N	\N	3
+lfzrxis4nkc	lfzrxis4nkc	0	f	properties	\N
+5j6aldekdhj	lfzrxis4nkc	2	\N	\N	\N
+bn77syhm2pe	sm99m0bwdty	1	\N	\N	2
+nmo9mk3zqna	1i8j6q1xnzk	10	\N	\N	\N
+nmo9mk3zqna	ucehls8s69t	11	\N	\N	\N
+073buw1m70l	vqty0zmif5g	8	\N	\N	\N
+073buw1m70l	u9fqp7maxs8	9	\N	\N	\N
+073buw1m70l	5m33jos871r	10	\N	\N	\N
+073buw1m70l	1i8j6q1xnzk	11	\N	\N	\N
+073buw1m70l	ucehls8s69t	12	\N	\N	\N
+nocobase-admin-menu	vqty0zmif5g	9	\N	\N	\N
+nocobase-admin-menu	u9fqp7maxs8	10	\N	\N	\N
+nocobase-admin-menu	5m33jos871r	11	\N	\N	\N
+nocobase-admin-menu	1i8j6q1xnzk	12	\N	\N	\N
+nocobase-admin-menu	ucehls8s69t	13	\N	\N	\N
+vqty0zmif5g	vqty0zmif5g	0	f	properties	\N
+xo5vgqdp3pj	vqty0zmif5g	1	\N	\N	2
+ex2jr21my7l	ex2jr21my7l	0	f	properties	\N
+bb7nfngcfhq	lfzrxis4nkc	1	\N	\N	1
+n08xlr2pmaz	bb7nfngcfhq	2	\N	\N	\N
+n08xlr2pmaz	4w66alip7h8	2	\N	\N	\N
+n08xlr2pmaz	3v8laq7zjql	3	\N	\N	\N
+n08xlr2pmaz	0xyo5u2dbw5	4	\N	\N	\N
+n08xlr2pmaz	qnw2iuej1qj	4	\N	\N	\N
+n08xlr2pmaz	lfzrxis4nkc	3	\N	\N	\N
+fuvpnwuajhl	49du3kw1vk3	11	\N	\N	\N
+n08xlr2pmaz	5j6aldekdhj	1	\N	\N	1
+xaewf0sjo76	n08xlr2pmaz	3	\N	\N	\N
+xaewf0sjo76	5j6aldekdhj	4	\N	\N	\N
+xaewf0sjo76	bb7nfngcfhq	5	\N	\N	\N
+xaewf0sjo76	4w66alip7h8	5	\N	\N	\N
+xaewf0sjo76	3v8laq7zjql	6	\N	\N	\N
+xaewf0sjo76	0xyo5u2dbw5	7	\N	\N	\N
+xaewf0sjo76	qnw2iuej1qj	7	\N	\N	\N
+xaewf0sjo76	lfzrxis4nkc	6	\N	\N	\N
+fo7g83k4wnw	n08xlr2pmaz	4	\N	\N	\N
+fo7g83k4wnw	5j6aldekdhj	5	\N	\N	\N
+fo7g83k4wnw	bb7nfngcfhq	6	\N	\N	\N
+fo7g83k4wnw	4w66alip7h8	6	\N	\N	\N
+fo7g83k4wnw	3v8laq7zjql	7	\N	\N	\N
+fo7g83k4wnw	0xyo5u2dbw5	8	\N	\N	\N
+fo7g83k4wnw	qnw2iuej1qj	8	\N	\N	\N
+fo7g83k4wnw	lfzrxis4nkc	7	\N	\N	\N
+odmrtfsxjp5	n08xlr2pmaz	5	\N	\N	\N
+odmrtfsxjp5	5j6aldekdhj	6	\N	\N	\N
+odmrtfsxjp5	bb7nfngcfhq	7	\N	\N	\N
+odmrtfsxjp5	4w66alip7h8	7	\N	\N	\N
+odmrtfsxjp5	3v8laq7zjql	8	\N	\N	\N
+odmrtfsxjp5	0xyo5u2dbw5	9	\N	\N	\N
+odmrtfsxjp5	qnw2iuej1qj	9	\N	\N	\N
+odmrtfsxjp5	lfzrxis4nkc	8	\N	\N	\N
+alt2km13pi6	n08xlr2pmaz	6	\N	\N	\N
+alt2km13pi6	5j6aldekdhj	7	\N	\N	\N
+alt2km13pi6	bb7nfngcfhq	8	\N	\N	\N
+alt2km13pi6	4w66alip7h8	8	\N	\N	\N
+alt2km13pi6	3v8laq7zjql	9	\N	\N	\N
+alt2km13pi6	0xyo5u2dbw5	10	\N	\N	\N
+alt2km13pi6	qnw2iuej1qj	10	\N	\N	\N
+alt2km13pi6	lfzrxis4nkc	9	\N	\N	\N
+99wrtdh3vjb	n08xlr2pmaz	7	\N	\N	\N
+99wrtdh3vjb	5j6aldekdhj	8	\N	\N	\N
+99wrtdh3vjb	bb7nfngcfhq	9	\N	\N	\N
+99wrtdh3vjb	4w66alip7h8	9	\N	\N	\N
+99wrtdh3vjb	3v8laq7zjql	10	\N	\N	\N
+99wrtdh3vjb	0xyo5u2dbw5	11	\N	\N	\N
+99wrtdh3vjb	qnw2iuej1qj	11	\N	\N	\N
+99wrtdh3vjb	lfzrxis4nkc	10	\N	\N	\N
+mqma0oexw7v	n08xlr2pmaz	8	\N	\N	\N
+mqma0oexw7v	5j6aldekdhj	9	\N	\N	\N
+mqma0oexw7v	bb7nfngcfhq	10	\N	\N	\N
+mqma0oexw7v	4w66alip7h8	10	\N	\N	\N
+mqma0oexw7v	3v8laq7zjql	11	\N	\N	\N
+mqma0oexw7v	0xyo5u2dbw5	12	\N	\N	\N
+mqma0oexw7v	qnw2iuej1qj	12	\N	\N	\N
+mqma0oexw7v	lfzrxis4nkc	11	\N	\N	\N
+09yy6b78jxi	n08xlr2pmaz	9	\N	\N	\N
+09yy6b78jxi	5j6aldekdhj	10	\N	\N	\N
+09yy6b78jxi	bb7nfngcfhq	11	\N	\N	\N
+09yy6b78jxi	4w66alip7h8	11	\N	\N	\N
+09yy6b78jxi	3v8laq7zjql	12	\N	\N	\N
+09yy6b78jxi	0xyo5u2dbw5	13	\N	\N	\N
+09yy6b78jxi	qnw2iuej1qj	13	\N	\N	\N
+09yy6b78jxi	lfzrxis4nkc	12	\N	\N	\N
+1whdhzzrodk	n08xlr2pmaz	10	\N	\N	\N
+1whdhzzrodk	5j6aldekdhj	11	\N	\N	\N
+1whdhzzrodk	bb7nfngcfhq	12	\N	\N	\N
+1whdhzzrodk	4w66alip7h8	12	\N	\N	\N
+1whdhzzrodk	3v8laq7zjql	13	\N	\N	\N
+1whdhzzrodk	0xyo5u2dbw5	14	\N	\N	\N
+1whdhzzrodk	qnw2iuej1qj	14	\N	\N	\N
+1whdhzzrodk	lfzrxis4nkc	13	\N	\N	\N
+f205ix4mjg8	n08xlr2pmaz	11	\N	\N	\N
+f205ix4mjg8	5j6aldekdhj	12	\N	\N	\N
+f205ix4mjg8	bb7nfngcfhq	13	\N	\N	\N
+f205ix4mjg8	4w66alip7h8	13	\N	\N	\N
+f205ix4mjg8	3v8laq7zjql	14	\N	\N	\N
+f205ix4mjg8	0xyo5u2dbw5	15	\N	\N	\N
+f205ix4mjg8	qnw2iuej1qj	15	\N	\N	\N
+f205ix4mjg8	lfzrxis4nkc	14	\N	\N	\N
+fvx7g50y58n	n08xlr2pmaz	12	\N	\N	\N
+fvx7g50y58n	5j6aldekdhj	13	\N	\N	\N
+fvx7g50y58n	bb7nfngcfhq	14	\N	\N	\N
+fvx7g50y58n	4w66alip7h8	14	\N	\N	\N
+fvx7g50y58n	3v8laq7zjql	15	\N	\N	\N
+fvx7g50y58n	0xyo5u2dbw5	16	\N	\N	\N
+fvx7g50y58n	qnw2iuej1qj	16	\N	\N	\N
+fvx7g50y58n	lfzrxis4nkc	15	\N	\N	\N
+833uu3rb1nm	n08xlr2pmaz	13	\N	\N	\N
+833uu3rb1nm	5j6aldekdhj	14	\N	\N	\N
+833uu3rb1nm	bb7nfngcfhq	15	\N	\N	\N
+833uu3rb1nm	4w66alip7h8	15	\N	\N	\N
+833uu3rb1nm	3v8laq7zjql	16	\N	\N	\N
+833uu3rb1nm	0xyo5u2dbw5	17	\N	\N	\N
+833uu3rb1nm	qnw2iuej1qj	17	\N	\N	\N
+833uu3rb1nm	lfzrxis4nkc	16	\N	\N	\N
+n08xlr2pmaz	n08xlr2pmaz	0	f	properties	\N
+ar4ks05q9gy	ex2jr21my7l	2	\N	\N	\N
+9vll9qbbcql	ex2jr21my7l	3	\N	\N	\N
+8vwr3yh0weq	ex2jr21my7l	4	\N	\N	\N
+o7z0dukywzh	ex2jr21my7l	5	\N	\N	\N
+ik0zt15yup2	n08xlr2pmaz	14	\N	\N	\N
+ik0zt15yup2	5j6aldekdhj	15	\N	\N	\N
+ik0zt15yup2	bb7nfngcfhq	16	\N	\N	\N
+ik0zt15yup2	4w66alip7h8	16	\N	\N	\N
+ik0zt15yup2	3v8laq7zjql	17	\N	\N	\N
+ik0zt15yup2	0xyo5u2dbw5	18	\N	\N	\N
+ik0zt15yup2	qnw2iuej1qj	18	\N	\N	\N
+ik0zt15yup2	lfzrxis4nkc	17	\N	\N	\N
+w1vttmfcjic	n08xlr2pmaz	15	\N	\N	\N
+w1vttmfcjic	5j6aldekdhj	16	\N	\N	\N
+w1vttmfcjic	bb7nfngcfhq	17	\N	\N	\N
+w1vttmfcjic	4w66alip7h8	17	\N	\N	\N
+w1vttmfcjic	3v8laq7zjql	18	\N	\N	\N
+w1vttmfcjic	0xyo5u2dbw5	19	\N	\N	\N
+w1vttmfcjic	qnw2iuej1qj	19	\N	\N	\N
+w1vttmfcjic	lfzrxis4nkc	18	\N	\N	\N
+nocobase-admin-menu	n08xlr2pmaz	16	\N	\N	\N
+nocobase-admin-menu	5j6aldekdhj	17	\N	\N	\N
+nocobase-admin-menu	bb7nfngcfhq	18	\N	\N	\N
+nocobase-admin-menu	4w66alip7h8	18	\N	\N	\N
+nocobase-admin-menu	3v8laq7zjql	19	\N	\N	\N
+nocobase-admin-menu	0xyo5u2dbw5	20	\N	\N	\N
+nocobase-admin-menu	qnw2iuej1qj	20	\N	\N	\N
+nocobase-admin-menu	lfzrxis4nkc	19	\N	\N	\N
+fzzjta8vefz	5j6aldekdhj	2	\N	\N	\N
+fzzjta8vefz	bb7nfngcfhq	3	\N	\N	\N
+fzzjta8vefz	4w66alip7h8	3	\N	\N	\N
+fzzjta8vefz	3v8laq7zjql	4	\N	\N	\N
+fzzjta8vefz	0xyo5u2dbw5	5	\N	\N	\N
+fzzjta8vefz	qnw2iuej1qj	5	\N	\N	\N
+fzzjta8vefz	lfzrxis4nkc	4	\N	\N	\N
+g4n9eb2icuo	n08xlr2pmaz	2	\N	\N	\N
+g4n9eb2icuo	5j6aldekdhj	3	\N	\N	\N
+g4n9eb2icuo	bb7nfngcfhq	4	\N	\N	\N
+g4n9eb2icuo	4w66alip7h8	4	\N	\N	\N
+g4n9eb2icuo	3v8laq7zjql	5	\N	\N	\N
+g4n9eb2icuo	0xyo5u2dbw5	6	\N	\N	\N
+g4n9eb2icuo	qnw2iuej1qj	6	\N	\N	\N
+g4n9eb2icuo	lfzrxis4nkc	5	\N	\N	\N
+fzzjta8vefz	n08xlr2pmaz	1	\N	\N	2
+mqma0oexw7v	bbrxrup6ylf	2	\N	\N	\N
+xr71y0bi2gt	ex2jr21my7l	6	\N	\N	\N
+nmo9mk3zqna	ex2jr21my7l	7	\N	\N	\N
+073buw1m70l	ex2jr21my7l	8	\N	\N	\N
+nocobase-admin-menu	ex2jr21my7l	9	\N	\N	\N
+xo5vgqdp3pj	ex2jr21my7l	1	\N	\N	3
+09yy6b78jxi	bbrxrup6ylf	3	\N	\N	\N
+si3vlr9fojx	si3vlr9fojx	0	f	properties	\N
+ar4ks05q9gy	si3vlr9fojx	2	\N	\N	\N
+9vll9qbbcql	si3vlr9fojx	3	\N	\N	\N
+8vwr3yh0weq	si3vlr9fojx	4	\N	\N	\N
+o7z0dukywzh	si3vlr9fojx	5	\N	\N	\N
+1whdhzzrodk	bbrxrup6ylf	4	\N	\N	\N
+xr71y0bi2gt	si3vlr9fojx	6	\N	\N	\N
+nmo9mk3zqna	si3vlr9fojx	7	\N	\N	\N
+073buw1m70l	si3vlr9fojx	8	\N	\N	\N
+nocobase-admin-menu	si3vlr9fojx	9	\N	\N	\N
+xo5vgqdp3pj	si3vlr9fojx	1	\N	\N	4
+9udwuhf2o25	scx9pufw9ld	3	\N	\N	\N
+f205ix4mjg8	bbrxrup6ylf	5	\N	\N	\N
+9udwuhf2o25	ftwn0si2s5e	4	\N	\N	\N
+9udwuhf2o25	que1e0cmz1z	5	\N	\N	\N
+9udwuhf2o25	wwfnvseziiz	6	\N	\N	\N
+9udwuhf2o25	4z1o600a2we	9	\N	\N	\N
+9udwuhf2o25	6hd31g8yv4w	7	\N	\N	\N
+9udwuhf2o25	bbqntpvrcj9	11	\N	\N	\N
+fvx7g50y58n	bbrxrup6ylf	6	\N	\N	\N
+9udwuhf2o25	ic7u2lri0wu	8	\N	\N	\N
+9udwuhf2o25	j6u3fnp1gf7	11	\N	\N	\N
+9udwuhf2o25	qiff3fagpbp	10	\N	\N	\N
+9udwuhf2o25	11v507faua9	13	\N	\N	\N
+9udwuhf2o25	64hct65otbl	14	\N	\N	\N
+9udwuhf2o25	6ldkeouiqu6	12	\N	\N	\N
+833uu3rb1nm	bbrxrup6ylf	7	\N	\N	\N
+9udwuhf2o25	7ac5fvdsvhv	14	\N	\N	\N
+9udwuhf2o25	7bgianrailm	13	\N	\N	\N
+9udwuhf2o25	s9lar6nxkb9	12	\N	\N	\N
+9udwuhf2o25	34dbxdespfo	12	\N	\N	\N
+9udwuhf2o25	p6s217wf7ct	14	\N	\N	\N
+9udwuhf2o25	x747kf9mxwc	13	\N	\N	\N
+ik0zt15yup2	bbrxrup6ylf	8	\N	\N	\N
+9udwuhf2o25	49du3kw1vk3	12	\N	\N	\N
+9udwuhf2o25	7i8vn1nplyc	2	\N	\N	\N
+dwzj4kwyaia	scx9pufw9ld	4	\N	\N	\N
+dwzj4kwyaia	ftwn0si2s5e	5	\N	\N	\N
+dwzj4kwyaia	que1e0cmz1z	6	\N	\N	\N
+dwzj4kwyaia	wwfnvseziiz	7	\N	\N	\N
+w1vttmfcjic	bbrxrup6ylf	9	\N	\N	\N
+dwzj4kwyaia	4z1o600a2we	10	\N	\N	\N
+dwzj4kwyaia	6hd31g8yv4w	8	\N	\N	\N
+dwzj4kwyaia	bbqntpvrcj9	12	\N	\N	\N
+dwzj4kwyaia	ic7u2lri0wu	9	\N	\N	\N
+dwzj4kwyaia	j6u3fnp1gf7	12	\N	\N	\N
+dwzj4kwyaia	qiff3fagpbp	11	\N	\N	\N
+nocobase-admin-menu	bbrxrup6ylf	10	\N	\N	\N
+dwzj4kwyaia	11v507faua9	14	\N	\N	\N
+dwzj4kwyaia	64hct65otbl	15	\N	\N	\N
+dwzj4kwyaia	6ldkeouiqu6	13	\N	\N	\N
+dwzj4kwyaia	7ac5fvdsvhv	15	\N	\N	\N
+dwzj4kwyaia	7bgianrailm	14	\N	\N	\N
+dwzj4kwyaia	s9lar6nxkb9	13	\N	\N	\N
+bbrxrup6ylf	bbrxrup6ylf	0	f	properties	\N
+dwzj4kwyaia	34dbxdespfo	13	\N	\N	\N
+dwzj4kwyaia	p6s217wf7ct	15	\N	\N	\N
+u6n64igjsnc	u6n64igjsnc	0	f	properties	\N
+e51qk20c0d0	u6n64igjsnc	1	\N	\N	1
+e51qk20c0d0	e51qk20c0d0	0	f	properties	\N
+dwzj4kwyaia	x747kf9mxwc	14	\N	\N	\N
+2a65jddiv1c	2a65jddiv1c	0	f	properties	\N
+r0oxpk3aest	2a65jddiv1c	1	\N	\N	1
+xm2aghmu342	xm2aghmu342	0	f	properties	\N
+2a65jddiv1c	xm2aghmu342	1	\N	\N	1
+r0oxpk3aest	xm2aghmu342	2	\N	\N	1
+plv56k9qjio	plv56k9qjio	0	f	properties	\N
+xm2aghmu342	plv56k9qjio	1	\N	\N	1
+2a65jddiv1c	plv56k9qjio	2	\N	\N	1
+r0oxpk3aest	plv56k9qjio	3	\N	\N	1
+zsp37nlw2gj	zsp37nlw2gj	0	f	properties	\N
+plv56k9qjio	zsp37nlw2gj	1	\N	\N	1
+xm2aghmu342	zsp37nlw2gj	2	\N	\N	1
+2a65jddiv1c	zsp37nlw2gj	3	\N	\N	1
+r0oxpk3aest	zsp37nlw2gj	4	\N	\N	1
+ucr27vnzxga	ucr27vnzxga	0	f	properties	\N
+plv56k9qjio	ucr27vnzxga	1	\N	\N	2
+xm2aghmu342	ucr27vnzxga	2	\N	\N	2
+2a65jddiv1c	ucr27vnzxga	3	\N	\N	2
+r0oxpk3aest	ucr27vnzxga	4	\N	\N	2
+dwzj4kwyaia	49du3kw1vk3	13	\N	\N	\N
+ucehls8s69t	2a65jddiv1c	2	\N	\N	\N
+ucehls8s69t	xm2aghmu342	3	\N	\N	\N
+ucehls8s69t	plv56k9qjio	4	\N	\N	\N
+ucehls8s69t	zsp37nlw2gj	5	\N	\N	\N
+ucehls8s69t	ucr27vnzxga	5	\N	\N	\N
+1i8j6q1xnzk	r0oxpk3aest	2	\N	\N	\N
+1i8j6q1xnzk	2a65jddiv1c	3	\N	\N	\N
+1i8j6q1xnzk	xm2aghmu342	4	\N	\N	\N
+1i8j6q1xnzk	plv56k9qjio	5	\N	\N	\N
+1i8j6q1xnzk	zsp37nlw2gj	6	\N	\N	\N
+1i8j6q1xnzk	ucr27vnzxga	6	\N	\N	\N
+5m33jos871r	r0oxpk3aest	3	\N	\N	\N
+5m33jos871r	2a65jddiv1c	4	\N	\N	\N
+5m33jos871r	xm2aghmu342	5	\N	\N	\N
+5m33jos871r	plv56k9qjio	6	\N	\N	\N
+5m33jos871r	zsp37nlw2gj	7	\N	\N	\N
+5m33jos871r	ucr27vnzxga	7	\N	\N	\N
+u9fqp7maxs8	r0oxpk3aest	4	\N	\N	\N
+u9fqp7maxs8	2a65jddiv1c	5	\N	\N	\N
+u9fqp7maxs8	xm2aghmu342	6	\N	\N	\N
+u9fqp7maxs8	plv56k9qjio	7	\N	\N	\N
+u9fqp7maxs8	zsp37nlw2gj	8	\N	\N	\N
+u9fqp7maxs8	ucr27vnzxga	8	\N	\N	\N
+vqty0zmif5g	r0oxpk3aest	5	\N	\N	\N
+vqty0zmif5g	2a65jddiv1c	6	\N	\N	\N
+vqty0zmif5g	xm2aghmu342	7	\N	\N	\N
+vqty0zmif5g	plv56k9qjio	8	\N	\N	\N
+vqty0zmif5g	zsp37nlw2gj	9	\N	\N	\N
+vqty0zmif5g	ucr27vnzxga	9	\N	\N	\N
+xo5vgqdp3pj	r0oxpk3aest	6	\N	\N	\N
+xo5vgqdp3pj	2a65jddiv1c	7	\N	\N	\N
+xo5vgqdp3pj	xm2aghmu342	8	\N	\N	\N
+xo5vgqdp3pj	plv56k9qjio	9	\N	\N	\N
+xo5vgqdp3pj	zsp37nlw2gj	10	\N	\N	\N
+xo5vgqdp3pj	ucr27vnzxga	10	\N	\N	\N
+ar4ks05q9gy	r0oxpk3aest	7	\N	\N	\N
+ar4ks05q9gy	2a65jddiv1c	8	\N	\N	\N
+ar4ks05q9gy	xm2aghmu342	9	\N	\N	\N
+ar4ks05q9gy	plv56k9qjio	10	\N	\N	\N
+ar4ks05q9gy	zsp37nlw2gj	11	\N	\N	\N
+ar4ks05q9gy	ucr27vnzxga	11	\N	\N	\N
+9vll9qbbcql	r0oxpk3aest	8	\N	\N	\N
+9vll9qbbcql	2a65jddiv1c	9	\N	\N	\N
+9vll9qbbcql	xm2aghmu342	10	\N	\N	\N
+9vll9qbbcql	plv56k9qjio	11	\N	\N	\N
+9vll9qbbcql	zsp37nlw2gj	12	\N	\N	\N
+9vll9qbbcql	ucr27vnzxga	12	\N	\N	\N
+8vwr3yh0weq	r0oxpk3aest	9	\N	\N	\N
+8vwr3yh0weq	2a65jddiv1c	10	\N	\N	\N
+8vwr3yh0weq	xm2aghmu342	11	\N	\N	\N
+8vwr3yh0weq	plv56k9qjio	12	\N	\N	\N
+8vwr3yh0weq	zsp37nlw2gj	13	\N	\N	\N
+8vwr3yh0weq	ucr27vnzxga	13	\N	\N	\N
+o7z0dukywzh	r0oxpk3aest	10	\N	\N	\N
+o7z0dukywzh	2a65jddiv1c	11	\N	\N	\N
+o7z0dukywzh	xm2aghmu342	12	\N	\N	\N
+o7z0dukywzh	plv56k9qjio	13	\N	\N	\N
+o7z0dukywzh	zsp37nlw2gj	14	\N	\N	\N
+o7z0dukywzh	ucr27vnzxga	14	\N	\N	\N
+xr71y0bi2gt	r0oxpk3aest	11	\N	\N	\N
+xr71y0bi2gt	2a65jddiv1c	12	\N	\N	\N
+xr71y0bi2gt	xm2aghmu342	13	\N	\N	\N
+xr71y0bi2gt	plv56k9qjio	14	\N	\N	\N
+xr71y0bi2gt	zsp37nlw2gj	15	\N	\N	\N
+xr71y0bi2gt	ucr27vnzxga	15	\N	\N	\N
+nmo9mk3zqna	r0oxpk3aest	12	\N	\N	\N
+nmo9mk3zqna	2a65jddiv1c	13	\N	\N	\N
+nmo9mk3zqna	xm2aghmu342	14	\N	\N	\N
+nmo9mk3zqna	plv56k9qjio	15	\N	\N	\N
+nmo9mk3zqna	zsp37nlw2gj	16	\N	\N	\N
+nmo9mk3zqna	ucr27vnzxga	16	\N	\N	\N
+073buw1m70l	r0oxpk3aest	13	\N	\N	\N
+073buw1m70l	2a65jddiv1c	14	\N	\N	\N
+073buw1m70l	xm2aghmu342	15	\N	\N	\N
+073buw1m70l	plv56k9qjio	16	\N	\N	\N
+073buw1m70l	zsp37nlw2gj	17	\N	\N	\N
+073buw1m70l	ucr27vnzxga	17	\N	\N	\N
+nocobase-admin-menu	r0oxpk3aest	14	\N	\N	\N
+nocobase-admin-menu	2a65jddiv1c	15	\N	\N	\N
+nocobase-admin-menu	xm2aghmu342	16	\N	\N	\N
+nocobase-admin-menu	plv56k9qjio	17	\N	\N	\N
+nocobase-admin-menu	zsp37nlw2gj	18	\N	\N	\N
+nocobase-admin-menu	ucr27vnzxga	18	\N	\N	\N
+r0oxpk3aest	r0oxpk3aest	0	f	properties	\N
+ucehls8s69t	r0oxpk3aest	1	\N	\N	1
+dwzj4kwyaia	7i8vn1nplyc	3	\N	\N	\N
+6r00qlukgvq	6r00qlukgvq	0	f	properties	\N
+772x26dg2a4	6r00qlukgvq	1	\N	\N	1
+70esyi2cnyt	70esyi2cnyt	0	f	properties	\N
+6r00qlukgvq	70esyi2cnyt	1	\N	\N	1
+772x26dg2a4	70esyi2cnyt	2	\N	\N	1
+iiek91fm1lg	scx9pufw9ld	5	\N	\N	\N
+zsp37nlw2gj	6r00qlukgvq	2	\N	\N	\N
+zsp37nlw2gj	70esyi2cnyt	3	\N	\N	\N
+plv56k9qjio	772x26dg2a4	2	\N	\N	\N
+plv56k9qjio	6r00qlukgvq	3	\N	\N	\N
+plv56k9qjio	70esyi2cnyt	4	\N	\N	\N
+xm2aghmu342	772x26dg2a4	3	\N	\N	\N
+xm2aghmu342	6r00qlukgvq	4	\N	\N	\N
+xm2aghmu342	70esyi2cnyt	5	\N	\N	\N
+2a65jddiv1c	772x26dg2a4	4	\N	\N	\N
+2a65jddiv1c	6r00qlukgvq	5	\N	\N	\N
+2a65jddiv1c	70esyi2cnyt	6	\N	\N	\N
+r0oxpk3aest	772x26dg2a4	5	\N	\N	\N
+r0oxpk3aest	6r00qlukgvq	6	\N	\N	\N
+r0oxpk3aest	70esyi2cnyt	7	\N	\N	\N
+ucehls8s69t	772x26dg2a4	6	\N	\N	\N
+ucehls8s69t	6r00qlukgvq	7	\N	\N	\N
+ucehls8s69t	70esyi2cnyt	8	\N	\N	\N
+1i8j6q1xnzk	772x26dg2a4	7	\N	\N	\N
+1i8j6q1xnzk	6r00qlukgvq	8	\N	\N	\N
+1i8j6q1xnzk	70esyi2cnyt	9	\N	\N	\N
+5m33jos871r	772x26dg2a4	8	\N	\N	\N
+xr71y0bi2gt	xr71y0bi2gt	0	t	properties	\N
+nmo9mk3zqna	xr71y0bi2gt	1	\N	\N	1
+o7z0dukywzh	o7z0dukywzh	0	f	properties	\N
+xr71y0bi2gt	o7z0dukywzh	1	\N	\N	1
+nmo9mk3zqna	o7z0dukywzh	2	\N	\N	1
+073buw1m70l	xr71y0bi2gt	2	\N	\N	\N
+073buw1m70l	o7z0dukywzh	3	\N	\N	\N
+nocobase-admin-menu	nmo9mk3zqna	2	\N	\N	\N
+nocobase-admin-menu	xr71y0bi2gt	3	\N	\N	\N
+nocobase-admin-menu	o7z0dukywzh	4	\N	\N	\N
+nmo9mk3zqna	nmo9mk3zqna	0	f	properties	\N
+073buw1m70l	nmo9mk3zqna	1	\N	\N	9
+me1ohauow6f	me1ohauow6f	0	f	properties	\N
+xqf45rvay4g	me1ohauow6f	1	\N	\N	1
+hw80ixyrjgz	hw80ixyrjgz	0	f	properties	\N
+me1ohauow6f	hw80ixyrjgz	1	\N	\N	1
+xqf45rvay4g	hw80ixyrjgz	2	\N	\N	1
+tmiqe6j1j64	tmiqe6j1j64	0	f	properties	\N
+hw80ixyrjgz	tmiqe6j1j64	1	\N	\N	1
+me1ohauow6f	tmiqe6j1j64	2	\N	\N	1
+xqf45rvay4g	tmiqe6j1j64	3	\N	\N	1
+u7z981cpekd	u7z981cpekd	0	f	properties	\N
+hw80ixyrjgz	u7z981cpekd	1	\N	\N	2
+me1ohauow6f	u7z981cpekd	2	\N	\N	2
+xqf45rvay4g	u7z981cpekd	3	\N	\N	2
+p6lb6lassso	p6lb6lassso	0	f	properties	\N
+u0p14qm90g3	p6lb6lassso	1	\N	\N	1
+2mxzcpz5cle	me1ohauow6f	2	\N	\N	\N
+2mxzcpz5cle	hw80ixyrjgz	3	\N	\N	\N
+2mxzcpz5cle	tmiqe6j1j64	4	\N	\N	\N
+2mxzcpz5cle	u7z981cpekd	4	\N	\N	\N
+jqr7lgri2e0	xqf45rvay4g	2	\N	\N	\N
+jqr7lgri2e0	me1ohauow6f	3	\N	\N	\N
+jqr7lgri2e0	hw80ixyrjgz	4	\N	\N	\N
+jqr7lgri2e0	tmiqe6j1j64	5	\N	\N	\N
+jqr7lgri2e0	u7z981cpekd	5	\N	\N	\N
+5m33jos871r	6r00qlukgvq	9	\N	\N	\N
+5m33jos871r	70esyi2cnyt	10	\N	\N	\N
+5vjhonzhs45	xqf45rvay4g	3	\N	\N	\N
+5vjhonzhs45	me1ohauow6f	4	\N	\N	\N
+5vjhonzhs45	hw80ixyrjgz	5	\N	\N	\N
+5vjhonzhs45	tmiqe6j1j64	6	\N	\N	\N
+5vjhonzhs45	u7z981cpekd	6	\N	\N	\N
+u9fqp7maxs8	772x26dg2a4	9	\N	\N	\N
+u9fqp7maxs8	6r00qlukgvq	10	\N	\N	\N
+073buw1m70l	xqf45rvay4g	4	\N	\N	\N
+073buw1m70l	me1ohauow6f	5	\N	\N	\N
+073buw1m70l	hw80ixyrjgz	6	\N	\N	\N
+073buw1m70l	tmiqe6j1j64	7	\N	\N	\N
+073buw1m70l	u7z981cpekd	7	\N	\N	\N
+u9fqp7maxs8	70esyi2cnyt	11	\N	\N	\N
+vqty0zmif5g	772x26dg2a4	10	\N	\N	\N
+nocobase-admin-menu	xqf45rvay4g	5	\N	\N	\N
+nocobase-admin-menu	me1ohauow6f	6	\N	\N	\N
+nocobase-admin-menu	hw80ixyrjgz	7	\N	\N	\N
+nocobase-admin-menu	tmiqe6j1j64	8	\N	\N	\N
+nocobase-admin-menu	u7z981cpekd	8	\N	\N	\N
+vqty0zmif5g	6r00qlukgvq	11	\N	\N	\N
+vqty0zmif5g	70esyi2cnyt	12	\N	\N	\N
+xqf45rvay4g	xqf45rvay4g	0	f	properties	\N
+2mxzcpz5cle	xqf45rvay4g	1	\N	\N	3
+xo5vgqdp3pj	772x26dg2a4	11	\N	\N	\N
+xo5vgqdp3pj	6r00qlukgvq	12	\N	\N	\N
+xo5vgqdp3pj	70esyi2cnyt	13	\N	\N	\N
+ar4ks05q9gy	772x26dg2a4	12	\N	\N	\N
+ar4ks05q9gy	6r00qlukgvq	13	\N	\N	\N
+ar4ks05q9gy	70esyi2cnyt	14	\N	\N	\N
+9vll9qbbcql	772x26dg2a4	13	\N	\N	\N
+9vll9qbbcql	6r00qlukgvq	14	\N	\N	\N
+9vll9qbbcql	70esyi2cnyt	15	\N	\N	\N
+8vwr3yh0weq	772x26dg2a4	14	\N	\N	\N
+8vwr3yh0weq	6r00qlukgvq	15	\N	\N	\N
+8vwr3yh0weq	70esyi2cnyt	16	\N	\N	\N
+o7z0dukywzh	772x26dg2a4	15	\N	\N	\N
+o7z0dukywzh	6r00qlukgvq	16	\N	\N	\N
+o7z0dukywzh	70esyi2cnyt	17	\N	\N	\N
+xr71y0bi2gt	772x26dg2a4	16	\N	\N	\N
+xr71y0bi2gt	6r00qlukgvq	17	\N	\N	\N
+xr71y0bi2gt	70esyi2cnyt	18	\N	\N	\N
+nmo9mk3zqna	772x26dg2a4	17	\N	\N	\N
+u0p14qm90g3	u0p14qm90g3	0	f	properties	\N
+nmo9mk3zqna	6r00qlukgvq	18	\N	\N	\N
+nmo9mk3zqna	70esyi2cnyt	19	\N	\N	\N
+073buw1m70l	772x26dg2a4	18	\N	\N	\N
+073buw1m70l	6r00qlukgvq	19	\N	\N	\N
+n7gwoyocqxm	n7gwoyocqxm	0	f	properties	\N
+w2xb0a6rkey	n7gwoyocqxm	2	\N	\N	\N
+x8ujxnhlng7	n7gwoyocqxm	3	\N	\N	\N
+evtz6ljqxdq	n7gwoyocqxm	4	\N	\N	\N
+i80vemflinb	n7gwoyocqxm	5	\N	\N	\N
+5bru92qlyrq	n7gwoyocqxm	6	\N	\N	\N
+obl2auujo32	n7gwoyocqxm	7	\N	\N	\N
+nocobase-admin-menu	n7gwoyocqxm	8	\N	\N	\N
+5uo2qh1l9qt	n7gwoyocqxm	1	\N	\N	1
+073buw1m70l	70esyi2cnyt	20	\N	\N	\N
+nocobase-admin-menu	772x26dg2a4	19	\N	\N	\N
+nocobase-admin-menu	6r00qlukgvq	20	\N	\N	\N
+nocobase-admin-menu	70esyi2cnyt	21	\N	\N	\N
+772x26dg2a4	772x26dg2a4	0	f	properties	\N
+zsp37nlw2gj	772x26dg2a4	1	\N	\N	1
+iiek91fm1lg	ftwn0si2s5e	6	\N	\N	\N
+zv4te5eopz2	zv4te5eopz2	0	f	properties	\N
+c3d67iotm0p	zv4te5eopz2	1	\N	\N	1
+pfvvuk2fqbo	pfvvuk2fqbo	0	f	properties	\N
+zv4te5eopz2	pfvvuk2fqbo	1	\N	\N	1
+c3d67iotm0p	pfvvuk2fqbo	2	\N	\N	1
+0ned8lv8tr0	0ned8lv8tr0	0	f	properties	\N
+u7z981cpekd	0ned8lv8tr0	1	\N	\N	6
+gs87kzzh4rw	gs87kzzh4rw	0	f	properties	\N
+z8z84alfqmc	gs87kzzh4rw	1	\N	\N	1
+u7z981cpekd	gs87kzzh4rw	2	\N	\N	\N
+hw80ixyrjgz	z8z84alfqmc	2	\N	\N	\N
+hw80ixyrjgz	gs87kzzh4rw	3	\N	\N	\N
+me1ohauow6f	z8z84alfqmc	3	\N	\N	\N
+me1ohauow6f	gs87kzzh4rw	4	\N	\N	\N
+xqf45rvay4g	z8z84alfqmc	4	\N	\N	\N
+xqf45rvay4g	gs87kzzh4rw	5	\N	\N	\N
+2mxzcpz5cle	z8z84alfqmc	5	\N	\N	\N
+2mxzcpz5cle	gs87kzzh4rw	6	\N	\N	\N
+jqr7lgri2e0	z8z84alfqmc	6	\N	\N	\N
+jqr7lgri2e0	gs87kzzh4rw	7	\N	\N	\N
+5vjhonzhs45	z8z84alfqmc	7	\N	\N	\N
+5vjhonzhs45	gs87kzzh4rw	8	\N	\N	\N
+073buw1m70l	z8z84alfqmc	8	\N	\N	\N
+073buw1m70l	gs87kzzh4rw	9	\N	\N	\N
+nocobase-admin-menu	z8z84alfqmc	9	\N	\N	\N
+nocobase-admin-menu	gs87kzzh4rw	10	\N	\N	\N
+z8z84alfqmc	z8z84alfqmc	0	f	properties	\N
+u7z981cpekd	z8z84alfqmc	1	\N	\N	3
+wdzdn81bdog	wdzdn81bdog	0	f	properties	\N
+0ned8lv8tr0	wdzdn81bdog	1	\N	\N	1
+iiek91fm1lg	que1e0cmz1z	7	\N	\N	\N
+zsp37nlw2gj	zv4te5eopz2	2	\N	\N	\N
+zsp37nlw2gj	pfvvuk2fqbo	3	\N	\N	\N
+plv56k9qjio	c3d67iotm0p	2	\N	\N	\N
+plv56k9qjio	zv4te5eopz2	3	\N	\N	\N
+plv56k9qjio	pfvvuk2fqbo	4	\N	\N	\N
+xm2aghmu342	c3d67iotm0p	3	\N	\N	\N
+xm2aghmu342	zv4te5eopz2	4	\N	\N	\N
+xm2aghmu342	pfvvuk2fqbo	5	\N	\N	\N
+2a65jddiv1c	c3d67iotm0p	4	\N	\N	\N
+2a65jddiv1c	zv4te5eopz2	5	\N	\N	\N
+2a65jddiv1c	pfvvuk2fqbo	6	\N	\N	\N
+r0oxpk3aest	c3d67iotm0p	5	\N	\N	\N
+r0oxpk3aest	zv4te5eopz2	6	\N	\N	\N
+r0oxpk3aest	pfvvuk2fqbo	7	\N	\N	\N
+ucehls8s69t	c3d67iotm0p	6	\N	\N	\N
+ucehls8s69t	zv4te5eopz2	7	\N	\N	\N
+ucehls8s69t	pfvvuk2fqbo	8	\N	\N	\N
+1i8j6q1xnzk	c3d67iotm0p	7	\N	\N	\N
+1i8j6q1xnzk	zv4te5eopz2	8	\N	\N	\N
+f138kbfbbi9	f138kbfbbi9	0	f	properties	\N
+bpfoz5bejx7	f138kbfbbi9	1	\N	\N	1
+u7z981cpekd	f138kbfbbi9	2	\N	\N	\N
+hw80ixyrjgz	bpfoz5bejx7	2	\N	\N	\N
+hw80ixyrjgz	f138kbfbbi9	3	\N	\N	\N
+me1ohauow6f	bpfoz5bejx7	3	\N	\N	\N
+me1ohauow6f	f138kbfbbi9	4	\N	\N	\N
+xqf45rvay4g	bpfoz5bejx7	4	\N	\N	\N
+xqf45rvay4g	f138kbfbbi9	5	\N	\N	\N
+2mxzcpz5cle	bpfoz5bejx7	5	\N	\N	\N
+2mxzcpz5cle	f138kbfbbi9	6	\N	\N	\N
+jqr7lgri2e0	bpfoz5bejx7	6	\N	\N	\N
+jqr7lgri2e0	f138kbfbbi9	7	\N	\N	\N
+5vjhonzhs45	bpfoz5bejx7	7	\N	\N	\N
+5vjhonzhs45	f138kbfbbi9	8	\N	\N	\N
+073buw1m70l	bpfoz5bejx7	8	\N	\N	\N
+073buw1m70l	f138kbfbbi9	9	\N	\N	\N
+nocobase-admin-menu	bpfoz5bejx7	9	\N	\N	\N
+nocobase-admin-menu	f138kbfbbi9	10	\N	\N	\N
+bpfoz5bejx7	bpfoz5bejx7	0	f	properties	\N
+u7z981cpekd	bpfoz5bejx7	1	\N	\N	5
+u7z981cpekd	wdzdn81bdog	2	\N	\N	\N
+hw80ixyrjgz	0ned8lv8tr0	2	\N	\N	\N
+hw80ixyrjgz	wdzdn81bdog	3	\N	\N	\N
+me1ohauow6f	0ned8lv8tr0	3	\N	\N	\N
+me1ohauow6f	wdzdn81bdog	4	\N	\N	\N
+xqf45rvay4g	0ned8lv8tr0	4	\N	\N	\N
+xqf45rvay4g	wdzdn81bdog	5	\N	\N	\N
+2mxzcpz5cle	0ned8lv8tr0	5	\N	\N	\N
+2mxzcpz5cle	wdzdn81bdog	6	\N	\N	\N
+jqr7lgri2e0	0ned8lv8tr0	6	\N	\N	\N
+jqr7lgri2e0	wdzdn81bdog	7	\N	\N	\N
+5vjhonzhs45	0ned8lv8tr0	7	\N	\N	\N
+5vjhonzhs45	wdzdn81bdog	8	\N	\N	\N
+073buw1m70l	0ned8lv8tr0	8	\N	\N	\N
+073buw1m70l	wdzdn81bdog	9	\N	\N	\N
+1i8j6q1xnzk	pfvvuk2fqbo	9	\N	\N	\N
+5m33jos871r	c3d67iotm0p	8	\N	\N	\N
+5m33jos871r	zv4te5eopz2	9	\N	\N	\N
+5m33jos871r	pfvvuk2fqbo	10	\N	\N	\N
+u9fqp7maxs8	c3d67iotm0p	9	\N	\N	\N
+u9fqp7maxs8	zv4te5eopz2	10	\N	\N	\N
+u9fqp7maxs8	pfvvuk2fqbo	11	\N	\N	\N
+vqty0zmif5g	c3d67iotm0p	10	\N	\N	\N
+vqty0zmif5g	zv4te5eopz2	11	\N	\N	\N
+nocobase-admin-menu	0ned8lv8tr0	9	\N	\N	\N
+nocobase-admin-menu	wdzdn81bdog	10	\N	\N	\N
+u7z981cpekd	p6lb6lassso	2	\N	\N	\N
+hw80ixyrjgz	u0p14qm90g3	2	\N	\N	\N
+hw80ixyrjgz	p6lb6lassso	3	\N	\N	\N
+me1ohauow6f	u0p14qm90g3	3	\N	\N	\N
+me1ohauow6f	p6lb6lassso	4	\N	\N	\N
+xqf45rvay4g	u0p14qm90g3	4	\N	\N	\N
+xqf45rvay4g	p6lb6lassso	5	\N	\N	\N
+2mxzcpz5cle	u0p14qm90g3	5	\N	\N	\N
+2mxzcpz5cle	p6lb6lassso	6	\N	\N	\N
+jqr7lgri2e0	u0p14qm90g3	6	\N	\N	\N
+jqr7lgri2e0	p6lb6lassso	7	\N	\N	\N
+5vjhonzhs45	u0p14qm90g3	7	\N	\N	\N
+5vjhonzhs45	p6lb6lassso	8	\N	\N	\N
+073buw1m70l	u0p14qm90g3	8	\N	\N	\N
+073buw1m70l	p6lb6lassso	9	\N	\N	\N
+nocobase-admin-menu	u0p14qm90g3	9	\N	\N	\N
+nocobase-admin-menu	p6lb6lassso	10	\N	\N	\N
+u7z981cpekd	u0p14qm90g3	1	\N	\N	7
+aqrcdcvwl3m	aqrcdcvwl3m	0	f	properties	\N
+hw80ixyrjgz	aqrcdcvwl3m	2	\N	\N	\N
+me1ohauow6f	aqrcdcvwl3m	3	\N	\N	\N
+xqf45rvay4g	aqrcdcvwl3m	4	\N	\N	\N
+2mxzcpz5cle	aqrcdcvwl3m	5	\N	\N	\N
+jqr7lgri2e0	aqrcdcvwl3m	6	\N	\N	\N
+5vjhonzhs45	aqrcdcvwl3m	7	\N	\N	\N
+073buw1m70l	aqrcdcvwl3m	8	\N	\N	\N
+nocobase-admin-menu	aqrcdcvwl3m	9	\N	\N	\N
+cm30c5qrll3	llxobi4pfu8	2	\N	\N	\N
+cm30c5qrll3	wy3sma2jc6n	1	\N	\N	4
+vqty0zmif5g	pfvvuk2fqbo	12	\N	\N	\N
+xo5vgqdp3pj	c3d67iotm0p	11	\N	\N	\N
+xo5vgqdp3pj	zv4te5eopz2	12	\N	\N	\N
+xo5vgqdp3pj	pfvvuk2fqbo	13	\N	\N	\N
+ar4ks05q9gy	c3d67iotm0p	12	\N	\N	\N
+ar4ks05q9gy	zv4te5eopz2	13	\N	\N	\N
+ar4ks05q9gy	pfvvuk2fqbo	14	\N	\N	\N
+9vll9qbbcql	c3d67iotm0p	13	\N	\N	\N
+0pf6qa0lzh7	wy3sma2jc6n	2	\N	\N	\N
+0uxd7gkozx9	0uxd7gkozx9	0	f	properties	\N
+hw80ixyrjgz	0uxd7gkozx9	2	\N	\N	\N
+me1ohauow6f	0uxd7gkozx9	3	\N	\N	\N
+xqf45rvay4g	0uxd7gkozx9	4	\N	\N	\N
+2mxzcpz5cle	0uxd7gkozx9	5	\N	\N	\N
+jqr7lgri2e0	0uxd7gkozx9	6	\N	\N	\N
+5vjhonzhs45	0uxd7gkozx9	7	\N	\N	\N
+073buw1m70l	0uxd7gkozx9	8	\N	\N	\N
+nocobase-admin-menu	0uxd7gkozx9	9	\N	\N	\N
+tmiqe6j1j64	aqrcdcvwl3m	1	\N	\N	2
+tmiqe6j1j64	0uxd7gkozx9	1	\N	\N	1
+xviw8ru0k6f	xviw8ru0k6f	0	f	properties	\N
+u0p14qm90g3	xviw8ru0k6f	2	\N	\N	\N
+u7z981cpekd	xviw8ru0k6f	3	\N	\N	\N
+hw80ixyrjgz	xviw8ru0k6f	4	\N	\N	\N
+me1ohauow6f	xviw8ru0k6f	5	\N	\N	\N
+xqf45rvay4g	xviw8ru0k6f	6	\N	\N	\N
+2mxzcpz5cle	xviw8ru0k6f	7	\N	\N	\N
+jqr7lgri2e0	xviw8ru0k6f	8	\N	\N	\N
+5vjhonzhs45	xviw8ru0k6f	9	\N	\N	\N
+073buw1m70l	xviw8ru0k6f	10	\N	\N	\N
+nocobase-admin-menu	xviw8ru0k6f	11	\N	\N	\N
+p6lb6lassso	xviw8ru0k6f	1	\N	\N	1
+epcvlfsnapu	epcvlfsnapu	0	f	properties	\N
+eod987x7p4g	epcvlfsnapu	1	\N	\N	1
+cm30c5qrll3	epcvlfsnapu	2	\N	\N	\N
+0pf6qa0lzh7	eod987x7p4g	2	\N	\N	\N
+0pf6qa0lzh7	epcvlfsnapu	3	\N	\N	\N
+a8q5n051fdr	eod987x7p4g	3	\N	\N	\N
+a8q5n051fdr	epcvlfsnapu	4	\N	\N	\N
+39vgsrzpqyp	eod987x7p4g	4	\N	\N	\N
+39vgsrzpqyp	epcvlfsnapu	5	\N	\N	\N
+2mxzcpz5cle	eod987x7p4g	5	\N	\N	\N
+2mxzcpz5cle	epcvlfsnapu	6	\N	\N	\N
+jqr7lgri2e0	eod987x7p4g	6	\N	\N	\N
+jqr7lgri2e0	epcvlfsnapu	7	\N	\N	\N
+5vjhonzhs45	eod987x7p4g	7	\N	\N	\N
+5vjhonzhs45	epcvlfsnapu	8	\N	\N	\N
+073buw1m70l	eod987x7p4g	8	\N	\N	\N
+073buw1m70l	epcvlfsnapu	9	\N	\N	\N
+nocobase-admin-menu	eod987x7p4g	9	\N	\N	\N
+nocobase-admin-menu	epcvlfsnapu	10	\N	\N	\N
+eod987x7p4g	eod987x7p4g	0	f	properties	\N
+cm30c5qrll3	eod987x7p4g	1	\N	\N	1
+9yj23v0c5mr	9yj23v0c5mr	0	f	properties	\N
+sv9gmqdjn75	9yj23v0c5mr	1	\N	\N	1
+cm30c5qrll3	9yj23v0c5mr	2	\N	\N	\N
+0pf6qa0lzh7	sv9gmqdjn75	2	\N	\N	\N
+0pf6qa0lzh7	9yj23v0c5mr	3	\N	\N	\N
+a8q5n051fdr	sv9gmqdjn75	3	\N	\N	\N
+a8q5n051fdr	9yj23v0c5mr	4	\N	\N	\N
+39vgsrzpqyp	sv9gmqdjn75	4	\N	\N	\N
+39vgsrzpqyp	9yj23v0c5mr	5	\N	\N	\N
+2mxzcpz5cle	sv9gmqdjn75	5	\N	\N	\N
+2mxzcpz5cle	9yj23v0c5mr	6	\N	\N	\N
+jqr7lgri2e0	sv9gmqdjn75	6	\N	\N	\N
+jqr7lgri2e0	9yj23v0c5mr	7	\N	\N	\N
+5vjhonzhs45	sv9gmqdjn75	7	\N	\N	\N
+5vjhonzhs45	9yj23v0c5mr	8	\N	\N	\N
+073buw1m70l	sv9gmqdjn75	8	\N	\N	\N
+073buw1m70l	9yj23v0c5mr	9	\N	\N	\N
+nocobase-admin-menu	sv9gmqdjn75	9	\N	\N	\N
+nocobase-admin-menu	9yj23v0c5mr	10	\N	\N	\N
+sv9gmqdjn75	sv9gmqdjn75	0	f	properties	\N
+cm30c5qrll3	sv9gmqdjn75	1	\N	\N	2
+llxobi4pfu8	llxobi4pfu8	0	f	properties	\N
+wy3sma2jc6n	llxobi4pfu8	1	\N	\N	1
+0pf6qa0lzh7	llxobi4pfu8	3	\N	\N	\N
+a8q5n051fdr	wy3sma2jc6n	3	\N	\N	\N
+a8q5n051fdr	llxobi4pfu8	4	\N	\N	\N
+39vgsrzpqyp	wy3sma2jc6n	4	\N	\N	\N
+39vgsrzpqyp	llxobi4pfu8	5	\N	\N	\N
+2mxzcpz5cle	wy3sma2jc6n	5	\N	\N	\N
+2mxzcpz5cle	llxobi4pfu8	6	\N	\N	\N
+jqr7lgri2e0	wy3sma2jc6n	6	\N	\N	\N
+jqr7lgri2e0	llxobi4pfu8	7	\N	\N	\N
+5vjhonzhs45	wy3sma2jc6n	7	\N	\N	\N
+5vjhonzhs45	llxobi4pfu8	8	\N	\N	\N
+073buw1m70l	wy3sma2jc6n	8	\N	\N	\N
+073buw1m70l	llxobi4pfu8	9	\N	\N	\N
+nocobase-admin-menu	wy3sma2jc6n	9	\N	\N	\N
+nocobase-admin-menu	llxobi4pfu8	10	\N	\N	\N
+wy3sma2jc6n	wy3sma2jc6n	0	f	properties	\N
+9vll9qbbcql	zv4te5eopz2	14	\N	\N	\N
+9vll9qbbcql	pfvvuk2fqbo	15	\N	\N	\N
+8vwr3yh0weq	c3d67iotm0p	14	\N	\N	\N
+8vwr3yh0weq	zv4te5eopz2	15	\N	\N	\N
+8vwr3yh0weq	pfvvuk2fqbo	16	\N	\N	\N
+o7z0dukywzh	c3d67iotm0p	15	\N	\N	\N
+o7z0dukywzh	zv4te5eopz2	16	\N	\N	\N
+o7z0dukywzh	pfvvuk2fqbo	17	\N	\N	\N
+xr71y0bi2gt	c3d67iotm0p	16	\N	\N	\N
+073buw1m70l	7gjosk8ispe	9	\N	\N	\N
+nocobase-admin-menu	dfrzos4gq19	9	\N	\N	\N
+nocobase-admin-menu	7gjosk8ispe	10	\N	\N	\N
+xr71y0bi2gt	zv4te5eopz2	17	\N	\N	\N
+xr71y0bi2gt	pfvvuk2fqbo	18	\N	\N	\N
+nmo9mk3zqna	c3d67iotm0p	17	\N	\N	\N
+nmo9mk3zqna	zv4te5eopz2	18	\N	\N	\N
+nmo9mk3zqna	pfvvuk2fqbo	19	\N	\N	\N
+073buw1m70l	c3d67iotm0p	18	\N	\N	\N
+073buw1m70l	zv4te5eopz2	19	\N	\N	\N
+073buw1m70l	pfvvuk2fqbo	20	\N	\N	\N
+nocobase-admin-menu	c3d67iotm0p	19	\N	\N	\N
+nocobase-admin-menu	zv4te5eopz2	20	\N	\N	\N
+nocobase-admin-menu	pfvvuk2fqbo	21	\N	\N	\N
+c3d67iotm0p	c3d67iotm0p	0	f	properties	\N
+zsp37nlw2gj	c3d67iotm0p	1	\N	\N	2
+acs4g8jp9ar	acs4g8jp9ar	0	f	properties	\N
+4vx0e8ud0z3	acs4g8jp9ar	1	\N	\N	1
+3jguinc9v6q	3jguinc9v6q	0	f	properties	\N
+acs4g8jp9ar	3jguinc9v6q	1	\N	\N	1
+4vx0e8ud0z3	3jguinc9v6q	2	\N	\N	1
+zsp37nlw2gj	acs4g8jp9ar	2	\N	\N	\N
+zsp37nlw2gj	3jguinc9v6q	3	\N	\N	\N
+plv56k9qjio	4vx0e8ud0z3	2	\N	\N	\N
+plv56k9qjio	acs4g8jp9ar	3	\N	\N	\N
+plv56k9qjio	3jguinc9v6q	4	\N	\N	\N
+xm2aghmu342	4vx0e8ud0z3	3	\N	\N	\N
+xm2aghmu342	acs4g8jp9ar	4	\N	\N	\N
+xm2aghmu342	3jguinc9v6q	5	\N	\N	\N
+2a65jddiv1c	4vx0e8ud0z3	4	\N	\N	\N
+2a65jddiv1c	acs4g8jp9ar	5	\N	\N	\N
+2a65jddiv1c	3jguinc9v6q	6	\N	\N	\N
+r0oxpk3aest	4vx0e8ud0z3	5	\N	\N	\N
+r0oxpk3aest	acs4g8jp9ar	6	\N	\N	\N
+r0oxpk3aest	3jguinc9v6q	7	\N	\N	\N
+ucehls8s69t	4vx0e8ud0z3	6	\N	\N	\N
+ucehls8s69t	acs4g8jp9ar	7	\N	\N	\N
+ucehls8s69t	3jguinc9v6q	8	\N	\N	\N
+1i8j6q1xnzk	4vx0e8ud0z3	7	\N	\N	\N
+1i8j6q1xnzk	acs4g8jp9ar	8	\N	\N	\N
+1i8j6q1xnzk	3jguinc9v6q	9	\N	\N	\N
+5m33jos871r	4vx0e8ud0z3	8	\N	\N	\N
+5m33jos871r	acs4g8jp9ar	9	\N	\N	\N
+5m33jos871r	3jguinc9v6q	10	\N	\N	\N
+u9fqp7maxs8	4vx0e8ud0z3	9	\N	\N	\N
+u9fqp7maxs8	acs4g8jp9ar	10	\N	\N	\N
+u9fqp7maxs8	3jguinc9v6q	11	\N	\N	\N
+vqty0zmif5g	4vx0e8ud0z3	10	\N	\N	\N
+vqty0zmif5g	acs4g8jp9ar	11	\N	\N	\N
+vqty0zmif5g	3jguinc9v6q	12	\N	\N	\N
+xo5vgqdp3pj	4vx0e8ud0z3	11	\N	\N	\N
+xo5vgqdp3pj	acs4g8jp9ar	12	\N	\N	\N
+xo5vgqdp3pj	3jguinc9v6q	13	\N	\N	\N
+ar4ks05q9gy	4vx0e8ud0z3	12	\N	\N	\N
+ar4ks05q9gy	acs4g8jp9ar	13	\N	\N	\N
+ar4ks05q9gy	3jguinc9v6q	14	\N	\N	\N
+9vll9qbbcql	4vx0e8ud0z3	13	\N	\N	\N
+9vll9qbbcql	acs4g8jp9ar	14	\N	\N	\N
+9vll9qbbcql	3jguinc9v6q	15	\N	\N	\N
+8vwr3yh0weq	4vx0e8ud0z3	14	\N	\N	\N
+8vwr3yh0weq	acs4g8jp9ar	15	\N	\N	\N
+8vwr3yh0weq	3jguinc9v6q	16	\N	\N	\N
+o7z0dukywzh	4vx0e8ud0z3	15	\N	\N	\N
+o7z0dukywzh	acs4g8jp9ar	16	\N	\N	\N
+o7z0dukywzh	3jguinc9v6q	17	\N	\N	\N
+xr71y0bi2gt	4vx0e8ud0z3	16	\N	\N	\N
+xr71y0bi2gt	acs4g8jp9ar	17	\N	\N	\N
+xr71y0bi2gt	3jguinc9v6q	18	\N	\N	\N
+nmo9mk3zqna	4vx0e8ud0z3	17	\N	\N	\N
+nmo9mk3zqna	acs4g8jp9ar	18	\N	\N	\N
+nmo9mk3zqna	3jguinc9v6q	19	\N	\N	\N
+073buw1m70l	4vx0e8ud0z3	18	\N	\N	\N
+073buw1m70l	acs4g8jp9ar	19	\N	\N	\N
+073buw1m70l	3jguinc9v6q	20	\N	\N	\N
+nocobase-admin-menu	4vx0e8ud0z3	19	\N	\N	\N
+nocobase-admin-menu	acs4g8jp9ar	20	\N	\N	\N
+nocobase-admin-menu	3jguinc9v6q	21	\N	\N	\N
+4vx0e8ud0z3	4vx0e8ud0z3	0	f	properties	\N
+zsp37nlw2gj	4vx0e8ud0z3	1	\N	\N	3
+iiek91fm1lg	wwfnvseziiz	8	\N	\N	\N
+58svvznpmsd	58svvznpmsd	0	f	properties	\N
+ohomslsy6yb	58svvznpmsd	1	\N	\N	1
+u805m877nud	u805m877nud	0	f	properties	\N
+58svvznpmsd	u805m877nud	1	\N	\N	1
+ohomslsy6yb	u805m877nud	2	\N	\N	1
+iiek91fm1lg	4z1o600a2we	11	\N	\N	\N
+zsp37nlw2gj	58svvznpmsd	2	\N	\N	\N
+zsp37nlw2gj	u805m877nud	3	\N	\N	\N
+plv56k9qjio	ohomslsy6yb	2	\N	\N	\N
+plv56k9qjio	58svvznpmsd	3	\N	\N	\N
+plv56k9qjio	u805m877nud	4	\N	\N	\N
+xm2aghmu342	ohomslsy6yb	3	\N	\N	\N
+brwprt2m80b	brwprt2m80b	0	f	properties	\N
+07z8wmyqobp	brwprt2m80b	1	\N	\N	1
+i7gwmqodnug	brwprt2m80b	2	\N	\N	\N
+ar4ks05q9gy	07z8wmyqobp	2	\N	\N	\N
+ar4ks05q9gy	brwprt2m80b	3	\N	\N	\N
+9vll9qbbcql	07z8wmyqobp	3	\N	\N	\N
+9vll9qbbcql	brwprt2m80b	4	\N	\N	\N
+8vwr3yh0weq	07z8wmyqobp	4	\N	\N	\N
+8vwr3yh0weq	brwprt2m80b	5	\N	\N	\N
+o7z0dukywzh	07z8wmyqobp	5	\N	\N	\N
+o7z0dukywzh	brwprt2m80b	6	\N	\N	\N
+xr71y0bi2gt	07z8wmyqobp	6	\N	\N	\N
+xr71y0bi2gt	brwprt2m80b	7	\N	\N	\N
+nmo9mk3zqna	07z8wmyqobp	7	\N	\N	\N
+nmo9mk3zqna	brwprt2m80b	8	\N	\N	\N
+073buw1m70l	07z8wmyqobp	8	\N	\N	\N
+073buw1m70l	brwprt2m80b	9	\N	\N	\N
+nocobase-admin-menu	07z8wmyqobp	9	\N	\N	\N
+nocobase-admin-menu	brwprt2m80b	10	\N	\N	\N
+07z8wmyqobp	07z8wmyqobp	0	f	properties	\N
+i7gwmqodnug	07z8wmyqobp	1	\N	\N	7
+x8la2jn4vsf	x8la2jn4vsf	0	f	properties	\N
+prjoakdy53w	x8la2jn4vsf	1	\N	\N	1
+i7gwmqodnug	x8la2jn4vsf	2	\N	\N	\N
+ar4ks05q9gy	prjoakdy53w	2	\N	\N	\N
+ar4ks05q9gy	x8la2jn4vsf	3	\N	\N	\N
+9vll9qbbcql	prjoakdy53w	3	\N	\N	\N
+9vll9qbbcql	x8la2jn4vsf	4	\N	\N	\N
+8vwr3yh0weq	prjoakdy53w	4	\N	\N	\N
+8vwr3yh0weq	x8la2jn4vsf	5	\N	\N	\N
+o7z0dukywzh	prjoakdy53w	5	\N	\N	\N
+o7z0dukywzh	x8la2jn4vsf	6	\N	\N	\N
+xr71y0bi2gt	prjoakdy53w	6	\N	\N	\N
+xr71y0bi2gt	x8la2jn4vsf	7	\N	\N	\N
+nmo9mk3zqna	prjoakdy53w	7	\N	\N	\N
+nmo9mk3zqna	x8la2jn4vsf	8	\N	\N	\N
+prjoakdy53w	prjoakdy53w	0	f	properties	\N
+i7gwmqodnug	prjoakdy53w	1	\N	\N	8
+073buw1m70l	prjoakdy53w	8	\N	\N	\N
+073buw1m70l	x8la2jn4vsf	9	\N	\N	\N
+nocobase-admin-menu	prjoakdy53w	9	\N	\N	\N
+nocobase-admin-menu	x8la2jn4vsf	10	\N	\N	\N
+xm2aghmu342	58svvznpmsd	4	\N	\N	\N
+xm2aghmu342	u805m877nud	5	\N	\N	\N
+2a65jddiv1c	ohomslsy6yb	4	\N	\N	\N
+2a65jddiv1c	58svvznpmsd	5	\N	\N	\N
+2a65jddiv1c	u805m877nud	6	\N	\N	\N
+r0oxpk3aest	ohomslsy6yb	5	\N	\N	\N
+r0oxpk3aest	58svvznpmsd	6	\N	\N	\N
+r0oxpk3aest	u805m877nud	7	\N	\N	\N
+ucehls8s69t	ohomslsy6yb	6	\N	\N	\N
+ucehls8s69t	58svvznpmsd	7	\N	\N	\N
+ucehls8s69t	u805m877nud	8	\N	\N	\N
+1i8j6q1xnzk	ohomslsy6yb	7	\N	\N	\N
+1i8j6q1xnzk	58svvznpmsd	8	\N	\N	\N
+1i8j6q1xnzk	u805m877nud	9	\N	\N	\N
+5m33jos871r	ohomslsy6yb	8	\N	\N	\N
+5m33jos871r	58svvznpmsd	9	\N	\N	\N
+5m33jos871r	u805m877nud	10	\N	\N	\N
+u9fqp7maxs8	ohomslsy6yb	9	\N	\N	\N
+u9fqp7maxs8	58svvznpmsd	10	\N	\N	\N
+u9fqp7maxs8	u805m877nud	11	\N	\N	\N
+vqty0zmif5g	ohomslsy6yb	10	\N	\N	\N
+rfh8b0zirug	rfh8b0zirug	0	f	properties	\N
+1vvvk5b0mrj	rfh8b0zirug	1	\N	\N	1
+0ebdl8hmsnm	0ebdl8hmsnm	0	f	properties	\N
+rfh8b0zirug	0ebdl8hmsnm	1	\N	\N	1
+q8w4jtx49bi	q8w4jtx49bi	0	f	properties	\N
+0ebdl8hmsnm	q8w4jtx49bi	1	\N	\N	1
+rfh8b0zirug	q8w4jtx49bi	2	\N	\N	1
+0fz8ktp083z	0fz8ktp083z	0	f	properties	\N
+q8w4jtx49bi	0fz8ktp083z	1	\N	\N	1
+0ebdl8hmsnm	0fz8ktp083z	2	\N	\N	1
+rfh8b0zirug	0fz8ktp083z	3	\N	\N	1
+ox367wpayts	ox367wpayts	0	f	properties	\N
+0fz8ktp083z	ox367wpayts	1	\N	\N	1
+q8w4jtx49bi	ox367wpayts	2	\N	\N	1
+0ebdl8hmsnm	ox367wpayts	3	\N	\N	1
+rfh8b0zirug	ox367wpayts	4	\N	\N	1
+off13dwx10v	off13dwx10v	0	f	properties	\N
+0fz8ktp083z	off13dwx10v	1	\N	\N	2
+q8w4jtx49bi	off13dwx10v	2	\N	\N	2
+0ebdl8hmsnm	off13dwx10v	3	\N	\N	2
+rfh8b0zirug	off13dwx10v	4	\N	\N	2
+1vvvk5b0mrj	0ebdl8hmsnm	2	\N	\N	\N
+1vvvk5b0mrj	q8w4jtx49bi	3	\N	\N	\N
+1vvvk5b0mrj	0fz8ktp083z	4	\N	\N	\N
+1vvvk5b0mrj	ox367wpayts	5	\N	\N	\N
+1vvvk5b0mrj	off13dwx10v	5	\N	\N	\N
+0pc9xw649k4	rfh8b0zirug	2	\N	\N	\N
+0pc9xw649k4	0ebdl8hmsnm	3	\N	\N	\N
+0pc9xw649k4	q8w4jtx49bi	4	\N	\N	\N
+0pc9xw649k4	0fz8ktp083z	5	\N	\N	\N
+0pc9xw649k4	ox367wpayts	6	\N	\N	\N
+0pc9xw649k4	off13dwx10v	6	\N	\N	\N
+sge8s8r9kdv	rfh8b0zirug	3	\N	\N	\N
+sge8s8r9kdv	0ebdl8hmsnm	4	\N	\N	\N
+sge8s8r9kdv	q8w4jtx49bi	5	\N	\N	\N
+sge8s8r9kdv	0fz8ktp083z	6	\N	\N	\N
+sge8s8r9kdv	ox367wpayts	7	\N	\N	\N
+sge8s8r9kdv	off13dwx10v	7	\N	\N	\N
+8qtz3wrc8jb	rfh8b0zirug	4	\N	\N	\N
+8qtz3wrc8jb	0ebdl8hmsnm	5	\N	\N	\N
+8qtz3wrc8jb	q8w4jtx49bi	6	\N	\N	\N
+8qtz3wrc8jb	0fz8ktp083z	7	\N	\N	\N
+8qtz3wrc8jb	ox367wpayts	8	\N	\N	\N
+8qtz3wrc8jb	off13dwx10v	8	\N	\N	\N
+a2izctpt2dm	rfh8b0zirug	5	\N	\N	\N
+a2izctpt2dm	0ebdl8hmsnm	6	\N	\N	\N
+a2izctpt2dm	q8w4jtx49bi	7	\N	\N	\N
+a2izctpt2dm	0fz8ktp083z	8	\N	\N	\N
+a2izctpt2dm	ox367wpayts	9	\N	\N	\N
+a2izctpt2dm	off13dwx10v	9	\N	\N	\N
+fuvpnwuajhl	rfh8b0zirug	6	\N	\N	\N
+fuvpnwuajhl	0ebdl8hmsnm	7	\N	\N	\N
+fuvpnwuajhl	q8w4jtx49bi	8	\N	\N	\N
+fuvpnwuajhl	0fz8ktp083z	9	\N	\N	\N
+fuvpnwuajhl	ox367wpayts	10	\N	\N	\N
+fuvpnwuajhl	off13dwx10v	10	\N	\N	\N
+9udwuhf2o25	rfh8b0zirug	7	\N	\N	\N
+9udwuhf2o25	0ebdl8hmsnm	8	\N	\N	\N
+9udwuhf2o25	q8w4jtx49bi	9	\N	\N	\N
+9udwuhf2o25	0fz8ktp083z	10	\N	\N	\N
+9udwuhf2o25	ox367wpayts	11	\N	\N	\N
+9udwuhf2o25	off13dwx10v	11	\N	\N	\N
+dwzj4kwyaia	rfh8b0zirug	8	\N	\N	\N
+dwzj4kwyaia	0ebdl8hmsnm	9	\N	\N	\N
+dwzj4kwyaia	q8w4jtx49bi	10	\N	\N	\N
+dwzj4kwyaia	0fz8ktp083z	11	\N	\N	\N
+dwzj4kwyaia	ox367wpayts	12	\N	\N	\N
+dwzj4kwyaia	off13dwx10v	12	\N	\N	\N
+iiek91fm1lg	rfh8b0zirug	9	\N	\N	\N
+iiek91fm1lg	0ebdl8hmsnm	10	\N	\N	\N
+iiek91fm1lg	q8w4jtx49bi	11	\N	\N	\N
+iiek91fm1lg	0fz8ktp083z	12	\N	\N	\N
+iiek91fm1lg	ox367wpayts	13	\N	\N	\N
+iiek91fm1lg	off13dwx10v	13	\N	\N	\N
+3owowmpqg3i	3ohbpid2iz3	5	\N	\N	\N
+3owowmpqg3i	8oq39vqqx82	6	\N	\N	\N
+3owowmpqg3i	bg4rui84lj2	7	\N	\N	\N
+3owowmpqg3i	zeyg628q8t0	8	\N	\N	\N
+3owowmpqg3i	84mt4mce1w7	9	\N	\N	\N
+wu05wqno6t2	3ohbpid2iz3	6	\N	\N	\N
+wu05wqno6t2	8oq39vqqx82	7	\N	\N	\N
+wu05wqno6t2	bg4rui84lj2	8	\N	\N	\N
+wu05wqno6t2	zeyg628q8t0	9	\N	\N	\N
+wu05wqno6t2	84mt4mce1w7	10	\N	\N	\N
+fq548i6jjul	3ohbpid2iz3	7	\N	\N	\N
+fq548i6jjul	8oq39vqqx82	8	\N	\N	\N
+fq548i6jjul	bg4rui84lj2	9	\N	\N	\N
+fq548i6jjul	zeyg628q8t0	10	\N	\N	\N
+fq548i6jjul	84mt4mce1w7	11	\N	\N	\N
+b8e4crdaije	3ohbpid2iz3	8	\N	\N	\N
+b8e4crdaije	8oq39vqqx82	9	\N	\N	\N
+b8e4crdaije	bg4rui84lj2	10	\N	\N	\N
+b8e4crdaije	zeyg628q8t0	11	\N	\N	\N
+b8e4crdaije	84mt4mce1w7	12	\N	\N	\N
+41zfs8bogys	3ohbpid2iz3	9	\N	\N	\N
+41zfs8bogys	8oq39vqqx82	10	\N	\N	\N
+41zfs8bogys	bg4rui84lj2	11	\N	\N	\N
+41zfs8bogys	zeyg628q8t0	12	\N	\N	\N
+41zfs8bogys	84mt4mce1w7	13	\N	\N	\N
+073buw1m70l	3ohbpid2iz3	10	\N	\N	\N
+073buw1m70l	8oq39vqqx82	11	\N	\N	\N
+073buw1m70l	bg4rui84lj2	12	\N	\N	\N
+073buw1m70l	zeyg628q8t0	13	\N	\N	\N
+073buw1m70l	84mt4mce1w7	14	\N	\N	\N
+vqty0zmif5g	58svvznpmsd	11	\N	\N	\N
+vqty0zmif5g	u805m877nud	12	\N	\N	\N
+0kogh8w0fiz	0kogh8w0fiz	0	f	properties	\N
+bqg6ip9wrs8	0kogh8w0fiz	1	\N	\N	1
+oy4ddftka2v	oy4ddftka2v	0	f	properties	\N
+0kogh8w0fiz	oy4ddftka2v	1	\N	\N	1
+bqg6ip9wrs8	oy4ddftka2v	2	\N	\N	1
+off13dwx10v	0kogh8w0fiz	2	\N	\N	\N
+off13dwx10v	oy4ddftka2v	3	\N	\N	\N
+0fz8ktp083z	bqg6ip9wrs8	2	\N	\N	\N
+0fz8ktp083z	0kogh8w0fiz	3	\N	\N	\N
+0fz8ktp083z	oy4ddftka2v	4	\N	\N	\N
+q8w4jtx49bi	bqg6ip9wrs8	3	\N	\N	\N
+q8w4jtx49bi	0kogh8w0fiz	4	\N	\N	\N
+q8w4jtx49bi	oy4ddftka2v	5	\N	\N	\N
+0ebdl8hmsnm	bqg6ip9wrs8	4	\N	\N	\N
+0ebdl8hmsnm	0kogh8w0fiz	5	\N	\N	\N
+0ebdl8hmsnm	oy4ddftka2v	6	\N	\N	\N
+rfh8b0zirug	bqg6ip9wrs8	5	\N	\N	\N
+rfh8b0zirug	0kogh8w0fiz	6	\N	\N	\N
+rfh8b0zirug	oy4ddftka2v	7	\N	\N	\N
+1vvvk5b0mrj	bqg6ip9wrs8	6	\N	\N	\N
+1vvvk5b0mrj	0kogh8w0fiz	7	\N	\N	\N
+1vvvk5b0mrj	oy4ddftka2v	8	\N	\N	\N
+0pc9xw649k4	bqg6ip9wrs8	7	\N	\N	\N
+0pc9xw649k4	0kogh8w0fiz	8	\N	\N	\N
+0pc9xw649k4	oy4ddftka2v	9	\N	\N	\N
+sge8s8r9kdv	bqg6ip9wrs8	8	\N	\N	\N
+sge8s8r9kdv	0kogh8w0fiz	9	\N	\N	\N
+sge8s8r9kdv	oy4ddftka2v	10	\N	\N	\N
+8qtz3wrc8jb	bqg6ip9wrs8	9	\N	\N	\N
+8qtz3wrc8jb	0kogh8w0fiz	10	\N	\N	\N
+8qtz3wrc8jb	oy4ddftka2v	11	\N	\N	\N
+a2izctpt2dm	bqg6ip9wrs8	10	\N	\N	\N
+a2izctpt2dm	0kogh8w0fiz	11	\N	\N	\N
+a2izctpt2dm	oy4ddftka2v	12	\N	\N	\N
+fuvpnwuajhl	bqg6ip9wrs8	11	\N	\N	\N
+fuvpnwuajhl	0kogh8w0fiz	12	\N	\N	\N
+fuvpnwuajhl	oy4ddftka2v	13	\N	\N	\N
+9udwuhf2o25	bqg6ip9wrs8	12	\N	\N	\N
+9udwuhf2o25	0kogh8w0fiz	13	\N	\N	\N
+9udwuhf2o25	oy4ddftka2v	14	\N	\N	\N
+dwzj4kwyaia	bqg6ip9wrs8	13	\N	\N	\N
+dwzj4kwyaia	0kogh8w0fiz	14	\N	\N	\N
+dwzj4kwyaia	oy4ddftka2v	15	\N	\N	\N
+iiek91fm1lg	bqg6ip9wrs8	14	\N	\N	\N
+iiek91fm1lg	0kogh8w0fiz	15	\N	\N	\N
+iiek91fm1lg	oy4ddftka2v	16	\N	\N	\N
+bqg6ip9wrs8	bqg6ip9wrs8	0	f	properties	\N
+off13dwx10v	bqg6ip9wrs8	1	\N	\N	1
+xo5vgqdp3pj	ohomslsy6yb	11	\N	\N	\N
+xo5vgqdp3pj	58svvznpmsd	12	\N	\N	\N
+xo5vgqdp3pj	u805m877nud	13	\N	\N	\N
+ar4ks05q9gy	ohomslsy6yb	12	\N	\N	\N
+ar4ks05q9gy	58svvznpmsd	13	\N	\N	\N
+ar4ks05q9gy	u805m877nud	14	\N	\N	\N
+0fz8ktp083z	6oovi6xy2v1	2	\N	\N	\N
+9vll9qbbcql	ohomslsy6yb	13	\N	\N	\N
+9vll9qbbcql	58svvznpmsd	14	\N	\N	\N
+q8w4jtx49bi	6oovi6xy2v1	3	\N	\N	\N
+9vll9qbbcql	u805m877nud	15	\N	\N	\N
+8vwr3yh0weq	ohomslsy6yb	14	\N	\N	\N
+0ebdl8hmsnm	6oovi6xy2v1	4	\N	\N	\N
+8vwr3yh0weq	58svvznpmsd	15	\N	\N	\N
+8vwr3yh0weq	u805m877nud	16	\N	\N	\N
+rfh8b0zirug	6oovi6xy2v1	5	\N	\N	\N
+o7z0dukywzh	ohomslsy6yb	15	\N	\N	\N
+o7z0dukywzh	58svvznpmsd	16	\N	\N	\N
+1vvvk5b0mrj	6oovi6xy2v1	6	\N	\N	\N
+o7z0dukywzh	u805m877nud	17	\N	\N	\N
+xr71y0bi2gt	ohomslsy6yb	16	\N	\N	\N
+0pc9xw649k4	6oovi6xy2v1	7	\N	\N	\N
+xr71y0bi2gt	58svvznpmsd	17	\N	\N	\N
+xr71y0bi2gt	u805m877nud	18	\N	\N	\N
+sge8s8r9kdv	6oovi6xy2v1	8	\N	\N	\N
+nmo9mk3zqna	ohomslsy6yb	17	\N	\N	\N
+nmo9mk3zqna	58svvznpmsd	18	\N	\N	\N
+8qtz3wrc8jb	6oovi6xy2v1	9	\N	\N	\N
+nmo9mk3zqna	u805m877nud	19	\N	\N	\N
+073buw1m70l	ohomslsy6yb	18	\N	\N	\N
+a2izctpt2dm	6oovi6xy2v1	10	\N	\N	\N
+073buw1m70l	58svvznpmsd	19	\N	\N	\N
+073buw1m70l	u805m877nud	20	\N	\N	\N
+fuvpnwuajhl	6oovi6xy2v1	11	\N	\N	\N
+nocobase-admin-menu	ohomslsy6yb	19	\N	\N	\N
+nocobase-admin-menu	58svvznpmsd	20	\N	\N	\N
+9udwuhf2o25	6oovi6xy2v1	12	\N	\N	\N
+nocobase-admin-menu	u805m877nud	21	\N	\N	\N
+ohomslsy6yb	ohomslsy6yb	0	f	properties	\N
+dwzj4kwyaia	6oovi6xy2v1	13	\N	\N	\N
+zsp37nlw2gj	ohomslsy6yb	1	\N	\N	4
+iiek91fm1lg	6hd31g8yv4w	9	\N	\N	\N
+iiek91fm1lg	6oovi6xy2v1	14	\N	\N	\N
+lm3ruhnl2ld	lm3ruhnl2ld	0	f	properties	\N
+5i8jn18vzoz	lm3ruhnl2ld	1	\N	\N	1
+g6z05qupqe7	g6z05qupqe7	0	f	properties	\N
+lm3ruhnl2ld	g6z05qupqe7	1	\N	\N	1
+5i8jn18vzoz	g6z05qupqe7	2	\N	\N	1
+iiek91fm1lg	bbqntpvrcj9	13	\N	\N	\N
+6oovi6xy2v1	6oovi6xy2v1	0	f	properties	\N
+off13dwx10v	6oovi6xy2v1	1	\N	\N	2
+byb2bv7alh0	byb2bv7alh0	0	f	properties	\N
+zsp37nlw2gj	lm3ruhnl2ld	2	\N	\N	\N
+zsp37nlw2gj	g6z05qupqe7	3	\N	\N	\N
+c4s1r60q2cb	c4s1r60q2cb	0	f	properties	\N
+5kczql5413e	c4s1r60q2cb	1	\N	\N	1
+mvzmqoerkj9	mvzmqoerkj9	0	f	properties	\N
+c4s1r60q2cb	mvzmqoerkj9	1	\N	\N	1
+5kczql5413e	mvzmqoerkj9	2	\N	\N	1
+off13dwx10v	c4s1r60q2cb	2	\N	\N	\N
+off13dwx10v	mvzmqoerkj9	3	\N	\N	\N
+0fz8ktp083z	5kczql5413e	2	\N	\N	\N
+0fz8ktp083z	c4s1r60q2cb	3	\N	\N	\N
+0fz8ktp083z	mvzmqoerkj9	4	\N	\N	\N
+q8w4jtx49bi	5kczql5413e	3	\N	\N	\N
+q8w4jtx49bi	c4s1r60q2cb	4	\N	\N	\N
+q8w4jtx49bi	mvzmqoerkj9	5	\N	\N	\N
+0ebdl8hmsnm	5kczql5413e	4	\N	\N	\N
+0ebdl8hmsnm	c4s1r60q2cb	5	\N	\N	\N
+0ebdl8hmsnm	mvzmqoerkj9	6	\N	\N	\N
+rfh8b0zirug	5kczql5413e	5	\N	\N	\N
+rfh8b0zirug	c4s1r60q2cb	6	\N	\N	\N
+rfh8b0zirug	mvzmqoerkj9	7	\N	\N	\N
+1vvvk5b0mrj	5kczql5413e	6	\N	\N	\N
+1vvvk5b0mrj	c4s1r60q2cb	7	\N	\N	\N
+1vvvk5b0mrj	mvzmqoerkj9	8	\N	\N	\N
+0pc9xw649k4	5kczql5413e	7	\N	\N	\N
+0pc9xw649k4	c4s1r60q2cb	8	\N	\N	\N
+0pc9xw649k4	mvzmqoerkj9	9	\N	\N	\N
+sge8s8r9kdv	5kczql5413e	8	\N	\N	\N
+sge8s8r9kdv	c4s1r60q2cb	9	\N	\N	\N
+sge8s8r9kdv	mvzmqoerkj9	10	\N	\N	\N
+8qtz3wrc8jb	5kczql5413e	9	\N	\N	\N
+8qtz3wrc8jb	c4s1r60q2cb	10	\N	\N	\N
+8qtz3wrc8jb	mvzmqoerkj9	11	\N	\N	\N
+a2izctpt2dm	5kczql5413e	10	\N	\N	\N
+a2izctpt2dm	c4s1r60q2cb	11	\N	\N	\N
+a2izctpt2dm	mvzmqoerkj9	12	\N	\N	\N
+fuvpnwuajhl	5kczql5413e	11	\N	\N	\N
+fuvpnwuajhl	c4s1r60q2cb	12	\N	\N	\N
+fuvpnwuajhl	mvzmqoerkj9	13	\N	\N	\N
+9udwuhf2o25	5kczql5413e	12	\N	\N	\N
+9udwuhf2o25	c4s1r60q2cb	13	\N	\N	\N
+9udwuhf2o25	mvzmqoerkj9	14	\N	\N	\N
+dwzj4kwyaia	5kczql5413e	13	\N	\N	\N
+dwzj4kwyaia	c4s1r60q2cb	14	\N	\N	\N
+dwzj4kwyaia	mvzmqoerkj9	15	\N	\N	\N
+iiek91fm1lg	5kczql5413e	14	\N	\N	\N
+iiek91fm1lg	c4s1r60q2cb	15	\N	\N	\N
+iiek91fm1lg	mvzmqoerkj9	16	\N	\N	\N
+5kczql5413e	5kczql5413e	0	f	properties	\N
+off13dwx10v	5kczql5413e	1	\N	\N	3
+osyxi68g3zz	byb2bv7alh0	1	\N	\N	1
+bqg6ip9wrs8	byb2bv7alh0	2	\N	\N	\N
+off13dwx10v	osyxi68g3zz	2	\N	\N	\N
+off13dwx10v	byb2bv7alh0	3	\N	\N	\N
+0fz8ktp083z	osyxi68g3zz	3	\N	\N	\N
+0fz8ktp083z	byb2bv7alh0	4	\N	\N	\N
+q8w4jtx49bi	osyxi68g3zz	4	\N	\N	\N
+q8w4jtx49bi	byb2bv7alh0	5	\N	\N	\N
+0ebdl8hmsnm	osyxi68g3zz	5	\N	\N	\N
+0ebdl8hmsnm	byb2bv7alh0	6	\N	\N	\N
+rfh8b0zirug	osyxi68g3zz	6	\N	\N	\N
+rfh8b0zirug	byb2bv7alh0	7	\N	\N	\N
+1vvvk5b0mrj	osyxi68g3zz	7	\N	\N	\N
+1vvvk5b0mrj	byb2bv7alh0	8	\N	\N	\N
+0pc9xw649k4	osyxi68g3zz	8	\N	\N	\N
+0pc9xw649k4	byb2bv7alh0	9	\N	\N	\N
+sge8s8r9kdv	osyxi68g3zz	9	\N	\N	\N
+sge8s8r9kdv	byb2bv7alh0	10	\N	\N	\N
+8qtz3wrc8jb	osyxi68g3zz	10	\N	\N	\N
+8qtz3wrc8jb	byb2bv7alh0	11	\N	\N	\N
+a2izctpt2dm	osyxi68g3zz	11	\N	\N	\N
+a2izctpt2dm	byb2bv7alh0	12	\N	\N	\N
+fuvpnwuajhl	osyxi68g3zz	12	\N	\N	\N
+fuvpnwuajhl	byb2bv7alh0	13	\N	\N	\N
+9udwuhf2o25	osyxi68g3zz	13	\N	\N	\N
+9udwuhf2o25	byb2bv7alh0	14	\N	\N	\N
+dwzj4kwyaia	osyxi68g3zz	14	\N	\N	\N
+dwzj4kwyaia	byb2bv7alh0	15	\N	\N	\N
+iiek91fm1lg	osyxi68g3zz	15	\N	\N	\N
+iiek91fm1lg	byb2bv7alh0	16	\N	\N	\N
+osyxi68g3zz	osyxi68g3zz	0	f	properties	\N
+bqg6ip9wrs8	osyxi68g3zz	1	\N	\N	2
+z7ksqgxvuzy	z7ksqgxvuzy	0	f	properties	\N
+6hxxlzxmifr	z7ksqgxvuzy	1	\N	\N	1
+mclja8pd27f	mclja8pd27f	0	f	properties	\N
+z7ksqgxvuzy	mclja8pd27f	1	\N	\N	1
+6hxxlzxmifr	mclja8pd27f	2	\N	\N	1
+l1ipy29yo2a	l1ipy29yo2a	0	f	properties	\N
+mclja8pd27f	l1ipy29yo2a	1	\N	\N	1
+z7ksqgxvuzy	l1ipy29yo2a	2	\N	\N	1
+6hxxlzxmifr	l1ipy29yo2a	3	\N	\N	1
+4afg865vv97	4afg865vv97	0	f	properties	\N
+l1ipy29yo2a	4afg865vv97	1	\N	\N	1
+mclja8pd27f	4afg865vv97	2	\N	\N	1
+z7ksqgxvuzy	4afg865vv97	3	\N	\N	1
+6hxxlzxmifr	4afg865vv97	4	\N	\N	1
+xrp5qlqau5q	xrp5qlqau5q	0	f	properties	\N
+l1ipy29yo2a	xrp5qlqau5q	1	\N	\N	2
+mclja8pd27f	xrp5qlqau5q	2	\N	\N	2
+z7ksqgxvuzy	xrp5qlqau5q	3	\N	\N	2
+6hxxlzxmifr	xrp5qlqau5q	4	\N	\N	2
+4gdmc9g083s	z7ksqgxvuzy	2	\N	\N	\N
+4gdmc9g083s	mclja8pd27f	3	\N	\N	\N
+4gdmc9g083s	l1ipy29yo2a	4	\N	\N	\N
+4gdmc9g083s	4afg865vv97	5	\N	\N	\N
+4gdmc9g083s	xrp5qlqau5q	5	\N	\N	\N
+ebu29iqsaqx	6hxxlzxmifr	2	\N	\N	\N
+ebu29iqsaqx	z7ksqgxvuzy	3	\N	\N	\N
+ebu29iqsaqx	mclja8pd27f	4	\N	\N	\N
+ebu29iqsaqx	l1ipy29yo2a	5	\N	\N	\N
+ebu29iqsaqx	4afg865vv97	6	\N	\N	\N
+ebu29iqsaqx	xrp5qlqau5q	6	\N	\N	\N
+k4kftsn5ht7	6hxxlzxmifr	3	\N	\N	\N
+k4kftsn5ht7	z7ksqgxvuzy	4	\N	\N	\N
+k4kftsn5ht7	mclja8pd27f	5	\N	\N	\N
+k4kftsn5ht7	l1ipy29yo2a	6	\N	\N	\N
+k4kftsn5ht7	4afg865vv97	7	\N	\N	\N
+k4kftsn5ht7	xrp5qlqau5q	7	\N	\N	\N
+hg9tvy6yuph	6hxxlzxmifr	4	\N	\N	\N
+hg9tvy6yuph	z7ksqgxvuzy	5	\N	\N	\N
+hg9tvy6yuph	mclja8pd27f	6	\N	\N	\N
+hg9tvy6yuph	l1ipy29yo2a	7	\N	\N	\N
+hg9tvy6yuph	4afg865vv97	8	\N	\N	\N
+hg9tvy6yuph	xrp5qlqau5q	8	\N	\N	\N
+bzirblya7qw	6hxxlzxmifr	5	\N	\N	\N
+bzirblya7qw	z7ksqgxvuzy	6	\N	\N	\N
+bzirblya7qw	mclja8pd27f	7	\N	\N	\N
+bzirblya7qw	l1ipy29yo2a	8	\N	\N	\N
+bzirblya7qw	4afg865vv97	9	\N	\N	\N
+bzirblya7qw	xrp5qlqau5q	9	\N	\N	\N
+galt7hbd78y	6hxxlzxmifr	6	\N	\N	\N
+galt7hbd78y	z7ksqgxvuzy	7	\N	\N	\N
+galt7hbd78y	mclja8pd27f	8	\N	\N	\N
+galt7hbd78y	l1ipy29yo2a	9	\N	\N	\N
+galt7hbd78y	4afg865vv97	10	\N	\N	\N
+galt7hbd78y	xrp5qlqau5q	10	\N	\N	\N
+e87ogy2w48b	6hxxlzxmifr	7	\N	\N	\N
+e87ogy2w48b	z7ksqgxvuzy	8	\N	\N	\N
+e87ogy2w48b	mclja8pd27f	9	\N	\N	\N
+e87ogy2w48b	l1ipy29yo2a	10	\N	\N	\N
+e87ogy2w48b	4afg865vv97	11	\N	\N	\N
+e87ogy2w48b	xrp5qlqau5q	11	\N	\N	\N
+i0bqeajbvwo	6hxxlzxmifr	8	\N	\N	\N
+i0bqeajbvwo	z7ksqgxvuzy	9	\N	\N	\N
+i0bqeajbvwo	mclja8pd27f	10	\N	\N	\N
+i0bqeajbvwo	l1ipy29yo2a	11	\N	\N	\N
+i0bqeajbvwo	4afg865vv97	12	\N	\N	\N
+i0bqeajbvwo	xrp5qlqau5q	12	\N	\N	\N
+pdot2ybyfc0	6hxxlzxmifr	9	\N	\N	\N
+pdot2ybyfc0	z7ksqgxvuzy	10	\N	\N	\N
+pdot2ybyfc0	mclja8pd27f	11	\N	\N	\N
+pdot2ybyfc0	l1ipy29yo2a	12	\N	\N	\N
+pdot2ybyfc0	4afg865vv97	13	\N	\N	\N
+pdot2ybyfc0	xrp5qlqau5q	13	\N	\N	\N
+a7e860jrx5o	6hxxlzxmifr	10	\N	\N	\N
+a7e860jrx5o	z7ksqgxvuzy	11	\N	\N	\N
+a7e860jrx5o	mclja8pd27f	12	\N	\N	\N
+a7e860jrx5o	l1ipy29yo2a	13	\N	\N	\N
+a7e860jrx5o	4afg865vv97	14	\N	\N	\N
+a7e860jrx5o	xrp5qlqau5q	14	\N	\N	\N
+zxh1oe1qx5t	6hxxlzxmifr	11	\N	\N	\N
+zxh1oe1qx5t	z7ksqgxvuzy	12	\N	\N	\N
+zxh1oe1qx5t	mclja8pd27f	13	\N	\N	\N
+zxh1oe1qx5t	l1ipy29yo2a	14	\N	\N	\N
+zxh1oe1qx5t	4afg865vv97	15	\N	\N	\N
+zxh1oe1qx5t	xrp5qlqau5q	15	\N	\N	\N
+861gmcfwhia	6hxxlzxmifr	12	\N	\N	\N
+861gmcfwhia	z7ksqgxvuzy	13	\N	\N	\N
+861gmcfwhia	mclja8pd27f	14	\N	\N	\N
+861gmcfwhia	l1ipy29yo2a	15	\N	\N	\N
+861gmcfwhia	4afg865vv97	16	\N	\N	\N
+861gmcfwhia	xrp5qlqau5q	16	\N	\N	\N
+9yos6i0cjm3	6hxxlzxmifr	13	\N	\N	\N
+9yos6i0cjm3	z7ksqgxvuzy	14	\N	\N	\N
+9yos6i0cjm3	mclja8pd27f	15	\N	\N	\N
+9yos6i0cjm3	l1ipy29yo2a	16	\N	\N	\N
+9yos6i0cjm3	4afg865vv97	17	\N	\N	\N
+9yos6i0cjm3	xrp5qlqau5q	17	\N	\N	\N
+n3yigbe0k9v	6hxxlzxmifr	14	\N	\N	\N
+n3yigbe0k9v	z7ksqgxvuzy	15	\N	\N	\N
+n3yigbe0k9v	mclja8pd27f	16	\N	\N	\N
+n3yigbe0k9v	l1ipy29yo2a	17	\N	\N	\N
+n3yigbe0k9v	4afg865vv97	18	\N	\N	\N
+n3yigbe0k9v	xrp5qlqau5q	18	\N	\N	\N
+073buw1m70l	6hxxlzxmifr	15	\N	\N	\N
+073buw1m70l	z7ksqgxvuzy	16	\N	\N	\N
+073buw1m70l	mclja8pd27f	17	\N	\N	\N
+073buw1m70l	l1ipy29yo2a	18	\N	\N	\N
+073buw1m70l	4afg865vv97	19	\N	\N	\N
+073buw1m70l	xrp5qlqau5q	19	\N	\N	\N
+nocobase-admin-menu	6hxxlzxmifr	16	\N	\N	\N
+nocobase-admin-menu	z7ksqgxvuzy	17	\N	\N	\N
+nocobase-admin-menu	mclja8pd27f	18	\N	\N	\N
+nocobase-admin-menu	l1ipy29yo2a	19	\N	\N	\N
+nocobase-admin-menu	4afg865vv97	20	\N	\N	\N
+nocobase-admin-menu	xrp5qlqau5q	20	\N	\N	\N
+6hxxlzxmifr	6hxxlzxmifr	0	f	properties	\N
+4gdmc9g083s	6hxxlzxmifr	1	\N	\N	1
+witwersym5s	witwersym5s	0	f	properties	\N
+tlfnt0boisu	witwersym5s	1	\N	\N	1
+jt7r6jj9feb	jt7r6jj9feb	0	f	properties	\N
+witwersym5s	jt7r6jj9feb	1	\N	\N	1
+tlfnt0boisu	jt7r6jj9feb	2	\N	\N	1
+plv56k9qjio	5i8jn18vzoz	2	\N	\N	\N
+xrp5qlqau5q	witwersym5s	2	\N	\N	\N
+xrp5qlqau5q	jt7r6jj9feb	3	\N	\N	\N
+l1ipy29yo2a	tlfnt0boisu	2	\N	\N	\N
+l1ipy29yo2a	witwersym5s	3	\N	\N	\N
+l1ipy29yo2a	jt7r6jj9feb	4	\N	\N	\N
+mclja8pd27f	tlfnt0boisu	3	\N	\N	\N
+mclja8pd27f	witwersym5s	4	\N	\N	\N
+mclja8pd27f	jt7r6jj9feb	5	\N	\N	\N
+z7ksqgxvuzy	tlfnt0boisu	4	\N	\N	\N
+z7ksqgxvuzy	witwersym5s	5	\N	\N	\N
+z7ksqgxvuzy	jt7r6jj9feb	6	\N	\N	\N
+6hxxlzxmifr	tlfnt0boisu	5	\N	\N	\N
+6hxxlzxmifr	witwersym5s	6	\N	\N	\N
+6hxxlzxmifr	jt7r6jj9feb	7	\N	\N	\N
+4gdmc9g083s	tlfnt0boisu	6	\N	\N	\N
+4gdmc9g083s	witwersym5s	7	\N	\N	\N
+4gdmc9g083s	jt7r6jj9feb	8	\N	\N	\N
+ebu29iqsaqx	tlfnt0boisu	7	\N	\N	\N
+ebu29iqsaqx	witwersym5s	8	\N	\N	\N
+ebu29iqsaqx	jt7r6jj9feb	9	\N	\N	\N
+k4kftsn5ht7	tlfnt0boisu	8	\N	\N	\N
+k4kftsn5ht7	witwersym5s	9	\N	\N	\N
+tlfnt0boisu	tlfnt0boisu	0	f	properties	\N
+plv56k9qjio	lm3ruhnl2ld	3	\N	\N	\N
+k4kftsn5ht7	jt7r6jj9feb	10	\N	\N	\N
+hg9tvy6yuph	tlfnt0boisu	9	\N	\N	\N
+hg9tvy6yuph	witwersym5s	10	\N	\N	\N
+hg9tvy6yuph	jt7r6jj9feb	11	\N	\N	\N
+bzirblya7qw	tlfnt0boisu	10	\N	\N	\N
+bzirblya7qw	witwersym5s	11	\N	\N	\N
+bzirblya7qw	jt7r6jj9feb	12	\N	\N	\N
+galt7hbd78y	tlfnt0boisu	11	\N	\N	\N
+galt7hbd78y	witwersym5s	12	\N	\N	\N
+galt7hbd78y	jt7r6jj9feb	13	\N	\N	\N
+e87ogy2w48b	tlfnt0boisu	12	\N	\N	\N
+e87ogy2w48b	witwersym5s	13	\N	\N	\N
+e87ogy2w48b	jt7r6jj9feb	14	\N	\N	\N
+i0bqeajbvwo	tlfnt0boisu	13	\N	\N	\N
+i0bqeajbvwo	witwersym5s	14	\N	\N	\N
+i0bqeajbvwo	jt7r6jj9feb	15	\N	\N	\N
+pdot2ybyfc0	tlfnt0boisu	14	\N	\N	\N
+pdot2ybyfc0	witwersym5s	15	\N	\N	\N
+pdot2ybyfc0	jt7r6jj9feb	16	\N	\N	\N
+a7e860jrx5o	tlfnt0boisu	15	\N	\N	\N
+a7e860jrx5o	witwersym5s	16	\N	\N	\N
+a7e860jrx5o	jt7r6jj9feb	17	\N	\N	\N
+zxh1oe1qx5t	tlfnt0boisu	16	\N	\N	\N
+zxh1oe1qx5t	witwersym5s	17	\N	\N	\N
+zxh1oe1qx5t	jt7r6jj9feb	18	\N	\N	\N
+861gmcfwhia	tlfnt0boisu	17	\N	\N	\N
+861gmcfwhia	witwersym5s	18	\N	\N	\N
+861gmcfwhia	jt7r6jj9feb	19	\N	\N	\N
+9yos6i0cjm3	tlfnt0boisu	18	\N	\N	\N
+9yos6i0cjm3	witwersym5s	19	\N	\N	\N
+9yos6i0cjm3	jt7r6jj9feb	20	\N	\N	\N
+n3yigbe0k9v	tlfnt0boisu	19	\N	\N	\N
+n3yigbe0k9v	witwersym5s	20	\N	\N	\N
+n3yigbe0k9v	jt7r6jj9feb	21	\N	\N	\N
+073buw1m70l	tlfnt0boisu	20	\N	\N	\N
+073buw1m70l	witwersym5s	21	\N	\N	\N
+073buw1m70l	jt7r6jj9feb	22	\N	\N	\N
+nocobase-admin-menu	tlfnt0boisu	21	\N	\N	\N
+nocobase-admin-menu	witwersym5s	22	\N	\N	\N
+nocobase-admin-menu	jt7r6jj9feb	23	\N	\N	\N
+xrp5qlqau5q	tlfnt0boisu	1	\N	\N	1
+iiek91fm1lg	ic7u2lri0wu	10	\N	\N	\N
+iiek91fm1lg	j6u3fnp1gf7	13	\N	\N	\N
+iiek91fm1lg	qiff3fagpbp	12	\N	\N	\N
+iiek91fm1lg	11v507faua9	15	\N	\N	\N
+iiek91fm1lg	64hct65otbl	16	\N	\N	\N
+iiek91fm1lg	6ldkeouiqu6	14	\N	\N	\N
+l1ipy29yo2a	z9lj2jjs0vu	2	\N	\N	\N
+iiek91fm1lg	7ac5fvdsvhv	16	\N	\N	\N
+iiek91fm1lg	7bgianrailm	15	\N	\N	\N
+mclja8pd27f	z9lj2jjs0vu	3	\N	\N	\N
+iiek91fm1lg	s9lar6nxkb9	14	\N	\N	\N
+iiek91fm1lg	34dbxdespfo	14	\N	\N	\N
+z7ksqgxvuzy	z9lj2jjs0vu	4	\N	\N	\N
+iiek91fm1lg	p6s217wf7ct	16	\N	\N	\N
+iiek91fm1lg	x747kf9mxwc	15	\N	\N	\N
+6hxxlzxmifr	z9lj2jjs0vu	5	\N	\N	\N
+iiek91fm1lg	49du3kw1vk3	14	\N	\N	\N
+iiek91fm1lg	7i8vn1nplyc	4	\N	\N	\N
+4gdmc9g083s	z9lj2jjs0vu	6	\N	\N	\N
+ebu29iqsaqx	z9lj2jjs0vu	7	\N	\N	\N
+k4kftsn5ht7	z9lj2jjs0vu	8	\N	\N	\N
+hg9tvy6yuph	z9lj2jjs0vu	9	\N	\N	\N
+bzirblya7qw	z9lj2jjs0vu	10	\N	\N	\N
+galt7hbd78y	z9lj2jjs0vu	11	\N	\N	\N
+e87ogy2w48b	z9lj2jjs0vu	12	\N	\N	\N
+i0bqeajbvwo	z9lj2jjs0vu	13	\N	\N	\N
+pdot2ybyfc0	z9lj2jjs0vu	14	\N	\N	\N
+a7e860jrx5o	z9lj2jjs0vu	15	\N	\N	\N
+zxh1oe1qx5t	z9lj2jjs0vu	16	\N	\N	\N
+861gmcfwhia	z9lj2jjs0vu	17	\N	\N	\N
+9yos6i0cjm3	z9lj2jjs0vu	18	\N	\N	\N
+n3yigbe0k9v	z9lj2jjs0vu	19	\N	\N	\N
+073buw1m70l	z9lj2jjs0vu	20	\N	\N	\N
+nocobase-admin-menu	z9lj2jjs0vu	21	\N	\N	\N
+z9lj2jjs0vu	z9lj2jjs0vu	0	f	properties	\N
+xrp5qlqau5q	z9lj2jjs0vu	1	\N	\N	2
+17zo1wc4bx2	17zo1wc4bx2	0	f	properties	\N
+vwn6lemtpg5	vwn6lemtpg5	0	f	properties	\N
+plv56k9qjio	g6z05qupqe7	4	\N	\N	\N
+xm2aghmu342	5i8jn18vzoz	3	\N	\N	\N
+xm2aghmu342	lm3ruhnl2ld	4	\N	\N	\N
+xm2aghmu342	g6z05qupqe7	5	\N	\N	\N
+2a65jddiv1c	5i8jn18vzoz	4	\N	\N	\N
+2a65jddiv1c	lm3ruhnl2ld	5	\N	\N	\N
+2a65jddiv1c	g6z05qupqe7	6	\N	\N	\N
+r0oxpk3aest	5i8jn18vzoz	5	\N	\N	\N
+r0oxpk3aest	lm3ruhnl2ld	6	\N	\N	\N
+r0oxpk3aest	g6z05qupqe7	7	\N	\N	\N
+ucehls8s69t	5i8jn18vzoz	6	\N	\N	\N
+ucehls8s69t	lm3ruhnl2ld	7	\N	\N	\N
+ucehls8s69t	g6z05qupqe7	8	\N	\N	\N
+1i8j6q1xnzk	5i8jn18vzoz	7	\N	\N	\N
+1i8j6q1xnzk	lm3ruhnl2ld	8	\N	\N	\N
+1i8j6q1xnzk	g6z05qupqe7	9	\N	\N	\N
+5m33jos871r	5i8jn18vzoz	8	\N	\N	\N
+5m33jos871r	lm3ruhnl2ld	9	\N	\N	\N
+5m33jos871r	g6z05qupqe7	10	\N	\N	\N
+u9fqp7maxs8	5i8jn18vzoz	9	\N	\N	\N
+u9fqp7maxs8	lm3ruhnl2ld	10	\N	\N	\N
+u9fqp7maxs8	g6z05qupqe7	11	\N	\N	\N
+vqty0zmif5g	5i8jn18vzoz	10	\N	\N	\N
+vqty0zmif5g	lm3ruhnl2ld	11	\N	\N	\N
+vqty0zmif5g	g6z05qupqe7	12	\N	\N	\N
+xo5vgqdp3pj	5i8jn18vzoz	11	\N	\N	\N
+xo5vgqdp3pj	lm3ruhnl2ld	12	\N	\N	\N
+xo5vgqdp3pj	g6z05qupqe7	13	\N	\N	\N
+ar4ks05q9gy	5i8jn18vzoz	12	\N	\N	\N
+ar4ks05q9gy	lm3ruhnl2ld	13	\N	\N	\N
+ar4ks05q9gy	g6z05qupqe7	14	\N	\N	\N
+9vll9qbbcql	5i8jn18vzoz	13	\N	\N	\N
+9vll9qbbcql	lm3ruhnl2ld	14	\N	\N	\N
+9vll9qbbcql	g6z05qupqe7	15	\N	\N	\N
+8vwr3yh0weq	5i8jn18vzoz	14	\N	\N	\N
+8vwr3yh0weq	lm3ruhnl2ld	15	\N	\N	\N
+8vwr3yh0weq	g6z05qupqe7	16	\N	\N	\N
+o7z0dukywzh	5i8jn18vzoz	15	\N	\N	\N
+o7z0dukywzh	lm3ruhnl2ld	16	\N	\N	\N
+o7z0dukywzh	g6z05qupqe7	17	\N	\N	\N
+xr71y0bi2gt	5i8jn18vzoz	16	\N	\N	\N
+xr71y0bi2gt	lm3ruhnl2ld	17	\N	\N	\N
+xr71y0bi2gt	g6z05qupqe7	18	\N	\N	\N
+nmo9mk3zqna	5i8jn18vzoz	17	\N	\N	\N
+nmo9mk3zqna	lm3ruhnl2ld	18	\N	\N	\N
+nmo9mk3zqna	g6z05qupqe7	19	\N	\N	\N
+073buw1m70l	5i8jn18vzoz	18	\N	\N	\N
+073buw1m70l	lm3ruhnl2ld	19	\N	\N	\N
+073buw1m70l	g6z05qupqe7	20	\N	\N	\N
+nocobase-admin-menu	5i8jn18vzoz	19	\N	\N	\N
+nocobase-admin-menu	lm3ruhnl2ld	20	\N	\N	\N
+nocobase-admin-menu	g6z05qupqe7	21	\N	\N	\N
+5i8jn18vzoz	5i8jn18vzoz	0	f	properties	\N
+zsp37nlw2gj	5i8jn18vzoz	1	\N	\N	5
+zn0lqlao06v	zn0lqlao06v	0	f	properties	\N
+c0viahn9y3r	zn0lqlao06v	1	\N	\N	1
+ngrf6w7ddjg	ngrf6w7ddjg	0	f	properties	\N
+zn0lqlao06v	ngrf6w7ddjg	1	\N	\N	1
+c0viahn9y3r	ngrf6w7ddjg	2	\N	\N	1
+zsp37nlw2gj	zn0lqlao06v	2	\N	\N	\N
+zsp37nlw2gj	ngrf6w7ddjg	3	\N	\N	\N
+plv56k9qjio	c0viahn9y3r	2	\N	\N	\N
+plv56k9qjio	zn0lqlao06v	3	\N	\N	\N
+plv56k9qjio	ngrf6w7ddjg	4	\N	\N	\N
+xm2aghmu342	c0viahn9y3r	3	\N	\N	\N
+xm2aghmu342	zn0lqlao06v	4	\N	\N	\N
+xm2aghmu342	ngrf6w7ddjg	5	\N	\N	\N
+2a65jddiv1c	c0viahn9y3r	4	\N	\N	\N
+2a65jddiv1c	zn0lqlao06v	5	\N	\N	\N
+2a65jddiv1c	ngrf6w7ddjg	6	\N	\N	\N
+r0oxpk3aest	c0viahn9y3r	5	\N	\N	\N
+r0oxpk3aest	zn0lqlao06v	6	\N	\N	\N
+r0oxpk3aest	ngrf6w7ddjg	7	\N	\N	\N
+ucehls8s69t	c0viahn9y3r	6	\N	\N	\N
+ucehls8s69t	zn0lqlao06v	7	\N	\N	\N
+ucehls8s69t	ngrf6w7ddjg	8	\N	\N	\N
+1i8j6q1xnzk	c0viahn9y3r	7	\N	\N	\N
+1i8j6q1xnzk	zn0lqlao06v	8	\N	\N	\N
+1i8j6q1xnzk	ngrf6w7ddjg	9	\N	\N	\N
+5m33jos871r	c0viahn9y3r	8	\N	\N	\N
+5m33jos871r	zn0lqlao06v	9	\N	\N	\N
+5m33jos871r	ngrf6w7ddjg	10	\N	\N	\N
+u9fqp7maxs8	c0viahn9y3r	9	\N	\N	\N
+u9fqp7maxs8	zn0lqlao06v	10	\N	\N	\N
+u9fqp7maxs8	ngrf6w7ddjg	11	\N	\N	\N
+vqty0zmif5g	c0viahn9y3r	10	\N	\N	\N
+vqty0zmif5g	zn0lqlao06v	11	\N	\N	\N
+vqty0zmif5g	ngrf6w7ddjg	12	\N	\N	\N
+xo5vgqdp3pj	c0viahn9y3r	11	\N	\N	\N
+xo5vgqdp3pj	zn0lqlao06v	12	\N	\N	\N
+xo5vgqdp3pj	ngrf6w7ddjg	13	\N	\N	\N
+ar4ks05q9gy	c0viahn9y3r	12	\N	\N	\N
+ar4ks05q9gy	zn0lqlao06v	13	\N	\N	\N
+ar4ks05q9gy	ngrf6w7ddjg	14	\N	\N	\N
+l1ipy29yo2a	q08v9jd7dg4	2	\N	\N	\N
+9vll9qbbcql	c0viahn9y3r	13	\N	\N	\N
+9vll9qbbcql	zn0lqlao06v	14	\N	\N	\N
+mclja8pd27f	q08v9jd7dg4	3	\N	\N	\N
+9vll9qbbcql	ngrf6w7ddjg	15	\N	\N	\N
+8vwr3yh0weq	c0viahn9y3r	14	\N	\N	\N
+z7ksqgxvuzy	q08v9jd7dg4	4	\N	\N	\N
+c0viahn9y3r	c0viahn9y3r	0	f	properties	\N
+zsp37nlw2gj	c0viahn9y3r	1	\N	\N	6
+jxt0ubhh4pf	jxt0ubhh4pf	0	f	properties	\N
+6hxxlzxmifr	q08v9jd7dg4	5	\N	\N	\N
+bzs04pddyuf	bzs04pddyuf	0	f	properties	\N
+4gdmc9g083s	q08v9jd7dg4	6	\N	\N	\N
+ebu29iqsaqx	q08v9jd7dg4	7	\N	\N	\N
+ow53peiz14y	ow53peiz14y	0	f	properties	\N
+xrp5qlqau5q	q08v9jd7dg4	1	\N	\N	7
+k4kftsn5ht7	q08v9jd7dg4	8	\N	\N	\N
+xrp5qlqau5q	7cx1kijceou	1	\N	\N	9
+8vwr3yh0weq	zn0lqlao06v	15	\N	\N	\N
+hg9tvy6yuph	q08v9jd7dg4	9	\N	\N	\N
+8vwr3yh0weq	ngrf6w7ddjg	16	\N	\N	\N
+o7z0dukywzh	c0viahn9y3r	15	\N	\N	\N
+bzirblya7qw	q08v9jd7dg4	10	\N	\N	\N
+o7z0dukywzh	zn0lqlao06v	16	\N	\N	\N
+o7z0dukywzh	ngrf6w7ddjg	17	\N	\N	\N
+galt7hbd78y	q08v9jd7dg4	11	\N	\N	\N
+xr71y0bi2gt	c0viahn9y3r	16	\N	\N	\N
+xr71y0bi2gt	zn0lqlao06v	17	\N	\N	\N
+e87ogy2w48b	q08v9jd7dg4	12	\N	\N	\N
+xr71y0bi2gt	ngrf6w7ddjg	18	\N	\N	\N
+nmo9mk3zqna	c0viahn9y3r	17	\N	\N	\N
+i0bqeajbvwo	q08v9jd7dg4	13	\N	\N	\N
+nmo9mk3zqna	zn0lqlao06v	18	\N	\N	\N
+nmo9mk3zqna	ngrf6w7ddjg	19	\N	\N	\N
+pdot2ybyfc0	q08v9jd7dg4	14	\N	\N	\N
+073buw1m70l	c0viahn9y3r	18	\N	\N	\N
+073buw1m70l	zn0lqlao06v	19	\N	\N	\N
+a7e860jrx5o	q08v9jd7dg4	15	\N	\N	\N
+073buw1m70l	ngrf6w7ddjg	20	\N	\N	\N
+nocobase-admin-menu	c0viahn9y3r	19	\N	\N	\N
+zxh1oe1qx5t	q08v9jd7dg4	16	\N	\N	\N
+nocobase-admin-menu	zn0lqlao06v	20	\N	\N	\N
+nocobase-admin-menu	ngrf6w7ddjg	21	\N	\N	\N
+861gmcfwhia	q08v9jd7dg4	17	\N	\N	\N
+9yos6i0cjm3	q08v9jd7dg4	18	\N	\N	\N
+n3yigbe0k9v	q08v9jd7dg4	19	\N	\N	\N
+073buw1m70l	q08v9jd7dg4	20	\N	\N	\N
+nocobase-admin-menu	q08v9jd7dg4	21	\N	\N	\N
+q08v9jd7dg4	q08v9jd7dg4	0	f	properties	\N
+j79z2ezw4u7	j79z2ezw4u7	0	f	properties	\N
+7cx1kijceou	j79z2ezw4u7	1	\N	\N	1
+xrp5qlqau5q	j79z2ezw4u7	2	\N	\N	\N
+l1ipy29yo2a	7cx1kijceou	2	\N	\N	\N
+l1ipy29yo2a	j79z2ezw4u7	3	\N	\N	\N
+mclja8pd27f	7cx1kijceou	3	\N	\N	\N
+mclja8pd27f	j79z2ezw4u7	4	\N	\N	\N
+z7ksqgxvuzy	7cx1kijceou	4	\N	\N	\N
+z7ksqgxvuzy	j79z2ezw4u7	5	\N	\N	\N
+6hxxlzxmifr	7cx1kijceou	5	\N	\N	\N
+6hxxlzxmifr	j79z2ezw4u7	6	\N	\N	\N
+4gdmc9g083s	7cx1kijceou	6	\N	\N	\N
+4gdmc9g083s	j79z2ezw4u7	7	\N	\N	\N
+ebu29iqsaqx	7cx1kijceou	7	\N	\N	\N
+ebu29iqsaqx	j79z2ezw4u7	8	\N	\N	\N
+k4kftsn5ht7	7cx1kijceou	8	\N	\N	\N
+k4kftsn5ht7	j79z2ezw4u7	9	\N	\N	\N
+hg9tvy6yuph	7cx1kijceou	9	\N	\N	\N
+hg9tvy6yuph	j79z2ezw4u7	10	\N	\N	\N
+bzirblya7qw	7cx1kijceou	10	\N	\N	\N
+bzirblya7qw	j79z2ezw4u7	11	\N	\N	\N
+galt7hbd78y	7cx1kijceou	11	\N	\N	\N
+galt7hbd78y	j79z2ezw4u7	12	\N	\N	\N
+e87ogy2w48b	7cx1kijceou	12	\N	\N	\N
+e87ogy2w48b	j79z2ezw4u7	13	\N	\N	\N
+i0bqeajbvwo	7cx1kijceou	13	\N	\N	\N
+i0bqeajbvwo	j79z2ezw4u7	14	\N	\N	\N
+pdot2ybyfc0	7cx1kijceou	14	\N	\N	\N
+pdot2ybyfc0	j79z2ezw4u7	15	\N	\N	\N
+a7e860jrx5o	7cx1kijceou	15	\N	\N	\N
+a7e860jrx5o	j79z2ezw4u7	16	\N	\N	\N
+zxh1oe1qx5t	7cx1kijceou	16	\N	\N	\N
+zxh1oe1qx5t	j79z2ezw4u7	17	\N	\N	\N
+861gmcfwhia	7cx1kijceou	17	\N	\N	\N
+861gmcfwhia	j79z2ezw4u7	18	\N	\N	\N
+9yos6i0cjm3	7cx1kijceou	18	\N	\N	\N
+9yos6i0cjm3	j79z2ezw4u7	19	\N	\N	\N
+n3yigbe0k9v	7cx1kijceou	19	\N	\N	\N
+n3yigbe0k9v	j79z2ezw4u7	20	\N	\N	\N
+073buw1m70l	7cx1kijceou	20	\N	\N	\N
+073buw1m70l	j79z2ezw4u7	21	\N	\N	\N
+nocobase-admin-menu	7cx1kijceou	21	\N	\N	\N
+nocobase-admin-menu	j79z2ezw4u7	22	\N	\N	\N
+7cx1kijceou	7cx1kijceou	0	f	properties	\N
+l1ipy29yo2a	sahukln2zh1	2	\N	\N	\N
+mclja8pd27f	sahukln2zh1	3	\N	\N	\N
+z7ksqgxvuzy	sahukln2zh1	4	\N	\N	\N
+6hxxlzxmifr	sahukln2zh1	5	\N	\N	\N
+4gdmc9g083s	sahukln2zh1	6	\N	\N	\N
+ebu29iqsaqx	sahukln2zh1	7	\N	\N	\N
+k4kftsn5ht7	sahukln2zh1	8	\N	\N	\N
+hg9tvy6yuph	sahukln2zh1	9	\N	\N	\N
+bzirblya7qw	sahukln2zh1	10	\N	\N	\N
+7i8vn1nplyc	7i8vn1nplyc	0	f	properties	\N
+galt7hbd78y	sahukln2zh1	11	\N	\N	\N
+fuvpnwuajhl	7i8vn1nplyc	1	\N	\N	4
+e87ogy2w48b	sahukln2zh1	12	\N	\N	\N
+i0bqeajbvwo	sahukln2zh1	13	\N	\N	\N
+7t02vmtr3vo	vx6nbptjtrd	1	\N	\N	1
+pdot2ybyfc0	sahukln2zh1	14	\N	\N	\N
+cs7d1m5kauw	vx6nbptjtrd	2	\N	\N	\N
+jej2s5rr3sb	7t02vmtr3vo	2	\N	\N	\N
+a7e860jrx5o	sahukln2zh1	15	\N	\N	\N
+jej2s5rr3sb	vx6nbptjtrd	3	\N	\N	\N
+26xckt7cr9e	7t02vmtr3vo	3	\N	\N	\N
+zxh1oe1qx5t	sahukln2zh1	16	\N	\N	\N
+26xckt7cr9e	vx6nbptjtrd	4	\N	\N	\N
+wbz1xh6nz3e	7t02vmtr3vo	4	\N	\N	\N
+861gmcfwhia	sahukln2zh1	17	\N	\N	\N
+wbz1xh6nz3e	vx6nbptjtrd	5	\N	\N	\N
+8o6mwjydnzx	7t02vmtr3vo	5	\N	\N	\N
+9yos6i0cjm3	sahukln2zh1	18	\N	\N	\N
+8o6mwjydnzx	vx6nbptjtrd	6	\N	\N	\N
+iqvhwknbnrr	7t02vmtr3vo	6	\N	\N	\N
+n3yigbe0k9v	sahukln2zh1	19	\N	\N	\N
+iqvhwknbnrr	vx6nbptjtrd	7	\N	\N	\N
+eolrwpo9lyf	7t02vmtr3vo	7	\N	\N	\N
+073buw1m70l	sahukln2zh1	20	\N	\N	\N
+eolrwpo9lyf	vx6nbptjtrd	8	\N	\N	\N
+85c8uxmskwh	7t02vmtr3vo	8	\N	\N	\N
+nocobase-admin-menu	sahukln2zh1	21	\N	\N	\N
+85c8uxmskwh	vx6nbptjtrd	9	\N	\N	\N
+2w360eurk19	7t02vmtr3vo	9	\N	\N	\N
+sahukln2zh1	sahukln2zh1	0	f	properties	\N
+2w360eurk19	vx6nbptjtrd	10	\N	\N	\N
+e2bz79kfn39	7t02vmtr3vo	10	\N	\N	\N
+e2bz79kfn39	vx6nbptjtrd	11	\N	\N	\N
+2bwco99n47x	7t02vmtr3vo	11	\N	\N	\N
+2bwco99n47x	vx6nbptjtrd	12	\N	\N	\N
+ji9t3fgnkc0	7t02vmtr3vo	12	\N	\N	\N
+l1ipy29yo2a	r7pxiimvjdq	2	\N	\N	\N
+ji9t3fgnkc0	vx6nbptjtrd	13	\N	\N	\N
+yjzd6s5ccq4	7t02vmtr3vo	13	\N	\N	\N
+mclja8pd27f	r7pxiimvjdq	3	\N	\N	\N
+yjzd6s5ccq4	vx6nbptjtrd	14	\N	\N	\N
+imrhc9he5on	7t02vmtr3vo	14	\N	\N	\N
+z7ksqgxvuzy	r7pxiimvjdq	4	\N	\N	\N
+imrhc9he5on	vx6nbptjtrd	15	\N	\N	\N
+82ikkgrog2y	7t02vmtr3vo	15	\N	\N	\N
+6hxxlzxmifr	r7pxiimvjdq	5	\N	\N	\N
+82ikkgrog2y	vx6nbptjtrd	16	\N	\N	\N
+mmj417nrjpa	7t02vmtr3vo	16	\N	\N	\N
+4gdmc9g083s	r7pxiimvjdq	6	\N	\N	\N
+mmj417nrjpa	vx6nbptjtrd	17	\N	\N	\N
+lmgnrgroovk	7t02vmtr3vo	17	\N	\N	\N
+ebu29iqsaqx	r7pxiimvjdq	7	\N	\N	\N
+lmgnrgroovk	vx6nbptjtrd	18	\N	\N	\N
+4cx141n1lb4	7t02vmtr3vo	18	\N	\N	\N
+k4kftsn5ht7	r7pxiimvjdq	8	\N	\N	\N
+4cx141n1lb4	vx6nbptjtrd	19	\N	\N	\N
+k6pr2jh3wgd	7t02vmtr3vo	19	\N	\N	\N
+hg9tvy6yuph	r7pxiimvjdq	9	\N	\N	\N
+k6pr2jh3wgd	vx6nbptjtrd	20	\N	\N	\N
+hchm15rxv74	7t02vmtr3vo	20	\N	\N	\N
+bzirblya7qw	r7pxiimvjdq	10	\N	\N	\N
+hchm15rxv74	vx6nbptjtrd	21	\N	\N	\N
+073buw1m70l	7t02vmtr3vo	21	\N	\N	\N
+galt7hbd78y	r7pxiimvjdq	11	\N	\N	\N
+073buw1m70l	vx6nbptjtrd	22	\N	\N	\N
+nocobase-admin-menu	7t02vmtr3vo	22	\N	\N	\N
+e87ogy2w48b	r7pxiimvjdq	12	\N	\N	\N
+nocobase-admin-menu	vx6nbptjtrd	23	\N	\N	\N
+7t02vmtr3vo	7t02vmtr3vo	0	f	properties	\N
+i0bqeajbvwo	r7pxiimvjdq	13	\N	\N	\N
+cs7d1m5kauw	7t02vmtr3vo	1	\N	\N	2
+pdot2ybyfc0	r7pxiimvjdq	14	\N	\N	\N
+z9bj2qzcxd2	z9bj2qzcxd2	0	f	properties	\N
+uqifi2qlukf	z9bj2qzcxd2	1	\N	\N	1
+a7e860jrx5o	r7pxiimvjdq	15	\N	\N	\N
+mrhyvojvqar	mrhyvojvqar	0	f	properties	\N
+z9bj2qzcxd2	mrhyvojvqar	1	\N	\N	1
+zxh1oe1qx5t	r7pxiimvjdq	16	\N	\N	\N
+uqifi2qlukf	mrhyvojvqar	2	\N	\N	1
+392bxnfb0cu	392bxnfb0cu	0	f	properties	\N
+861gmcfwhia	r7pxiimvjdq	17	\N	\N	\N
+mrhyvojvqar	392bxnfb0cu	1	\N	\N	1
+z9bj2qzcxd2	392bxnfb0cu	2	\N	\N	1
+9yos6i0cjm3	r7pxiimvjdq	18	\N	\N	\N
+uqifi2qlukf	392bxnfb0cu	3	\N	\N	1
+fh5hex4wag5	fh5hex4wag5	0	f	properties	\N
+n3yigbe0k9v	r7pxiimvjdq	19	\N	\N	\N
+392bxnfb0cu	fh5hex4wag5	1	\N	\N	1
+mrhyvojvqar	fh5hex4wag5	2	\N	\N	1
+073buw1m70l	r7pxiimvjdq	20	\N	\N	\N
+z9bj2qzcxd2	fh5hex4wag5	3	\N	\N	1
+uqifi2qlukf	fh5hex4wag5	4	\N	\N	1
+nocobase-admin-menu	r7pxiimvjdq	21	\N	\N	\N
+8796mm39d27	z9bj2qzcxd2	2	\N	\N	\N
+8796mm39d27	mrhyvojvqar	3	\N	\N	\N
+r7pxiimvjdq	r7pxiimvjdq	0	f	properties	\N
+8796mm39d27	392bxnfb0cu	4	\N	\N	\N
+pyehrn2t87k	pyehrn2t87k	0	f	properties	\N
+4kjgbxlns7y	4kjgbxlns7y	0	f	properties	\N
+g8u88gsirl6	4kjgbxlns7y	1	\N	\N	1
+xrp5qlqau5q	sahukln2zh1	1	\N	\N	10
+g8u88gsirl6	jxt0ubhh4pf	2	\N	\N	\N
+8796mm39d27	fh5hex4wag5	5	\N	\N	\N
+xrp5qlqau5q	r7pxiimvjdq	1	\N	\N	11
+26xckt7cr9e	uqifi2qlukf	2	\N	\N	\N
+4kjgbxlns7y	jxt0ubhh4pf	1	\N	\N	1
+xrp5qlqau5q	4kjgbxlns7y	2	\N	\N	\N
+xrp5qlqau5q	jxt0ubhh4pf	3	\N	\N	\N
+l1ipy29yo2a	g8u88gsirl6	2	\N	\N	\N
+l1ipy29yo2a	4kjgbxlns7y	3	\N	\N	\N
+l1ipy29yo2a	jxt0ubhh4pf	4	\N	\N	\N
+mclja8pd27f	g8u88gsirl6	3	\N	\N	\N
+mclja8pd27f	4kjgbxlns7y	4	\N	\N	\N
+mclja8pd27f	jxt0ubhh4pf	5	\N	\N	\N
+z7ksqgxvuzy	g8u88gsirl6	4	\N	\N	\N
+z7ksqgxvuzy	4kjgbxlns7y	5	\N	\N	\N
+z7ksqgxvuzy	jxt0ubhh4pf	6	\N	\N	\N
+6hxxlzxmifr	g8u88gsirl6	5	\N	\N	\N
+6hxxlzxmifr	4kjgbxlns7y	6	\N	\N	\N
+6hxxlzxmifr	jxt0ubhh4pf	7	\N	\N	\N
+4gdmc9g083s	g8u88gsirl6	6	\N	\N	\N
+4gdmc9g083s	4kjgbxlns7y	7	\N	\N	\N
+4gdmc9g083s	jxt0ubhh4pf	8	\N	\N	\N
+ebu29iqsaqx	g8u88gsirl6	7	\N	\N	\N
+ebu29iqsaqx	4kjgbxlns7y	8	\N	\N	\N
+ebu29iqsaqx	jxt0ubhh4pf	9	\N	\N	\N
+k4kftsn5ht7	g8u88gsirl6	8	\N	\N	\N
+k4kftsn5ht7	4kjgbxlns7y	9	\N	\N	\N
+k4kftsn5ht7	jxt0ubhh4pf	10	\N	\N	\N
+hg9tvy6yuph	g8u88gsirl6	9	\N	\N	\N
+hg9tvy6yuph	4kjgbxlns7y	10	\N	\N	\N
+hg9tvy6yuph	jxt0ubhh4pf	11	\N	\N	\N
+bzirblya7qw	g8u88gsirl6	10	\N	\N	\N
+bzirblya7qw	4kjgbxlns7y	11	\N	\N	\N
+bzirblya7qw	jxt0ubhh4pf	12	\N	\N	\N
+galt7hbd78y	g8u88gsirl6	11	\N	\N	\N
+galt7hbd78y	4kjgbxlns7y	12	\N	\N	\N
+galt7hbd78y	jxt0ubhh4pf	13	\N	\N	\N
+e87ogy2w48b	g8u88gsirl6	12	\N	\N	\N
+e87ogy2w48b	4kjgbxlns7y	13	\N	\N	\N
+e87ogy2w48b	jxt0ubhh4pf	14	\N	\N	\N
+i0bqeajbvwo	g8u88gsirl6	13	\N	\N	\N
+i0bqeajbvwo	4kjgbxlns7y	14	\N	\N	\N
+i0bqeajbvwo	jxt0ubhh4pf	15	\N	\N	\N
+pdot2ybyfc0	g8u88gsirl6	14	\N	\N	\N
+pdot2ybyfc0	4kjgbxlns7y	15	\N	\N	\N
+pdot2ybyfc0	jxt0ubhh4pf	16	\N	\N	\N
+a7e860jrx5o	g8u88gsirl6	15	\N	\N	\N
+a7e860jrx5o	4kjgbxlns7y	16	\N	\N	\N
+a7e860jrx5o	jxt0ubhh4pf	17	\N	\N	\N
+zxh1oe1qx5t	g8u88gsirl6	16	\N	\N	\N
+zxh1oe1qx5t	4kjgbxlns7y	17	\N	\N	\N
+zxh1oe1qx5t	jxt0ubhh4pf	18	\N	\N	\N
+861gmcfwhia	g8u88gsirl6	17	\N	\N	\N
+861gmcfwhia	4kjgbxlns7y	18	\N	\N	\N
+861gmcfwhia	jxt0ubhh4pf	19	\N	\N	\N
+9yos6i0cjm3	g8u88gsirl6	18	\N	\N	\N
+9yos6i0cjm3	4kjgbxlns7y	19	\N	\N	\N
+9yos6i0cjm3	jxt0ubhh4pf	20	\N	\N	\N
+n3yigbe0k9v	g8u88gsirl6	19	\N	\N	\N
+n3yigbe0k9v	4kjgbxlns7y	20	\N	\N	\N
+n3yigbe0k9v	jxt0ubhh4pf	21	\N	\N	\N
+073buw1m70l	g8u88gsirl6	20	\N	\N	\N
+073buw1m70l	4kjgbxlns7y	21	\N	\N	\N
+073buw1m70l	jxt0ubhh4pf	22	\N	\N	\N
+nocobase-admin-menu	g8u88gsirl6	21	\N	\N	\N
+nocobase-admin-menu	4kjgbxlns7y	22	\N	\N	\N
+nocobase-admin-menu	jxt0ubhh4pf	23	\N	\N	\N
+g8u88gsirl6	g8u88gsirl6	0	f	properties	\N
+sz0mwlh5dil	sz0mwlh5dil	0	f	properties	\N
+i24ncoyiipi	sz0mwlh5dil	1	\N	\N	1
+xrp5qlqau5q	i24ncoyiipi	2	\N	\N	\N
+xrp5qlqau5q	sz0mwlh5dil	3	\N	\N	\N
+l1ipy29yo2a	i24ncoyiipi	3	\N	\N	\N
+l1ipy29yo2a	sz0mwlh5dil	4	\N	\N	\N
+mclja8pd27f	i24ncoyiipi	4	\N	\N	\N
+mclja8pd27f	sz0mwlh5dil	5	\N	\N	\N
+z7ksqgxvuzy	i24ncoyiipi	5	\N	\N	\N
+z7ksqgxvuzy	sz0mwlh5dil	6	\N	\N	\N
+6hxxlzxmifr	i24ncoyiipi	6	\N	\N	\N
+6hxxlzxmifr	sz0mwlh5dil	7	\N	\N	\N
+4gdmc9g083s	i24ncoyiipi	7	\N	\N	\N
+4gdmc9g083s	sz0mwlh5dil	8	\N	\N	\N
+ebu29iqsaqx	i24ncoyiipi	8	\N	\N	\N
+ebu29iqsaqx	sz0mwlh5dil	9	\N	\N	\N
+k4kftsn5ht7	i24ncoyiipi	9	\N	\N	\N
+k4kftsn5ht7	sz0mwlh5dil	10	\N	\N	\N
+hg9tvy6yuph	i24ncoyiipi	10	\N	\N	\N
+hg9tvy6yuph	sz0mwlh5dil	11	\N	\N	\N
+bzirblya7qw	i24ncoyiipi	11	\N	\N	\N
+bzirblya7qw	sz0mwlh5dil	12	\N	\N	\N
+galt7hbd78y	i24ncoyiipi	12	\N	\N	\N
+galt7hbd78y	sz0mwlh5dil	13	\N	\N	\N
+e87ogy2w48b	i24ncoyiipi	13	\N	\N	\N
+e87ogy2w48b	sz0mwlh5dil	14	\N	\N	\N
+i0bqeajbvwo	i24ncoyiipi	14	\N	\N	\N
+i0bqeajbvwo	sz0mwlh5dil	15	\N	\N	\N
+pdot2ybyfc0	i24ncoyiipi	15	\N	\N	\N
+pdot2ybyfc0	sz0mwlh5dil	16	\N	\N	\N
+a7e860jrx5o	i24ncoyiipi	16	\N	\N	\N
+a7e860jrx5o	sz0mwlh5dil	17	\N	\N	\N
+zxh1oe1qx5t	i24ncoyiipi	17	\N	\N	\N
+zxh1oe1qx5t	sz0mwlh5dil	18	\N	\N	\N
+861gmcfwhia	i24ncoyiipi	18	\N	\N	\N
+861gmcfwhia	sz0mwlh5dil	19	\N	\N	\N
+9yos6i0cjm3	i24ncoyiipi	19	\N	\N	\N
+9yos6i0cjm3	sz0mwlh5dil	20	\N	\N	\N
+n3yigbe0k9v	i24ncoyiipi	20	\N	\N	\N
+n3yigbe0k9v	sz0mwlh5dil	21	\N	\N	\N
+073buw1m70l	i24ncoyiipi	21	\N	\N	\N
+073buw1m70l	sz0mwlh5dil	22	\N	\N	\N
+nocobase-admin-menu	i24ncoyiipi	22	\N	\N	\N
+nocobase-admin-menu	sz0mwlh5dil	23	\N	\N	\N
+g8u88gsirl6	sz0mwlh5dil	2	\N	\N	\N
+i24ncoyiipi	i24ncoyiipi	0	f	properties	\N
+g8u88gsirl6	i24ncoyiipi	1	\N	\N	2
+26xckt7cr9e	z9bj2qzcxd2	3	\N	\N	\N
+xrp5qlqau5q	g8u88gsirl6	1	\N	\N	12
+26xckt7cr9e	mrhyvojvqar	4	\N	\N	\N
+26xckt7cr9e	392bxnfb0cu	5	\N	\N	\N
+26xckt7cr9e	fh5hex4wag5	6	\N	\N	\N
+wbz1xh6nz3e	uqifi2qlukf	3	\N	\N	\N
+wbz1xh6nz3e	z9bj2qzcxd2	4	\N	\N	\N
+wbz1xh6nz3e	mrhyvojvqar	5	\N	\N	\N
+wbz1xh6nz3e	392bxnfb0cu	6	\N	\N	\N
+wbz1xh6nz3e	fh5hex4wag5	7	\N	\N	\N
+8o6mwjydnzx	uqifi2qlukf	4	\N	\N	\N
+8o6mwjydnzx	z9bj2qzcxd2	5	\N	\N	\N
+8o6mwjydnzx	mrhyvojvqar	6	\N	\N	\N
+8o6mwjydnzx	392bxnfb0cu	7	\N	\N	\N
+8o6mwjydnzx	fh5hex4wag5	8	\N	\N	\N
+iqvhwknbnrr	uqifi2qlukf	5	\N	\N	\N
+iqvhwknbnrr	z9bj2qzcxd2	6	\N	\N	\N
+iqvhwknbnrr	mrhyvojvqar	7	\N	\N	\N
+iqvhwknbnrr	392bxnfb0cu	8	\N	\N	\N
+iqvhwknbnrr	fh5hex4wag5	9	\N	\N	\N
+0u9og1l0ayz	0u9og1l0ayz	0	f	properties	\N
+u6n64igjsnc	0u9og1l0ayz	1	\N	\N	1
+e51qk20c0d0	0u9og1l0ayz	2	\N	\N	1
+zsp37nlw2gj	u6n64igjsnc	2	\N	\N	\N
+zsp37nlw2gj	0u9og1l0ayz	3	\N	\N	\N
+plv56k9qjio	e51qk20c0d0	2	\N	\N	\N
+plv56k9qjio	u6n64igjsnc	3	\N	\N	\N
+plv56k9qjio	0u9og1l0ayz	4	\N	\N	\N
+xm2aghmu342	e51qk20c0d0	3	\N	\N	\N
+xm2aghmu342	u6n64igjsnc	4	\N	\N	\N
+xm2aghmu342	0u9og1l0ayz	5	\N	\N	\N
+2a65jddiv1c	e51qk20c0d0	4	\N	\N	\N
+2a65jddiv1c	u6n64igjsnc	5	\N	\N	\N
+2a65jddiv1c	0u9og1l0ayz	6	\N	\N	\N
+r0oxpk3aest	e51qk20c0d0	5	\N	\N	\N
+r0oxpk3aest	u6n64igjsnc	6	\N	\N	\N
+r0oxpk3aest	0u9og1l0ayz	7	\N	\N	\N
+ucehls8s69t	e51qk20c0d0	6	\N	\N	\N
+ucehls8s69t	u6n64igjsnc	7	\N	\N	\N
+ucehls8s69t	0u9og1l0ayz	8	\N	\N	\N
+1i8j6q1xnzk	e51qk20c0d0	7	\N	\N	\N
+1i8j6q1xnzk	u6n64igjsnc	8	\N	\N	\N
+1i8j6q1xnzk	0u9og1l0ayz	9	\N	\N	\N
+5m33jos871r	e51qk20c0d0	8	\N	\N	\N
+5m33jos871r	u6n64igjsnc	9	\N	\N	\N
+5m33jos871r	0u9og1l0ayz	10	\N	\N	\N
+u9fqp7maxs8	e51qk20c0d0	9	\N	\N	\N
+u9fqp7maxs8	u6n64igjsnc	10	\N	\N	\N
+u9fqp7maxs8	0u9og1l0ayz	11	\N	\N	\N
+vqty0zmif5g	e51qk20c0d0	10	\N	\N	\N
+vqty0zmif5g	u6n64igjsnc	11	\N	\N	\N
+vqty0zmif5g	0u9og1l0ayz	12	\N	\N	\N
+xo5vgqdp3pj	e51qk20c0d0	11	\N	\N	\N
+xo5vgqdp3pj	u6n64igjsnc	12	\N	\N	\N
+xo5vgqdp3pj	0u9og1l0ayz	13	\N	\N	\N
+ar4ks05q9gy	e51qk20c0d0	12	\N	\N	\N
+ar4ks05q9gy	u6n64igjsnc	13	\N	\N	\N
+ar4ks05q9gy	0u9og1l0ayz	14	\N	\N	\N
+9vll9qbbcql	e51qk20c0d0	13	\N	\N	\N
+9vll9qbbcql	u6n64igjsnc	14	\N	\N	\N
+9vll9qbbcql	0u9og1l0ayz	15	\N	\N	\N
+8vwr3yh0weq	e51qk20c0d0	14	\N	\N	\N
+8vwr3yh0weq	u6n64igjsnc	15	\N	\N	\N
+8vwr3yh0weq	0u9og1l0ayz	16	\N	\N	\N
+o7z0dukywzh	e51qk20c0d0	15	\N	\N	\N
+o7z0dukywzh	u6n64igjsnc	16	\N	\N	\N
+o7z0dukywzh	0u9og1l0ayz	17	\N	\N	\N
+xr71y0bi2gt	e51qk20c0d0	16	\N	\N	\N
+xr71y0bi2gt	u6n64igjsnc	17	\N	\N	\N
+xr71y0bi2gt	0u9og1l0ayz	18	\N	\N	\N
+nmo9mk3zqna	e51qk20c0d0	17	\N	\N	\N
+nmo9mk3zqna	u6n64igjsnc	18	\N	\N	\N
+nmo9mk3zqna	0u9og1l0ayz	19	\N	\N	\N
+073buw1m70l	e51qk20c0d0	18	\N	\N	\N
+073buw1m70l	u6n64igjsnc	19	\N	\N	\N
+073buw1m70l	0u9og1l0ayz	20	\N	\N	\N
+nocobase-admin-menu	e51qk20c0d0	19	\N	\N	\N
+nocobase-admin-menu	u6n64igjsnc	20	\N	\N	\N
+nocobase-admin-menu	0u9og1l0ayz	21	\N	\N	\N
+zsp37nlw2gj	e51qk20c0d0	1	\N	\N	7
+3b15cjh55zk	3b15cjh55zk	0	f	properties	\N
+plv56k9qjio	3b15cjh55zk	2	\N	\N	\N
+xm2aghmu342	3b15cjh55zk	3	\N	\N	\N
+2a65jddiv1c	3b15cjh55zk	4	\N	\N	\N
+r0oxpk3aest	3b15cjh55zk	5	\N	\N	\N
+ucehls8s69t	3b15cjh55zk	6	\N	\N	\N
+1i8j6q1xnzk	3b15cjh55zk	7	\N	\N	\N
+5m33jos871r	3b15cjh55zk	8	\N	\N	\N
+u9fqp7maxs8	3b15cjh55zk	9	\N	\N	\N
+vqty0zmif5g	3b15cjh55zk	10	\N	\N	\N
+xo5vgqdp3pj	3b15cjh55zk	11	\N	\N	\N
+ar4ks05q9gy	3b15cjh55zk	12	\N	\N	\N
+9vll9qbbcql	3b15cjh55zk	13	\N	\N	\N
+8vwr3yh0weq	3b15cjh55zk	14	\N	\N	\N
+o7z0dukywzh	3b15cjh55zk	15	\N	\N	\N
+xr71y0bi2gt	3b15cjh55zk	16	\N	\N	\N
+nmo9mk3zqna	3b15cjh55zk	17	\N	\N	\N
+073buw1m70l	3b15cjh55zk	18	\N	\N	\N
+nocobase-admin-menu	3b15cjh55zk	19	\N	\N	\N
+ucr27vnzxga	3b15cjh55zk	1	\N	\N	1
+i7gwmqodnug	syscnwrifc8	2	\N	\N	\N
+i7gwmqodnug	jf9rc4sketo	3	\N	\N	\N
+i7gwmqodnug	nf3x14p3vf3	4	\N	\N	\N
+i7gwmqodnug	sgmqm607par	5	\N	\N	\N
+i7gwmqodnug	qjnwfwgzhuv	6	\N	\N	\N
+i7gwmqodnug	fsid1btc6ef	7	\N	\N	\N
+i7gwmqodnug	879a48xod34	3	\N	\N	\N
+i7gwmqodnug	0watzzc6ypj	4	\N	\N	\N
+i7gwmqodnug	9ykupik4f4g	5	\N	\N	\N
+i7gwmqodnug	6zbn1svqu3t	6	\N	\N	\N
+i7gwmqodnug	5z3gl0zrzxm	7	\N	\N	\N
+i7gwmqodnug	hpsahlctqoi	3	\N	\N	\N
+ar4ks05q9gy	ca17vjb0am6	2	\N	\N	\N
+ar4ks05q9gy	syscnwrifc8	3	\N	\N	\N
+ar4ks05q9gy	jf9rc4sketo	4	\N	\N	\N
+ar4ks05q9gy	nf3x14p3vf3	5	\N	\N	\N
+ar4ks05q9gy	sgmqm607par	6	\N	\N	\N
+ar4ks05q9gy	qjnwfwgzhuv	7	\N	\N	\N
+ar4ks05q9gy	fsid1btc6ef	8	\N	\N	\N
+ar4ks05q9gy	879a48xod34	4	\N	\N	\N
+ar4ks05q9gy	0watzzc6ypj	5	\N	\N	\N
+ar4ks05q9gy	9ykupik4f4g	6	\N	\N	\N
+ar4ks05q9gy	6zbn1svqu3t	7	\N	\N	\N
+ar4ks05q9gy	5z3gl0zrzxm	8	\N	\N	\N
+ar4ks05q9gy	hpsahlctqoi	4	\N	\N	\N
+9vll9qbbcql	ca17vjb0am6	3	\N	\N	\N
+9vll9qbbcql	syscnwrifc8	4	\N	\N	\N
+9vll9qbbcql	jf9rc4sketo	5	\N	\N	\N
+9vll9qbbcql	nf3x14p3vf3	6	\N	\N	\N
+9vll9qbbcql	sgmqm607par	7	\N	\N	\N
+9vll9qbbcql	qjnwfwgzhuv	8	\N	\N	\N
+9vll9qbbcql	fsid1btc6ef	9	\N	\N	\N
+9vll9qbbcql	879a48xod34	5	\N	\N	\N
+9vll9qbbcql	0watzzc6ypj	6	\N	\N	\N
+9vll9qbbcql	9ykupik4f4g	7	\N	\N	\N
+9vll9qbbcql	6zbn1svqu3t	8	\N	\N	\N
+9vll9qbbcql	5z3gl0zrzxm	9	\N	\N	\N
+9vll9qbbcql	hpsahlctqoi	5	\N	\N	\N
+8vwr3yh0weq	ca17vjb0am6	4	\N	\N	\N
+8vwr3yh0weq	syscnwrifc8	5	\N	\N	\N
+8vwr3yh0weq	jf9rc4sketo	6	\N	\N	\N
+8vwr3yh0weq	nf3x14p3vf3	7	\N	\N	\N
+8vwr3yh0weq	sgmqm607par	8	\N	\N	\N
+8vwr3yh0weq	qjnwfwgzhuv	9	\N	\N	\N
+8vwr3yh0weq	fsid1btc6ef	10	\N	\N	\N
+8vwr3yh0weq	879a48xod34	6	\N	\N	\N
+8vwr3yh0weq	0watzzc6ypj	7	\N	\N	\N
+8vwr3yh0weq	9ykupik4f4g	8	\N	\N	\N
+8vwr3yh0weq	6zbn1svqu3t	9	\N	\N	\N
+8vwr3yh0weq	5z3gl0zrzxm	10	\N	\N	\N
+8vwr3yh0weq	hpsahlctqoi	6	\N	\N	\N
+i7gwmqodnug	ca17vjb0am6	1	\N	\N	9
+8o6mwjydnzx	8o6mwjydnzx	0	f	properties	\N
+o7z0dukywzh	ca17vjb0am6	5	\N	\N	\N
+o7z0dukywzh	syscnwrifc8	6	\N	\N	\N
+o7z0dukywzh	jf9rc4sketo	7	\N	\N	\N
+o7z0dukywzh	nf3x14p3vf3	8	\N	\N	\N
+o7z0dukywzh	sgmqm607par	9	\N	\N	\N
+o7z0dukywzh	qjnwfwgzhuv	10	\N	\N	\N
+o7z0dukywzh	fsid1btc6ef	11	\N	\N	\N
+o7z0dukywzh	879a48xod34	7	\N	\N	\N
+o7z0dukywzh	0watzzc6ypj	8	\N	\N	\N
+o7z0dukywzh	9ykupik4f4g	9	\N	\N	\N
+o7z0dukywzh	6zbn1svqu3t	10	\N	\N	\N
+o7z0dukywzh	5z3gl0zrzxm	11	\N	\N	\N
+o7z0dukywzh	hpsahlctqoi	7	\N	\N	\N
+xr71y0bi2gt	ca17vjb0am6	6	\N	\N	\N
+xr71y0bi2gt	syscnwrifc8	7	\N	\N	\N
+xr71y0bi2gt	jf9rc4sketo	8	\N	\N	\N
+xr71y0bi2gt	nf3x14p3vf3	9	\N	\N	\N
+xr71y0bi2gt	sgmqm607par	10	\N	\N	\N
+xr71y0bi2gt	qjnwfwgzhuv	11	\N	\N	\N
+xr71y0bi2gt	fsid1btc6ef	12	\N	\N	\N
+xr71y0bi2gt	879a48xod34	8	\N	\N	\N
+xr71y0bi2gt	0watzzc6ypj	9	\N	\N	\N
+xr71y0bi2gt	9ykupik4f4g	10	\N	\N	\N
+xr71y0bi2gt	6zbn1svqu3t	11	\N	\N	\N
+xr71y0bi2gt	5z3gl0zrzxm	12	\N	\N	\N
+xr71y0bi2gt	hpsahlctqoi	8	\N	\N	\N
+nmo9mk3zqna	ca17vjb0am6	7	\N	\N	\N
+nmo9mk3zqna	syscnwrifc8	8	\N	\N	\N
+nmo9mk3zqna	jf9rc4sketo	9	\N	\N	\N
+nmo9mk3zqna	nf3x14p3vf3	10	\N	\N	\N
+nmo9mk3zqna	sgmqm607par	11	\N	\N	\N
+nmo9mk3zqna	qjnwfwgzhuv	12	\N	\N	\N
+nmo9mk3zqna	fsid1btc6ef	13	\N	\N	\N
+nmo9mk3zqna	879a48xod34	9	\N	\N	\N
+nmo9mk3zqna	0watzzc6ypj	10	\N	\N	\N
+nmo9mk3zqna	9ykupik4f4g	11	\N	\N	\N
+nmo9mk3zqna	6zbn1svqu3t	12	\N	\N	\N
+nmo9mk3zqna	5z3gl0zrzxm	13	\N	\N	\N
+nmo9mk3zqna	hpsahlctqoi	9	\N	\N	\N
+073buw1m70l	ca17vjb0am6	8	\N	\N	\N
+073buw1m70l	syscnwrifc8	9	\N	\N	\N
+073buw1m70l	jf9rc4sketo	10	\N	\N	\N
+073buw1m70l	nf3x14p3vf3	11	\N	\N	\N
+073buw1m70l	sgmqm607par	12	\N	\N	\N
+073buw1m70l	qjnwfwgzhuv	13	\N	\N	\N
+073buw1m70l	fsid1btc6ef	14	\N	\N	\N
+073buw1m70l	879a48xod34	10	\N	\N	\N
+073buw1m70l	0watzzc6ypj	11	\N	\N	\N
+073buw1m70l	9ykupik4f4g	12	\N	\N	\N
+073buw1m70l	6zbn1svqu3t	13	\N	\N	\N
+073buw1m70l	5z3gl0zrzxm	14	\N	\N	\N
+073buw1m70l	hpsahlctqoi	10	\N	\N	\N
+nocobase-admin-menu	ca17vjb0am6	9	\N	\N	\N
+nocobase-admin-menu	syscnwrifc8	10	\N	\N	\N
+nocobase-admin-menu	jf9rc4sketo	11	\N	\N	\N
+nocobase-admin-menu	nf3x14p3vf3	12	\N	\N	\N
+nocobase-admin-menu	sgmqm607par	13	\N	\N	\N
+nocobase-admin-menu	qjnwfwgzhuv	14	\N	\N	\N
+nocobase-admin-menu	fsid1btc6ef	15	\N	\N	\N
+nocobase-admin-menu	879a48xod34	11	\N	\N	\N
+nocobase-admin-menu	0watzzc6ypj	12	\N	\N	\N
+nocobase-admin-menu	9ykupik4f4g	13	\N	\N	\N
+nocobase-admin-menu	6zbn1svqu3t	14	\N	\N	\N
+nocobase-admin-menu	5z3gl0zrzxm	15	\N	\N	\N
+nocobase-admin-menu	hpsahlctqoi	11	\N	\N	\N
+iqvhwknbnrr	8o6mwjydnzx	1	\N	\N	1
+lq50y39kk3o	lq50y39kk3o	0	f	properties	\N
+cebvumnm27b	lq50y39kk3o	1	\N	\N	1
+hr7pq2e0scs	hr7pq2e0scs	0	f	properties	\N
+lq50y39kk3o	hr7pq2e0scs	1	\N	\N	1
+cebvumnm27b	hr7pq2e0scs	2	\N	\N	1
+0impb4x69gm	0impb4x69gm	0	f	properties	\N
+hr7pq2e0scs	0impb4x69gm	1	\N	\N	1
+lq50y39kk3o	0impb4x69gm	2	\N	\N	1
+cebvumnm27b	0impb4x69gm	3	\N	\N	1
+hydu0z83jh2	hydu0z83jh2	0	f	properties	\N
+0impb4x69gm	hydu0z83jh2	1	\N	\N	1
+hr7pq2e0scs	hydu0z83jh2	2	\N	\N	1
+lq50y39kk3o	hydu0z83jh2	3	\N	\N	1
+cebvumnm27b	hydu0z83jh2	4	\N	\N	1
+wgcvjndfrvw	wgcvjndfrvw	0	f	properties	\N
+0impb4x69gm	wgcvjndfrvw	1	\N	\N	2
+hr7pq2e0scs	wgcvjndfrvw	2	\N	\N	2
+lq50y39kk3o	wgcvjndfrvw	3	\N	\N	2
+cebvumnm27b	wgcvjndfrvw	4	\N	\N	2
+wbz1xh6nz3e	wbz1xh6nz3e	0	f	properties	\N
+fsid1btc6ef	lq50y39kk3o	2	\N	\N	\N
+fsid1btc6ef	hr7pq2e0scs	3	\N	\N	\N
+fsid1btc6ef	0impb4x69gm	4	\N	\N	\N
+fsid1btc6ef	hydu0z83jh2	5	\N	\N	\N
+fsid1btc6ef	wgcvjndfrvw	5	\N	\N	\N
+qjnwfwgzhuv	cebvumnm27b	2	\N	\N	\N
+qjnwfwgzhuv	lq50y39kk3o	3	\N	\N	\N
+qjnwfwgzhuv	hr7pq2e0scs	4	\N	\N	\N
+qjnwfwgzhuv	0impb4x69gm	5	\N	\N	\N
+qjnwfwgzhuv	hydu0z83jh2	6	\N	\N	\N
+qjnwfwgzhuv	wgcvjndfrvw	6	\N	\N	\N
+sgmqm607par	cebvumnm27b	3	\N	\N	\N
+sgmqm607par	lq50y39kk3o	4	\N	\N	\N
+sgmqm607par	hr7pq2e0scs	5	\N	\N	\N
+sgmqm607par	0impb4x69gm	6	\N	\N	\N
+sgmqm607par	hydu0z83jh2	7	\N	\N	\N
+sgmqm607par	wgcvjndfrvw	7	\N	\N	\N
+nf3x14p3vf3	cebvumnm27b	4	\N	\N	\N
+nf3x14p3vf3	lq50y39kk3o	5	\N	\N	\N
+nf3x14p3vf3	hr7pq2e0scs	6	\N	\N	\N
+nf3x14p3vf3	0impb4x69gm	7	\N	\N	\N
+nf3x14p3vf3	hydu0z83jh2	8	\N	\N	\N
+nf3x14p3vf3	wgcvjndfrvw	8	\N	\N	\N
+jf9rc4sketo	cebvumnm27b	5	\N	\N	\N
+jf9rc4sketo	lq50y39kk3o	6	\N	\N	\N
+jf9rc4sketo	hr7pq2e0scs	7	\N	\N	\N
+jf9rc4sketo	0impb4x69gm	8	\N	\N	\N
+jf9rc4sketo	hydu0z83jh2	9	\N	\N	\N
+jf9rc4sketo	wgcvjndfrvw	9	\N	\N	\N
+syscnwrifc8	cebvumnm27b	6	\N	\N	\N
+syscnwrifc8	lq50y39kk3o	7	\N	\N	\N
+syscnwrifc8	hr7pq2e0scs	8	\N	\N	\N
+syscnwrifc8	0impb4x69gm	9	\N	\N	\N
+syscnwrifc8	hydu0z83jh2	10	\N	\N	\N
+syscnwrifc8	wgcvjndfrvw	10	\N	\N	\N
+ca17vjb0am6	cebvumnm27b	7	\N	\N	\N
+ca17vjb0am6	lq50y39kk3o	8	\N	\N	\N
+ca17vjb0am6	hr7pq2e0scs	9	\N	\N	\N
+ca17vjb0am6	0impb4x69gm	10	\N	\N	\N
+ca17vjb0am6	hydu0z83jh2	11	\N	\N	\N
+ca17vjb0am6	wgcvjndfrvw	11	\N	\N	\N
+i7gwmqodnug	cebvumnm27b	8	\N	\N	\N
+i7gwmqodnug	lq50y39kk3o	9	\N	\N	\N
+i7gwmqodnug	hr7pq2e0scs	10	\N	\N	\N
+i7gwmqodnug	0impb4x69gm	11	\N	\N	\N
+i7gwmqodnug	hydu0z83jh2	12	\N	\N	\N
+i7gwmqodnug	wgcvjndfrvw	12	\N	\N	\N
+ar4ks05q9gy	cebvumnm27b	9	\N	\N	\N
+ar4ks05q9gy	lq50y39kk3o	10	\N	\N	\N
+ar4ks05q9gy	hr7pq2e0scs	11	\N	\N	\N
+ar4ks05q9gy	0impb4x69gm	12	\N	\N	\N
+ar4ks05q9gy	hydu0z83jh2	13	\N	\N	\N
+ar4ks05q9gy	wgcvjndfrvw	13	\N	\N	\N
+9vll9qbbcql	cebvumnm27b	10	\N	\N	\N
+9vll9qbbcql	lq50y39kk3o	11	\N	\N	\N
+9vll9qbbcql	hr7pq2e0scs	12	\N	\N	\N
+9vll9qbbcql	0impb4x69gm	13	\N	\N	\N
+9vll9qbbcql	hydu0z83jh2	14	\N	\N	\N
+9vll9qbbcql	wgcvjndfrvw	14	\N	\N	\N
+8vwr3yh0weq	cebvumnm27b	11	\N	\N	\N
+8vwr3yh0weq	lq50y39kk3o	12	\N	\N	\N
+8vwr3yh0weq	hr7pq2e0scs	13	\N	\N	\N
+8vwr3yh0weq	0impb4x69gm	14	\N	\N	\N
+8vwr3yh0weq	hydu0z83jh2	15	\N	\N	\N
+8vwr3yh0weq	wgcvjndfrvw	15	\N	\N	\N
+o7z0dukywzh	cebvumnm27b	12	\N	\N	\N
+o7z0dukywzh	lq50y39kk3o	13	\N	\N	\N
+o7z0dukywzh	hr7pq2e0scs	14	\N	\N	\N
+o7z0dukywzh	0impb4x69gm	15	\N	\N	\N
+o7z0dukywzh	hydu0z83jh2	16	\N	\N	\N
+o7z0dukywzh	wgcvjndfrvw	16	\N	\N	\N
+xr71y0bi2gt	cebvumnm27b	13	\N	\N	\N
+xr71y0bi2gt	lq50y39kk3o	14	\N	\N	\N
+xr71y0bi2gt	hr7pq2e0scs	15	\N	\N	\N
+xr71y0bi2gt	0impb4x69gm	16	\N	\N	\N
+xr71y0bi2gt	hydu0z83jh2	17	\N	\N	\N
+xr71y0bi2gt	wgcvjndfrvw	17	\N	\N	\N
+nmo9mk3zqna	cebvumnm27b	14	\N	\N	\N
+nmo9mk3zqna	lq50y39kk3o	15	\N	\N	\N
+nmo9mk3zqna	hr7pq2e0scs	16	\N	\N	\N
+nmo9mk3zqna	0impb4x69gm	17	\N	\N	\N
+nmo9mk3zqna	hydu0z83jh2	18	\N	\N	\N
+nmo9mk3zqna	wgcvjndfrvw	18	\N	\N	\N
+073buw1m70l	cebvumnm27b	15	\N	\N	\N
+073buw1m70l	lq50y39kk3o	16	\N	\N	\N
+073buw1m70l	hr7pq2e0scs	17	\N	\N	\N
+073buw1m70l	0impb4x69gm	18	\N	\N	\N
+073buw1m70l	hydu0z83jh2	19	\N	\N	\N
+073buw1m70l	wgcvjndfrvw	19	\N	\N	\N
+nocobase-admin-menu	cebvumnm27b	16	\N	\N	\N
+nocobase-admin-menu	lq50y39kk3o	17	\N	\N	\N
+nocobase-admin-menu	hr7pq2e0scs	18	\N	\N	\N
+nocobase-admin-menu	0impb4x69gm	19	\N	\N	\N
+nocobase-admin-menu	hydu0z83jh2	20	\N	\N	\N
+nocobase-admin-menu	wgcvjndfrvw	20	\N	\N	\N
+cebvumnm27b	cebvumnm27b	0	f	properties	\N
+fsid1btc6ef	cebvumnm27b	1	\N	\N	1
+cdn8yidhnyo	cdn8yidhnyo	0	f	properties	\N
+nfene7r30ma	cdn8yidhnyo	1	\N	\N	1
+y8mxjqz88i5	y8mxjqz88i5	0	f	properties	\N
+cdn8yidhnyo	y8mxjqz88i5	1	\N	\N	1
+nfene7r30ma	y8mxjqz88i5	2	\N	\N	1
+wgcvjndfrvw	cdn8yidhnyo	2	\N	\N	\N
+wgcvjndfrvw	y8mxjqz88i5	3	\N	\N	\N
+0impb4x69gm	nfene7r30ma	2	\N	\N	\N
+0impb4x69gm	cdn8yidhnyo	3	\N	\N	\N
+0impb4x69gm	y8mxjqz88i5	4	\N	\N	\N
+hr7pq2e0scs	nfene7r30ma	3	\N	\N	\N
+hr7pq2e0scs	cdn8yidhnyo	4	\N	\N	\N
+hr7pq2e0scs	y8mxjqz88i5	5	\N	\N	\N
+lq50y39kk3o	nfene7r30ma	4	\N	\N	\N
+lq50y39kk3o	cdn8yidhnyo	5	\N	\N	\N
+lq50y39kk3o	y8mxjqz88i5	6	\N	\N	\N
+cebvumnm27b	nfene7r30ma	5	\N	\N	\N
+cebvumnm27b	cdn8yidhnyo	6	\N	\N	\N
+cebvumnm27b	y8mxjqz88i5	7	\N	\N	\N
+fsid1btc6ef	nfene7r30ma	6	\N	\N	\N
+fsid1btc6ef	cdn8yidhnyo	7	\N	\N	\N
+fsid1btc6ef	y8mxjqz88i5	8	\N	\N	\N
+qjnwfwgzhuv	nfene7r30ma	7	\N	\N	\N
+qjnwfwgzhuv	cdn8yidhnyo	8	\N	\N	\N
+qjnwfwgzhuv	y8mxjqz88i5	9	\N	\N	\N
+sgmqm607par	nfene7r30ma	8	\N	\N	\N
+sgmqm607par	cdn8yidhnyo	9	\N	\N	\N
+sgmqm607par	y8mxjqz88i5	10	\N	\N	\N
+nf3x14p3vf3	nfene7r30ma	9	\N	\N	\N
+nf3x14p3vf3	cdn8yidhnyo	10	\N	\N	\N
+nf3x14p3vf3	y8mxjqz88i5	11	\N	\N	\N
+jf9rc4sketo	nfene7r30ma	10	\N	\N	\N
+jf9rc4sketo	cdn8yidhnyo	11	\N	\N	\N
+jf9rc4sketo	y8mxjqz88i5	12	\N	\N	\N
+syscnwrifc8	nfene7r30ma	11	\N	\N	\N
+syscnwrifc8	cdn8yidhnyo	12	\N	\N	\N
+syscnwrifc8	y8mxjqz88i5	13	\N	\N	\N
+ca17vjb0am6	nfene7r30ma	12	\N	\N	\N
+ca17vjb0am6	cdn8yidhnyo	13	\N	\N	\N
+ca17vjb0am6	y8mxjqz88i5	14	\N	\N	\N
+i7gwmqodnug	nfene7r30ma	13	\N	\N	\N
+i7gwmqodnug	cdn8yidhnyo	14	\N	\N	\N
+i7gwmqodnug	y8mxjqz88i5	15	\N	\N	\N
+ar4ks05q9gy	nfene7r30ma	14	\N	\N	\N
+ar4ks05q9gy	cdn8yidhnyo	15	\N	\N	\N
+ar4ks05q9gy	y8mxjqz88i5	16	\N	\N	\N
+9vll9qbbcql	nfene7r30ma	15	\N	\N	\N
+9vll9qbbcql	cdn8yidhnyo	16	\N	\N	\N
+9vll9qbbcql	y8mxjqz88i5	17	\N	\N	\N
+8vwr3yh0weq	nfene7r30ma	16	\N	\N	\N
+8vwr3yh0weq	cdn8yidhnyo	17	\N	\N	\N
+8vwr3yh0weq	y8mxjqz88i5	18	\N	\N	\N
+o7z0dukywzh	nfene7r30ma	17	\N	\N	\N
+o7z0dukywzh	cdn8yidhnyo	18	\N	\N	\N
+o7z0dukywzh	y8mxjqz88i5	19	\N	\N	\N
+xr71y0bi2gt	nfene7r30ma	18	\N	\N	\N
+xr71y0bi2gt	cdn8yidhnyo	19	\N	\N	\N
+xr71y0bi2gt	y8mxjqz88i5	20	\N	\N	\N
+nmo9mk3zqna	nfene7r30ma	19	\N	\N	\N
+nmo9mk3zqna	cdn8yidhnyo	20	\N	\N	\N
+nmo9mk3zqna	y8mxjqz88i5	21	\N	\N	\N
+073buw1m70l	nfene7r30ma	20	\N	\N	\N
+073buw1m70l	cdn8yidhnyo	21	\N	\N	\N
+073buw1m70l	y8mxjqz88i5	22	\N	\N	\N
+nocobase-admin-menu	nfene7r30ma	21	\N	\N	\N
+nocobase-admin-menu	cdn8yidhnyo	22	\N	\N	\N
+nocobase-admin-menu	y8mxjqz88i5	23	\N	\N	\N
+nfene7r30ma	nfene7r30ma	0	f	properties	\N
+wgcvjndfrvw	nfene7r30ma	1	\N	\N	1
+8o6mwjydnzx	wbz1xh6nz3e	1	\N	\N	1
+7x18dkx9lgq	7x18dkx9lgq	0	f	properties	\N
+z8ca2swxhme	7x18dkx9lgq	1	\N	\N	1
+rz42ykg1hy9	rz42ykg1hy9	0	f	properties	\N
+7x18dkx9lgq	rz42ykg1hy9	1	\N	\N	1
+z8ca2swxhme	rz42ykg1hy9	2	\N	\N	1
+wgcvjndfrvw	7x18dkx9lgq	2	\N	\N	\N
+wgcvjndfrvw	rz42ykg1hy9	3	\N	\N	\N
+0impb4x69gm	z8ca2swxhme	2	\N	\N	\N
+0impb4x69gm	7x18dkx9lgq	3	\N	\N	\N
+0impb4x69gm	rz42ykg1hy9	4	\N	\N	\N
+hr7pq2e0scs	z8ca2swxhme	3	\N	\N	\N
+hr7pq2e0scs	7x18dkx9lgq	4	\N	\N	\N
+hr7pq2e0scs	rz42ykg1hy9	5	\N	\N	\N
+lq50y39kk3o	z8ca2swxhme	4	\N	\N	\N
+lq50y39kk3o	7x18dkx9lgq	5	\N	\N	\N
+lq50y39kk3o	rz42ykg1hy9	6	\N	\N	\N
+cebvumnm27b	z8ca2swxhme	5	\N	\N	\N
+cebvumnm27b	7x18dkx9lgq	6	\N	\N	\N
+cebvumnm27b	rz42ykg1hy9	7	\N	\N	\N
+fsid1btc6ef	z8ca2swxhme	6	\N	\N	\N
+fsid1btc6ef	7x18dkx9lgq	7	\N	\N	\N
+fsid1btc6ef	rz42ykg1hy9	8	\N	\N	\N
+qjnwfwgzhuv	z8ca2swxhme	7	\N	\N	\N
+qjnwfwgzhuv	7x18dkx9lgq	8	\N	\N	\N
+qjnwfwgzhuv	rz42ykg1hy9	9	\N	\N	\N
+sgmqm607par	z8ca2swxhme	8	\N	\N	\N
+sgmqm607par	7x18dkx9lgq	9	\N	\N	\N
+sgmqm607par	rz42ykg1hy9	10	\N	\N	\N
+nf3x14p3vf3	z8ca2swxhme	9	\N	\N	\N
+nf3x14p3vf3	7x18dkx9lgq	10	\N	\N	\N
+nf3x14p3vf3	rz42ykg1hy9	11	\N	\N	\N
+jf9rc4sketo	z8ca2swxhme	10	\N	\N	\N
+jf9rc4sketo	7x18dkx9lgq	11	\N	\N	\N
+jf9rc4sketo	rz42ykg1hy9	12	\N	\N	\N
+syscnwrifc8	z8ca2swxhme	11	\N	\N	\N
+syscnwrifc8	7x18dkx9lgq	12	\N	\N	\N
+syscnwrifc8	rz42ykg1hy9	13	\N	\N	\N
+ca17vjb0am6	z8ca2swxhme	12	\N	\N	\N
+ca17vjb0am6	7x18dkx9lgq	13	\N	\N	\N
+ca17vjb0am6	rz42ykg1hy9	14	\N	\N	\N
+i7gwmqodnug	z8ca2swxhme	13	\N	\N	\N
+i7gwmqodnug	7x18dkx9lgq	14	\N	\N	\N
+i7gwmqodnug	rz42ykg1hy9	15	\N	\N	\N
+ar4ks05q9gy	z8ca2swxhme	14	\N	\N	\N
+ar4ks05q9gy	7x18dkx9lgq	15	\N	\N	\N
+ar4ks05q9gy	rz42ykg1hy9	16	\N	\N	\N
+9vll9qbbcql	z8ca2swxhme	15	\N	\N	\N
+9vll9qbbcql	7x18dkx9lgq	16	\N	\N	\N
+9vll9qbbcql	rz42ykg1hy9	17	\N	\N	\N
+8vwr3yh0weq	z8ca2swxhme	16	\N	\N	\N
+8vwr3yh0weq	7x18dkx9lgq	17	\N	\N	\N
+8vwr3yh0weq	rz42ykg1hy9	18	\N	\N	\N
+o7z0dukywzh	z8ca2swxhme	17	\N	\N	\N
+o7z0dukywzh	7x18dkx9lgq	18	\N	\N	\N
+o7z0dukywzh	rz42ykg1hy9	19	\N	\N	\N
+xr71y0bi2gt	z8ca2swxhme	18	\N	\N	\N
+xr71y0bi2gt	7x18dkx9lgq	19	\N	\N	\N
+xr71y0bi2gt	rz42ykg1hy9	20	\N	\N	\N
+nmo9mk3zqna	z8ca2swxhme	19	\N	\N	\N
+nmo9mk3zqna	7x18dkx9lgq	20	\N	\N	\N
+nmo9mk3zqna	rz42ykg1hy9	21	\N	\N	\N
+073buw1m70l	z8ca2swxhme	20	\N	\N	\N
+073buw1m70l	7x18dkx9lgq	21	\N	\N	\N
+073buw1m70l	rz42ykg1hy9	22	\N	\N	\N
+nocobase-admin-menu	z8ca2swxhme	21	\N	\N	\N
+nocobase-admin-menu	7x18dkx9lgq	22	\N	\N	\N
+nocobase-admin-menu	rz42ykg1hy9	23	\N	\N	\N
+z8ca2swxhme	z8ca2swxhme	0	f	properties	\N
+wgcvjndfrvw	z8ca2swxhme	1	\N	\N	2
+iqvhwknbnrr	wbz1xh6nz3e	2	\N	\N	1
+26xckt7cr9e	26xckt7cr9e	0	f	properties	\N
+wbz1xh6nz3e	26xckt7cr9e	1	\N	\N	1
+8o6mwjydnzx	26xckt7cr9e	2	\N	\N	1
+iqvhwknbnrr	26xckt7cr9e	3	\N	\N	1
+8796mm39d27	8796mm39d27	0	f	properties	\N
+0impb4x69gm	qzjj9i7fxxa	2	\N	\N	\N
+26xckt7cr9e	8796mm39d27	1	\N	\N	1
+wbz1xh6nz3e	8796mm39d27	2	\N	\N	1
+hr7pq2e0scs	qzjj9i7fxxa	3	\N	\N	\N
+8o6mwjydnzx	8796mm39d27	3	\N	\N	1
+iqvhwknbnrr	8796mm39d27	4	\N	\N	1
+lq50y39kk3o	qzjj9i7fxxa	4	\N	\N	\N
+jej2s5rr3sb	jej2s5rr3sb	0	f	properties	\N
+26xckt7cr9e	jej2s5rr3sb	1	\N	\N	2
+cebvumnm27b	qzjj9i7fxxa	5	\N	\N	\N
+wbz1xh6nz3e	jej2s5rr3sb	2	\N	\N	2
+8o6mwjydnzx	jej2s5rr3sb	3	\N	\N	2
+fsid1btc6ef	qzjj9i7fxxa	6	\N	\N	\N
+iqvhwknbnrr	jej2s5rr3sb	4	\N	\N	2
+qjnwfwgzhuv	qzjj9i7fxxa	7	\N	\N	\N
+eolrwpo9lyf	8o6mwjydnzx	2	\N	\N	\N
+eolrwpo9lyf	wbz1xh6nz3e	3	\N	\N	\N
+sgmqm607par	qzjj9i7fxxa	8	\N	\N	\N
+eolrwpo9lyf	26xckt7cr9e	4	\N	\N	\N
+eolrwpo9lyf	8796mm39d27	5	\N	\N	\N
+nf3x14p3vf3	qzjj9i7fxxa	9	\N	\N	\N
+eolrwpo9lyf	jej2s5rr3sb	5	\N	\N	\N
+85c8uxmskwh	iqvhwknbnrr	2	\N	\N	\N
+jf9rc4sketo	qzjj9i7fxxa	10	\N	\N	\N
+85c8uxmskwh	8o6mwjydnzx	3	\N	\N	\N
+85c8uxmskwh	wbz1xh6nz3e	4	\N	\N	\N
+syscnwrifc8	qzjj9i7fxxa	11	\N	\N	\N
+85c8uxmskwh	26xckt7cr9e	5	\N	\N	\N
+85c8uxmskwh	8796mm39d27	6	\N	\N	\N
+ca17vjb0am6	qzjj9i7fxxa	12	\N	\N	\N
+85c8uxmskwh	jej2s5rr3sb	6	\N	\N	\N
+2w360eurk19	iqvhwknbnrr	3	\N	\N	\N
+i7gwmqodnug	qzjj9i7fxxa	13	\N	\N	\N
+2w360eurk19	8o6mwjydnzx	4	\N	\N	\N
+2w360eurk19	wbz1xh6nz3e	5	\N	\N	\N
+ar4ks05q9gy	qzjj9i7fxxa	14	\N	\N	\N
+2w360eurk19	26xckt7cr9e	6	\N	\N	\N
+2w360eurk19	8796mm39d27	7	\N	\N	\N
+9vll9qbbcql	qzjj9i7fxxa	15	\N	\N	\N
+2w360eurk19	jej2s5rr3sb	7	\N	\N	\N
+e2bz79kfn39	iqvhwknbnrr	4	\N	\N	\N
+8vwr3yh0weq	qzjj9i7fxxa	16	\N	\N	\N
+e2bz79kfn39	8o6mwjydnzx	5	\N	\N	\N
+e2bz79kfn39	wbz1xh6nz3e	6	\N	\N	\N
+o7z0dukywzh	qzjj9i7fxxa	17	\N	\N	\N
+e2bz79kfn39	26xckt7cr9e	7	\N	\N	\N
+e2bz79kfn39	8796mm39d27	8	\N	\N	\N
+xr71y0bi2gt	qzjj9i7fxxa	18	\N	\N	\N
+e2bz79kfn39	jej2s5rr3sb	8	\N	\N	\N
+2bwco99n47x	iqvhwknbnrr	5	\N	\N	\N
+nmo9mk3zqna	qzjj9i7fxxa	19	\N	\N	\N
+2bwco99n47x	8o6mwjydnzx	6	\N	\N	\N
+2bwco99n47x	wbz1xh6nz3e	7	\N	\N	\N
+073buw1m70l	qzjj9i7fxxa	20	\N	\N	\N
+2bwco99n47x	26xckt7cr9e	8	\N	\N	\N
+2bwco99n47x	8796mm39d27	9	\N	\N	\N
+nocobase-admin-menu	qzjj9i7fxxa	21	\N	\N	\N
+2bwco99n47x	jej2s5rr3sb	9	\N	\N	\N
+ji9t3fgnkc0	iqvhwknbnrr	6	\N	\N	\N
+qzjj9i7fxxa	qzjj9i7fxxa	0	f	properties	\N
+wgcvjndfrvw	qzjj9i7fxxa	1	\N	\N	3
+ji9t3fgnkc0	8o6mwjydnzx	7	\N	\N	\N
+ji9t3fgnkc0	wbz1xh6nz3e	8	\N	\N	\N
+ji9t3fgnkc0	26xckt7cr9e	9	\N	\N	\N
+ji9t3fgnkc0	8796mm39d27	10	\N	\N	\N
+ji9t3fgnkc0	jej2s5rr3sb	10	\N	\N	\N
+yjzd6s5ccq4	iqvhwknbnrr	7	\N	\N	\N
+yjzd6s5ccq4	8o6mwjydnzx	8	\N	\N	\N
+yjzd6s5ccq4	wbz1xh6nz3e	9	\N	\N	\N
+l9edxsf2w1h	l9edxsf2w1h	0	f	properties	\N
+ouiu2vzoc6n	ouiu2vzoc6n	0	f	properties	\N
+0impb4x69gm	e4nm5wtud7n	2	\N	\N	\N
+yjzd6s5ccq4	26xckt7cr9e	10	\N	\N	\N
+yjzd6s5ccq4	8796mm39d27	11	\N	\N	\N
+hr7pq2e0scs	e4nm5wtud7n	3	\N	\N	\N
+yjzd6s5ccq4	jej2s5rr3sb	11	\N	\N	\N
+imrhc9he5on	iqvhwknbnrr	8	\N	\N	\N
+lq50y39kk3o	e4nm5wtud7n	4	\N	\N	\N
+imrhc9he5on	8o6mwjydnzx	9	\N	\N	\N
+imrhc9he5on	wbz1xh6nz3e	10	\N	\N	\N
+cebvumnm27b	e4nm5wtud7n	5	\N	\N	\N
+imrhc9he5on	26xckt7cr9e	11	\N	\N	\N
+imrhc9he5on	8796mm39d27	12	\N	\N	\N
+fsid1btc6ef	e4nm5wtud7n	6	\N	\N	\N
+imrhc9he5on	jej2s5rr3sb	12	\N	\N	\N
+82ikkgrog2y	iqvhwknbnrr	9	\N	\N	\N
+qjnwfwgzhuv	e4nm5wtud7n	7	\N	\N	\N
+82ikkgrog2y	8o6mwjydnzx	10	\N	\N	\N
+82ikkgrog2y	wbz1xh6nz3e	11	\N	\N	\N
+sgmqm607par	e4nm5wtud7n	8	\N	\N	\N
+82ikkgrog2y	26xckt7cr9e	12	\N	\N	\N
+82ikkgrog2y	8796mm39d27	13	\N	\N	\N
+nf3x14p3vf3	e4nm5wtud7n	9	\N	\N	\N
+82ikkgrog2y	jej2s5rr3sb	13	\N	\N	\N
+mmj417nrjpa	iqvhwknbnrr	10	\N	\N	\N
+jf9rc4sketo	e4nm5wtud7n	10	\N	\N	\N
+mmj417nrjpa	8o6mwjydnzx	11	\N	\N	\N
+mmj417nrjpa	wbz1xh6nz3e	12	\N	\N	\N
+syscnwrifc8	e4nm5wtud7n	11	\N	\N	\N
+mmj417nrjpa	26xckt7cr9e	13	\N	\N	\N
+mmj417nrjpa	8796mm39d27	14	\N	\N	\N
+ca17vjb0am6	e4nm5wtud7n	12	\N	\N	\N
+mmj417nrjpa	jej2s5rr3sb	14	\N	\N	\N
+lmgnrgroovk	iqvhwknbnrr	11	\N	\N	\N
+i7gwmqodnug	e4nm5wtud7n	13	\N	\N	\N
+lmgnrgroovk	8o6mwjydnzx	12	\N	\N	\N
+lmgnrgroovk	wbz1xh6nz3e	13	\N	\N	\N
+ar4ks05q9gy	e4nm5wtud7n	14	\N	\N	\N
+lmgnrgroovk	26xckt7cr9e	14	\N	\N	\N
+lmgnrgroovk	8796mm39d27	15	\N	\N	\N
+9vll9qbbcql	e4nm5wtud7n	15	\N	\N	\N
+lmgnrgroovk	jej2s5rr3sb	15	\N	\N	\N
+4cx141n1lb4	iqvhwknbnrr	12	\N	\N	\N
+8vwr3yh0weq	e4nm5wtud7n	16	\N	\N	\N
+4cx141n1lb4	8o6mwjydnzx	13	\N	\N	\N
+4cx141n1lb4	wbz1xh6nz3e	14	\N	\N	\N
+o7z0dukywzh	e4nm5wtud7n	17	\N	\N	\N
+4cx141n1lb4	26xckt7cr9e	15	\N	\N	\N
+4cx141n1lb4	8796mm39d27	16	\N	\N	\N
+xr71y0bi2gt	e4nm5wtud7n	18	\N	\N	\N
+4cx141n1lb4	jej2s5rr3sb	16	\N	\N	\N
+k6pr2jh3wgd	iqvhwknbnrr	13	\N	\N	\N
+nmo9mk3zqna	e4nm5wtud7n	19	\N	\N	\N
+k6pr2jh3wgd	8o6mwjydnzx	14	\N	\N	\N
+k6pr2jh3wgd	wbz1xh6nz3e	15	\N	\N	\N
+073buw1m70l	e4nm5wtud7n	20	\N	\N	\N
+k6pr2jh3wgd	26xckt7cr9e	16	\N	\N	\N
+k6pr2jh3wgd	8796mm39d27	17	\N	\N	\N
+nocobase-admin-menu	e4nm5wtud7n	21	\N	\N	\N
+k6pr2jh3wgd	jej2s5rr3sb	17	\N	\N	\N
+hchm15rxv74	iqvhwknbnrr	14	\N	\N	\N
+e4nm5wtud7n	e4nm5wtud7n	0	f	properties	\N
+wgcvjndfrvw	e4nm5wtud7n	1	\N	\N	4
+e74voefj399	e74voefj399	0	f	properties	\N
+bwzebaw19re	e74voefj399	1	\N	\N	1
+r1s9zu8ij7p	r1s9zu8ij7p	0	f	properties	\N
+e74voefj399	r1s9zu8ij7p	1	\N	\N	1
+bwzebaw19re	r1s9zu8ij7p	2	\N	\N	1
+wgcvjndfrvw	e74voefj399	2	\N	\N	\N
+wgcvjndfrvw	r1s9zu8ij7p	3	\N	\N	\N
+0impb4x69gm	bwzebaw19re	2	\N	\N	\N
+0impb4x69gm	e74voefj399	3	\N	\N	\N
+0impb4x69gm	r1s9zu8ij7p	4	\N	\N	\N
+hr7pq2e0scs	bwzebaw19re	3	\N	\N	\N
+hr7pq2e0scs	e74voefj399	4	\N	\N	\N
+hr7pq2e0scs	r1s9zu8ij7p	5	\N	\N	\N
+lq50y39kk3o	bwzebaw19re	4	\N	\N	\N
+lq50y39kk3o	e74voefj399	5	\N	\N	\N
+lq50y39kk3o	r1s9zu8ij7p	6	\N	\N	\N
+cebvumnm27b	bwzebaw19re	5	\N	\N	\N
+cebvumnm27b	e74voefj399	6	\N	\N	\N
+cebvumnm27b	r1s9zu8ij7p	7	\N	\N	\N
+fsid1btc6ef	bwzebaw19re	6	\N	\N	\N
+fsid1btc6ef	e74voefj399	7	\N	\N	\N
+fsid1btc6ef	r1s9zu8ij7p	8	\N	\N	\N
+qjnwfwgzhuv	bwzebaw19re	7	\N	\N	\N
+qjnwfwgzhuv	e74voefj399	8	\N	\N	\N
+qjnwfwgzhuv	r1s9zu8ij7p	9	\N	\N	\N
+sgmqm607par	bwzebaw19re	8	\N	\N	\N
+sgmqm607par	e74voefj399	9	\N	\N	\N
+sgmqm607par	r1s9zu8ij7p	10	\N	\N	\N
+nf3x14p3vf3	bwzebaw19re	9	\N	\N	\N
+nf3x14p3vf3	e74voefj399	10	\N	\N	\N
+nf3x14p3vf3	r1s9zu8ij7p	11	\N	\N	\N
+jf9rc4sketo	bwzebaw19re	10	\N	\N	\N
+jf9rc4sketo	e74voefj399	11	\N	\N	\N
+jf9rc4sketo	r1s9zu8ij7p	12	\N	\N	\N
+syscnwrifc8	bwzebaw19re	11	\N	\N	\N
+syscnwrifc8	e74voefj399	12	\N	\N	\N
+syscnwrifc8	r1s9zu8ij7p	13	\N	\N	\N
+ca17vjb0am6	bwzebaw19re	12	\N	\N	\N
+ca17vjb0am6	e74voefj399	13	\N	\N	\N
+ca17vjb0am6	r1s9zu8ij7p	14	\N	\N	\N
+i7gwmqodnug	bwzebaw19re	13	\N	\N	\N
+i7gwmqodnug	e74voefj399	14	\N	\N	\N
+i7gwmqodnug	r1s9zu8ij7p	15	\N	\N	\N
+ar4ks05q9gy	bwzebaw19re	14	\N	\N	\N
+ar4ks05q9gy	e74voefj399	15	\N	\N	\N
+ar4ks05q9gy	r1s9zu8ij7p	16	\N	\N	\N
+9vll9qbbcql	bwzebaw19re	15	\N	\N	\N
+9vll9qbbcql	e74voefj399	16	\N	\N	\N
+9vll9qbbcql	r1s9zu8ij7p	17	\N	\N	\N
+8vwr3yh0weq	bwzebaw19re	16	\N	\N	\N
+8vwr3yh0weq	e74voefj399	17	\N	\N	\N
+8vwr3yh0weq	r1s9zu8ij7p	18	\N	\N	\N
+o7z0dukywzh	bwzebaw19re	17	\N	\N	\N
+o7z0dukywzh	e74voefj399	18	\N	\N	\N
+o7z0dukywzh	r1s9zu8ij7p	19	\N	\N	\N
+xr71y0bi2gt	bwzebaw19re	18	\N	\N	\N
+xr71y0bi2gt	e74voefj399	19	\N	\N	\N
+xr71y0bi2gt	r1s9zu8ij7p	20	\N	\N	\N
+nmo9mk3zqna	bwzebaw19re	19	\N	\N	\N
+nmo9mk3zqna	e74voefj399	20	\N	\N	\N
+nmo9mk3zqna	r1s9zu8ij7p	21	\N	\N	\N
+073buw1m70l	bwzebaw19re	20	\N	\N	\N
+073buw1m70l	e74voefj399	21	\N	\N	\N
+073buw1m70l	r1s9zu8ij7p	22	\N	\N	\N
+nocobase-admin-menu	bwzebaw19re	21	\N	\N	\N
+nocobase-admin-menu	e74voefj399	22	\N	\N	\N
+nocobase-admin-menu	r1s9zu8ij7p	23	\N	\N	\N
+bwzebaw19re	bwzebaw19re	0	f	properties	\N
+wgcvjndfrvw	bwzebaw19re	1	\N	\N	5
+sb54wjm938r	sb54wjm938r	0	f	properties	\N
+hchm15rxv74	8o6mwjydnzx	15	\N	\N	\N
+hchm15rxv74	wbz1xh6nz3e	16	\N	\N	\N
+hchm15rxv74	26xckt7cr9e	17	\N	\N	\N
+hchm15rxv74	8796mm39d27	18	\N	\N	\N
+hchm15rxv74	jej2s5rr3sb	18	\N	\N	\N
+073buw1m70l	iqvhwknbnrr	15	\N	\N	\N
+073buw1m70l	8o6mwjydnzx	16	\N	\N	\N
+073buw1m70l	wbz1xh6nz3e	17	\N	\N	\N
+0impb4x69gm	sb54wjm938r	2	\N	\N	\N
+073buw1m70l	26xckt7cr9e	18	\N	\N	\N
+073buw1m70l	8796mm39d27	19	\N	\N	\N
+hr7pq2e0scs	sb54wjm938r	3	\N	\N	\N
+073buw1m70l	jej2s5rr3sb	19	\N	\N	\N
+nocobase-admin-menu	iqvhwknbnrr	16	\N	\N	\N
+lq50y39kk3o	sb54wjm938r	4	\N	\N	\N
+nocobase-admin-menu	8o6mwjydnzx	17	\N	\N	\N
+nocobase-admin-menu	wbz1xh6nz3e	18	\N	\N	\N
+cebvumnm27b	sb54wjm938r	5	\N	\N	\N
+nocobase-admin-menu	26xckt7cr9e	19	\N	\N	\N
+nocobase-admin-menu	8796mm39d27	20	\N	\N	\N
+fsid1btc6ef	sb54wjm938r	6	\N	\N	\N
+nocobase-admin-menu	jej2s5rr3sb	20	\N	\N	\N
+iqvhwknbnrr	iqvhwknbnrr	0	f	properties	\N
+qjnwfwgzhuv	sb54wjm938r	7	\N	\N	\N
+eolrwpo9lyf	iqvhwknbnrr	1	\N	\N	1
+eolrwpo9lyf	uqifi2qlukf	6	\N	\N	\N
+sgmqm607par	sb54wjm938r	8	\N	\N	\N
+eolrwpo9lyf	z9bj2qzcxd2	7	\N	\N	\N
+eolrwpo9lyf	mrhyvojvqar	8	\N	\N	\N
+nf3x14p3vf3	sb54wjm938r	9	\N	\N	\N
+eolrwpo9lyf	392bxnfb0cu	9	\N	\N	\N
+eolrwpo9lyf	fh5hex4wag5	10	\N	\N	\N
+jf9rc4sketo	sb54wjm938r	10	\N	\N	\N
+85c8uxmskwh	uqifi2qlukf	7	\N	\N	\N
+85c8uxmskwh	z9bj2qzcxd2	8	\N	\N	\N
+syscnwrifc8	sb54wjm938r	11	\N	\N	\N
+85c8uxmskwh	mrhyvojvqar	9	\N	\N	\N
+85c8uxmskwh	392bxnfb0cu	10	\N	\N	\N
+ca17vjb0am6	sb54wjm938r	12	\N	\N	\N
+85c8uxmskwh	fh5hex4wag5	11	\N	\N	\N
+2w360eurk19	uqifi2qlukf	8	\N	\N	\N
+i7gwmqodnug	sb54wjm938r	13	\N	\N	\N
+2w360eurk19	z9bj2qzcxd2	9	\N	\N	\N
+2w360eurk19	mrhyvojvqar	10	\N	\N	\N
+ar4ks05q9gy	sb54wjm938r	14	\N	\N	\N
+2w360eurk19	392bxnfb0cu	11	\N	\N	\N
+2w360eurk19	fh5hex4wag5	12	\N	\N	\N
+9vll9qbbcql	sb54wjm938r	15	\N	\N	\N
+e2bz79kfn39	uqifi2qlukf	9	\N	\N	\N
+e2bz79kfn39	z9bj2qzcxd2	10	\N	\N	\N
+8vwr3yh0weq	sb54wjm938r	16	\N	\N	\N
+e2bz79kfn39	mrhyvojvqar	11	\N	\N	\N
+e2bz79kfn39	392bxnfb0cu	12	\N	\N	\N
+o7z0dukywzh	sb54wjm938r	17	\N	\N	\N
+e2bz79kfn39	fh5hex4wag5	13	\N	\N	\N
+2bwco99n47x	uqifi2qlukf	10	\N	\N	\N
+xr71y0bi2gt	sb54wjm938r	18	\N	\N	\N
+2bwco99n47x	z9bj2qzcxd2	11	\N	\N	\N
+2bwco99n47x	mrhyvojvqar	12	\N	\N	\N
+nmo9mk3zqna	sb54wjm938r	19	\N	\N	\N
+2bwco99n47x	392bxnfb0cu	13	\N	\N	\N
+2bwco99n47x	fh5hex4wag5	14	\N	\N	\N
+073buw1m70l	sb54wjm938r	20	\N	\N	\N
+ji9t3fgnkc0	uqifi2qlukf	11	\N	\N	\N
+ji9t3fgnkc0	z9bj2qzcxd2	12	\N	\N	\N
+nocobase-admin-menu	sb54wjm938r	21	\N	\N	\N
+ji9t3fgnkc0	mrhyvojvqar	13	\N	\N	\N
+ji9t3fgnkc0	392bxnfb0cu	14	\N	\N	\N
+wgcvjndfrvw	sb54wjm938r	1	\N	\N	6
+y1fzeh6hzvi	y1fzeh6hzvi	0	f	properties	\N
+ubi2zj8g4jj	y1fzeh6hzvi	1	\N	\N	1
+ne0nw849rkm	ne0nw849rkm	0	f	properties	\N
+y1fzeh6hzvi	ne0nw849rkm	1	\N	\N	1
+ubi2zj8g4jj	ne0nw849rkm	2	\N	\N	1
+ji9t3fgnkc0	fh5hex4wag5	15	\N	\N	\N
+wgcvjndfrvw	y1fzeh6hzvi	2	\N	\N	\N
+wgcvjndfrvw	ne0nw849rkm	3	\N	\N	\N
+0impb4x69gm	ubi2zj8g4jj	2	\N	\N	\N
+0impb4x69gm	y1fzeh6hzvi	3	\N	\N	\N
+0impb4x69gm	ne0nw849rkm	4	\N	\N	\N
+hr7pq2e0scs	ubi2zj8g4jj	3	\N	\N	\N
+hr7pq2e0scs	y1fzeh6hzvi	4	\N	\N	\N
+hr7pq2e0scs	ne0nw849rkm	5	\N	\N	\N
+lq50y39kk3o	ubi2zj8g4jj	4	\N	\N	\N
+lq50y39kk3o	y1fzeh6hzvi	5	\N	\N	\N
+lq50y39kk3o	ne0nw849rkm	6	\N	\N	\N
+cebvumnm27b	ubi2zj8g4jj	5	\N	\N	\N
+cebvumnm27b	y1fzeh6hzvi	6	\N	\N	\N
+cebvumnm27b	ne0nw849rkm	7	\N	\N	\N
+fsid1btc6ef	ubi2zj8g4jj	6	\N	\N	\N
+fsid1btc6ef	y1fzeh6hzvi	7	\N	\N	\N
+fsid1btc6ef	ne0nw849rkm	8	\N	\N	\N
+qjnwfwgzhuv	ubi2zj8g4jj	7	\N	\N	\N
+qjnwfwgzhuv	y1fzeh6hzvi	8	\N	\N	\N
+qjnwfwgzhuv	ne0nw849rkm	9	\N	\N	\N
+sgmqm607par	ubi2zj8g4jj	8	\N	\N	\N
+sgmqm607par	y1fzeh6hzvi	9	\N	\N	\N
+sgmqm607par	ne0nw849rkm	10	\N	\N	\N
+nf3x14p3vf3	ubi2zj8g4jj	9	\N	\N	\N
+nf3x14p3vf3	y1fzeh6hzvi	10	\N	\N	\N
+nf3x14p3vf3	ne0nw849rkm	11	\N	\N	\N
+jf9rc4sketo	ubi2zj8g4jj	10	\N	\N	\N
+jf9rc4sketo	y1fzeh6hzvi	11	\N	\N	\N
+jf9rc4sketo	ne0nw849rkm	12	\N	\N	\N
+syscnwrifc8	ubi2zj8g4jj	11	\N	\N	\N
+syscnwrifc8	y1fzeh6hzvi	12	\N	\N	\N
+syscnwrifc8	ne0nw849rkm	13	\N	\N	\N
+ca17vjb0am6	ubi2zj8g4jj	12	\N	\N	\N
+ca17vjb0am6	y1fzeh6hzvi	13	\N	\N	\N
+ca17vjb0am6	ne0nw849rkm	14	\N	\N	\N
+i7gwmqodnug	ubi2zj8g4jj	13	\N	\N	\N
+i7gwmqodnug	y1fzeh6hzvi	14	\N	\N	\N
+i7gwmqodnug	ne0nw849rkm	15	\N	\N	\N
+ar4ks05q9gy	ubi2zj8g4jj	14	\N	\N	\N
+ar4ks05q9gy	y1fzeh6hzvi	15	\N	\N	\N
+ar4ks05q9gy	ne0nw849rkm	16	\N	\N	\N
+9vll9qbbcql	ubi2zj8g4jj	15	\N	\N	\N
+9vll9qbbcql	y1fzeh6hzvi	16	\N	\N	\N
+9vll9qbbcql	ne0nw849rkm	17	\N	\N	\N
+8vwr3yh0weq	ubi2zj8g4jj	16	\N	\N	\N
+8vwr3yh0weq	y1fzeh6hzvi	17	\N	\N	\N
+8vwr3yh0weq	ne0nw849rkm	18	\N	\N	\N
+o7z0dukywzh	ubi2zj8g4jj	17	\N	\N	\N
+o7z0dukywzh	y1fzeh6hzvi	18	\N	\N	\N
+o7z0dukywzh	ne0nw849rkm	19	\N	\N	\N
+xr71y0bi2gt	ubi2zj8g4jj	18	\N	\N	\N
+xr71y0bi2gt	y1fzeh6hzvi	19	\N	\N	\N
+xr71y0bi2gt	ne0nw849rkm	20	\N	\N	\N
+nmo9mk3zqna	ubi2zj8g4jj	19	\N	\N	\N
+nmo9mk3zqna	y1fzeh6hzvi	20	\N	\N	\N
+nmo9mk3zqna	ne0nw849rkm	21	\N	\N	\N
+073buw1m70l	ubi2zj8g4jj	20	\N	\N	\N
+073buw1m70l	y1fzeh6hzvi	21	\N	\N	\N
+073buw1m70l	ne0nw849rkm	22	\N	\N	\N
+ubi2zj8g4jj	ubi2zj8g4jj	0	f	properties	\N
+blzgd8l2cyf	blzgd8l2cyf	0	f	properties	\N
+nocobase-admin-menu	ubi2zj8g4jj	21	\N	\N	\N
+nocobase-admin-menu	y1fzeh6hzvi	22	\N	\N	\N
+nocobase-admin-menu	ne0nw849rkm	23	\N	\N	\N
+wgcvjndfrvw	ubi2zj8g4jj	1	\N	\N	7
+l18clsyirh4	l18clsyirh4	0	f	properties	\N
+mph5umu4xyy	l18clsyirh4	1	\N	\N	1
+8zqt09paw0b	8zqt09paw0b	0	f	properties	\N
+l18clsyirh4	8zqt09paw0b	1	\N	\N	1
+mph5umu4xyy	8zqt09paw0b	2	\N	\N	1
+0impb4x69gm	uydn0hxd9xk	2	\N	\N	\N
+jej2s5rr3sb	l18clsyirh4	2	\N	\N	\N
+hr7pq2e0scs	uydn0hxd9xk	3	\N	\N	\N
+jej2s5rr3sb	8zqt09paw0b	3	\N	\N	\N
+26xckt7cr9e	mph5umu4xyy	2	\N	\N	\N
+lq50y39kk3o	uydn0hxd9xk	4	\N	\N	\N
+26xckt7cr9e	l18clsyirh4	3	\N	\N	\N
+26xckt7cr9e	8zqt09paw0b	4	\N	\N	\N
+cebvumnm27b	uydn0hxd9xk	5	\N	\N	\N
+wbz1xh6nz3e	mph5umu4xyy	3	\N	\N	\N
+wbz1xh6nz3e	l18clsyirh4	4	\N	\N	\N
+fsid1btc6ef	uydn0hxd9xk	6	\N	\N	\N
+wbz1xh6nz3e	8zqt09paw0b	5	\N	\N	\N
+8o6mwjydnzx	mph5umu4xyy	4	\N	\N	\N
+qjnwfwgzhuv	uydn0hxd9xk	7	\N	\N	\N
+8o6mwjydnzx	l18clsyirh4	5	\N	\N	\N
+8o6mwjydnzx	8zqt09paw0b	6	\N	\N	\N
+sgmqm607par	uydn0hxd9xk	8	\N	\N	\N
+iqvhwknbnrr	mph5umu4xyy	5	\N	\N	\N
+iqvhwknbnrr	l18clsyirh4	6	\N	\N	\N
+nf3x14p3vf3	uydn0hxd9xk	9	\N	\N	\N
+iqvhwknbnrr	8zqt09paw0b	7	\N	\N	\N
+eolrwpo9lyf	mph5umu4xyy	6	\N	\N	\N
+jf9rc4sketo	uydn0hxd9xk	10	\N	\N	\N
+eolrwpo9lyf	l18clsyirh4	7	\N	\N	\N
+eolrwpo9lyf	8zqt09paw0b	8	\N	\N	\N
+syscnwrifc8	uydn0hxd9xk	11	\N	\N	\N
+85c8uxmskwh	mph5umu4xyy	7	\N	\N	\N
+85c8uxmskwh	l18clsyirh4	8	\N	\N	\N
+ca17vjb0am6	uydn0hxd9xk	12	\N	\N	\N
+85c8uxmskwh	8zqt09paw0b	9	\N	\N	\N
+2w360eurk19	mph5umu4xyy	8	\N	\N	\N
+i7gwmqodnug	uydn0hxd9xk	13	\N	\N	\N
+2w360eurk19	l18clsyirh4	9	\N	\N	\N
+2w360eurk19	8zqt09paw0b	10	\N	\N	\N
+ar4ks05q9gy	uydn0hxd9xk	14	\N	\N	\N
+e2bz79kfn39	mph5umu4xyy	9	\N	\N	\N
+e2bz79kfn39	l18clsyirh4	10	\N	\N	\N
+9vll9qbbcql	uydn0hxd9xk	15	\N	\N	\N
+e2bz79kfn39	8zqt09paw0b	11	\N	\N	\N
+2bwco99n47x	mph5umu4xyy	10	\N	\N	\N
+8vwr3yh0weq	uydn0hxd9xk	16	\N	\N	\N
+2bwco99n47x	l18clsyirh4	11	\N	\N	\N
+2bwco99n47x	8zqt09paw0b	12	\N	\N	\N
+o7z0dukywzh	uydn0hxd9xk	17	\N	\N	\N
+ji9t3fgnkc0	mph5umu4xyy	11	\N	\N	\N
+ji9t3fgnkc0	l18clsyirh4	12	\N	\N	\N
+xr71y0bi2gt	uydn0hxd9xk	18	\N	\N	\N
+ji9t3fgnkc0	8zqt09paw0b	13	\N	\N	\N
+yjzd6s5ccq4	mph5umu4xyy	12	\N	\N	\N
+nmo9mk3zqna	uydn0hxd9xk	19	\N	\N	\N
+yjzd6s5ccq4	l18clsyirh4	13	\N	\N	\N
+yjzd6s5ccq4	8zqt09paw0b	14	\N	\N	\N
+073buw1m70l	uydn0hxd9xk	20	\N	\N	\N
+imrhc9he5on	mph5umu4xyy	13	\N	\N	\N
+imrhc9he5on	l18clsyirh4	14	\N	\N	\N
+nocobase-admin-menu	uydn0hxd9xk	21	\N	\N	\N
+imrhc9he5on	8zqt09paw0b	15	\N	\N	\N
+82ikkgrog2y	mph5umu4xyy	14	\N	\N	\N
+uydn0hxd9xk	uydn0hxd9xk	0	f	properties	\N
+wgcvjndfrvw	uydn0hxd9xk	1	\N	\N	8
+82ikkgrog2y	l18clsyirh4	15	\N	\N	\N
+82ikkgrog2y	8zqt09paw0b	16	\N	\N	\N
+mmj417nrjpa	mph5umu4xyy	15	\N	\N	\N
+iiyftop2g1d	iiyftop2g1d	0	f	properties	\N
+mmj417nrjpa	l18clsyirh4	16	\N	\N	\N
+mmj417nrjpa	8zqt09paw0b	17	\N	\N	\N
+lmgnrgroovk	mph5umu4xyy	16	\N	\N	\N
+lmgnrgroovk	l18clsyirh4	17	\N	\N	\N
+lmgnrgroovk	8zqt09paw0b	18	\N	\N	\N
+4cx141n1lb4	mph5umu4xyy	17	\N	\N	\N
+4cx141n1lb4	l18clsyirh4	18	\N	\N	\N
+4cx141n1lb4	8zqt09paw0b	19	\N	\N	\N
+k6pr2jh3wgd	mph5umu4xyy	18	\N	\N	\N
+k6pr2jh3wgd	l18clsyirh4	19	\N	\N	\N
+k6pr2jh3wgd	8zqt09paw0b	20	\N	\N	\N
+hchm15rxv74	mph5umu4xyy	19	\N	\N	\N
+hchm15rxv74	l18clsyirh4	20	\N	\N	\N
+hchm15rxv74	8zqt09paw0b	21	\N	\N	\N
+073buw1m70l	mph5umu4xyy	20	\N	\N	\N
+073buw1m70l	l18clsyirh4	21	\N	\N	\N
+073buw1m70l	8zqt09paw0b	22	\N	\N	\N
+nocobase-admin-menu	mph5umu4xyy	21	\N	\N	\N
+nocobase-admin-menu	l18clsyirh4	22	\N	\N	\N
+nocobase-admin-menu	8zqt09paw0b	23	\N	\N	\N
+mph5umu4xyy	mph5umu4xyy	0	f	properties	\N
+jej2s5rr3sb	mph5umu4xyy	1	\N	\N	1
+69vxhu28z6j	69vxhu28z6j	0	f	properties	\N
+cs7d1m5kauw	69vxhu28z6j	1	\N	\N	1
+72xc8wgq75s	72xc8wgq75s	0	f	properties	\N
+69vxhu28z6j	72xc8wgq75s	1	\N	\N	1
+cs7d1m5kauw	72xc8wgq75s	2	\N	\N	1
+jej2s5rr3sb	69vxhu28z6j	2	\N	\N	\N
+jej2s5rr3sb	72xc8wgq75s	3	\N	\N	\N
+26xckt7cr9e	cs7d1m5kauw	2	\N	\N	\N
+26xckt7cr9e	69vxhu28z6j	3	\N	\N	\N
+26xckt7cr9e	72xc8wgq75s	4	\N	\N	\N
+wbz1xh6nz3e	cs7d1m5kauw	3	\N	\N	\N
+wbz1xh6nz3e	69vxhu28z6j	4	\N	\N	\N
+wbz1xh6nz3e	72xc8wgq75s	5	\N	\N	\N
+8o6mwjydnzx	cs7d1m5kauw	4	\N	\N	\N
+8o6mwjydnzx	69vxhu28z6j	5	\N	\N	\N
+8o6mwjydnzx	72xc8wgq75s	6	\N	\N	\N
+iqvhwknbnrr	cs7d1m5kauw	5	\N	\N	\N
+iqvhwknbnrr	69vxhu28z6j	6	\N	\N	\N
+iqvhwknbnrr	72xc8wgq75s	7	\N	\N	\N
+eolrwpo9lyf	cs7d1m5kauw	6	\N	\N	\N
+eolrwpo9lyf	69vxhu28z6j	7	\N	\N	\N
+eolrwpo9lyf	72xc8wgq75s	8	\N	\N	\N
+cs7d1m5kauw	cs7d1m5kauw	0	f	properties	\N
+d59ikwp6g2w	l9edxsf2w1h	1	\N	\N	1
+jej2s5rr3sb	cs7d1m5kauw	1	\N	\N	2
+nfene7r30ma	l9edxsf2w1h	2	\N	\N	\N
+wgcvjndfrvw	d59ikwp6g2w	2	\N	\N	\N
+wgcvjndfrvw	l9edxsf2w1h	3	\N	\N	\N
+0impb4x69gm	d59ikwp6g2w	3	\N	\N	\N
+0impb4x69gm	l9edxsf2w1h	4	\N	\N	\N
+hr7pq2e0scs	d59ikwp6g2w	4	\N	\N	\N
+hr7pq2e0scs	l9edxsf2w1h	5	\N	\N	\N
+lq50y39kk3o	d59ikwp6g2w	5	\N	\N	\N
+lq50y39kk3o	l9edxsf2w1h	6	\N	\N	\N
+cebvumnm27b	d59ikwp6g2w	6	\N	\N	\N
+jkjog6plqji	vx2uqvbzof3	2	\N	\N	\N
+cebvumnm27b	l9edxsf2w1h	7	\N	\N	\N
+fsid1btc6ef	d59ikwp6g2w	7	\N	\N	\N
+fsid1btc6ef	l9edxsf2w1h	8	\N	\N	\N
+qjnwfwgzhuv	d59ikwp6g2w	8	\N	\N	\N
+qjnwfwgzhuv	l9edxsf2w1h	9	\N	\N	\N
+sgmqm607par	d59ikwp6g2w	9	\N	\N	\N
+sgmqm607par	l9edxsf2w1h	10	\N	\N	\N
+nf3x14p3vf3	d59ikwp6g2w	10	\N	\N	\N
+nf3x14p3vf3	l9edxsf2w1h	11	\N	\N	\N
+jf9rc4sketo	d59ikwp6g2w	11	\N	\N	\N
+jf9rc4sketo	l9edxsf2w1h	12	\N	\N	\N
+syscnwrifc8	d59ikwp6g2w	12	\N	\N	\N
+syscnwrifc8	l9edxsf2w1h	13	\N	\N	\N
+ca17vjb0am6	d59ikwp6g2w	13	\N	\N	\N
+ca17vjb0am6	l9edxsf2w1h	14	\N	\N	\N
+i7gwmqodnug	d59ikwp6g2w	14	\N	\N	\N
+i7gwmqodnug	l9edxsf2w1h	15	\N	\N	\N
+ar4ks05q9gy	d59ikwp6g2w	15	\N	\N	\N
+ar4ks05q9gy	l9edxsf2w1h	16	\N	\N	\N
+9vll9qbbcql	d59ikwp6g2w	16	\N	\N	\N
+9vll9qbbcql	l9edxsf2w1h	17	\N	\N	\N
+8vwr3yh0weq	d59ikwp6g2w	17	\N	\N	\N
+8vwr3yh0weq	l9edxsf2w1h	18	\N	\N	\N
+o7z0dukywzh	d59ikwp6g2w	18	\N	\N	\N
+o7z0dukywzh	l9edxsf2w1h	19	\N	\N	\N
+xr71y0bi2gt	d59ikwp6g2w	19	\N	\N	\N
+xr71y0bi2gt	l9edxsf2w1h	20	\N	\N	\N
+nmo9mk3zqna	d59ikwp6g2w	20	\N	\N	\N
+nmo9mk3zqna	l9edxsf2w1h	21	\N	\N	\N
+073buw1m70l	d59ikwp6g2w	21	\N	\N	\N
+073buw1m70l	l9edxsf2w1h	22	\N	\N	\N
+nocobase-admin-menu	d59ikwp6g2w	22	\N	\N	\N
+nocobase-admin-menu	l9edxsf2w1h	23	\N	\N	\N
+d59ikwp6g2w	d59ikwp6g2w	0	f	properties	\N
+nfene7r30ma	d59ikwp6g2w	1	\N	\N	2
+x30auskvyut	x30auskvyut	0	f	properties	\N
+soippfj7tmy	ouiu2vzoc6n	1	\N	\N	1
+0impb4x69gm	soippfj7tmy	3	\N	\N	\N
+0impb4x69gm	ouiu2vzoc6n	4	\N	\N	\N
+hr7pq2e0scs	soippfj7tmy	4	\N	\N	\N
+hr7pq2e0scs	ouiu2vzoc6n	5	\N	\N	\N
+lq50y39kk3o	soippfj7tmy	5	\N	\N	\N
+lq50y39kk3o	ouiu2vzoc6n	6	\N	\N	\N
+cebvumnm27b	soippfj7tmy	6	\N	\N	\N
+cebvumnm27b	ouiu2vzoc6n	7	\N	\N	\N
+fsid1btc6ef	soippfj7tmy	7	\N	\N	\N
+fsid1btc6ef	ouiu2vzoc6n	8	\N	\N	\N
+qjnwfwgzhuv	soippfj7tmy	8	\N	\N	\N
+qjnwfwgzhuv	ouiu2vzoc6n	9	\N	\N	\N
+sgmqm607par	soippfj7tmy	9	\N	\N	\N
+sgmqm607par	ouiu2vzoc6n	10	\N	\N	\N
+nf3x14p3vf3	soippfj7tmy	10	\N	\N	\N
+nf3x14p3vf3	ouiu2vzoc6n	11	\N	\N	\N
+jf9rc4sketo	soippfj7tmy	11	\N	\N	\N
+jf9rc4sketo	ouiu2vzoc6n	12	\N	\N	\N
+syscnwrifc8	soippfj7tmy	12	\N	\N	\N
+syscnwrifc8	ouiu2vzoc6n	13	\N	\N	\N
+ca17vjb0am6	soippfj7tmy	13	\N	\N	\N
+ca17vjb0am6	ouiu2vzoc6n	14	\N	\N	\N
+i7gwmqodnug	soippfj7tmy	14	\N	\N	\N
+i7gwmqodnug	ouiu2vzoc6n	15	\N	\N	\N
+ar4ks05q9gy	soippfj7tmy	15	\N	\N	\N
+ar4ks05q9gy	ouiu2vzoc6n	16	\N	\N	\N
+9vll9qbbcql	soippfj7tmy	16	\N	\N	\N
+9vll9qbbcql	ouiu2vzoc6n	17	\N	\N	\N
+8vwr3yh0weq	soippfj7tmy	17	\N	\N	\N
+8vwr3yh0weq	ouiu2vzoc6n	18	\N	\N	\N
+o7z0dukywzh	soippfj7tmy	18	\N	\N	\N
+o7z0dukywzh	ouiu2vzoc6n	19	\N	\N	\N
+xr71y0bi2gt	soippfj7tmy	19	\N	\N	\N
+xr71y0bi2gt	ouiu2vzoc6n	20	\N	\N	\N
+nmo9mk3zqna	soippfj7tmy	20	\N	\N	\N
+nmo9mk3zqna	ouiu2vzoc6n	21	\N	\N	\N
+073buw1m70l	soippfj7tmy	21	\N	\N	\N
+073buw1m70l	ouiu2vzoc6n	22	\N	\N	\N
+nocobase-admin-menu	soippfj7tmy	22	\N	\N	\N
+nocobase-admin-menu	ouiu2vzoc6n	23	\N	\N	\N
+z8ca2swxhme	ouiu2vzoc6n	2	\N	\N	\N
+wgcvjndfrvw	soippfj7tmy	2	\N	\N	\N
+wgcvjndfrvw	ouiu2vzoc6n	3	\N	\N	\N
+soippfj7tmy	soippfj7tmy	0	f	properties	\N
+z8ca2swxhme	soippfj7tmy	1	\N	\N	2
+85c8uxmskwh	cs7d1m5kauw	7	\N	\N	\N
+x30auskvyut	blzgd8l2cyf	1	\N	\N	1
+bwzebaw19re	blzgd8l2cyf	2	\N	\N	\N
+wgcvjndfrvw	x30auskvyut	2	\N	\N	\N
+wgcvjndfrvw	blzgd8l2cyf	3	\N	\N	\N
+0impb4x69gm	x30auskvyut	3	\N	\N	\N
+0impb4x69gm	blzgd8l2cyf	4	\N	\N	\N
+hr7pq2e0scs	x30auskvyut	4	\N	\N	\N
+hr7pq2e0scs	blzgd8l2cyf	5	\N	\N	\N
+lq50y39kk3o	x30auskvyut	5	\N	\N	\N
+lq50y39kk3o	blzgd8l2cyf	6	\N	\N	\N
+cebvumnm27b	x30auskvyut	6	\N	\N	\N
+cebvumnm27b	blzgd8l2cyf	7	\N	\N	\N
+fsid1btc6ef	x30auskvyut	7	\N	\N	\N
+fsid1btc6ef	blzgd8l2cyf	8	\N	\N	\N
+qjnwfwgzhuv	x30auskvyut	8	\N	\N	\N
+qjnwfwgzhuv	blzgd8l2cyf	9	\N	\N	\N
+sgmqm607par	x30auskvyut	9	\N	\N	\N
+sgmqm607par	blzgd8l2cyf	10	\N	\N	\N
+nf3x14p3vf3	x30auskvyut	10	\N	\N	\N
+nf3x14p3vf3	blzgd8l2cyf	11	\N	\N	\N
+jf9rc4sketo	x30auskvyut	11	\N	\N	\N
+jf9rc4sketo	blzgd8l2cyf	12	\N	\N	\N
+syscnwrifc8	x30auskvyut	12	\N	\N	\N
+syscnwrifc8	blzgd8l2cyf	13	\N	\N	\N
+ca17vjb0am6	x30auskvyut	13	\N	\N	\N
+ca17vjb0am6	blzgd8l2cyf	14	\N	\N	\N
+i7gwmqodnug	x30auskvyut	14	\N	\N	\N
+i7gwmqodnug	blzgd8l2cyf	15	\N	\N	\N
+ar4ks05q9gy	x30auskvyut	15	\N	\N	\N
+ar4ks05q9gy	blzgd8l2cyf	16	\N	\N	\N
+9vll9qbbcql	x30auskvyut	16	\N	\N	\N
+9vll9qbbcql	blzgd8l2cyf	17	\N	\N	\N
+8vwr3yh0weq	x30auskvyut	17	\N	\N	\N
+8vwr3yh0weq	blzgd8l2cyf	18	\N	\N	\N
+o7z0dukywzh	x30auskvyut	18	\N	\N	\N
+o7z0dukywzh	blzgd8l2cyf	19	\N	\N	\N
+xr71y0bi2gt	x30auskvyut	19	\N	\N	\N
+xr71y0bi2gt	blzgd8l2cyf	20	\N	\N	\N
+nmo9mk3zqna	x30auskvyut	20	\N	\N	\N
+nmo9mk3zqna	blzgd8l2cyf	21	\N	\N	\N
+073buw1m70l	x30auskvyut	21	\N	\N	\N
+073buw1m70l	blzgd8l2cyf	22	\N	\N	\N
+nocobase-admin-menu	x30auskvyut	22	\N	\N	\N
+nocobase-admin-menu	blzgd8l2cyf	23	\N	\N	\N
+bwzebaw19re	x30auskvyut	1	\N	\N	2
+85c8uxmskwh	69vxhu28z6j	8	\N	\N	\N
+913ntol9s3t	iiyftop2g1d	1	\N	\N	1
+85c8uxmskwh	72xc8wgq75s	9	\N	\N	\N
+ubi2zj8g4jj	iiyftop2g1d	2	\N	\N	\N
+0impb4x69gm	913ntol9s3t	3	\N	\N	\N
+2w360eurk19	cs7d1m5kauw	8	\N	\N	\N
+0impb4x69gm	iiyftop2g1d	4	\N	\N	\N
+hr7pq2e0scs	913ntol9s3t	4	\N	\N	\N
+hr7pq2e0scs	iiyftop2g1d	5	\N	\N	\N
+lq50y39kk3o	913ntol9s3t	5	\N	\N	\N
+lq50y39kk3o	iiyftop2g1d	6	\N	\N	\N
+cebvumnm27b	913ntol9s3t	6	\N	\N	\N
+cebvumnm27b	iiyftop2g1d	7	\N	\N	\N
+fsid1btc6ef	913ntol9s3t	7	\N	\N	\N
+fsid1btc6ef	iiyftop2g1d	8	\N	\N	\N
+qjnwfwgzhuv	913ntol9s3t	8	\N	\N	\N
+qjnwfwgzhuv	iiyftop2g1d	9	\N	\N	\N
+sgmqm607par	913ntol9s3t	9	\N	\N	\N
+sgmqm607par	iiyftop2g1d	10	\N	\N	\N
+nf3x14p3vf3	913ntol9s3t	10	\N	\N	\N
+nf3x14p3vf3	iiyftop2g1d	11	\N	\N	\N
+jf9rc4sketo	913ntol9s3t	11	\N	\N	\N
+jf9rc4sketo	iiyftop2g1d	12	\N	\N	\N
+syscnwrifc8	913ntol9s3t	12	\N	\N	\N
+syscnwrifc8	iiyftop2g1d	13	\N	\N	\N
+ca17vjb0am6	913ntol9s3t	13	\N	\N	\N
+ca17vjb0am6	iiyftop2g1d	14	\N	\N	\N
+i7gwmqodnug	913ntol9s3t	14	\N	\N	\N
+i7gwmqodnug	iiyftop2g1d	15	\N	\N	\N
+ar4ks05q9gy	913ntol9s3t	15	\N	\N	\N
+ar4ks05q9gy	iiyftop2g1d	16	\N	\N	\N
+9vll9qbbcql	913ntol9s3t	16	\N	\N	\N
+9vll9qbbcql	iiyftop2g1d	17	\N	\N	\N
+8vwr3yh0weq	913ntol9s3t	17	\N	\N	\N
+8vwr3yh0weq	iiyftop2g1d	18	\N	\N	\N
+o7z0dukywzh	913ntol9s3t	18	\N	\N	\N
+o7z0dukywzh	iiyftop2g1d	19	\N	\N	\N
+xr71y0bi2gt	913ntol9s3t	19	\N	\N	\N
+xr71y0bi2gt	iiyftop2g1d	20	\N	\N	\N
+nmo9mk3zqna	913ntol9s3t	20	\N	\N	\N
+nmo9mk3zqna	iiyftop2g1d	21	\N	\N	\N
+073buw1m70l	913ntol9s3t	21	\N	\N	\N
+073buw1m70l	iiyftop2g1d	22	\N	\N	\N
+nocobase-admin-menu	913ntol9s3t	22	\N	\N	\N
+nocobase-admin-menu	iiyftop2g1d	23	\N	\N	\N
+wgcvjndfrvw	913ntol9s3t	2	\N	\N	\N
+wgcvjndfrvw	iiyftop2g1d	3	\N	\N	\N
+913ntol9s3t	913ntol9s3t	0	f	properties	\N
+ubi2zj8g4jj	913ntol9s3t	1	\N	\N	2
+2w360eurk19	69vxhu28z6j	9	\N	\N	\N
+a6x737uy2ck	a6x737uy2ck	0	f	properties	\N
+viy4v1a8xb3	a6x737uy2ck	1	\N	\N	1
+rokb34rd4g3	rokb34rd4g3	0	f	properties	\N
+a6x737uy2ck	rokb34rd4g3	1	\N	\N	1
+viy4v1a8xb3	rokb34rd4g3	2	\N	\N	1
+izezp8luufk	izezp8luufk	0	f	properties	\N
+rokb34rd4g3	izezp8luufk	1	\N	\N	1
+a6x737uy2ck	izezp8luufk	2	\N	\N	1
+viy4v1a8xb3	izezp8luufk	3	\N	\N	1
+9zobk2255u4	9zobk2255u4	0	f	properties	\N
+izezp8luufk	9zobk2255u4	1	\N	\N	1
+rokb34rd4g3	9zobk2255u4	2	\N	\N	1
+a6x737uy2ck	9zobk2255u4	3	\N	\N	1
+viy4v1a8xb3	9zobk2255u4	4	\N	\N	1
+5yp5xmj3tbq	5yp5xmj3tbq	0	f	properties	\N
+izezp8luufk	5yp5xmj3tbq	1	\N	\N	2
+rokb34rd4g3	5yp5xmj3tbq	2	\N	\N	2
+a6x737uy2ck	5yp5xmj3tbq	3	\N	\N	2
+viy4v1a8xb3	5yp5xmj3tbq	4	\N	\N	2
+2w360eurk19	72xc8wgq75s	10	\N	\N	\N
+5z3gl0zrzxm	a6x737uy2ck	2	\N	\N	\N
+5z3gl0zrzxm	rokb34rd4g3	3	\N	\N	\N
+5z3gl0zrzxm	izezp8luufk	4	\N	\N	\N
+5z3gl0zrzxm	9zobk2255u4	5	\N	\N	\N
+5z3gl0zrzxm	5yp5xmj3tbq	5	\N	\N	\N
+6zbn1svqu3t	viy4v1a8xb3	2	\N	\N	\N
+6zbn1svqu3t	a6x737uy2ck	3	\N	\N	\N
+6zbn1svqu3t	rokb34rd4g3	4	\N	\N	\N
+6zbn1svqu3t	izezp8luufk	5	\N	\N	\N
+6zbn1svqu3t	9zobk2255u4	6	\N	\N	\N
+6zbn1svqu3t	5yp5xmj3tbq	6	\N	\N	\N
+9ykupik4f4g	viy4v1a8xb3	3	\N	\N	\N
+9ykupik4f4g	a6x737uy2ck	4	\N	\N	\N
+9ykupik4f4g	rokb34rd4g3	5	\N	\N	\N
+9ykupik4f4g	izezp8luufk	6	\N	\N	\N
+9ykupik4f4g	9zobk2255u4	7	\N	\N	\N
+9ykupik4f4g	5yp5xmj3tbq	7	\N	\N	\N
+0watzzc6ypj	viy4v1a8xb3	4	\N	\N	\N
+0watzzc6ypj	a6x737uy2ck	5	\N	\N	\N
+0watzzc6ypj	rokb34rd4g3	6	\N	\N	\N
+0watzzc6ypj	izezp8luufk	7	\N	\N	\N
+0watzzc6ypj	9zobk2255u4	8	\N	\N	\N
+0watzzc6ypj	5yp5xmj3tbq	8	\N	\N	\N
+879a48xod34	viy4v1a8xb3	5	\N	\N	\N
+879a48xod34	a6x737uy2ck	6	\N	\N	\N
+879a48xod34	rokb34rd4g3	7	\N	\N	\N
+879a48xod34	izezp8luufk	8	\N	\N	\N
+879a48xod34	9zobk2255u4	9	\N	\N	\N
+879a48xod34	5yp5xmj3tbq	9	\N	\N	\N
+syscnwrifc8	viy4v1a8xb3	6	\N	\N	\N
+syscnwrifc8	a6x737uy2ck	7	\N	\N	\N
+syscnwrifc8	rokb34rd4g3	8	\N	\N	\N
+syscnwrifc8	izezp8luufk	9	\N	\N	\N
+syscnwrifc8	9zobk2255u4	10	\N	\N	\N
+syscnwrifc8	5yp5xmj3tbq	10	\N	\N	\N
+ca17vjb0am6	viy4v1a8xb3	7	\N	\N	\N
+ca17vjb0am6	a6x737uy2ck	8	\N	\N	\N
+ca17vjb0am6	rokb34rd4g3	9	\N	\N	\N
+ca17vjb0am6	izezp8luufk	10	\N	\N	\N
+ca17vjb0am6	9zobk2255u4	11	\N	\N	\N
+ca17vjb0am6	5yp5xmj3tbq	11	\N	\N	\N
+i7gwmqodnug	viy4v1a8xb3	8	\N	\N	\N
+i7gwmqodnug	a6x737uy2ck	9	\N	\N	\N
+i7gwmqodnug	rokb34rd4g3	10	\N	\N	\N
+i7gwmqodnug	izezp8luufk	11	\N	\N	\N
+i7gwmqodnug	9zobk2255u4	12	\N	\N	\N
+i7gwmqodnug	5yp5xmj3tbq	12	\N	\N	\N
+ar4ks05q9gy	viy4v1a8xb3	9	\N	\N	\N
+ar4ks05q9gy	a6x737uy2ck	10	\N	\N	\N
+ar4ks05q9gy	rokb34rd4g3	11	\N	\N	\N
+ar4ks05q9gy	izezp8luufk	12	\N	\N	\N
+ar4ks05q9gy	9zobk2255u4	13	\N	\N	\N
+ar4ks05q9gy	5yp5xmj3tbq	13	\N	\N	\N
+9vll9qbbcql	viy4v1a8xb3	10	\N	\N	\N
+9vll9qbbcql	a6x737uy2ck	11	\N	\N	\N
+9vll9qbbcql	rokb34rd4g3	12	\N	\N	\N
+9vll9qbbcql	izezp8luufk	13	\N	\N	\N
+9vll9qbbcql	9zobk2255u4	14	\N	\N	\N
+9vll9qbbcql	5yp5xmj3tbq	14	\N	\N	\N
+8vwr3yh0weq	viy4v1a8xb3	11	\N	\N	\N
+8vwr3yh0weq	a6x737uy2ck	12	\N	\N	\N
+8vwr3yh0weq	rokb34rd4g3	13	\N	\N	\N
+8vwr3yh0weq	izezp8luufk	14	\N	\N	\N
+8vwr3yh0weq	9zobk2255u4	15	\N	\N	\N
+8vwr3yh0weq	5yp5xmj3tbq	15	\N	\N	\N
+o7z0dukywzh	viy4v1a8xb3	12	\N	\N	\N
+o7z0dukywzh	a6x737uy2ck	13	\N	\N	\N
+o7z0dukywzh	rokb34rd4g3	14	\N	\N	\N
+o7z0dukywzh	izezp8luufk	15	\N	\N	\N
+o7z0dukywzh	9zobk2255u4	16	\N	\N	\N
+o7z0dukywzh	5yp5xmj3tbq	16	\N	\N	\N
+xr71y0bi2gt	viy4v1a8xb3	13	\N	\N	\N
+xr71y0bi2gt	a6x737uy2ck	14	\N	\N	\N
+xr71y0bi2gt	rokb34rd4g3	15	\N	\N	\N
+xr71y0bi2gt	izezp8luufk	16	\N	\N	\N
+xr71y0bi2gt	9zobk2255u4	17	\N	\N	\N
+xr71y0bi2gt	5yp5xmj3tbq	17	\N	\N	\N
+nmo9mk3zqna	viy4v1a8xb3	14	\N	\N	\N
+nmo9mk3zqna	a6x737uy2ck	15	\N	\N	\N
+nmo9mk3zqna	rokb34rd4g3	16	\N	\N	\N
+nmo9mk3zqna	izezp8luufk	17	\N	\N	\N
+nmo9mk3zqna	9zobk2255u4	18	\N	\N	\N
+nmo9mk3zqna	5yp5xmj3tbq	18	\N	\N	\N
+073buw1m70l	viy4v1a8xb3	15	\N	\N	\N
+073buw1m70l	a6x737uy2ck	16	\N	\N	\N
+073buw1m70l	rokb34rd4g3	17	\N	\N	\N
+073buw1m70l	izezp8luufk	18	\N	\N	\N
+073buw1m70l	9zobk2255u4	19	\N	\N	\N
+073buw1m70l	5yp5xmj3tbq	19	\N	\N	\N
+nocobase-admin-menu	viy4v1a8xb3	16	\N	\N	\N
+nocobase-admin-menu	a6x737uy2ck	17	\N	\N	\N
+nocobase-admin-menu	rokb34rd4g3	18	\N	\N	\N
+nocobase-admin-menu	izezp8luufk	19	\N	\N	\N
+nocobase-admin-menu	9zobk2255u4	20	\N	\N	\N
+nocobase-admin-menu	5yp5xmj3tbq	20	\N	\N	\N
+viy4v1a8xb3	viy4v1a8xb3	0	f	properties	\N
+5z3gl0zrzxm	viy4v1a8xb3	1	\N	\N	1
+ptxxkjf5h9k	ptxxkjf5h9k	0	f	properties	\N
+u5r5euyjfkl	ptxxkjf5h9k	1	\N	\N	1
+reqejqzgy55	reqejqzgy55	0	f	properties	\N
+ptxxkjf5h9k	reqejqzgy55	1	\N	\N	1
+u5r5euyjfkl	reqejqzgy55	2	\N	\N	1
+9zobk2255u4	ptxxkjf5h9k	2	\N	\N	\N
+9zobk2255u4	reqejqzgy55	3	\N	\N	\N
+izezp8luufk	u5r5euyjfkl	2	\N	\N	\N
+izezp8luufk	ptxxkjf5h9k	3	\N	\N	\N
+izezp8luufk	reqejqzgy55	4	\N	\N	\N
+rokb34rd4g3	u5r5euyjfkl	3	\N	\N	\N
+rokb34rd4g3	ptxxkjf5h9k	4	\N	\N	\N
+rokb34rd4g3	reqejqzgy55	5	\N	\N	\N
+a6x737uy2ck	u5r5euyjfkl	4	\N	\N	\N
+a6x737uy2ck	ptxxkjf5h9k	5	\N	\N	\N
+a6x737uy2ck	reqejqzgy55	6	\N	\N	\N
+viy4v1a8xb3	u5r5euyjfkl	5	\N	\N	\N
+viy4v1a8xb3	ptxxkjf5h9k	6	\N	\N	\N
+viy4v1a8xb3	reqejqzgy55	7	\N	\N	\N
+5z3gl0zrzxm	u5r5euyjfkl	6	\N	\N	\N
+5z3gl0zrzxm	ptxxkjf5h9k	7	\N	\N	\N
+5z3gl0zrzxm	reqejqzgy55	8	\N	\N	\N
+6zbn1svqu3t	u5r5euyjfkl	7	\N	\N	\N
+6zbn1svqu3t	ptxxkjf5h9k	8	\N	\N	\N
+6zbn1svqu3t	reqejqzgy55	9	\N	\N	\N
+9ykupik4f4g	u5r5euyjfkl	8	\N	\N	\N
+9ykupik4f4g	ptxxkjf5h9k	9	\N	\N	\N
+9ykupik4f4g	reqejqzgy55	10	\N	\N	\N
+0watzzc6ypj	u5r5euyjfkl	9	\N	\N	\N
+0watzzc6ypj	ptxxkjf5h9k	10	\N	\N	\N
+0watzzc6ypj	reqejqzgy55	11	\N	\N	\N
+879a48xod34	u5r5euyjfkl	10	\N	\N	\N
+879a48xod34	ptxxkjf5h9k	11	\N	\N	\N
+879a48xod34	reqejqzgy55	12	\N	\N	\N
+syscnwrifc8	u5r5euyjfkl	11	\N	\N	\N
+syscnwrifc8	ptxxkjf5h9k	12	\N	\N	\N
+syscnwrifc8	reqejqzgy55	13	\N	\N	\N
+ca17vjb0am6	u5r5euyjfkl	12	\N	\N	\N
+ca17vjb0am6	ptxxkjf5h9k	13	\N	\N	\N
+ca17vjb0am6	reqejqzgy55	14	\N	\N	\N
+i7gwmqodnug	u5r5euyjfkl	13	\N	\N	\N
+i7gwmqodnug	ptxxkjf5h9k	14	\N	\N	\N
+i7gwmqodnug	reqejqzgy55	15	\N	\N	\N
+ar4ks05q9gy	u5r5euyjfkl	14	\N	\N	\N
+ar4ks05q9gy	ptxxkjf5h9k	15	\N	\N	\N
+ar4ks05q9gy	reqejqzgy55	16	\N	\N	\N
+9vll9qbbcql	u5r5euyjfkl	15	\N	\N	\N
+9vll9qbbcql	ptxxkjf5h9k	16	\N	\N	\N
+9vll9qbbcql	reqejqzgy55	17	\N	\N	\N
+8vwr3yh0weq	u5r5euyjfkl	16	\N	\N	\N
+8vwr3yh0weq	ptxxkjf5h9k	17	\N	\N	\N
+8vwr3yh0weq	reqejqzgy55	18	\N	\N	\N
+o7z0dukywzh	u5r5euyjfkl	17	\N	\N	\N
+o7z0dukywzh	ptxxkjf5h9k	18	\N	\N	\N
+o7z0dukywzh	reqejqzgy55	19	\N	\N	\N
+xr71y0bi2gt	u5r5euyjfkl	18	\N	\N	\N
+xr71y0bi2gt	ptxxkjf5h9k	19	\N	\N	\N
+xr71y0bi2gt	reqejqzgy55	20	\N	\N	\N
+nmo9mk3zqna	u5r5euyjfkl	19	\N	\N	\N
+nmo9mk3zqna	ptxxkjf5h9k	20	\N	\N	\N
+nmo9mk3zqna	reqejqzgy55	21	\N	\N	\N
+073buw1m70l	u5r5euyjfkl	20	\N	\N	\N
+073buw1m70l	ptxxkjf5h9k	21	\N	\N	\N
+073buw1m70l	reqejqzgy55	22	\N	\N	\N
+nocobase-admin-menu	u5r5euyjfkl	21	\N	\N	\N
+nocobase-admin-menu	ptxxkjf5h9k	22	\N	\N	\N
+nocobase-admin-menu	reqejqzgy55	23	\N	\N	\N
+u5r5euyjfkl	u5r5euyjfkl	0	f	properties	\N
+9zobk2255u4	u5r5euyjfkl	1	\N	\N	1
+e2bz79kfn39	cs7d1m5kauw	9	\N	\N	\N
+e2bz79kfn39	69vxhu28z6j	10	\N	\N	\N
+e2bz79kfn39	72xc8wgq75s	11	\N	\N	\N
+2bwco99n47x	cs7d1m5kauw	10	\N	\N	\N
+2bwco99n47x	69vxhu28z6j	11	\N	\N	\N
+2bwco99n47x	72xc8wgq75s	12	\N	\N	\N
+ji9t3fgnkc0	cs7d1m5kauw	11	\N	\N	\N
+izezp8luufk	kzu0z0rc3kj	2	\N	\N	\N
+ji9t3fgnkc0	69vxhu28z6j	12	\N	\N	\N
+ji9t3fgnkc0	72xc8wgq75s	13	\N	\N	\N
+rokb34rd4g3	kzu0z0rc3kj	3	\N	\N	\N
+yjzd6s5ccq4	cs7d1m5kauw	12	\N	\N	\N
+yjzd6s5ccq4	69vxhu28z6j	13	\N	\N	\N
+a6x737uy2ck	kzu0z0rc3kj	4	\N	\N	\N
+yjzd6s5ccq4	72xc8wgq75s	14	\N	\N	\N
+imrhc9he5on	cs7d1m5kauw	13	\N	\N	\N
+viy4v1a8xb3	kzu0z0rc3kj	5	\N	\N	\N
+imrhc9he5on	69vxhu28z6j	14	\N	\N	\N
+imrhc9he5on	72xc8wgq75s	15	\N	\N	\N
+5z3gl0zrzxm	kzu0z0rc3kj	6	\N	\N	\N
+82ikkgrog2y	cs7d1m5kauw	14	\N	\N	\N
+82ikkgrog2y	69vxhu28z6j	15	\N	\N	\N
+6zbn1svqu3t	kzu0z0rc3kj	7	\N	\N	\N
+82ikkgrog2y	72xc8wgq75s	16	\N	\N	\N
+mmj417nrjpa	cs7d1m5kauw	15	\N	\N	\N
+9ykupik4f4g	kzu0z0rc3kj	8	\N	\N	\N
+mmj417nrjpa	69vxhu28z6j	16	\N	\N	\N
+mmj417nrjpa	72xc8wgq75s	17	\N	\N	\N
+0watzzc6ypj	kzu0z0rc3kj	9	\N	\N	\N
+lmgnrgroovk	cs7d1m5kauw	16	\N	\N	\N
+lmgnrgroovk	69vxhu28z6j	17	\N	\N	\N
+879a48xod34	kzu0z0rc3kj	10	\N	\N	\N
+lmgnrgroovk	72xc8wgq75s	18	\N	\N	\N
+4cx141n1lb4	cs7d1m5kauw	17	\N	\N	\N
+syscnwrifc8	kzu0z0rc3kj	11	\N	\N	\N
+kzu0z0rc3kj	kzu0z0rc3kj	0	f	properties	\N
+h4evdl1m9bv	h4evdl1m9bv	0	f	properties	\N
+4cx141n1lb4	69vxhu28z6j	18	\N	\N	\N
+4cx141n1lb4	72xc8wgq75s	19	\N	\N	\N
+k6pr2jh3wgd	cs7d1m5kauw	18	\N	\N	\N
+ca17vjb0am6	kzu0z0rc3kj	12	\N	\N	\N
+k6pr2jh3wgd	69vxhu28z6j	19	\N	\N	\N
+k6pr2jh3wgd	72xc8wgq75s	20	\N	\N	\N
+i7gwmqodnug	kzu0z0rc3kj	13	\N	\N	\N
+hchm15rxv74	cs7d1m5kauw	19	\N	\N	\N
+hchm15rxv74	69vxhu28z6j	20	\N	\N	\N
+ar4ks05q9gy	kzu0z0rc3kj	14	\N	\N	\N
+hchm15rxv74	72xc8wgq75s	21	\N	\N	\N
+073buw1m70l	cs7d1m5kauw	20	\N	\N	\N
+9vll9qbbcql	kzu0z0rc3kj	15	\N	\N	\N
+073buw1m70l	69vxhu28z6j	21	\N	\N	\N
+073buw1m70l	72xc8wgq75s	22	\N	\N	\N
+8vwr3yh0weq	kzu0z0rc3kj	16	\N	\N	\N
+nocobase-admin-menu	cs7d1m5kauw	21	\N	\N	\N
+nocobase-admin-menu	69vxhu28z6j	22	\N	\N	\N
+o7z0dukywzh	kzu0z0rc3kj	17	\N	\N	\N
+nocobase-admin-menu	72xc8wgq75s	23	\N	\N	\N
+xr71y0bi2gt	kzu0z0rc3kj	18	\N	\N	\N
+fi2ue9h7mq4	vx2uqvbzof3	3	\N	\N	\N
+nmo9mk3zqna	kzu0z0rc3kj	19	\N	\N	\N
+073buw1m70l	kzu0z0rc3kj	20	\N	\N	\N
+43941gf2n0y	vx2uqvbzof3	4	\N	\N	\N
+nocobase-admin-menu	kzu0z0rc3kj	21	\N	\N	\N
+9zobk2255u4	kzu0z0rc3kj	1	\N	\N	2
+0bv6nrpcwn1	0bv6nrpcwn1	0	f	properties	\N
+7vmvw0bzrb2	0bv6nrpcwn1	1	\N	\N	1
+tr2scgye6wr	tr2scgye6wr	0	f	properties	\N
+0bv6nrpcwn1	tr2scgye6wr	1	\N	\N	1
+7vmvw0bzrb2	tr2scgye6wr	2	\N	\N	1
+9zobk2255u4	0bv6nrpcwn1	2	\N	\N	\N
+9zobk2255u4	tr2scgye6wr	3	\N	\N	\N
+izezp8luufk	7vmvw0bzrb2	2	\N	\N	\N
+izezp8luufk	0bv6nrpcwn1	3	\N	\N	\N
+izezp8luufk	tr2scgye6wr	4	\N	\N	\N
+rokb34rd4g3	7vmvw0bzrb2	3	\N	\N	\N
+rokb34rd4g3	0bv6nrpcwn1	4	\N	\N	\N
+rokb34rd4g3	tr2scgye6wr	5	\N	\N	\N
+a6x737uy2ck	7vmvw0bzrb2	4	\N	\N	\N
+a6x737uy2ck	0bv6nrpcwn1	5	\N	\N	\N
+a6x737uy2ck	tr2scgye6wr	6	\N	\N	\N
+viy4v1a8xb3	7vmvw0bzrb2	5	\N	\N	\N
+viy4v1a8xb3	0bv6nrpcwn1	6	\N	\N	\N
+viy4v1a8xb3	tr2scgye6wr	7	\N	\N	\N
+5z3gl0zrzxm	7vmvw0bzrb2	6	\N	\N	\N
+5z3gl0zrzxm	0bv6nrpcwn1	7	\N	\N	\N
+5z3gl0zrzxm	tr2scgye6wr	8	\N	\N	\N
+6zbn1svqu3t	7vmvw0bzrb2	7	\N	\N	\N
+6zbn1svqu3t	0bv6nrpcwn1	8	\N	\N	\N
+6zbn1svqu3t	tr2scgye6wr	9	\N	\N	\N
+9ykupik4f4g	7vmvw0bzrb2	8	\N	\N	\N
+9ykupik4f4g	0bv6nrpcwn1	9	\N	\N	\N
+9ykupik4f4g	tr2scgye6wr	10	\N	\N	\N
+0watzzc6ypj	7vmvw0bzrb2	9	\N	\N	\N
+0watzzc6ypj	0bv6nrpcwn1	10	\N	\N	\N
+0watzzc6ypj	tr2scgye6wr	11	\N	\N	\N
+879a48xod34	7vmvw0bzrb2	10	\N	\N	\N
+879a48xod34	0bv6nrpcwn1	11	\N	\N	\N
+879a48xod34	tr2scgye6wr	12	\N	\N	\N
+syscnwrifc8	7vmvw0bzrb2	11	\N	\N	\N
+syscnwrifc8	0bv6nrpcwn1	12	\N	\N	\N
+syscnwrifc8	tr2scgye6wr	13	\N	\N	\N
+ca17vjb0am6	7vmvw0bzrb2	12	\N	\N	\N
+ca17vjb0am6	0bv6nrpcwn1	13	\N	\N	\N
+ca17vjb0am6	tr2scgye6wr	14	\N	\N	\N
+i7gwmqodnug	7vmvw0bzrb2	13	\N	\N	\N
+i7gwmqodnug	0bv6nrpcwn1	14	\N	\N	\N
+i7gwmqodnug	tr2scgye6wr	15	\N	\N	\N
+ar4ks05q9gy	7vmvw0bzrb2	14	\N	\N	\N
+ar4ks05q9gy	0bv6nrpcwn1	15	\N	\N	\N
+ar4ks05q9gy	tr2scgye6wr	16	\N	\N	\N
+9vll9qbbcql	7vmvw0bzrb2	15	\N	\N	\N
+9vll9qbbcql	0bv6nrpcwn1	16	\N	\N	\N
+9vll9qbbcql	tr2scgye6wr	17	\N	\N	\N
+8vwr3yh0weq	7vmvw0bzrb2	16	\N	\N	\N
+8vwr3yh0weq	0bv6nrpcwn1	17	\N	\N	\N
+8vwr3yh0weq	tr2scgye6wr	18	\N	\N	\N
+o7z0dukywzh	7vmvw0bzrb2	17	\N	\N	\N
+o7z0dukywzh	0bv6nrpcwn1	18	\N	\N	\N
+o7z0dukywzh	tr2scgye6wr	19	\N	\N	\N
+xr71y0bi2gt	7vmvw0bzrb2	18	\N	\N	\N
+xr71y0bi2gt	0bv6nrpcwn1	19	\N	\N	\N
+xr71y0bi2gt	tr2scgye6wr	20	\N	\N	\N
+nmo9mk3zqna	7vmvw0bzrb2	19	\N	\N	\N
+nmo9mk3zqna	0bv6nrpcwn1	20	\N	\N	\N
+nmo9mk3zqna	tr2scgye6wr	21	\N	\N	\N
+073buw1m70l	7vmvw0bzrb2	20	\N	\N	\N
+073buw1m70l	0bv6nrpcwn1	21	\N	\N	\N
+073buw1m70l	tr2scgye6wr	22	\N	\N	\N
+nocobase-admin-menu	7vmvw0bzrb2	21	\N	\N	\N
+nocobase-admin-menu	0bv6nrpcwn1	22	\N	\N	\N
+nocobase-admin-menu	tr2scgye6wr	23	\N	\N	\N
+7vmvw0bzrb2	7vmvw0bzrb2	0	f	properties	\N
+9zobk2255u4	7vmvw0bzrb2	1	\N	\N	3
+26xckt7cr9e	vhphcnc4ttd	2	\N	\N	\N
+wp3edt8ujq4	vx2uqvbzof3	5	\N	\N	\N
+wbz1xh6nz3e	vhphcnc4ttd	3	\N	\N	\N
+mlqmnjhazhe	vx2uqvbzof3	6	\N	\N	\N
+izezp8luufk	av90cjb6y6a	2	\N	\N	\N
+8o6mwjydnzx	vhphcnc4ttd	4	\N	\N	\N
+rokb34rd4g3	av90cjb6y6a	3	\N	\N	\N
+iqvhwknbnrr	vhphcnc4ttd	5	\N	\N	\N
+a6x737uy2ck	av90cjb6y6a	4	\N	\N	\N
+wj9ij1yidio	vx2uqvbzof3	7	\N	\N	\N
+viy4v1a8xb3	av90cjb6y6a	5	\N	\N	\N
+eolrwpo9lyf	vhphcnc4ttd	6	\N	\N	\N
+5z3gl0zrzxm	av90cjb6y6a	6	\N	\N	\N
+60f4r8b0er6	vx2uqvbzof3	8	\N	\N	\N
+85c8uxmskwh	vhphcnc4ttd	7	\N	\N	\N
+6zbn1svqu3t	av90cjb6y6a	7	\N	\N	\N
+9ykupik4f4g	av90cjb6y6a	8	\N	\N	\N
+2w360eurk19	vhphcnc4ttd	8	\N	\N	\N
+qbrsluqev37	vx2uqvbzof3	9	\N	\N	\N
+av90cjb6y6a	av90cjb6y6a	0	f	properties	\N
+9zobk2255u4	av90cjb6y6a	1	\N	\N	4
+v606ze8ib4p	v606ze8ib4p	0	f	properties	\N
+vx6nbptjtrd	vx6nbptjtrd	0	f	properties	\N
+0watzzc6ypj	av90cjb6y6a	9	\N	\N	\N
+e2bz79kfn39	vhphcnc4ttd	9	\N	\N	\N
+fl6193tpei8	vx2uqvbzof3	10	\N	\N	\N
+879a48xod34	av90cjb6y6a	10	\N	\N	\N
+2bwco99n47x	vhphcnc4ttd	10	\N	\N	\N
+syscnwrifc8	av90cjb6y6a	11	\N	\N	\N
+m291sv0y712	vx2uqvbzof3	11	\N	\N	\N
+ca17vjb0am6	av90cjb6y6a	12	\N	\N	\N
+ji9t3fgnkc0	vhphcnc4ttd	11	\N	\N	\N
+i7gwmqodnug	av90cjb6y6a	13	\N	\N	\N
+yjzd6s5ccq4	vhphcnc4ttd	12	\N	\N	\N
+ar4ks05q9gy	av90cjb6y6a	14	\N	\N	\N
+3d4bg9et9gc	vx2uqvbzof3	12	\N	\N	\N
+9vll9qbbcql	av90cjb6y6a	15	\N	\N	\N
+imrhc9he5on	vhphcnc4ttd	13	\N	\N	\N
+8vwr3yh0weq	av90cjb6y6a	16	\N	\N	\N
+pdtxkxhi0px	vx2uqvbzof3	13	\N	\N	\N
+82ikkgrog2y	vhphcnc4ttd	14	\N	\N	\N
+o7z0dukywzh	av90cjb6y6a	17	\N	\N	\N
+xr71y0bi2gt	av90cjb6y6a	18	\N	\N	\N
+mmj417nrjpa	vhphcnc4ttd	15	\N	\N	\N
+9kxizfoklw7	vx2uqvbzof3	14	\N	\N	\N
+nmo9mk3zqna	av90cjb6y6a	19	\N	\N	\N
+lmgnrgroovk	vhphcnc4ttd	16	\N	\N	\N
+073buw1m70l	av90cjb6y6a	20	\N	\N	\N
+puz5i9w50bl	vx2uqvbzof3	15	\N	\N	\N
+nocobase-admin-menu	av90cjb6y6a	21	\N	\N	\N
+4cx141n1lb4	vhphcnc4ttd	17	\N	\N	\N
+p214f4koyu4	p214f4koyu4	0	f	properties	\N
+27a8bo41q04	p214f4koyu4	1	\N	\N	1
+xmj5mcz01hm	xmj5mcz01hm	0	f	properties	\N
+p214f4koyu4	xmj5mcz01hm	1	\N	\N	1
+27a8bo41q04	xmj5mcz01hm	2	\N	\N	1
+9zobk2255u4	p214f4koyu4	2	\N	\N	\N
+9zobk2255u4	xmj5mcz01hm	3	\N	\N	\N
+izezp8luufk	27a8bo41q04	2	\N	\N	\N
+izezp8luufk	p214f4koyu4	3	\N	\N	\N
+izezp8luufk	xmj5mcz01hm	4	\N	\N	\N
+rokb34rd4g3	27a8bo41q04	3	\N	\N	\N
+rokb34rd4g3	p214f4koyu4	4	\N	\N	\N
+rokb34rd4g3	xmj5mcz01hm	5	\N	\N	\N
+a6x737uy2ck	27a8bo41q04	4	\N	\N	\N
+a6x737uy2ck	p214f4koyu4	5	\N	\N	\N
+a6x737uy2ck	xmj5mcz01hm	6	\N	\N	\N
+viy4v1a8xb3	27a8bo41q04	5	\N	\N	\N
+viy4v1a8xb3	p214f4koyu4	6	\N	\N	\N
+viy4v1a8xb3	xmj5mcz01hm	7	\N	\N	\N
+5z3gl0zrzxm	27a8bo41q04	6	\N	\N	\N
+5z3gl0zrzxm	p214f4koyu4	7	\N	\N	\N
+5z3gl0zrzxm	xmj5mcz01hm	8	\N	\N	\N
+6zbn1svqu3t	27a8bo41q04	7	\N	\N	\N
+6zbn1svqu3t	p214f4koyu4	8	\N	\N	\N
+6zbn1svqu3t	xmj5mcz01hm	9	\N	\N	\N
+9ykupik4f4g	27a8bo41q04	8	\N	\N	\N
+9ykupik4f4g	p214f4koyu4	9	\N	\N	\N
+9ykupik4f4g	xmj5mcz01hm	10	\N	\N	\N
+0watzzc6ypj	27a8bo41q04	9	\N	\N	\N
+0watzzc6ypj	p214f4koyu4	10	\N	\N	\N
+0watzzc6ypj	xmj5mcz01hm	11	\N	\N	\N
+879a48xod34	27a8bo41q04	10	\N	\N	\N
+879a48xod34	p214f4koyu4	11	\N	\N	\N
+879a48xod34	xmj5mcz01hm	12	\N	\N	\N
+syscnwrifc8	27a8bo41q04	11	\N	\N	\N
+syscnwrifc8	p214f4koyu4	12	\N	\N	\N
+syscnwrifc8	xmj5mcz01hm	13	\N	\N	\N
+ca17vjb0am6	27a8bo41q04	12	\N	\N	\N
+ca17vjb0am6	p214f4koyu4	13	\N	\N	\N
+ca17vjb0am6	xmj5mcz01hm	14	\N	\N	\N
+i7gwmqodnug	27a8bo41q04	13	\N	\N	\N
+i7gwmqodnug	p214f4koyu4	14	\N	\N	\N
+i7gwmqodnug	xmj5mcz01hm	15	\N	\N	\N
+ar4ks05q9gy	27a8bo41q04	14	\N	\N	\N
+ar4ks05q9gy	p214f4koyu4	15	\N	\N	\N
+ar4ks05q9gy	xmj5mcz01hm	16	\N	\N	\N
+9vll9qbbcql	27a8bo41q04	15	\N	\N	\N
+9vll9qbbcql	p214f4koyu4	16	\N	\N	\N
+9vll9qbbcql	xmj5mcz01hm	17	\N	\N	\N
+8vwr3yh0weq	27a8bo41q04	16	\N	\N	\N
+8vwr3yh0weq	p214f4koyu4	17	\N	\N	\N
+8vwr3yh0weq	xmj5mcz01hm	18	\N	\N	\N
+o7z0dukywzh	27a8bo41q04	17	\N	\N	\N
+o7z0dukywzh	p214f4koyu4	18	\N	\N	\N
+o7z0dukywzh	xmj5mcz01hm	19	\N	\N	\N
+xr71y0bi2gt	27a8bo41q04	18	\N	\N	\N
+xr71y0bi2gt	p214f4koyu4	19	\N	\N	\N
+xr71y0bi2gt	xmj5mcz01hm	20	\N	\N	\N
+nmo9mk3zqna	27a8bo41q04	19	\N	\N	\N
+nmo9mk3zqna	p214f4koyu4	20	\N	\N	\N
+nmo9mk3zqna	xmj5mcz01hm	21	\N	\N	\N
+073buw1m70l	27a8bo41q04	20	\N	\N	\N
+073buw1m70l	p214f4koyu4	21	\N	\N	\N
+073buw1m70l	xmj5mcz01hm	22	\N	\N	\N
+nocobase-admin-menu	27a8bo41q04	21	\N	\N	\N
+nocobase-admin-menu	p214f4koyu4	22	\N	\N	\N
+nocobase-admin-menu	xmj5mcz01hm	23	\N	\N	\N
+27a8bo41q04	27a8bo41q04	0	f	properties	\N
+9zobk2255u4	27a8bo41q04	1	\N	\N	5
+k6pr2jh3wgd	vhphcnc4ttd	18	\N	\N	\N
+idfhxat5qg6	vx2uqvbzof3	16	\N	\N	\N
+hchm15rxv74	vhphcnc4ttd	19	\N	\N	\N
+izezp8luufk	o84g8mrafwq	2	\N	\N	\N
+iqddf9bwww2	vx2uqvbzof3	17	\N	\N	\N
+073buw1m70l	vhphcnc4ttd	20	\N	\N	\N
+rokb34rd4g3	o84g8mrafwq	3	\N	\N	\N
+a6x737uy2ck	o84g8mrafwq	4	\N	\N	\N
+nocobase-admin-menu	vhphcnc4ttd	21	\N	\N	\N
+eoxofxze047	vx2uqvbzof3	18	\N	\N	\N
+viy4v1a8xb3	o84g8mrafwq	5	\N	\N	\N
+nocobase-admin-menu	3ohbpid2iz3	11	\N	\N	\N
+vhphcnc4ttd	vhphcnc4ttd	0	f	properties	\N
+5z3gl0zrzxm	o84g8mrafwq	6	\N	\N	\N
+jej2s5rr3sb	vhphcnc4ttd	1	\N	\N	3
+nocobase-admin-menu	8oq39vqqx82	12	\N	\N	\N
+o84g8mrafwq	o84g8mrafwq	0	f	properties	\N
+9zobk2255u4	o84g8mrafwq	1	\N	\N	6
+iwkkhp3lojz	iwkkhp3lojz	0	f	properties	\N
+p3ls96regvr	vx2uqvbzof3	19	\N	\N	\N
+nocobase-admin-menu	bg4rui84lj2	13	\N	\N	\N
+nocobase-admin-menu	zeyg628q8t0	14	\N	\N	\N
+nocobase-admin-menu	84mt4mce1w7	15	\N	\N	\N
+3ohbpid2iz3	3ohbpid2iz3	0	f	properties	\N
+8sehmqjx6y1	3ohbpid2iz3	1	\N	\N	1
+df0a92eizx3	df0a92eizx3	0	f	properties	\N
+9vahgw6b2zc	df0a92eizx3	2	\N	\N	\N
+v3o080ka847	df0a92eizx3	3	\N	\N	\N
+culzjbos9r3	df0a92eizx3	4	\N	\N	\N
+3owowmpqg3i	df0a92eizx3	5	\N	\N	\N
+wu05wqno6t2	df0a92eizx3	6	\N	\N	\N
+fq548i6jjul	df0a92eizx3	7	\N	\N	\N
+b8e4crdaije	df0a92eizx3	8	\N	\N	\N
+6zbn1svqu3t	o84g8mrafwq	7	\N	\N	\N
+9ykupik4f4g	o84g8mrafwq	8	\N	\N	\N
+073buw1m70l	vx2uqvbzof3	20	\N	\N	\N
+41zfs8bogys	df0a92eizx3	9	\N	\N	\N
+0watzzc6ypj	o84g8mrafwq	9	\N	\N	\N
+nocobase-admin-menu	vx2uqvbzof3	21	\N	\N	\N
+879a48xod34	o84g8mrafwq	10	\N	\N	\N
+26xckt7cr9e	65mchif2h4a	2	\N	\N	\N
+syscnwrifc8	o84g8mrafwq	11	\N	\N	\N
+vx2uqvbzof3	vx2uqvbzof3	0	f	properties	\N
+ca17vjb0am6	o84g8mrafwq	12	\N	\N	\N
+wbz1xh6nz3e	65mchif2h4a	3	\N	\N	\N
+i7gwmqodnug	o84g8mrafwq	13	\N	\N	\N
+zg36b96ttmj	vx2uqvbzof3	1	\N	\N	1
+8o6mwjydnzx	65mchif2h4a	4	\N	\N	\N
+ar4ks05q9gy	o84g8mrafwq	14	\N	\N	\N
+9vll9qbbcql	o84g8mrafwq	15	\N	\N	\N
+iqvhwknbnrr	65mchif2h4a	5	\N	\N	\N
+8vwr3yh0weq	o84g8mrafwq	16	\N	\N	\N
+eolrwpo9lyf	65mchif2h4a	6	\N	\N	\N
+o7z0dukywzh	o84g8mrafwq	17	\N	\N	\N
+xr71y0bi2gt	o84g8mrafwq	18	\N	\N	\N
+85c8uxmskwh	65mchif2h4a	7	\N	\N	\N
+nmo9mk3zqna	o84g8mrafwq	19	\N	\N	\N
+2w360eurk19	65mchif2h4a	8	\N	\N	\N
+073buw1m70l	o84g8mrafwq	20	\N	\N	\N
+nocobase-admin-menu	o84g8mrafwq	21	\N	\N	\N
+e2bz79kfn39	65mchif2h4a	9	\N	\N	\N
+zzorgnw59p2	zzorgnw59p2	0	f	properties	\N
+xwl9vxbcn6t	zzorgnw59p2	1	\N	\N	1
+yk09kxtvwf0	yk09kxtvwf0	0	f	properties	\N
+zzorgnw59p2	yk09kxtvwf0	1	\N	\N	1
+xwl9vxbcn6t	yk09kxtvwf0	2	\N	\N	1
+9zobk2255u4	zzorgnw59p2	2	\N	\N	\N
+9zobk2255u4	yk09kxtvwf0	3	\N	\N	\N
+izezp8luufk	xwl9vxbcn6t	2	\N	\N	\N
+izezp8luufk	zzorgnw59p2	3	\N	\N	\N
+izezp8luufk	yk09kxtvwf0	4	\N	\N	\N
+rokb34rd4g3	xwl9vxbcn6t	3	\N	\N	\N
+rokb34rd4g3	zzorgnw59p2	4	\N	\N	\N
+rokb34rd4g3	yk09kxtvwf0	5	\N	\N	\N
+a6x737uy2ck	xwl9vxbcn6t	4	\N	\N	\N
+a6x737uy2ck	zzorgnw59p2	5	\N	\N	\N
+a6x737uy2ck	yk09kxtvwf0	6	\N	\N	\N
+viy4v1a8xb3	xwl9vxbcn6t	5	\N	\N	\N
+viy4v1a8xb3	zzorgnw59p2	6	\N	\N	\N
+viy4v1a8xb3	yk09kxtvwf0	7	\N	\N	\N
+5z3gl0zrzxm	xwl9vxbcn6t	6	\N	\N	\N
+5z3gl0zrzxm	zzorgnw59p2	7	\N	\N	\N
+5z3gl0zrzxm	yk09kxtvwf0	8	\N	\N	\N
+6zbn1svqu3t	xwl9vxbcn6t	7	\N	\N	\N
+6zbn1svqu3t	zzorgnw59p2	8	\N	\N	\N
+6zbn1svqu3t	yk09kxtvwf0	9	\N	\N	\N
+9ykupik4f4g	xwl9vxbcn6t	8	\N	\N	\N
+9ykupik4f4g	zzorgnw59p2	9	\N	\N	\N
+9ykupik4f4g	yk09kxtvwf0	10	\N	\N	\N
+0watzzc6ypj	xwl9vxbcn6t	9	\N	\N	\N
+0watzzc6ypj	zzorgnw59p2	10	\N	\N	\N
+0watzzc6ypj	yk09kxtvwf0	11	\N	\N	\N
+879a48xod34	xwl9vxbcn6t	10	\N	\N	\N
+879a48xod34	zzorgnw59p2	11	\N	\N	\N
+879a48xod34	yk09kxtvwf0	12	\N	\N	\N
+syscnwrifc8	xwl9vxbcn6t	11	\N	\N	\N
+syscnwrifc8	zzorgnw59p2	12	\N	\N	\N
+syscnwrifc8	yk09kxtvwf0	13	\N	\N	\N
+ca17vjb0am6	xwl9vxbcn6t	12	\N	\N	\N
+ca17vjb0am6	zzorgnw59p2	13	\N	\N	\N
+ca17vjb0am6	yk09kxtvwf0	14	\N	\N	\N
+i7gwmqodnug	xwl9vxbcn6t	13	\N	\N	\N
+i7gwmqodnug	zzorgnw59p2	14	\N	\N	\N
+i7gwmqodnug	yk09kxtvwf0	15	\N	\N	\N
+ar4ks05q9gy	xwl9vxbcn6t	14	\N	\N	\N
+ar4ks05q9gy	zzorgnw59p2	15	\N	\N	\N
+ar4ks05q9gy	yk09kxtvwf0	16	\N	\N	\N
+9vll9qbbcql	xwl9vxbcn6t	15	\N	\N	\N
+9vll9qbbcql	zzorgnw59p2	16	\N	\N	\N
+9vll9qbbcql	yk09kxtvwf0	17	\N	\N	\N
+8vwr3yh0weq	xwl9vxbcn6t	16	\N	\N	\N
+8vwr3yh0weq	zzorgnw59p2	17	\N	\N	\N
+8vwr3yh0weq	yk09kxtvwf0	18	\N	\N	\N
+o7z0dukywzh	xwl9vxbcn6t	17	\N	\N	\N
+o7z0dukywzh	zzorgnw59p2	18	\N	\N	\N
+o7z0dukywzh	yk09kxtvwf0	19	\N	\N	\N
+xr71y0bi2gt	xwl9vxbcn6t	18	\N	\N	\N
+xr71y0bi2gt	zzorgnw59p2	19	\N	\N	\N
+xr71y0bi2gt	yk09kxtvwf0	20	\N	\N	\N
+nmo9mk3zqna	xwl9vxbcn6t	19	\N	\N	\N
+nmo9mk3zqna	zzorgnw59p2	20	\N	\N	\N
+nmo9mk3zqna	yk09kxtvwf0	21	\N	\N	\N
+073buw1m70l	xwl9vxbcn6t	20	\N	\N	\N
+073buw1m70l	zzorgnw59p2	21	\N	\N	\N
+073buw1m70l	yk09kxtvwf0	22	\N	\N	\N
+nocobase-admin-menu	xwl9vxbcn6t	21	\N	\N	\N
+nocobase-admin-menu	zzorgnw59p2	22	\N	\N	\N
+nocobase-admin-menu	yk09kxtvwf0	23	\N	\N	\N
+xwl9vxbcn6t	xwl9vxbcn6t	0	f	properties	\N
+9zobk2255u4	xwl9vxbcn6t	1	\N	\N	7
+2bwco99n47x	65mchif2h4a	10	\N	\N	\N
+ji9t3fgnkc0	65mchif2h4a	11	\N	\N	\N
+yjzd6s5ccq4	65mchif2h4a	12	\N	\N	\N
+izezp8luufk	pzmr5vwllm8	2	\N	\N	\N
+rokb34rd4g3	pzmr5vwllm8	3	\N	\N	\N
+imrhc9he5on	65mchif2h4a	13	\N	\N	\N
+073buw1m70l	df0a92eizx3	10	\N	\N	\N
+a6x737uy2ck	pzmr5vwllm8	4	\N	\N	\N
+nocobase-admin-menu	df0a92eizx3	11	\N	\N	\N
+82ikkgrog2y	65mchif2h4a	14	\N	\N	\N
+viy4v1a8xb3	pzmr5vwllm8	5	\N	\N	\N
+8sehmqjx6y1	df0a92eizx3	1	\N	\N	2
+q0utqwiy404	q0utqwiy404	0	f	properties	\N
+q0gcg192mnb	q0gcg192mnb	0	f	properties	\N
+8oq39vqqx82	ib430oacml5	10	\N	\N	\N
+8oq39vqqx82	h908qhhdqx0	11	\N	\N	\N
+3ohbpid2iz3	vm0durc3u21	10	\N	\N	\N
+3ohbpid2iz3	ib430oacml5	11	\N	\N	\N
+3ohbpid2iz3	h908qhhdqx0	12	\N	\N	\N
+8sehmqjx6y1	vm0durc3u21	11	\N	\N	\N
+8sehmqjx6y1	ib430oacml5	12	\N	\N	\N
+8sehmqjx6y1	h908qhhdqx0	13	\N	\N	\N
+9vahgw6b2zc	vm0durc3u21	12	\N	\N	\N
+9vahgw6b2zc	ib430oacml5	13	\N	\N	\N
+9vahgw6b2zc	h908qhhdqx0	14	\N	\N	\N
+v3o080ka847	vm0durc3u21	13	\N	\N	\N
+v3o080ka847	ib430oacml5	14	\N	\N	\N
+v3o080ka847	h908qhhdqx0	15	\N	\N	\N
+culzjbos9r3	vm0durc3u21	14	\N	\N	\N
+culzjbos9r3	ib430oacml5	15	\N	\N	\N
+culzjbos9r3	h908qhhdqx0	16	\N	\N	\N
+3owowmpqg3i	vm0durc3u21	15	\N	\N	\N
+3owowmpqg3i	ib430oacml5	16	\N	\N	\N
+3owowmpqg3i	h908qhhdqx0	17	\N	\N	\N
+wu05wqno6t2	vm0durc3u21	16	\N	\N	\N
+5z3gl0zrzxm	pzmr5vwllm8	6	\N	\N	\N
+mmj417nrjpa	65mchif2h4a	15	\N	\N	\N
+6zbn1svqu3t	pzmr5vwllm8	7	\N	\N	\N
+lmgnrgroovk	65mchif2h4a	16	\N	\N	\N
+9ykupik4f4g	pzmr5vwllm8	8	\N	\N	\N
+7wejzdrys98	wlh4ozrsyng	1	\N	\N	1
+0watzzc6ypj	pzmr5vwllm8	9	\N	\N	\N
+4cx141n1lb4	65mchif2h4a	17	\N	\N	\N
+seoty3c8shi	wlh4ozrsyng	2	\N	\N	\N
+879a48xod34	pzmr5vwllm8	10	\N	\N	\N
+zg36b96ttmj	7wejzdrys98	2	\N	\N	\N
+k6pr2jh3wgd	65mchif2h4a	18	\N	\N	\N
+syscnwrifc8	pzmr5vwllm8	11	\N	\N	\N
+zg36b96ttmj	wlh4ozrsyng	3	\N	\N	\N
+jkjog6plqji	7wejzdrys98	3	\N	\N	\N
+ca17vjb0am6	pzmr5vwllm8	12	\N	\N	\N
+hchm15rxv74	65mchif2h4a	19	\N	\N	\N
+jkjog6plqji	wlh4ozrsyng	4	\N	\N	\N
+i7gwmqodnug	pzmr5vwllm8	13	\N	\N	\N
+fi2ue9h7mq4	7wejzdrys98	4	\N	\N	\N
+073buw1m70l	65mchif2h4a	20	\N	\N	\N
+ar4ks05q9gy	pzmr5vwllm8	14	\N	\N	\N
+fi2ue9h7mq4	wlh4ozrsyng	5	\N	\N	\N
+43941gf2n0y	7wejzdrys98	5	\N	\N	\N
+9vll9qbbcql	pzmr5vwllm8	15	\N	\N	\N
+nocobase-admin-menu	65mchif2h4a	21	\N	\N	\N
+43941gf2n0y	wlh4ozrsyng	6	\N	\N	\N
+8vwr3yh0weq	pzmr5vwllm8	16	\N	\N	\N
+wp3edt8ujq4	7wejzdrys98	6	\N	\N	\N
+65mchif2h4a	65mchif2h4a	0	f	properties	\N
+o7z0dukywzh	pzmr5vwllm8	17	\N	\N	\N
+jej2s5rr3sb	65mchif2h4a	1	\N	\N	4
+wp3edt8ujq4	wlh4ozrsyng	7	\N	\N	\N
+xr71y0bi2gt	pzmr5vwllm8	18	\N	\N	\N
+mlqmnjhazhe	7wejzdrys98	7	\N	\N	\N
+nmo9mk3zqna	pzmr5vwllm8	19	\N	\N	\N
+2q8zkqaunm6	q0gcg192mnb	1	\N	\N	1
+mlqmnjhazhe	wlh4ozrsyng	8	\N	\N	\N
+073buw1m70l	pzmr5vwllm8	20	\N	\N	\N
+mph5umu4xyy	q0gcg192mnb	2	\N	\N	\N
+jej2s5rr3sb	2q8zkqaunm6	2	\N	\N	\N
+nocobase-admin-menu	pzmr5vwllm8	21	\N	\N	\N
+jej2s5rr3sb	q0gcg192mnb	3	\N	\N	\N
+26xckt7cr9e	2q8zkqaunm6	3	\N	\N	\N
+pzmr5vwllm8	pzmr5vwllm8	0	f	properties	\N
+9zobk2255u4	pzmr5vwllm8	1	\N	\N	8
+jjez19p133y	jjez19p133y	0	f	properties	\N
+8c30dff8vrk	h4evdl1m9bv	1	\N	\N	1
+u5r5euyjfkl	h4evdl1m9bv	2	\N	\N	\N
+9zobk2255u4	8c30dff8vrk	2	\N	\N	\N
+9zobk2255u4	h4evdl1m9bv	3	\N	\N	\N
+izezp8luufk	8c30dff8vrk	3	\N	\N	\N
+izezp8luufk	h4evdl1m9bv	4	\N	\N	\N
+rokb34rd4g3	8c30dff8vrk	4	\N	\N	\N
+rokb34rd4g3	h4evdl1m9bv	5	\N	\N	\N
+a6x737uy2ck	8c30dff8vrk	5	\N	\N	\N
+a6x737uy2ck	h4evdl1m9bv	6	\N	\N	\N
+viy4v1a8xb3	8c30dff8vrk	6	\N	\N	\N
+viy4v1a8xb3	h4evdl1m9bv	7	\N	\N	\N
+5z3gl0zrzxm	8c30dff8vrk	7	\N	\N	\N
+5z3gl0zrzxm	h4evdl1m9bv	8	\N	\N	\N
+6zbn1svqu3t	8c30dff8vrk	8	\N	\N	\N
+6zbn1svqu3t	h4evdl1m9bv	9	\N	\N	\N
+9ykupik4f4g	8c30dff8vrk	9	\N	\N	\N
+9ykupik4f4g	h4evdl1m9bv	10	\N	\N	\N
+0watzzc6ypj	8c30dff8vrk	10	\N	\N	\N
+0watzzc6ypj	h4evdl1m9bv	11	\N	\N	\N
+879a48xod34	8c30dff8vrk	11	\N	\N	\N
+879a48xod34	h4evdl1m9bv	12	\N	\N	\N
+syscnwrifc8	8c30dff8vrk	12	\N	\N	\N
+syscnwrifc8	h4evdl1m9bv	13	\N	\N	\N
+ca17vjb0am6	8c30dff8vrk	13	\N	\N	\N
+ca17vjb0am6	h4evdl1m9bv	14	\N	\N	\N
+i7gwmqodnug	8c30dff8vrk	14	\N	\N	\N
+i7gwmqodnug	h4evdl1m9bv	15	\N	\N	\N
+ar4ks05q9gy	8c30dff8vrk	15	\N	\N	\N
+ar4ks05q9gy	h4evdl1m9bv	16	\N	\N	\N
+9vll9qbbcql	8c30dff8vrk	16	\N	\N	\N
+9vll9qbbcql	h4evdl1m9bv	17	\N	\N	\N
+8vwr3yh0weq	8c30dff8vrk	17	\N	\N	\N
+8vwr3yh0weq	h4evdl1m9bv	18	\N	\N	\N
+o7z0dukywzh	8c30dff8vrk	18	\N	\N	\N
+o7z0dukywzh	h4evdl1m9bv	19	\N	\N	\N
+xr71y0bi2gt	8c30dff8vrk	19	\N	\N	\N
+xr71y0bi2gt	h4evdl1m9bv	20	\N	\N	\N
+nmo9mk3zqna	8c30dff8vrk	20	\N	\N	\N
+nmo9mk3zqna	h4evdl1m9bv	21	\N	\N	\N
+073buw1m70l	8c30dff8vrk	21	\N	\N	\N
+073buw1m70l	h4evdl1m9bv	22	\N	\N	\N
+nocobase-admin-menu	8c30dff8vrk	22	\N	\N	\N
+nocobase-admin-menu	h4evdl1m9bv	23	\N	\N	\N
+8c30dff8vrk	8c30dff8vrk	0	f	properties	\N
+u5r5euyjfkl	8c30dff8vrk	1	\N	\N	2
+26xckt7cr9e	q0gcg192mnb	4	\N	\N	\N
+jjez19p133y	v606ze8ib4p	1	\N	\N	1
+7vmvw0bzrb2	v606ze8ib4p	2	\N	\N	\N
+9zobk2255u4	jjez19p133y	2	\N	\N	\N
+9zobk2255u4	v606ze8ib4p	3	\N	\N	\N
+izezp8luufk	jjez19p133y	3	\N	\N	\N
+izezp8luufk	v606ze8ib4p	4	\N	\N	\N
+rokb34rd4g3	jjez19p133y	4	\N	\N	\N
+rokb34rd4g3	v606ze8ib4p	5	\N	\N	\N
+a6x737uy2ck	jjez19p133y	5	\N	\N	\N
+a6x737uy2ck	v606ze8ib4p	6	\N	\N	\N
+viy4v1a8xb3	jjez19p133y	6	\N	\N	\N
+viy4v1a8xb3	v606ze8ib4p	7	\N	\N	\N
+5z3gl0zrzxm	jjez19p133y	7	\N	\N	\N
+5z3gl0zrzxm	v606ze8ib4p	8	\N	\N	\N
+6zbn1svqu3t	jjez19p133y	8	\N	\N	\N
+6zbn1svqu3t	v606ze8ib4p	9	\N	\N	\N
+9ykupik4f4g	jjez19p133y	9	\N	\N	\N
+9ykupik4f4g	v606ze8ib4p	10	\N	\N	\N
+0watzzc6ypj	jjez19p133y	10	\N	\N	\N
+0watzzc6ypj	v606ze8ib4p	11	\N	\N	\N
+879a48xod34	jjez19p133y	11	\N	\N	\N
+879a48xod34	v606ze8ib4p	12	\N	\N	\N
+syscnwrifc8	jjez19p133y	12	\N	\N	\N
+syscnwrifc8	v606ze8ib4p	13	\N	\N	\N
+ca17vjb0am6	jjez19p133y	13	\N	\N	\N
+ca17vjb0am6	v606ze8ib4p	14	\N	\N	\N
+i7gwmqodnug	jjez19p133y	14	\N	\N	\N
+i7gwmqodnug	v606ze8ib4p	15	\N	\N	\N
+ar4ks05q9gy	jjez19p133y	15	\N	\N	\N
+ar4ks05q9gy	v606ze8ib4p	16	\N	\N	\N
+7vmvw0bzrb2	jjez19p133y	1	\N	\N	2
+wbz1xh6nz3e	2q8zkqaunm6	4	\N	\N	\N
+wbz1xh6nz3e	q0gcg192mnb	5	\N	\N	\N
+8o6mwjydnzx	2q8zkqaunm6	5	\N	\N	\N
+8o6mwjydnzx	q0gcg192mnb	6	\N	\N	\N
+wj9ij1yidio	7wejzdrys98	8	\N	\N	\N
+9vll9qbbcql	jjez19p133y	16	\N	\N	\N
+9vll9qbbcql	v606ze8ib4p	17	\N	\N	\N
+8vwr3yh0weq	jjez19p133y	17	\N	\N	\N
+8vwr3yh0weq	v606ze8ib4p	18	\N	\N	\N
+o7z0dukywzh	jjez19p133y	18	\N	\N	\N
+o7z0dukywzh	v606ze8ib4p	19	\N	\N	\N
+xr71y0bi2gt	jjez19p133y	19	\N	\N	\N
+xr71y0bi2gt	v606ze8ib4p	20	\N	\N	\N
+nmo9mk3zqna	jjez19p133y	20	\N	\N	\N
+nmo9mk3zqna	v606ze8ib4p	21	\N	\N	\N
+073buw1m70l	jjez19p133y	21	\N	\N	\N
+073buw1m70l	v606ze8ib4p	22	\N	\N	\N
+nocobase-admin-menu	jjez19p133y	22	\N	\N	\N
+nocobase-admin-menu	v606ze8ib4p	23	\N	\N	\N
+5yp5xmj3tbq	rcpaf1v3k8y	1	\N	\N	1
+lare2rsw1vy	iwkkhp3lojz	1	\N	\N	1
+27a8bo41q04	iwkkhp3lojz	2	\N	\N	\N
+9zobk2255u4	lare2rsw1vy	2	\N	\N	\N
+9zobk2255u4	iwkkhp3lojz	3	\N	\N	\N
+izezp8luufk	lare2rsw1vy	3	\N	\N	\N
+izezp8luufk	iwkkhp3lojz	4	\N	\N	\N
+rokb34rd4g3	lare2rsw1vy	4	\N	\N	\N
+rokb34rd4g3	iwkkhp3lojz	5	\N	\N	\N
+a6x737uy2ck	lare2rsw1vy	5	\N	\N	\N
+a6x737uy2ck	iwkkhp3lojz	6	\N	\N	\N
+viy4v1a8xb3	lare2rsw1vy	6	\N	\N	\N
+viy4v1a8xb3	iwkkhp3lojz	7	\N	\N	\N
+5z3gl0zrzxm	lare2rsw1vy	7	\N	\N	\N
+5z3gl0zrzxm	iwkkhp3lojz	8	\N	\N	\N
+6zbn1svqu3t	lare2rsw1vy	8	\N	\N	\N
+6zbn1svqu3t	iwkkhp3lojz	9	\N	\N	\N
+9ykupik4f4g	lare2rsw1vy	9	\N	\N	\N
+9ykupik4f4g	iwkkhp3lojz	10	\N	\N	\N
+0watzzc6ypj	lare2rsw1vy	10	\N	\N	\N
+0watzzc6ypj	iwkkhp3lojz	11	\N	\N	\N
+879a48xod34	lare2rsw1vy	11	\N	\N	\N
+879a48xod34	iwkkhp3lojz	12	\N	\N	\N
+syscnwrifc8	lare2rsw1vy	12	\N	\N	\N
+syscnwrifc8	iwkkhp3lojz	13	\N	\N	\N
+ca17vjb0am6	lare2rsw1vy	13	\N	\N	\N
+ca17vjb0am6	iwkkhp3lojz	14	\N	\N	\N
+i7gwmqodnug	lare2rsw1vy	14	\N	\N	\N
+i7gwmqodnug	iwkkhp3lojz	15	\N	\N	\N
+ar4ks05q9gy	lare2rsw1vy	15	\N	\N	\N
+ar4ks05q9gy	iwkkhp3lojz	16	\N	\N	\N
+9vll9qbbcql	lare2rsw1vy	16	\N	\N	\N
+9vll9qbbcql	iwkkhp3lojz	17	\N	\N	\N
+8vwr3yh0weq	lare2rsw1vy	17	\N	\N	\N
+8vwr3yh0weq	iwkkhp3lojz	18	\N	\N	\N
+o7z0dukywzh	lare2rsw1vy	18	\N	\N	\N
+o7z0dukywzh	iwkkhp3lojz	19	\N	\N	\N
+xr71y0bi2gt	lare2rsw1vy	19	\N	\N	\N
+xr71y0bi2gt	iwkkhp3lojz	20	\N	\N	\N
+nmo9mk3zqna	lare2rsw1vy	20	\N	\N	\N
+nmo9mk3zqna	iwkkhp3lojz	21	\N	\N	\N
+073buw1m70l	lare2rsw1vy	21	\N	\N	\N
+073buw1m70l	iwkkhp3lojz	22	\N	\N	\N
+nocobase-admin-menu	lare2rsw1vy	22	\N	\N	\N
+nocobase-admin-menu	iwkkhp3lojz	23	\N	\N	\N
+lare2rsw1vy	lare2rsw1vy	0	f	properties	\N
+27a8bo41q04	lare2rsw1vy	1	\N	\N	2
+iqvhwknbnrr	2q8zkqaunm6	6	\N	\N	\N
+qkz9nfba5db	q0utqwiy404	1	\N	\N	1
+xwl9vxbcn6t	q0utqwiy404	2	\N	\N	\N
+9zobk2255u4	qkz9nfba5db	2	\N	\N	\N
+9zobk2255u4	q0utqwiy404	3	\N	\N	\N
+izezp8luufk	qkz9nfba5db	3	\N	\N	\N
+izezp8luufk	q0utqwiy404	4	\N	\N	\N
+rokb34rd4g3	qkz9nfba5db	4	\N	\N	\N
+rokb34rd4g3	q0utqwiy404	5	\N	\N	\N
+a6x737uy2ck	qkz9nfba5db	5	\N	\N	\N
+a6x737uy2ck	q0utqwiy404	6	\N	\N	\N
+viy4v1a8xb3	qkz9nfba5db	6	\N	\N	\N
+viy4v1a8xb3	q0utqwiy404	7	\N	\N	\N
+5z3gl0zrzxm	qkz9nfba5db	7	\N	\N	\N
+5z3gl0zrzxm	q0utqwiy404	8	\N	\N	\N
+6zbn1svqu3t	qkz9nfba5db	8	\N	\N	\N
+6zbn1svqu3t	q0utqwiy404	9	\N	\N	\N
+9ykupik4f4g	qkz9nfba5db	9	\N	\N	\N
+9ykupik4f4g	q0utqwiy404	10	\N	\N	\N
+0watzzc6ypj	qkz9nfba5db	10	\N	\N	\N
+0watzzc6ypj	q0utqwiy404	11	\N	\N	\N
+879a48xod34	qkz9nfba5db	11	\N	\N	\N
+879a48xod34	q0utqwiy404	12	\N	\N	\N
+syscnwrifc8	qkz9nfba5db	12	\N	\N	\N
+syscnwrifc8	q0utqwiy404	13	\N	\N	\N
+ca17vjb0am6	qkz9nfba5db	13	\N	\N	\N
+ca17vjb0am6	q0utqwiy404	14	\N	\N	\N
+i7gwmqodnug	qkz9nfba5db	14	\N	\N	\N
+i7gwmqodnug	q0utqwiy404	15	\N	\N	\N
+ar4ks05q9gy	qkz9nfba5db	15	\N	\N	\N
+ar4ks05q9gy	q0utqwiy404	16	\N	\N	\N
+9vll9qbbcql	qkz9nfba5db	16	\N	\N	\N
+9vll9qbbcql	q0utqwiy404	17	\N	\N	\N
+8vwr3yh0weq	qkz9nfba5db	17	\N	\N	\N
+8vwr3yh0weq	q0utqwiy404	18	\N	\N	\N
+o7z0dukywzh	qkz9nfba5db	18	\N	\N	\N
+o7z0dukywzh	q0utqwiy404	19	\N	\N	\N
+xr71y0bi2gt	qkz9nfba5db	19	\N	\N	\N
+xr71y0bi2gt	q0utqwiy404	20	\N	\N	\N
+nmo9mk3zqna	qkz9nfba5db	20	\N	\N	\N
+nmo9mk3zqna	q0utqwiy404	21	\N	\N	\N
+073buw1m70l	qkz9nfba5db	21	\N	\N	\N
+073buw1m70l	q0utqwiy404	22	\N	\N	\N
+nocobase-admin-menu	qkz9nfba5db	22	\N	\N	\N
+nocobase-admin-menu	q0utqwiy404	23	\N	\N	\N
+qkz9nfba5db	qkz9nfba5db	0	f	properties	\N
+xwl9vxbcn6t	qkz9nfba5db	1	\N	\N	2
+rcpaf1v3k8y	rcpaf1v3k8y	0	f	properties	\N
+izezp8luufk	rcpaf1v3k8y	2	\N	\N	\N
+rokb34rd4g3	rcpaf1v3k8y	3	\N	\N	\N
+a6x737uy2ck	rcpaf1v3k8y	4	\N	\N	\N
+viy4v1a8xb3	rcpaf1v3k8y	5	\N	\N	\N
+5z3gl0zrzxm	rcpaf1v3k8y	6	\N	\N	\N
+6zbn1svqu3t	rcpaf1v3k8y	7	\N	\N	\N
+9ykupik4f4g	rcpaf1v3k8y	8	\N	\N	\N
+0watzzc6ypj	rcpaf1v3k8y	9	\N	\N	\N
+879a48xod34	rcpaf1v3k8y	10	\N	\N	\N
+syscnwrifc8	rcpaf1v3k8y	11	\N	\N	\N
+ca17vjb0am6	rcpaf1v3k8y	12	\N	\N	\N
+i7gwmqodnug	rcpaf1v3k8y	13	\N	\N	\N
+ar4ks05q9gy	rcpaf1v3k8y	14	\N	\N	\N
+9vll9qbbcql	rcpaf1v3k8y	15	\N	\N	\N
+8vwr3yh0weq	rcpaf1v3k8y	16	\N	\N	\N
+o7z0dukywzh	rcpaf1v3k8y	17	\N	\N	\N
+xr71y0bi2gt	rcpaf1v3k8y	18	\N	\N	\N
+iqvhwknbnrr	q0gcg192mnb	7	\N	\N	\N
+eolrwpo9lyf	2q8zkqaunm6	7	\N	\N	\N
+eolrwpo9lyf	q0gcg192mnb	8	\N	\N	\N
+85c8uxmskwh	2q8zkqaunm6	8	\N	\N	\N
+85c8uxmskwh	q0gcg192mnb	9	\N	\N	\N
+2w360eurk19	2q8zkqaunm6	9	\N	\N	\N
+2w360eurk19	q0gcg192mnb	10	\N	\N	\N
+e2bz79kfn39	2q8zkqaunm6	10	\N	\N	\N
+nmo9mk3zqna	rcpaf1v3k8y	19	\N	\N	\N
+073buw1m70l	rcpaf1v3k8y	20	\N	\N	\N
+nocobase-admin-menu	rcpaf1v3k8y	21	\N	\N	\N
+e2bz79kfn39	q0gcg192mnb	11	\N	\N	\N
+2bwco99n47x	2q8zkqaunm6	11	\N	\N	\N
+2bwco99n47x	q0gcg192mnb	12	\N	\N	\N
+ji9t3fgnkc0	2q8zkqaunm6	12	\N	\N	\N
+ji9t3fgnkc0	q0gcg192mnb	13	\N	\N	\N
+yjzd6s5ccq4	2q8zkqaunm6	13	\N	\N	\N
+yjzd6s5ccq4	q0gcg192mnb	14	\N	\N	\N
+imrhc9he5on	2q8zkqaunm6	14	\N	\N	\N
+imrhc9he5on	q0gcg192mnb	15	\N	\N	\N
+82ikkgrog2y	2q8zkqaunm6	15	\N	\N	\N
+82ikkgrog2y	q0gcg192mnb	16	\N	\N	\N
+mmj417nrjpa	2q8zkqaunm6	16	\N	\N	\N
+mmj417nrjpa	q0gcg192mnb	17	\N	\N	\N
+lmgnrgroovk	2q8zkqaunm6	17	\N	\N	\N
+lmgnrgroovk	q0gcg192mnb	18	\N	\N	\N
+4cx141n1lb4	2q8zkqaunm6	18	\N	\N	\N
+4cx141n1lb4	q0gcg192mnb	19	\N	\N	\N
+k6pr2jh3wgd	2q8zkqaunm6	19	\N	\N	\N
+k6pr2jh3wgd	q0gcg192mnb	20	\N	\N	\N
+hchm15rxv74	2q8zkqaunm6	20	\N	\N	\N
+hchm15rxv74	q0gcg192mnb	21	\N	\N	\N
+073buw1m70l	2q8zkqaunm6	21	\N	\N	\N
+073buw1m70l	q0gcg192mnb	22	\N	\N	\N
+nocobase-admin-menu	2q8zkqaunm6	22	\N	\N	\N
+nocobase-admin-menu	q0gcg192mnb	23	\N	\N	\N
+2q8zkqaunm6	2q8zkqaunm6	0	f	properties	\N
+mph5umu4xyy	2q8zkqaunm6	1	\N	\N	2
+yjzd6s5ccq4	uqifi2qlukf	12	\N	\N	\N
+yjzd6s5ccq4	z9bj2qzcxd2	13	\N	\N	\N
+yjzd6s5ccq4	mrhyvojvqar	14	\N	\N	\N
+yjzd6s5ccq4	392bxnfb0cu	15	\N	\N	\N
+yjzd6s5ccq4	fh5hex4wag5	16	\N	\N	\N
+imrhc9he5on	uqifi2qlukf	13	\N	\N	\N
+imrhc9he5on	z9bj2qzcxd2	14	\N	\N	\N
+imrhc9he5on	mrhyvojvqar	15	\N	\N	\N
+imrhc9he5on	392bxnfb0cu	16	\N	\N	\N
+imrhc9he5on	fh5hex4wag5	17	\N	\N	\N
+82ikkgrog2y	uqifi2qlukf	14	\N	\N	\N
+82ikkgrog2y	z9bj2qzcxd2	15	\N	\N	\N
+82ikkgrog2y	mrhyvojvqar	16	\N	\N	\N
+82ikkgrog2y	392bxnfb0cu	17	\N	\N	\N
+82ikkgrog2y	fh5hex4wag5	18	\N	\N	\N
+mmj417nrjpa	uqifi2qlukf	15	\N	\N	\N
+mmj417nrjpa	z9bj2qzcxd2	16	\N	\N	\N
+mmj417nrjpa	mrhyvojvqar	17	\N	\N	\N
+mmj417nrjpa	392bxnfb0cu	18	\N	\N	\N
+mmj417nrjpa	fh5hex4wag5	19	\N	\N	\N
+lmgnrgroovk	uqifi2qlukf	16	\N	\N	\N
+lmgnrgroovk	z9bj2qzcxd2	17	\N	\N	\N
+lmgnrgroovk	mrhyvojvqar	18	\N	\N	\N
+lmgnrgroovk	392bxnfb0cu	19	\N	\N	\N
+lmgnrgroovk	fh5hex4wag5	20	\N	\N	\N
+4cx141n1lb4	uqifi2qlukf	17	\N	\N	\N
+4cx141n1lb4	z9bj2qzcxd2	18	\N	\N	\N
+4cx141n1lb4	mrhyvojvqar	19	\N	\N	\N
+4cx141n1lb4	392bxnfb0cu	20	\N	\N	\N
+4cx141n1lb4	fh5hex4wag5	21	\N	\N	\N
+k6pr2jh3wgd	uqifi2qlukf	18	\N	\N	\N
+k6pr2jh3wgd	z9bj2qzcxd2	19	\N	\N	\N
+k6pr2jh3wgd	mrhyvojvqar	20	\N	\N	\N
+k6pr2jh3wgd	392bxnfb0cu	21	\N	\N	\N
+k6pr2jh3wgd	fh5hex4wag5	22	\N	\N	\N
+hchm15rxv74	uqifi2qlukf	19	\N	\N	\N
+hchm15rxv74	z9bj2qzcxd2	20	\N	\N	\N
+hchm15rxv74	mrhyvojvqar	21	\N	\N	\N
+hchm15rxv74	392bxnfb0cu	22	\N	\N	\N
+hchm15rxv74	fh5hex4wag5	23	\N	\N	\N
+073buw1m70l	uqifi2qlukf	20	\N	\N	\N
+073buw1m70l	z9bj2qzcxd2	21	\N	\N	\N
+073buw1m70l	mrhyvojvqar	22	\N	\N	\N
+073buw1m70l	392bxnfb0cu	23	\N	\N	\N
+073buw1m70l	fh5hex4wag5	24	\N	\N	\N
+nocobase-admin-menu	uqifi2qlukf	21	\N	\N	\N
+nocobase-admin-menu	z9bj2qzcxd2	22	\N	\N	\N
+nocobase-admin-menu	mrhyvojvqar	23	\N	\N	\N
+nocobase-admin-menu	392bxnfb0cu	24	\N	\N	\N
+nocobase-admin-menu	fh5hex4wag5	25	\N	\N	\N
+uqifi2qlukf	uqifi2qlukf	0	f	properties	\N
+8796mm39d27	uqifi2qlukf	1	\N	\N	1
+wj9ij1yidio	wlh4ozrsyng	9	\N	\N	\N
+fw74h47qf2m	fw74h47qf2m	0	f	properties	\N
+lt0cyvyx555	fw74h47qf2m	1	\N	\N	1
+9aqeadp45k5	9aqeadp45k5	0	f	properties	\N
+fw74h47qf2m	9aqeadp45k5	1	\N	\N	1
+lt0cyvyx555	9aqeadp45k5	2	\N	\N	1
+60f4r8b0er6	7wejzdrys98	9	\N	\N	\N
+jej2s5rr3sb	fw74h47qf2m	2	\N	\N	\N
+jej2s5rr3sb	9aqeadp45k5	3	\N	\N	\N
+26xckt7cr9e	lt0cyvyx555	2	\N	\N	\N
+26xckt7cr9e	fw74h47qf2m	3	\N	\N	\N
+26xckt7cr9e	9aqeadp45k5	4	\N	\N	\N
+wbz1xh6nz3e	lt0cyvyx555	3	\N	\N	\N
+wbz1xh6nz3e	fw74h47qf2m	4	\N	\N	\N
+wbz1xh6nz3e	9aqeadp45k5	5	\N	\N	\N
+8o6mwjydnzx	lt0cyvyx555	4	\N	\N	\N
+8o6mwjydnzx	fw74h47qf2m	5	\N	\N	\N
+8o6mwjydnzx	9aqeadp45k5	6	\N	\N	\N
+iqvhwknbnrr	lt0cyvyx555	5	\N	\N	\N
+iqvhwknbnrr	fw74h47qf2m	6	\N	\N	\N
+iqvhwknbnrr	9aqeadp45k5	7	\N	\N	\N
+eolrwpo9lyf	lt0cyvyx555	6	\N	\N	\N
+eolrwpo9lyf	fw74h47qf2m	7	\N	\N	\N
+eolrwpo9lyf	9aqeadp45k5	8	\N	\N	\N
+85c8uxmskwh	lt0cyvyx555	7	\N	\N	\N
+85c8uxmskwh	fw74h47qf2m	8	\N	\N	\N
+85c8uxmskwh	9aqeadp45k5	9	\N	\N	\N
+2w360eurk19	lt0cyvyx555	8	\N	\N	\N
+2w360eurk19	fw74h47qf2m	9	\N	\N	\N
+2w360eurk19	9aqeadp45k5	10	\N	\N	\N
+e2bz79kfn39	lt0cyvyx555	9	\N	\N	\N
+e2bz79kfn39	fw74h47qf2m	10	\N	\N	\N
+e2bz79kfn39	9aqeadp45k5	11	\N	\N	\N
+2bwco99n47x	lt0cyvyx555	10	\N	\N	\N
+2bwco99n47x	fw74h47qf2m	11	\N	\N	\N
+2bwco99n47x	9aqeadp45k5	12	\N	\N	\N
+ji9t3fgnkc0	lt0cyvyx555	11	\N	\N	\N
+ji9t3fgnkc0	fw74h47qf2m	12	\N	\N	\N
+ji9t3fgnkc0	9aqeadp45k5	13	\N	\N	\N
+yjzd6s5ccq4	lt0cyvyx555	12	\N	\N	\N
+yjzd6s5ccq4	fw74h47qf2m	13	\N	\N	\N
+yjzd6s5ccq4	9aqeadp45k5	14	\N	\N	\N
+imrhc9he5on	lt0cyvyx555	13	\N	\N	\N
+imrhc9he5on	fw74h47qf2m	14	\N	\N	\N
+imrhc9he5on	9aqeadp45k5	15	\N	\N	\N
+82ikkgrog2y	lt0cyvyx555	14	\N	\N	\N
+82ikkgrog2y	fw74h47qf2m	15	\N	\N	\N
+82ikkgrog2y	9aqeadp45k5	16	\N	\N	\N
+mmj417nrjpa	lt0cyvyx555	15	\N	\N	\N
+mmj417nrjpa	fw74h47qf2m	16	\N	\N	\N
+mmj417nrjpa	9aqeadp45k5	17	\N	\N	\N
+lmgnrgroovk	lt0cyvyx555	16	\N	\N	\N
+lmgnrgroovk	fw74h47qf2m	17	\N	\N	\N
+lmgnrgroovk	9aqeadp45k5	18	\N	\N	\N
+4cx141n1lb4	lt0cyvyx555	17	\N	\N	\N
+4cx141n1lb4	fw74h47qf2m	18	\N	\N	\N
+4cx141n1lb4	9aqeadp45k5	19	\N	\N	\N
+k6pr2jh3wgd	lt0cyvyx555	18	\N	\N	\N
+k6pr2jh3wgd	fw74h47qf2m	19	\N	\N	\N
+k6pr2jh3wgd	9aqeadp45k5	20	\N	\N	\N
+hchm15rxv74	lt0cyvyx555	19	\N	\N	\N
+hchm15rxv74	fw74h47qf2m	20	\N	\N	\N
+hchm15rxv74	9aqeadp45k5	21	\N	\N	\N
+073buw1m70l	lt0cyvyx555	20	\N	\N	\N
+073buw1m70l	fw74h47qf2m	21	\N	\N	\N
+073buw1m70l	9aqeadp45k5	22	\N	\N	\N
+nocobase-admin-menu	lt0cyvyx555	21	\N	\N	\N
+nocobase-admin-menu	fw74h47qf2m	22	\N	\N	\N
+nocobase-admin-menu	9aqeadp45k5	23	\N	\N	\N
+lt0cyvyx555	lt0cyvyx555	0	f	properties	\N
+jej2s5rr3sb	lt0cyvyx555	1	\N	\N	5
+kcr42v3jgbb	kcr42v3jgbb	0	f	properties	\N
+33ev73s2rws	kcr42v3jgbb	1	\N	\N	1
+9aqeadp45k5	kcr42v3jgbb	2	\N	\N	\N
+fw74h47qf2m	33ev73s2rws	2	\N	\N	\N
+fw74h47qf2m	kcr42v3jgbb	3	\N	\N	\N
+lt0cyvyx555	33ev73s2rws	3	\N	\N	\N
+lt0cyvyx555	kcr42v3jgbb	4	\N	\N	\N
+jej2s5rr3sb	33ev73s2rws	4	\N	\N	\N
+jej2s5rr3sb	kcr42v3jgbb	5	\N	\N	\N
+26xckt7cr9e	33ev73s2rws	5	\N	\N	\N
+26xckt7cr9e	kcr42v3jgbb	6	\N	\N	\N
+wbz1xh6nz3e	33ev73s2rws	6	\N	\N	\N
+wbz1xh6nz3e	kcr42v3jgbb	7	\N	\N	\N
+8o6mwjydnzx	33ev73s2rws	7	\N	\N	\N
+8o6mwjydnzx	kcr42v3jgbb	8	\N	\N	\N
+iqvhwknbnrr	33ev73s2rws	8	\N	\N	\N
+iqvhwknbnrr	kcr42v3jgbb	9	\N	\N	\N
+eolrwpo9lyf	33ev73s2rws	9	\N	\N	\N
+eolrwpo9lyf	kcr42v3jgbb	10	\N	\N	\N
+85c8uxmskwh	33ev73s2rws	10	\N	\N	\N
+85c8uxmskwh	kcr42v3jgbb	11	\N	\N	\N
+2w360eurk19	33ev73s2rws	11	\N	\N	\N
+2w360eurk19	kcr42v3jgbb	12	\N	\N	\N
+e2bz79kfn39	33ev73s2rws	12	\N	\N	\N
+e2bz79kfn39	kcr42v3jgbb	13	\N	\N	\N
+2bwco99n47x	33ev73s2rws	13	\N	\N	\N
+2bwco99n47x	kcr42v3jgbb	14	\N	\N	\N
+ji9t3fgnkc0	33ev73s2rws	14	\N	\N	\N
+ji9t3fgnkc0	kcr42v3jgbb	15	\N	\N	\N
+yjzd6s5ccq4	33ev73s2rws	15	\N	\N	\N
+yjzd6s5ccq4	kcr42v3jgbb	16	\N	\N	\N
+imrhc9he5on	33ev73s2rws	16	\N	\N	\N
+imrhc9he5on	kcr42v3jgbb	17	\N	\N	\N
+82ikkgrog2y	33ev73s2rws	17	\N	\N	\N
+82ikkgrog2y	kcr42v3jgbb	18	\N	\N	\N
+mmj417nrjpa	33ev73s2rws	18	\N	\N	\N
+mmj417nrjpa	kcr42v3jgbb	19	\N	\N	\N
+lmgnrgroovk	33ev73s2rws	19	\N	\N	\N
+lmgnrgroovk	kcr42v3jgbb	20	\N	\N	\N
+4cx141n1lb4	33ev73s2rws	20	\N	\N	\N
+4cx141n1lb4	kcr42v3jgbb	21	\N	\N	\N
+k6pr2jh3wgd	33ev73s2rws	21	\N	\N	\N
+k6pr2jh3wgd	kcr42v3jgbb	22	\N	\N	\N
+hchm15rxv74	33ev73s2rws	22	\N	\N	\N
+hchm15rxv74	kcr42v3jgbb	23	\N	\N	\N
+073buw1m70l	33ev73s2rws	23	\N	\N	\N
+073buw1m70l	kcr42v3jgbb	24	\N	\N	\N
+nocobase-admin-menu	33ev73s2rws	24	\N	\N	\N
+nocobase-admin-menu	kcr42v3jgbb	25	\N	\N	\N
+33ev73s2rws	33ev73s2rws	0	f	properties	\N
+zkyx4v84ep5	zkyx4v84ep5	0	f	properties	\N
+9aqeadp45k5	33ev73s2rws	1	\N	\N	1
+rea2rwj1d4a	rea2rwj1d4a	0	f	properties	\N
+zkyx4v84ep5	rea2rwj1d4a	1	\N	\N	1
+fsnz7aljs1s	fsnz7aljs1s	0	f	properties	\N
+rea2rwj1d4a	fsnz7aljs1s	1	\N	\N	1
+zkyx4v84ep5	fsnz7aljs1s	2	\N	\N	1
+kcr42v3jgbb	rea2rwj1d4a	2	\N	\N	\N
+kcr42v3jgbb	fsnz7aljs1s	3	\N	\N	\N
+33ev73s2rws	zkyx4v84ep5	2	\N	\N	\N
+33ev73s2rws	rea2rwj1d4a	3	\N	\N	\N
+33ev73s2rws	fsnz7aljs1s	4	\N	\N	\N
+9aqeadp45k5	zkyx4v84ep5	3	\N	\N	\N
+9aqeadp45k5	rea2rwj1d4a	4	\N	\N	\N
+9aqeadp45k5	fsnz7aljs1s	5	\N	\N	\N
+fw74h47qf2m	zkyx4v84ep5	4	\N	\N	\N
+fw74h47qf2m	rea2rwj1d4a	5	\N	\N	\N
+fw74h47qf2m	fsnz7aljs1s	6	\N	\N	\N
+lt0cyvyx555	zkyx4v84ep5	5	\N	\N	\N
+lt0cyvyx555	rea2rwj1d4a	6	\N	\N	\N
+lt0cyvyx555	fsnz7aljs1s	7	\N	\N	\N
+jej2s5rr3sb	zkyx4v84ep5	6	\N	\N	\N
+jej2s5rr3sb	rea2rwj1d4a	7	\N	\N	\N
+jej2s5rr3sb	fsnz7aljs1s	8	\N	\N	\N
+26xckt7cr9e	zkyx4v84ep5	7	\N	\N	\N
+26xckt7cr9e	rea2rwj1d4a	8	\N	\N	\N
+26xckt7cr9e	fsnz7aljs1s	9	\N	\N	\N
+wbz1xh6nz3e	zkyx4v84ep5	8	\N	\N	\N
+wbz1xh6nz3e	rea2rwj1d4a	9	\N	\N	\N
+wbz1xh6nz3e	fsnz7aljs1s	10	\N	\N	\N
+8o6mwjydnzx	zkyx4v84ep5	9	\N	\N	\N
+8o6mwjydnzx	rea2rwj1d4a	10	\N	\N	\N
+8o6mwjydnzx	fsnz7aljs1s	11	\N	\N	\N
+iqvhwknbnrr	zkyx4v84ep5	10	\N	\N	\N
+iqvhwknbnrr	rea2rwj1d4a	11	\N	\N	\N
+iqvhwknbnrr	fsnz7aljs1s	12	\N	\N	\N
+eolrwpo9lyf	zkyx4v84ep5	11	\N	\N	\N
+eolrwpo9lyf	rea2rwj1d4a	12	\N	\N	\N
+eolrwpo9lyf	fsnz7aljs1s	13	\N	\N	\N
+85c8uxmskwh	zkyx4v84ep5	12	\N	\N	\N
+85c8uxmskwh	rea2rwj1d4a	13	\N	\N	\N
+85c8uxmskwh	fsnz7aljs1s	14	\N	\N	\N
+2w360eurk19	zkyx4v84ep5	13	\N	\N	\N
+2w360eurk19	rea2rwj1d4a	14	\N	\N	\N
+2w360eurk19	fsnz7aljs1s	15	\N	\N	\N
+e2bz79kfn39	zkyx4v84ep5	14	\N	\N	\N
+e2bz79kfn39	rea2rwj1d4a	15	\N	\N	\N
+e2bz79kfn39	fsnz7aljs1s	16	\N	\N	\N
+2bwco99n47x	zkyx4v84ep5	15	\N	\N	\N
+2bwco99n47x	rea2rwj1d4a	16	\N	\N	\N
+2bwco99n47x	fsnz7aljs1s	17	\N	\N	\N
+ji9t3fgnkc0	zkyx4v84ep5	16	\N	\N	\N
+ji9t3fgnkc0	rea2rwj1d4a	17	\N	\N	\N
+ji9t3fgnkc0	fsnz7aljs1s	18	\N	\N	\N
+yjzd6s5ccq4	zkyx4v84ep5	17	\N	\N	\N
+yjzd6s5ccq4	rea2rwj1d4a	18	\N	\N	\N
+yjzd6s5ccq4	fsnz7aljs1s	19	\N	\N	\N
+imrhc9he5on	zkyx4v84ep5	18	\N	\N	\N
+imrhc9he5on	rea2rwj1d4a	19	\N	\N	\N
+imrhc9he5on	fsnz7aljs1s	20	\N	\N	\N
+82ikkgrog2y	zkyx4v84ep5	19	\N	\N	\N
+60f4r8b0er6	wlh4ozrsyng	10	\N	\N	\N
+kcr42v3jgbb	zkyx4v84ep5	1	\N	\N	2
+qbrsluqev37	7wejzdrys98	10	\N	\N	\N
+qbrsluqev37	wlh4ozrsyng	11	\N	\N	\N
+82ikkgrog2y	rea2rwj1d4a	20	\N	\N	\N
+82ikkgrog2y	fsnz7aljs1s	21	\N	\N	\N
+mmj417nrjpa	zkyx4v84ep5	20	\N	\N	\N
+mmj417nrjpa	rea2rwj1d4a	21	\N	\N	\N
+mmj417nrjpa	fsnz7aljs1s	22	\N	\N	\N
+lmgnrgroovk	zkyx4v84ep5	21	\N	\N	\N
+lmgnrgroovk	rea2rwj1d4a	22	\N	\N	\N
+lmgnrgroovk	fsnz7aljs1s	23	\N	\N	\N
+4cx141n1lb4	zkyx4v84ep5	22	\N	\N	\N
+4cx141n1lb4	rea2rwj1d4a	23	\N	\N	\N
+4cx141n1lb4	fsnz7aljs1s	24	\N	\N	\N
+k6pr2jh3wgd	zkyx4v84ep5	23	\N	\N	\N
+k6pr2jh3wgd	rea2rwj1d4a	24	\N	\N	\N
+k6pr2jh3wgd	fsnz7aljs1s	25	\N	\N	\N
+hchm15rxv74	zkyx4v84ep5	24	\N	\N	\N
+hchm15rxv74	rea2rwj1d4a	25	\N	\N	\N
+hchm15rxv74	fsnz7aljs1s	26	\N	\N	\N
+073buw1m70l	zkyx4v84ep5	25	\N	\N	\N
+073buw1m70l	rea2rwj1d4a	26	\N	\N	\N
+073buw1m70l	fsnz7aljs1s	27	\N	\N	\N
+nocobase-admin-menu	zkyx4v84ep5	26	\N	\N	\N
+nocobase-admin-menu	rea2rwj1d4a	27	\N	\N	\N
+nocobase-admin-menu	fsnz7aljs1s	28	\N	\N	\N
+fl6193tpei8	7wejzdrys98	11	\N	\N	\N
+fl6193tpei8	wlh4ozrsyng	12	\N	\N	\N
+m291sv0y712	7wejzdrys98	12	\N	\N	\N
+m291sv0y712	wlh4ozrsyng	13	\N	\N	\N
+3d4bg9et9gc	7wejzdrys98	13	\N	\N	\N
+3d4bg9et9gc	wlh4ozrsyng	14	\N	\N	\N
+pdtxkxhi0px	7wejzdrys98	14	\N	\N	\N
+pdtxkxhi0px	wlh4ozrsyng	15	\N	\N	\N
+9kxizfoklw7	7wejzdrys98	15	\N	\N	\N
+9kxizfoklw7	wlh4ozrsyng	16	\N	\N	\N
+puz5i9w50bl	7wejzdrys98	16	\N	\N	\N
+puz5i9w50bl	wlh4ozrsyng	17	\N	\N	\N
+idfhxat5qg6	7wejzdrys98	17	\N	\N	\N
+idfhxat5qg6	wlh4ozrsyng	18	\N	\N	\N
+iqddf9bwww2	7wejzdrys98	18	\N	\N	\N
+iqddf9bwww2	wlh4ozrsyng	19	\N	\N	\N
+eoxofxze047	7wejzdrys98	19	\N	\N	\N
+eoxofxze047	wlh4ozrsyng	20	\N	\N	\N
+p3ls96regvr	7wejzdrys98	20	\N	\N	\N
+p3ls96regvr	wlh4ozrsyng	21	\N	\N	\N
+073buw1m70l	7wejzdrys98	21	\N	\N	\N
+073buw1m70l	wlh4ozrsyng	22	\N	\N	\N
+nocobase-admin-menu	7wejzdrys98	22	\N	\N	\N
+nocobase-admin-menu	wlh4ozrsyng	23	\N	\N	\N
+7wejzdrys98	7wejzdrys98	0	f	properties	\N
+seoty3c8shi	7wejzdrys98	1	\N	\N	3
+seoty3c8shi	c59ka4huk49	2	\N	\N	\N
+zg36b96ttmj	c59ka4huk49	3	\N	\N	\N
+jkjog6plqji	c59ka4huk49	4	\N	\N	\N
+fi2ue9h7mq4	c59ka4huk49	5	\N	\N	\N
+43941gf2n0y	c59ka4huk49	6	\N	\N	\N
+wp3edt8ujq4	c59ka4huk49	7	\N	\N	\N
+mlqmnjhazhe	c59ka4huk49	8	\N	\N	\N
+wj9ij1yidio	c59ka4huk49	9	\N	\N	\N
+60f4r8b0er6	c59ka4huk49	10	\N	\N	\N
+qbrsluqev37	c59ka4huk49	11	\N	\N	\N
+fl6193tpei8	c59ka4huk49	12	\N	\N	\N
+m291sv0y712	c59ka4huk49	13	\N	\N	\N
+3d4bg9et9gc	c59ka4huk49	14	\N	\N	\N
+pdtxkxhi0px	c59ka4huk49	15	\N	\N	\N
+9kxizfoklw7	c59ka4huk49	16	\N	\N	\N
+puz5i9w50bl	c59ka4huk49	17	\N	\N	\N
+idfhxat5qg6	c59ka4huk49	18	\N	\N	\N
+iqddf9bwww2	c59ka4huk49	19	\N	\N	\N
+eoxofxze047	c59ka4huk49	20	\N	\N	\N
+p3ls96regvr	c59ka4huk49	21	\N	\N	\N
+073buw1m70l	c59ka4huk49	22	\N	\N	\N
+nocobase-admin-menu	c59ka4huk49	23	\N	\N	\N
+91kpjw6935c	c59ka4huk49	1	\N	\N	2
+zg36b96ttmj	k8qqt79vy2u	3	\N	\N	\N
+t39o1fpmett	t39o1fpmett	0	f	properties	\N
+33ev73s2rws	nwepw14mg73	2	\N	\N	\N
+9aqeadp45k5	nwepw14mg73	3	\N	\N	\N
+fw74h47qf2m	nwepw14mg73	4	\N	\N	\N
+lt0cyvyx555	nwepw14mg73	5	\N	\N	\N
+jej2s5rr3sb	nwepw14mg73	6	\N	\N	\N
+jkjog6plqji	k8qqt79vy2u	4	\N	\N	\N
+26xckt7cr9e	nwepw14mg73	7	\N	\N	\N
+nwepw14mg73	nwepw14mg73	0	f	properties	\N
+gw8prir7bzn	gw8prir7bzn	0	f	properties	\N
+fi2ue9h7mq4	k8qqt79vy2u	5	\N	\N	\N
+43941gf2n0y	k8qqt79vy2u	6	\N	\N	\N
+wp3edt8ujq4	k8qqt79vy2u	7	\N	\N	\N
+mlqmnjhazhe	k8qqt79vy2u	8	\N	\N	\N
+wj9ij1yidio	k8qqt79vy2u	9	\N	\N	\N
+60f4r8b0er6	k8qqt79vy2u	10	\N	\N	\N
+wbz1xh6nz3e	nwepw14mg73	8	\N	\N	\N
+qbrsluqev37	k8qqt79vy2u	11	\N	\N	\N
+fl6193tpei8	k8qqt79vy2u	12	\N	\N	\N
+8o6mwjydnzx	nwepw14mg73	9	\N	\N	\N
+m291sv0y712	k8qqt79vy2u	13	\N	\N	\N
+3d4bg9et9gc	k8qqt79vy2u	14	\N	\N	\N
+iqvhwknbnrr	nwepw14mg73	10	\N	\N	\N
+pdtxkxhi0px	k8qqt79vy2u	15	\N	\N	\N
+9kxizfoklw7	k8qqt79vy2u	16	\N	\N	\N
+eolrwpo9lyf	nwepw14mg73	11	\N	\N	\N
+puz5i9w50bl	k8qqt79vy2u	17	\N	\N	\N
+idfhxat5qg6	k8qqt79vy2u	18	\N	\N	\N
+85c8uxmskwh	nwepw14mg73	12	\N	\N	\N
+iqddf9bwww2	k8qqt79vy2u	19	\N	\N	\N
+eoxofxze047	k8qqt79vy2u	20	\N	\N	\N
+2w360eurk19	nwepw14mg73	13	\N	\N	\N
+p3ls96regvr	k8qqt79vy2u	21	\N	\N	\N
+073buw1m70l	k8qqt79vy2u	22	\N	\N	\N
+e2bz79kfn39	nwepw14mg73	14	\N	\N	\N
+nocobase-admin-menu	k8qqt79vy2u	23	\N	\N	\N
+2bwco99n47x	nwepw14mg73	15	\N	\N	\N
+seoty3c8shi	k8qqt79vy2u	2	\N	\N	\N
+bt575py2m17	k8qqt79vy2u	1	\N	\N	2
+ji9t3fgnkc0	nwepw14mg73	16	\N	\N	\N
+zg36b96ttmj	eb8ywubhlwn	3	\N	\N	\N
+jkjog6plqji	eb8ywubhlwn	4	\N	\N	\N
+yjzd6s5ccq4	nwepw14mg73	17	\N	\N	\N
+fi2ue9h7mq4	eb8ywubhlwn	5	\N	\N	\N
+43941gf2n0y	eb8ywubhlwn	6	\N	\N	\N
+imrhc9he5on	nwepw14mg73	18	\N	\N	\N
+wp3edt8ujq4	eb8ywubhlwn	7	\N	\N	\N
+mlqmnjhazhe	eb8ywubhlwn	8	\N	\N	\N
+82ikkgrog2y	nwepw14mg73	19	\N	\N	\N
+wj9ij1yidio	eb8ywubhlwn	9	\N	\N	\N
+60f4r8b0er6	eb8ywubhlwn	10	\N	\N	\N
+mmj417nrjpa	nwepw14mg73	20	\N	\N	\N
+qbrsluqev37	eb8ywubhlwn	11	\N	\N	\N
+fl6193tpei8	eb8ywubhlwn	12	\N	\N	\N
+lmgnrgroovk	nwepw14mg73	21	\N	\N	\N
+m291sv0y712	eb8ywubhlwn	13	\N	\N	\N
+3d4bg9et9gc	eb8ywubhlwn	14	\N	\N	\N
+4cx141n1lb4	nwepw14mg73	22	\N	\N	\N
+pdtxkxhi0px	eb8ywubhlwn	15	\N	\N	\N
+9kxizfoklw7	eb8ywubhlwn	16	\N	\N	\N
+k6pr2jh3wgd	nwepw14mg73	23	\N	\N	\N
+puz5i9w50bl	eb8ywubhlwn	17	\N	\N	\N
+idfhxat5qg6	eb8ywubhlwn	18	\N	\N	\N
+hchm15rxv74	nwepw14mg73	24	\N	\N	\N
+iqddf9bwww2	eb8ywubhlwn	19	\N	\N	\N
+eoxofxze047	eb8ywubhlwn	20	\N	\N	\N
+073buw1m70l	nwepw14mg73	25	\N	\N	\N
+p3ls96regvr	eb8ywubhlwn	21	\N	\N	\N
+073buw1m70l	eb8ywubhlwn	22	\N	\N	\N
+nocobase-admin-menu	nwepw14mg73	26	\N	\N	\N
+nocobase-admin-menu	eb8ywubhlwn	23	\N	\N	\N
+seoty3c8shi	eb8ywubhlwn	2	\N	\N	\N
+7wejzdrys98	eb8ywubhlwn	1	\N	\N	2
+6ep0bs9yfkz	6ep0bs9yfkz	0	f	properties	\N
+4oxssoky5rw	6ep0bs9yfkz	1	\N	\N	1
+72l6kgv9pjk	72l6kgv9pjk	0	f	properties	\N
+6ep0bs9yfkz	72l6kgv9pjk	1	\N	\N	1
+4oxssoky5rw	72l6kgv9pjk	2	\N	\N	1
+bakk21d86pg	bakk21d86pg	0	f	properties	\N
+72l6kgv9pjk	bakk21d86pg	1	\N	\N	1
+6ep0bs9yfkz	bakk21d86pg	2	\N	\N	1
+4oxssoky5rw	bakk21d86pg	3	\N	\N	1
+9s4x9dms9lx	9s4x9dms9lx	0	f	properties	\N
+bakk21d86pg	9s4x9dms9lx	1	\N	\N	1
+72l6kgv9pjk	9s4x9dms9lx	2	\N	\N	1
+6ep0bs9yfkz	9s4x9dms9lx	3	\N	\N	1
+4oxssoky5rw	9s4x9dms9lx	4	\N	\N	1
+7r8zgq47519	7r8zgq47519	0	f	properties	\N
+bakk21d86pg	7r8zgq47519	1	\N	\N	2
+72l6kgv9pjk	7r8zgq47519	2	\N	\N	2
+6ep0bs9yfkz	7r8zgq47519	3	\N	\N	2
+4oxssoky5rw	7r8zgq47519	4	\N	\N	2
+84mt4mce1w7	6ep0bs9yfkz	2	\N	\N	\N
+84mt4mce1w7	72l6kgv9pjk	3	\N	\N	\N
+84mt4mce1w7	bakk21d86pg	4	\N	\N	\N
+84mt4mce1w7	9s4x9dms9lx	5	\N	\N	\N
+84mt4mce1w7	7r8zgq47519	5	\N	\N	\N
+zeyg628q8t0	4oxssoky5rw	2	\N	\N	\N
+zeyg628q8t0	6ep0bs9yfkz	3	\N	\N	\N
+zeyg628q8t0	72l6kgv9pjk	4	\N	\N	\N
+zeyg628q8t0	bakk21d86pg	5	\N	\N	\N
+zeyg628q8t0	9s4x9dms9lx	6	\N	\N	\N
+zeyg628q8t0	7r8zgq47519	6	\N	\N	\N
+bg4rui84lj2	4oxssoky5rw	3	\N	\N	\N
+bg4rui84lj2	6ep0bs9yfkz	4	\N	\N	\N
+bg4rui84lj2	72l6kgv9pjk	5	\N	\N	\N
+bg4rui84lj2	bakk21d86pg	6	\N	\N	\N
+bg4rui84lj2	9s4x9dms9lx	7	\N	\N	\N
+bg4rui84lj2	7r8zgq47519	7	\N	\N	\N
+8oq39vqqx82	4oxssoky5rw	4	\N	\N	\N
+8oq39vqqx82	6ep0bs9yfkz	5	\N	\N	\N
+8oq39vqqx82	72l6kgv9pjk	6	\N	\N	\N
+8oq39vqqx82	bakk21d86pg	7	\N	\N	\N
+8oq39vqqx82	9s4x9dms9lx	8	\N	\N	\N
+8oq39vqqx82	7r8zgq47519	8	\N	\N	\N
+3ohbpid2iz3	4oxssoky5rw	5	\N	\N	\N
+3ohbpid2iz3	6ep0bs9yfkz	6	\N	\N	\N
+3ohbpid2iz3	72l6kgv9pjk	7	\N	\N	\N
+3ohbpid2iz3	bakk21d86pg	8	\N	\N	\N
+3ohbpid2iz3	9s4x9dms9lx	9	\N	\N	\N
+3ohbpid2iz3	7r8zgq47519	9	\N	\N	\N
+8sehmqjx6y1	4oxssoky5rw	6	\N	\N	\N
+8sehmqjx6y1	6ep0bs9yfkz	7	\N	\N	\N
+8sehmqjx6y1	72l6kgv9pjk	8	\N	\N	\N
+8sehmqjx6y1	bakk21d86pg	9	\N	\N	\N
+8sehmqjx6y1	9s4x9dms9lx	10	\N	\N	\N
+4oxssoky5rw	4oxssoky5rw	0	f	properties	\N
+84mt4mce1w7	4oxssoky5rw	1	\N	\N	1
+cfhegsqw1xf	cfhegsqw1xf	0	f	properties	\N
+93u6f0cr9pz	cfhegsqw1xf	1	\N	\N	1
+p4pfnfr2kqa	p4pfnfr2kqa	0	f	properties	\N
+cfhegsqw1xf	p4pfnfr2kqa	1	\N	\N	1
+93u6f0cr9pz	p4pfnfr2kqa	2	\N	\N	1
+van1dl98k9d	van1dl98k9d	0	f	properties	\N
+p4pfnfr2kqa	van1dl98k9d	1	\N	\N	1
+cfhegsqw1xf	van1dl98k9d	2	\N	\N	1
+93u6f0cr9pz	van1dl98k9d	3	\N	\N	1
+kcr42v3jgbb	nwepw14mg73	1	\N	\N	4
+njql3xmey97	njql3xmey97	0	f	properties	\N
+szrzvew7kqh	szrzvew7kqh	0	f	properties	\N
+gmmwllboscx	gmmwllboscx	0	f	properties	\N
+yda4m7u7sdn	gmmwllboscx	1	\N	\N	1
+yda4m7u7sdn	t39o1fpmett	2	\N	\N	\N
+zkyx4v84ep5	szrzvew7kqh	1	\N	\N	2
+gmmwllboscx	t39o1fpmett	1	\N	\N	1
+kcr42v3jgbb	gmmwllboscx	2	\N	\N	\N
+kcr42v3jgbb	t39o1fpmett	3	\N	\N	\N
+33ev73s2rws	yda4m7u7sdn	2	\N	\N	\N
+33ev73s2rws	gmmwllboscx	3	\N	\N	\N
+33ev73s2rws	t39o1fpmett	4	\N	\N	\N
+9aqeadp45k5	yda4m7u7sdn	3	\N	\N	\N
+9aqeadp45k5	gmmwllboscx	4	\N	\N	\N
+9aqeadp45k5	t39o1fpmett	5	\N	\N	\N
+fw74h47qf2m	yda4m7u7sdn	4	\N	\N	\N
+fw74h47qf2m	gmmwllboscx	5	\N	\N	\N
+fw74h47qf2m	t39o1fpmett	6	\N	\N	\N
+lt0cyvyx555	yda4m7u7sdn	5	\N	\N	\N
+lt0cyvyx555	gmmwllboscx	6	\N	\N	\N
+lt0cyvyx555	t39o1fpmett	7	\N	\N	\N
+jej2s5rr3sb	yda4m7u7sdn	6	\N	\N	\N
+jej2s5rr3sb	gmmwllboscx	7	\N	\N	\N
+jej2s5rr3sb	t39o1fpmett	8	\N	\N	\N
+26xckt7cr9e	yda4m7u7sdn	7	\N	\N	\N
+26xckt7cr9e	gmmwllboscx	8	\N	\N	\N
+26xckt7cr9e	t39o1fpmett	9	\N	\N	\N
+wbz1xh6nz3e	yda4m7u7sdn	8	\N	\N	\N
+wbz1xh6nz3e	gmmwllboscx	9	\N	\N	\N
+wbz1xh6nz3e	t39o1fpmett	10	\N	\N	\N
+8o6mwjydnzx	yda4m7u7sdn	9	\N	\N	\N
+8o6mwjydnzx	gmmwllboscx	10	\N	\N	\N
+8o6mwjydnzx	t39o1fpmett	11	\N	\N	\N
+iqvhwknbnrr	yda4m7u7sdn	10	\N	\N	\N
+iqvhwknbnrr	gmmwllboscx	11	\N	\N	\N
+iqvhwknbnrr	t39o1fpmett	12	\N	\N	\N
+eolrwpo9lyf	yda4m7u7sdn	11	\N	\N	\N
+eolrwpo9lyf	gmmwllboscx	12	\N	\N	\N
+eolrwpo9lyf	t39o1fpmett	13	\N	\N	\N
+85c8uxmskwh	yda4m7u7sdn	12	\N	\N	\N
+85c8uxmskwh	gmmwllboscx	13	\N	\N	\N
+85c8uxmskwh	t39o1fpmett	14	\N	\N	\N
+2w360eurk19	yda4m7u7sdn	13	\N	\N	\N
+2w360eurk19	gmmwllboscx	14	\N	\N	\N
+2w360eurk19	t39o1fpmett	15	\N	\N	\N
+e2bz79kfn39	yda4m7u7sdn	14	\N	\N	\N
+e2bz79kfn39	gmmwllboscx	15	\N	\N	\N
+e2bz79kfn39	t39o1fpmett	16	\N	\N	\N
+2bwco99n47x	yda4m7u7sdn	15	\N	\N	\N
+2bwco99n47x	gmmwllboscx	16	\N	\N	\N
+2bwco99n47x	t39o1fpmett	17	\N	\N	\N
+ji9t3fgnkc0	yda4m7u7sdn	16	\N	\N	\N
+ji9t3fgnkc0	gmmwllboscx	17	\N	\N	\N
+ji9t3fgnkc0	t39o1fpmett	18	\N	\N	\N
+yjzd6s5ccq4	yda4m7u7sdn	17	\N	\N	\N
+yjzd6s5ccq4	gmmwllboscx	18	\N	\N	\N
+yjzd6s5ccq4	t39o1fpmett	19	\N	\N	\N
+imrhc9he5on	yda4m7u7sdn	18	\N	\N	\N
+imrhc9he5on	gmmwllboscx	19	\N	\N	\N
+imrhc9he5on	t39o1fpmett	20	\N	\N	\N
+82ikkgrog2y	yda4m7u7sdn	19	\N	\N	\N
+82ikkgrog2y	gmmwllboscx	20	\N	\N	\N
+82ikkgrog2y	t39o1fpmett	21	\N	\N	\N
+mmj417nrjpa	yda4m7u7sdn	20	\N	\N	\N
+mmj417nrjpa	gmmwllboscx	21	\N	\N	\N
+mmj417nrjpa	t39o1fpmett	22	\N	\N	\N
+lmgnrgroovk	yda4m7u7sdn	21	\N	\N	\N
+lmgnrgroovk	gmmwllboscx	22	\N	\N	\N
+lmgnrgroovk	t39o1fpmett	23	\N	\N	\N
+4cx141n1lb4	yda4m7u7sdn	22	\N	\N	\N
+4cx141n1lb4	gmmwllboscx	23	\N	\N	\N
+4cx141n1lb4	t39o1fpmett	24	\N	\N	\N
+k6pr2jh3wgd	yda4m7u7sdn	23	\N	\N	\N
+k6pr2jh3wgd	gmmwllboscx	24	\N	\N	\N
+k6pr2jh3wgd	t39o1fpmett	25	\N	\N	\N
+hchm15rxv74	yda4m7u7sdn	24	\N	\N	\N
+hchm15rxv74	gmmwllboscx	25	\N	\N	\N
+hchm15rxv74	t39o1fpmett	26	\N	\N	\N
+073buw1m70l	yda4m7u7sdn	25	\N	\N	\N
+073buw1m70l	gmmwllboscx	26	\N	\N	\N
+073buw1m70l	t39o1fpmett	27	\N	\N	\N
+nocobase-admin-menu	yda4m7u7sdn	26	\N	\N	\N
+nocobase-admin-menu	gmmwllboscx	27	\N	\N	\N
+nocobase-admin-menu	t39o1fpmett	28	\N	\N	\N
+yda4m7u7sdn	yda4m7u7sdn	0	f	properties	\N
+kcr42v3jgbb	yda4m7u7sdn	1	\N	\N	5
+p4pfnfr2kqa	njql3xmey97	1	\N	\N	2
+szrzvew7kqh	gw8prir7bzn	1	\N	\N	1
+zkyx4v84ep5	gw8prir7bzn	2	\N	\N	\N
+kcr42v3jgbb	szrzvew7kqh	2	\N	\N	\N
+kcr42v3jgbb	gw8prir7bzn	3	\N	\N	\N
+33ev73s2rws	szrzvew7kqh	3	\N	\N	\N
+33ev73s2rws	gw8prir7bzn	4	\N	\N	\N
+9aqeadp45k5	szrzvew7kqh	4	\N	\N	\N
+9aqeadp45k5	gw8prir7bzn	5	\N	\N	\N
+fw74h47qf2m	szrzvew7kqh	5	\N	\N	\N
+fw74h47qf2m	gw8prir7bzn	6	\N	\N	\N
+lt0cyvyx555	szrzvew7kqh	6	\N	\N	\N
+lt0cyvyx555	gw8prir7bzn	7	\N	\N	\N
+jej2s5rr3sb	szrzvew7kqh	7	\N	\N	\N
+jej2s5rr3sb	gw8prir7bzn	8	\N	\N	\N
+26xckt7cr9e	szrzvew7kqh	8	\N	\N	\N
+26xckt7cr9e	gw8prir7bzn	9	\N	\N	\N
+wbz1xh6nz3e	szrzvew7kqh	9	\N	\N	\N
+wbz1xh6nz3e	gw8prir7bzn	10	\N	\N	\N
+8o6mwjydnzx	szrzvew7kqh	10	\N	\N	\N
+8o6mwjydnzx	gw8prir7bzn	11	\N	\N	\N
+iqvhwknbnrr	szrzvew7kqh	11	\N	\N	\N
+iqvhwknbnrr	gw8prir7bzn	12	\N	\N	\N
+eolrwpo9lyf	szrzvew7kqh	12	\N	\N	\N
+eolrwpo9lyf	gw8prir7bzn	13	\N	\N	\N
+85c8uxmskwh	szrzvew7kqh	13	\N	\N	\N
+85c8uxmskwh	gw8prir7bzn	14	\N	\N	\N
+2w360eurk19	szrzvew7kqh	14	\N	\N	\N
+2w360eurk19	gw8prir7bzn	15	\N	\N	\N
+e2bz79kfn39	szrzvew7kqh	15	\N	\N	\N
+e2bz79kfn39	gw8prir7bzn	16	\N	\N	\N
+cfhegsqw1xf	njql3xmey97	2	\N	\N	2
+93u6f0cr9pz	njql3xmey97	3	\N	\N	2
+nhktcwvv2ah	nhktcwvv2ah	0	f	properties	\N
+njql3xmey97	nhktcwvv2ah	1	\N	\N	1
+p4pfnfr2kqa	nhktcwvv2ah	2	\N	\N	1
+cfhegsqw1xf	nhktcwvv2ah	3	\N	\N	1
+2bwco99n47x	szrzvew7kqh	16	\N	\N	\N
+2bwco99n47x	gw8prir7bzn	17	\N	\N	\N
+ji9t3fgnkc0	szrzvew7kqh	17	\N	\N	\N
+ji9t3fgnkc0	gw8prir7bzn	18	\N	\N	\N
+yjzd6s5ccq4	szrzvew7kqh	18	\N	\N	\N
+yjzd6s5ccq4	gw8prir7bzn	19	\N	\N	\N
+imrhc9he5on	szrzvew7kqh	19	\N	\N	\N
+imrhc9he5on	gw8prir7bzn	20	\N	\N	\N
+82ikkgrog2y	szrzvew7kqh	20	\N	\N	\N
+82ikkgrog2y	gw8prir7bzn	21	\N	\N	\N
+mmj417nrjpa	szrzvew7kqh	21	\N	\N	\N
+mmj417nrjpa	gw8prir7bzn	22	\N	\N	\N
+lmgnrgroovk	szrzvew7kqh	22	\N	\N	\N
+lmgnrgroovk	gw8prir7bzn	23	\N	\N	\N
+4cx141n1lb4	szrzvew7kqh	23	\N	\N	\N
+4cx141n1lb4	gw8prir7bzn	24	\N	\N	\N
+k6pr2jh3wgd	szrzvew7kqh	24	\N	\N	\N
+k6pr2jh3wgd	gw8prir7bzn	25	\N	\N	\N
+hchm15rxv74	szrzvew7kqh	25	\N	\N	\N
+hchm15rxv74	gw8prir7bzn	26	\N	\N	\N
+073buw1m70l	szrzvew7kqh	26	\N	\N	\N
+073buw1m70l	gw8prir7bzn	27	\N	\N	\N
+nocobase-admin-menu	szrzvew7kqh	27	\N	\N	\N
+nocobase-admin-menu	gw8prir7bzn	28	\N	\N	\N
+93u6f0cr9pz	nhktcwvv2ah	4	\N	\N	1
+ai8i45ojqri	jwnxh1b7ric	2	\N	\N	\N
+rsvj3o8613d	jwnxh1b7ric	3	\N	\N	\N
+w2xb0a6rkey	jwnxh1b7ric	4	\N	\N	\N
+x8ujxnhlng7	jwnxh1b7ric	5	\N	\N	\N
+evtz6ljqxdq	jwnxh1b7ric	6	\N	\N	\N
+i80vemflinb	jwnxh1b7ric	7	\N	\N	\N
+5bru92qlyrq	jwnxh1b7ric	8	\N	\N	\N
+obl2auujo32	jwnxh1b7ric	9	\N	\N	\N
+yv6e3li2bjt	yv6e3li2bjt	0	f	properties	\N
+nocobase-admin-menu	jwnxh1b7ric	10	\N	\N	\N
+jwnxh1b7ric	jwnxh1b7ric	0	f	properties	\N
+vyxprlubesu	jwnxh1b7ric	1	\N	\N	6
+ofko4hxvwyn	ofko4hxvwyn	0	f	properties	\N
+d9qi0cos24j	ofko4hxvwyn	1	\N	\N	1
+ai8i45ojqri	d9qi0cos24j	3	\N	\N	\N
+ai8i45ojqri	ofko4hxvwyn	4	\N	\N	\N
+rsvj3o8613d	d9qi0cos24j	4	\N	\N	\N
+rsvj3o8613d	ofko4hxvwyn	5	\N	\N	\N
+w2xb0a6rkey	d9qi0cos24j	5	\N	\N	\N
+w2xb0a6rkey	ofko4hxvwyn	6	\N	\N	\N
+h6d3ghccgs1	ofko4hxvwyn	2	\N	\N	\N
+vyxprlubesu	d9qi0cos24j	2	\N	\N	\N
+vyxprlubesu	ofko4hxvwyn	3	\N	\N	\N
+x8ujxnhlng7	d9qi0cos24j	6	\N	\N	\N
+x8ujxnhlng7	ofko4hxvwyn	7	\N	\N	\N
+evtz6ljqxdq	d9qi0cos24j	7	\N	\N	\N
+evtz6ljqxdq	ofko4hxvwyn	8	\N	\N	\N
+i80vemflinb	d9qi0cos24j	8	\N	\N	\N
+i80vemflinb	ofko4hxvwyn	9	\N	\N	\N
+5bru92qlyrq	d9qi0cos24j	9	\N	\N	\N
+5bru92qlyrq	ofko4hxvwyn	10	\N	\N	\N
+obl2auujo32	d9qi0cos24j	10	\N	\N	\N
+obl2auujo32	ofko4hxvwyn	11	\N	\N	\N
+nocobase-admin-menu	d9qi0cos24j	11	\N	\N	\N
+nocobase-admin-menu	ofko4hxvwyn	12	\N	\N	\N
+d9qi0cos24j	d9qi0cos24j	0	f	properties	\N
+h6d3ghccgs1	d9qi0cos24j	1	\N	\N	5
+8sehmqjx6y1	7r8zgq47519	10	\N	\N	\N
+9vahgw6b2zc	4oxssoky5rw	7	\N	\N	\N
+9vahgw6b2zc	6ep0bs9yfkz	8	\N	\N	\N
+9vahgw6b2zc	72l6kgv9pjk	9	\N	\N	\N
+9vahgw6b2zc	bakk21d86pg	10	\N	\N	\N
+9vahgw6b2zc	9s4x9dms9lx	11	\N	\N	\N
+9vahgw6b2zc	7r8zgq47519	11	\N	\N	\N
+v3o080ka847	4oxssoky5rw	8	\N	\N	\N
+v3o080ka847	6ep0bs9yfkz	9	\N	\N	\N
+v3o080ka847	72l6kgv9pjk	10	\N	\N	\N
+v3o080ka847	bakk21d86pg	11	\N	\N	\N
+v3o080ka847	9s4x9dms9lx	12	\N	\N	\N
+v3o080ka847	7r8zgq47519	12	\N	\N	\N
+culzjbos9r3	4oxssoky5rw	9	\N	\N	\N
+culzjbos9r3	6ep0bs9yfkz	10	\N	\N	\N
+culzjbos9r3	72l6kgv9pjk	11	\N	\N	\N
+culzjbos9r3	bakk21d86pg	12	\N	\N	\N
+culzjbos9r3	9s4x9dms9lx	13	\N	\N	\N
+culzjbos9r3	7r8zgq47519	13	\N	\N	\N
+3owowmpqg3i	4oxssoky5rw	10	\N	\N	\N
+3owowmpqg3i	6ep0bs9yfkz	11	\N	\N	\N
+3owowmpqg3i	72l6kgv9pjk	12	\N	\N	\N
+3owowmpqg3i	bakk21d86pg	13	\N	\N	\N
+3owowmpqg3i	9s4x9dms9lx	14	\N	\N	\N
+3owowmpqg3i	7r8zgq47519	14	\N	\N	\N
+wu05wqno6t2	4oxssoky5rw	11	\N	\N	\N
+wu05wqno6t2	6ep0bs9yfkz	12	\N	\N	\N
+wu05wqno6t2	72l6kgv9pjk	13	\N	\N	\N
+wu05wqno6t2	bakk21d86pg	14	\N	\N	\N
+wu05wqno6t2	9s4x9dms9lx	15	\N	\N	\N
+wu05wqno6t2	7r8zgq47519	15	\N	\N	\N
+fq548i6jjul	4oxssoky5rw	12	\N	\N	\N
+fq548i6jjul	6ep0bs9yfkz	13	\N	\N	\N
+fq548i6jjul	72l6kgv9pjk	14	\N	\N	\N
+fq548i6jjul	bakk21d86pg	15	\N	\N	\N
+fq548i6jjul	9s4x9dms9lx	16	\N	\N	\N
+fq548i6jjul	7r8zgq47519	16	\N	\N	\N
+b8e4crdaije	4oxssoky5rw	13	\N	\N	\N
+b8e4crdaije	6ep0bs9yfkz	14	\N	\N	\N
+b8e4crdaije	72l6kgv9pjk	15	\N	\N	\N
+b8e4crdaije	bakk21d86pg	16	\N	\N	\N
+giqw0w75voy	giqw0w75voy	0	f	properties	\N
+own8lovfe8o	giqw0w75voy	1	\N	\N	1
+vszki6sjnvj	vszki6sjnvj	0	f	properties	\N
+giqw0w75voy	vszki6sjnvj	1	\N	\N	1
+own8lovfe8o	vszki6sjnvj	2	\N	\N	1
+0xyo5u2dbw5	giqw0w75voy	2	\N	\N	\N
+0xyo5u2dbw5	vszki6sjnvj	3	\N	\N	\N
+3v8laq7zjql	own8lovfe8o	2	\N	\N	\N
+3v8laq7zjql	giqw0w75voy	3	\N	\N	\N
+3v8laq7zjql	vszki6sjnvj	4	\N	\N	\N
+4w66alip7h8	own8lovfe8o	3	\N	\N	\N
+4w66alip7h8	giqw0w75voy	4	\N	\N	\N
+4w66alip7h8	vszki6sjnvj	5	\N	\N	\N
+5j6aldekdhj	own8lovfe8o	4	\N	\N	\N
+5j6aldekdhj	giqw0w75voy	5	\N	\N	\N
+5j6aldekdhj	vszki6sjnvj	6	\N	\N	\N
+n08xlr2pmaz	own8lovfe8o	5	\N	\N	\N
+n08xlr2pmaz	giqw0w75voy	6	\N	\N	\N
+n08xlr2pmaz	vszki6sjnvj	7	\N	\N	\N
+xaewf0sjo76	own8lovfe8o	8	\N	\N	\N
+xaewf0sjo76	giqw0w75voy	9	\N	\N	\N
+xaewf0sjo76	vszki6sjnvj	10	\N	\N	\N
+fo7g83k4wnw	own8lovfe8o	9	\N	\N	\N
+fo7g83k4wnw	giqw0w75voy	10	\N	\N	\N
+fo7g83k4wnw	vszki6sjnvj	11	\N	\N	\N
+odmrtfsxjp5	own8lovfe8o	10	\N	\N	\N
+odmrtfsxjp5	giqw0w75voy	11	\N	\N	\N
+odmrtfsxjp5	vszki6sjnvj	12	\N	\N	\N
+alt2km13pi6	own8lovfe8o	11	\N	\N	\N
+alt2km13pi6	giqw0w75voy	12	\N	\N	\N
+alt2km13pi6	vszki6sjnvj	13	\N	\N	\N
+99wrtdh3vjb	own8lovfe8o	12	\N	\N	\N
+99wrtdh3vjb	giqw0w75voy	13	\N	\N	\N
+99wrtdh3vjb	vszki6sjnvj	14	\N	\N	\N
+mqma0oexw7v	own8lovfe8o	13	\N	\N	\N
+mqma0oexw7v	giqw0w75voy	14	\N	\N	\N
+mqma0oexw7v	vszki6sjnvj	15	\N	\N	\N
+09yy6b78jxi	own8lovfe8o	14	\N	\N	\N
+09yy6b78jxi	giqw0w75voy	15	\N	\N	\N
+09yy6b78jxi	vszki6sjnvj	16	\N	\N	\N
+1whdhzzrodk	own8lovfe8o	15	\N	\N	\N
+1whdhzzrodk	giqw0w75voy	16	\N	\N	\N
+1whdhzzrodk	vszki6sjnvj	17	\N	\N	\N
+f205ix4mjg8	own8lovfe8o	16	\N	\N	\N
+f205ix4mjg8	giqw0w75voy	17	\N	\N	\N
+f205ix4mjg8	vszki6sjnvj	18	\N	\N	\N
+fvx7g50y58n	own8lovfe8o	17	\N	\N	\N
+fvx7g50y58n	giqw0w75voy	18	\N	\N	\N
+fvx7g50y58n	vszki6sjnvj	19	\N	\N	\N
+833uu3rb1nm	own8lovfe8o	18	\N	\N	\N
+833uu3rb1nm	giqw0w75voy	19	\N	\N	\N
+833uu3rb1nm	vszki6sjnvj	20	\N	\N	\N
+ik0zt15yup2	own8lovfe8o	19	\N	\N	\N
+ik0zt15yup2	giqw0w75voy	20	\N	\N	\N
+ik0zt15yup2	vszki6sjnvj	21	\N	\N	\N
+w1vttmfcjic	own8lovfe8o	20	\N	\N	\N
+w1vttmfcjic	giqw0w75voy	21	\N	\N	\N
+w1vttmfcjic	vszki6sjnvj	22	\N	\N	\N
+nocobase-admin-menu	own8lovfe8o	21	\N	\N	\N
+nocobase-admin-menu	giqw0w75voy	22	\N	\N	\N
+nocobase-admin-menu	vszki6sjnvj	23	\N	\N	\N
+fzzjta8vefz	own8lovfe8o	6	\N	\N	\N
+fzzjta8vefz	giqw0w75voy	7	\N	\N	\N
+fzzjta8vefz	vszki6sjnvj	8	\N	\N	\N
+g4n9eb2icuo	own8lovfe8o	7	\N	\N	\N
+g4n9eb2icuo	giqw0w75voy	8	\N	\N	\N
+g4n9eb2icuo	vszki6sjnvj	9	\N	\N	\N
+own8lovfe8o	own8lovfe8o	0	f	properties	\N
+0xyo5u2dbw5	own8lovfe8o	1	\N	\N	1
+3v8laq7zjql	oky56x9ydxr	2	\N	\N	\N
+4w66alip7h8	oky56x9ydxr	3	\N	\N	\N
+5j6aldekdhj	oky56x9ydxr	4	\N	\N	\N
+n08xlr2pmaz	oky56x9ydxr	5	\N	\N	\N
+xaewf0sjo76	oky56x9ydxr	8	\N	\N	\N
+fo7g83k4wnw	oky56x9ydxr	9	\N	\N	\N
+odmrtfsxjp5	oky56x9ydxr	10	\N	\N	\N
+alt2km13pi6	oky56x9ydxr	11	\N	\N	\N
+99wrtdh3vjb	oky56x9ydxr	12	\N	\N	\N
+mqma0oexw7v	oky56x9ydxr	13	\N	\N	\N
+09yy6b78jxi	oky56x9ydxr	14	\N	\N	\N
+1whdhzzrodk	oky56x9ydxr	15	\N	\N	\N
+f205ix4mjg8	oky56x9ydxr	16	\N	\N	\N
+fvx7g50y58n	oky56x9ydxr	17	\N	\N	\N
+833uu3rb1nm	oky56x9ydxr	18	\N	\N	\N
+ik0zt15yup2	oky56x9ydxr	19	\N	\N	\N
+w1vttmfcjic	oky56x9ydxr	20	\N	\N	\N
+nhktcwvv2ah	yv6e3li2bjt	1	\N	\N	1
+oky56x9ydxr	oky56x9ydxr	0	f	properties	\N
+0xyo5u2dbw5	oky56x9ydxr	1	\N	\N	2
+njql3xmey97	yv6e3li2bjt	2	\N	\N	1
+p4pfnfr2kqa	yv6e3li2bjt	3	\N	\N	1
+mls534nrm3a	mls534nrm3a	0	f	properties	\N
+nocobase-admin-menu	oky56x9ydxr	21	\N	\N	\N
+cfhegsqw1xf	yv6e3li2bjt	4	\N	\N	1
+93u6f0cr9pz	yv6e3li2bjt	5	\N	\N	1
+ur8ffij9br0	ur8ffij9br0	0	f	properties	\N
+nhktcwvv2ah	ur8ffij9br0	1	\N	\N	2
+njql3xmey97	ur8ffij9br0	2	\N	\N	2
+p4pfnfr2kqa	ur8ffij9br0	3	\N	\N	2
+cfhegsqw1xf	ur8ffij9br0	4	\N	\N	2
+93u6f0cr9pz	ur8ffij9br0	5	\N	\N	2
+fh5hex4wag5	cfhegsqw1xf	2	\N	\N	\N
+fh5hex4wag5	p4pfnfr2kqa	3	\N	\N	\N
+fh5hex4wag5	van1dl98k9d	4	\N	\N	\N
+fh5hex4wag5	njql3xmey97	4	\N	\N	\N
+fh5hex4wag5	nhktcwvv2ah	5	\N	\N	\N
+fh5hex4wag5	yv6e3li2bjt	6	\N	\N	\N
+fh5hex4wag5	ur8ffij9br0	6	\N	\N	\N
+392bxnfb0cu	93u6f0cr9pz	2	\N	\N	\N
+392bxnfb0cu	cfhegsqw1xf	3	\N	\N	\N
+392bxnfb0cu	p4pfnfr2kqa	4	\N	\N	\N
+392bxnfb0cu	van1dl98k9d	5	\N	\N	\N
+392bxnfb0cu	njql3xmey97	5	\N	\N	\N
+392bxnfb0cu	nhktcwvv2ah	6	\N	\N	\N
+392bxnfb0cu	yv6e3li2bjt	7	\N	\N	\N
+392bxnfb0cu	ur8ffij9br0	7	\N	\N	\N
+mrhyvojvqar	93u6f0cr9pz	3	\N	\N	\N
+mrhyvojvqar	cfhegsqw1xf	4	\N	\N	\N
+mrhyvojvqar	p4pfnfr2kqa	5	\N	\N	\N
+mrhyvojvqar	van1dl98k9d	6	\N	\N	\N
+mrhyvojvqar	njql3xmey97	6	\N	\N	\N
+mrhyvojvqar	nhktcwvv2ah	7	\N	\N	\N
+mrhyvojvqar	yv6e3li2bjt	8	\N	\N	\N
+mrhyvojvqar	ur8ffij9br0	8	\N	\N	\N
+z9bj2qzcxd2	93u6f0cr9pz	4	\N	\N	\N
+z9bj2qzcxd2	cfhegsqw1xf	5	\N	\N	\N
+z9bj2qzcxd2	p4pfnfr2kqa	6	\N	\N	\N
+z9bj2qzcxd2	van1dl98k9d	7	\N	\N	\N
+z9bj2qzcxd2	njql3xmey97	7	\N	\N	\N
+z9bj2qzcxd2	nhktcwvv2ah	8	\N	\N	\N
+z9bj2qzcxd2	yv6e3li2bjt	9	\N	\N	\N
+z9bj2qzcxd2	ur8ffij9br0	9	\N	\N	\N
+uqifi2qlukf	93u6f0cr9pz	5	\N	\N	\N
+uqifi2qlukf	cfhegsqw1xf	6	\N	\N	\N
+uqifi2qlukf	p4pfnfr2kqa	7	\N	\N	\N
+uqifi2qlukf	van1dl98k9d	8	\N	\N	\N
+uqifi2qlukf	njql3xmey97	8	\N	\N	\N
+uqifi2qlukf	nhktcwvv2ah	9	\N	\N	\N
+uqifi2qlukf	yv6e3li2bjt	10	\N	\N	\N
+uqifi2qlukf	ur8ffij9br0	10	\N	\N	\N
+8796mm39d27	93u6f0cr9pz	6	\N	\N	\N
+8796mm39d27	cfhegsqw1xf	7	\N	\N	\N
+8796mm39d27	p4pfnfr2kqa	8	\N	\N	\N
+8796mm39d27	van1dl98k9d	9	\N	\N	\N
+8796mm39d27	njql3xmey97	9	\N	\N	\N
+8796mm39d27	nhktcwvv2ah	10	\N	\N	\N
+8796mm39d27	yv6e3li2bjt	11	\N	\N	\N
+8796mm39d27	ur8ffij9br0	11	\N	\N	\N
+26xckt7cr9e	93u6f0cr9pz	7	\N	\N	\N
+26xckt7cr9e	cfhegsqw1xf	8	\N	\N	\N
+26xckt7cr9e	p4pfnfr2kqa	9	\N	\N	\N
+26xckt7cr9e	van1dl98k9d	10	\N	\N	\N
+26xckt7cr9e	njql3xmey97	10	\N	\N	\N
+26xckt7cr9e	nhktcwvv2ah	11	\N	\N	\N
+26xckt7cr9e	yv6e3li2bjt	12	\N	\N	\N
+26xckt7cr9e	ur8ffij9br0	12	\N	\N	\N
+wbz1xh6nz3e	93u6f0cr9pz	8	\N	\N	\N
+wbz1xh6nz3e	cfhegsqw1xf	9	\N	\N	\N
+wbz1xh6nz3e	p4pfnfr2kqa	10	\N	\N	\N
+wbz1xh6nz3e	van1dl98k9d	11	\N	\N	\N
+wbz1xh6nz3e	njql3xmey97	11	\N	\N	\N
+wbz1xh6nz3e	nhktcwvv2ah	12	\N	\N	\N
+wbz1xh6nz3e	yv6e3li2bjt	13	\N	\N	\N
+wbz1xh6nz3e	ur8ffij9br0	13	\N	\N	\N
+8o6mwjydnzx	93u6f0cr9pz	9	\N	\N	\N
+8o6mwjydnzx	cfhegsqw1xf	10	\N	\N	\N
+8o6mwjydnzx	p4pfnfr2kqa	11	\N	\N	\N
+8o6mwjydnzx	van1dl98k9d	12	\N	\N	\N
+8o6mwjydnzx	njql3xmey97	12	\N	\N	\N
+8o6mwjydnzx	nhktcwvv2ah	13	\N	\N	\N
+8o6mwjydnzx	yv6e3li2bjt	14	\N	\N	\N
+8o6mwjydnzx	ur8ffij9br0	14	\N	\N	\N
+iqvhwknbnrr	93u6f0cr9pz	10	\N	\N	\N
+iqvhwknbnrr	cfhegsqw1xf	11	\N	\N	\N
+iqvhwknbnrr	p4pfnfr2kqa	12	\N	\N	\N
+iqvhwknbnrr	van1dl98k9d	13	\N	\N	\N
+iqvhwknbnrr	njql3xmey97	13	\N	\N	\N
+iqvhwknbnrr	nhktcwvv2ah	14	\N	\N	\N
+iqvhwknbnrr	yv6e3li2bjt	15	\N	\N	\N
+iqvhwknbnrr	ur8ffij9br0	15	\N	\N	\N
+eolrwpo9lyf	93u6f0cr9pz	11	\N	\N	\N
+eolrwpo9lyf	cfhegsqw1xf	12	\N	\N	\N
+eolrwpo9lyf	p4pfnfr2kqa	13	\N	\N	\N
+eolrwpo9lyf	van1dl98k9d	14	\N	\N	\N
+eolrwpo9lyf	njql3xmey97	14	\N	\N	\N
+eolrwpo9lyf	nhktcwvv2ah	15	\N	\N	\N
+eolrwpo9lyf	yv6e3li2bjt	16	\N	\N	\N
+eolrwpo9lyf	ur8ffij9br0	16	\N	\N	\N
+85c8uxmskwh	93u6f0cr9pz	12	\N	\N	\N
+85c8uxmskwh	cfhegsqw1xf	13	\N	\N	\N
+85c8uxmskwh	p4pfnfr2kqa	14	\N	\N	\N
+85c8uxmskwh	van1dl98k9d	15	\N	\N	\N
+85c8uxmskwh	njql3xmey97	15	\N	\N	\N
+85c8uxmskwh	nhktcwvv2ah	16	\N	\N	\N
+85c8uxmskwh	yv6e3li2bjt	17	\N	\N	\N
+85c8uxmskwh	ur8ffij9br0	17	\N	\N	\N
+2w360eurk19	93u6f0cr9pz	13	\N	\N	\N
+2w360eurk19	cfhegsqw1xf	14	\N	\N	\N
+2w360eurk19	p4pfnfr2kqa	15	\N	\N	\N
+2w360eurk19	van1dl98k9d	16	\N	\N	\N
+2w360eurk19	njql3xmey97	16	\N	\N	\N
+2w360eurk19	nhktcwvv2ah	17	\N	\N	\N
+2w360eurk19	yv6e3li2bjt	18	\N	\N	\N
+2w360eurk19	ur8ffij9br0	18	\N	\N	\N
+e2bz79kfn39	93u6f0cr9pz	14	\N	\N	\N
+e2bz79kfn39	cfhegsqw1xf	15	\N	\N	\N
+e2bz79kfn39	p4pfnfr2kqa	16	\N	\N	\N
+e2bz79kfn39	van1dl98k9d	17	\N	\N	\N
+e2bz79kfn39	njql3xmey97	17	\N	\N	\N
+e2bz79kfn39	nhktcwvv2ah	18	\N	\N	\N
+e2bz79kfn39	yv6e3li2bjt	19	\N	\N	\N
+e2bz79kfn39	ur8ffij9br0	19	\N	\N	\N
+2bwco99n47x	93u6f0cr9pz	15	\N	\N	\N
+2bwco99n47x	cfhegsqw1xf	16	\N	\N	\N
+2bwco99n47x	p4pfnfr2kqa	17	\N	\N	\N
+2bwco99n47x	van1dl98k9d	18	\N	\N	\N
+2bwco99n47x	njql3xmey97	18	\N	\N	\N
+2bwco99n47x	nhktcwvv2ah	19	\N	\N	\N
+2bwco99n47x	yv6e3li2bjt	20	\N	\N	\N
+fzzjta8vefz	oky56x9ydxr	6	\N	\N	\N
+g4n9eb2icuo	oky56x9ydxr	7	\N	\N	\N
+3v8laq7zjql	z9tzg59hlcb	2	\N	\N	\N
+4w66alip7h8	z9tzg59hlcb	3	\N	\N	\N
+5j6aldekdhj	z9tzg59hlcb	4	\N	\N	\N
+n08xlr2pmaz	z9tzg59hlcb	5	\N	\N	\N
+xaewf0sjo76	z9tzg59hlcb	8	\N	\N	\N
+2bwco99n47x	ur8ffij9br0	20	\N	\N	\N
+ji9t3fgnkc0	93u6f0cr9pz	16	\N	\N	\N
+ji9t3fgnkc0	cfhegsqw1xf	17	\N	\N	\N
+ji9t3fgnkc0	p4pfnfr2kqa	18	\N	\N	\N
+ji9t3fgnkc0	van1dl98k9d	19	\N	\N	\N
+ji9t3fgnkc0	njql3xmey97	19	\N	\N	\N
+ji9t3fgnkc0	nhktcwvv2ah	20	\N	\N	\N
+ji9t3fgnkc0	yv6e3li2bjt	21	\N	\N	\N
+ji9t3fgnkc0	ur8ffij9br0	21	\N	\N	\N
+yjzd6s5ccq4	93u6f0cr9pz	17	\N	\N	\N
+yjzd6s5ccq4	cfhegsqw1xf	18	\N	\N	\N
+yjzd6s5ccq4	p4pfnfr2kqa	19	\N	\N	\N
+yjzd6s5ccq4	van1dl98k9d	20	\N	\N	\N
+yjzd6s5ccq4	njql3xmey97	20	\N	\N	\N
+yjzd6s5ccq4	nhktcwvv2ah	21	\N	\N	\N
+yjzd6s5ccq4	yv6e3li2bjt	22	\N	\N	\N
+yjzd6s5ccq4	ur8ffij9br0	22	\N	\N	\N
+imrhc9he5on	93u6f0cr9pz	18	\N	\N	\N
+imrhc9he5on	cfhegsqw1xf	19	\N	\N	\N
+imrhc9he5on	p4pfnfr2kqa	20	\N	\N	\N
+imrhc9he5on	van1dl98k9d	21	\N	\N	\N
+imrhc9he5on	njql3xmey97	21	\N	\N	\N
+imrhc9he5on	nhktcwvv2ah	22	\N	\N	\N
+imrhc9he5on	yv6e3li2bjt	23	\N	\N	\N
+imrhc9he5on	ur8ffij9br0	23	\N	\N	\N
+82ikkgrog2y	93u6f0cr9pz	19	\N	\N	\N
+82ikkgrog2y	cfhegsqw1xf	20	\N	\N	\N
+82ikkgrog2y	p4pfnfr2kqa	21	\N	\N	\N
+82ikkgrog2y	van1dl98k9d	22	\N	\N	\N
+82ikkgrog2y	njql3xmey97	22	\N	\N	\N
+82ikkgrog2y	nhktcwvv2ah	23	\N	\N	\N
+82ikkgrog2y	yv6e3li2bjt	24	\N	\N	\N
+82ikkgrog2y	ur8ffij9br0	24	\N	\N	\N
+mmj417nrjpa	93u6f0cr9pz	20	\N	\N	\N
+mmj417nrjpa	cfhegsqw1xf	21	\N	\N	\N
+mmj417nrjpa	p4pfnfr2kqa	22	\N	\N	\N
+mmj417nrjpa	van1dl98k9d	23	\N	\N	\N
+mmj417nrjpa	njql3xmey97	23	\N	\N	\N
+mmj417nrjpa	nhktcwvv2ah	24	\N	\N	\N
+mmj417nrjpa	yv6e3li2bjt	25	\N	\N	\N
+mmj417nrjpa	ur8ffij9br0	25	\N	\N	\N
+lmgnrgroovk	93u6f0cr9pz	21	\N	\N	\N
+lmgnrgroovk	cfhegsqw1xf	22	\N	\N	\N
+lmgnrgroovk	p4pfnfr2kqa	23	\N	\N	\N
+lmgnrgroovk	van1dl98k9d	24	\N	\N	\N
+lmgnrgroovk	njql3xmey97	24	\N	\N	\N
+lmgnrgroovk	nhktcwvv2ah	25	\N	\N	\N
+lmgnrgroovk	yv6e3li2bjt	26	\N	\N	\N
+lmgnrgroovk	ur8ffij9br0	26	\N	\N	\N
+4cx141n1lb4	93u6f0cr9pz	22	\N	\N	\N
+4cx141n1lb4	cfhegsqw1xf	23	\N	\N	\N
+4cx141n1lb4	p4pfnfr2kqa	24	\N	\N	\N
+4cx141n1lb4	van1dl98k9d	25	\N	\N	\N
+4cx141n1lb4	njql3xmey97	25	\N	\N	\N
+4cx141n1lb4	nhktcwvv2ah	26	\N	\N	\N
+4cx141n1lb4	yv6e3li2bjt	27	\N	\N	\N
+4cx141n1lb4	ur8ffij9br0	27	\N	\N	\N
+k6pr2jh3wgd	93u6f0cr9pz	23	\N	\N	\N
+k6pr2jh3wgd	cfhegsqw1xf	24	\N	\N	\N
+k6pr2jh3wgd	p4pfnfr2kqa	25	\N	\N	\N
+k6pr2jh3wgd	van1dl98k9d	26	\N	\N	\N
+k6pr2jh3wgd	njql3xmey97	26	\N	\N	\N
+k6pr2jh3wgd	nhktcwvv2ah	27	\N	\N	\N
+fo7g83k4wnw	z9tzg59hlcb	9	\N	\N	\N
+odmrtfsxjp5	z9tzg59hlcb	10	\N	\N	\N
+alt2km13pi6	z9tzg59hlcb	11	\N	\N	\N
+99wrtdh3vjb	z9tzg59hlcb	12	\N	\N	\N
+mqma0oexw7v	z9tzg59hlcb	13	\N	\N	\N
+09yy6b78jxi	z9tzg59hlcb	14	\N	\N	\N
+1whdhzzrodk	z9tzg59hlcb	15	\N	\N	\N
+f205ix4mjg8	z9tzg59hlcb	16	\N	\N	\N
+fvx7g50y58n	z9tzg59hlcb	17	\N	\N	\N
+833uu3rb1nm	z9tzg59hlcb	18	\N	\N	\N
+ik0zt15yup2	z9tzg59hlcb	19	\N	\N	\N
+w1vttmfcjic	z9tzg59hlcb	20	\N	\N	\N
+nocobase-admin-menu	z9tzg59hlcb	21	\N	\N	\N
+02iuhwcnoro	02iuhwcnoro	0	f	properties	\N
+k6pr2jh3wgd	yv6e3li2bjt	28	\N	\N	\N
+k6pr2jh3wgd	ur8ffij9br0	28	\N	\N	\N
+fzzjta8vefz	z9tzg59hlcb	6	\N	\N	\N
+g4n9eb2icuo	z9tzg59hlcb	7	\N	\N	\N
+z9tzg59hlcb	z9tzg59hlcb	0	f	properties	\N
+0xyo5u2dbw5	z9tzg59hlcb	1	\N	\N	3
+hchm15rxv74	93u6f0cr9pz	24	\N	\N	\N
+hchm15rxv74	cfhegsqw1xf	25	\N	\N	\N
+hchm15rxv74	p4pfnfr2kqa	26	\N	\N	\N
+hchm15rxv74	van1dl98k9d	27	\N	\N	\N
+hchm15rxv74	njql3xmey97	27	\N	\N	\N
+hchm15rxv74	nhktcwvv2ah	28	\N	\N	\N
+hchm15rxv74	yv6e3li2bjt	29	\N	\N	\N
+hchm15rxv74	ur8ffij9br0	29	\N	\N	\N
+073buw1m70l	93u6f0cr9pz	25	\N	\N	\N
+073buw1m70l	cfhegsqw1xf	26	\N	\N	\N
+073buw1m70l	p4pfnfr2kqa	27	\N	\N	\N
+073buw1m70l	van1dl98k9d	28	\N	\N	\N
+073buw1m70l	njql3xmey97	28	\N	\N	\N
+073buw1m70l	nhktcwvv2ah	29	\N	\N	\N
+073buw1m70l	yv6e3li2bjt	30	\N	\N	\N
+073buw1m70l	ur8ffij9br0	30	\N	\N	\N
+nocobase-admin-menu	93u6f0cr9pz	26	\N	\N	\N
+nocobase-admin-menu	cfhegsqw1xf	27	\N	\N	\N
+nocobase-admin-menu	p4pfnfr2kqa	28	\N	\N	\N
+nocobase-admin-menu	van1dl98k9d	29	\N	\N	\N
+nocobase-admin-menu	njql3xmey97	29	\N	\N	\N
+nocobase-admin-menu	nhktcwvv2ah	30	\N	\N	\N
+nocobase-admin-menu	yv6e3li2bjt	31	\N	\N	\N
+nocobase-admin-menu	ur8ffij9br0	31	\N	\N	\N
+93u6f0cr9pz	93u6f0cr9pz	0	f	properties	\N
+fh5hex4wag5	93u6f0cr9pz	1	\N	\N	1
+91lcpp0pj02	91lcpp0pj02	0	f	properties	\N
+r5ux2dhnfq1	91lcpp0pj02	2	\N	\N	\N
+ulw06kfwwn3	91lcpp0pj02	3	\N	\N	\N
+wcib2cpt11z	91lcpp0pj02	4	\N	\N	\N
+xwts1ggw479	91lcpp0pj02	5	\N	\N	\N
+073buw1m70l	91lcpp0pj02	6	\N	\N	\N
+nocobase-admin-menu	91lcpp0pj02	7	\N	\N	\N
+9j3mrze0kdh	91lcpp0pj02	1	\N	\N	1
+mv4uiuyqyzn	mv4uiuyqyzn	0	f	properties	\N
+ikcosgis0e5	mv4uiuyqyzn	1	\N	\N	1
+vyvsdcee7hm	vyvsdcee7hm	0	f	properties	\N
+mv4uiuyqyzn	vyvsdcee7hm	1	\N	\N	1
+ikcosgis0e5	vyvsdcee7hm	2	\N	\N	1
+yv6e3li2bjt	mv4uiuyqyzn	2	\N	\N	\N
+yv6e3li2bjt	vyvsdcee7hm	3	\N	\N	\N
+nhktcwvv2ah	ikcosgis0e5	2	\N	\N	\N
+nhktcwvv2ah	mv4uiuyqyzn	3	\N	\N	\N
+nhktcwvv2ah	vyvsdcee7hm	4	\N	\N	\N
+njql3xmey97	ikcosgis0e5	3	\N	\N	\N
+njql3xmey97	mv4uiuyqyzn	4	\N	\N	\N
+njql3xmey97	vyvsdcee7hm	5	\N	\N	\N
+p4pfnfr2kqa	ikcosgis0e5	4	\N	\N	\N
+p4pfnfr2kqa	mv4uiuyqyzn	5	\N	\N	\N
+p4pfnfr2kqa	vyvsdcee7hm	6	\N	\N	\N
+cfhegsqw1xf	ikcosgis0e5	5	\N	\N	\N
+cfhegsqw1xf	mv4uiuyqyzn	6	\N	\N	\N
+cfhegsqw1xf	vyvsdcee7hm	7	\N	\N	\N
+93u6f0cr9pz	ikcosgis0e5	6	\N	\N	\N
+93u6f0cr9pz	mv4uiuyqyzn	7	\N	\N	\N
+93u6f0cr9pz	vyvsdcee7hm	8	\N	\N	\N
+fh5hex4wag5	ikcosgis0e5	7	\N	\N	\N
+fh5hex4wag5	mv4uiuyqyzn	8	\N	\N	\N
+fh5hex4wag5	vyvsdcee7hm	9	\N	\N	\N
+392bxnfb0cu	ikcosgis0e5	8	\N	\N	\N
+392bxnfb0cu	mv4uiuyqyzn	9	\N	\N	\N
+392bxnfb0cu	vyvsdcee7hm	10	\N	\N	\N
+mrhyvojvqar	ikcosgis0e5	9	\N	\N	\N
+mrhyvojvqar	mv4uiuyqyzn	10	\N	\N	\N
+mrhyvojvqar	vyvsdcee7hm	11	\N	\N	\N
+z9bj2qzcxd2	ikcosgis0e5	10	\N	\N	\N
+z9bj2qzcxd2	mv4uiuyqyzn	11	\N	\N	\N
+z9bj2qzcxd2	vyvsdcee7hm	12	\N	\N	\N
+uqifi2qlukf	ikcosgis0e5	11	\N	\N	\N
+uqifi2qlukf	mv4uiuyqyzn	12	\N	\N	\N
+uqifi2qlukf	vyvsdcee7hm	13	\N	\N	\N
+8796mm39d27	ikcosgis0e5	12	\N	\N	\N
+8796mm39d27	mv4uiuyqyzn	13	\N	\N	\N
+8796mm39d27	vyvsdcee7hm	14	\N	\N	\N
+26xckt7cr9e	ikcosgis0e5	13	\N	\N	\N
+26xckt7cr9e	mv4uiuyqyzn	14	\N	\N	\N
+26xckt7cr9e	vyvsdcee7hm	15	\N	\N	\N
+wbz1xh6nz3e	ikcosgis0e5	14	\N	\N	\N
+wbz1xh6nz3e	mv4uiuyqyzn	15	\N	\N	\N
+wbz1xh6nz3e	vyvsdcee7hm	16	\N	\N	\N
+8o6mwjydnzx	ikcosgis0e5	15	\N	\N	\N
+8o6mwjydnzx	mv4uiuyqyzn	16	\N	\N	\N
+8o6mwjydnzx	vyvsdcee7hm	17	\N	\N	\N
+iqvhwknbnrr	ikcosgis0e5	16	\N	\N	\N
+iqvhwknbnrr	mv4uiuyqyzn	17	\N	\N	\N
+iqvhwknbnrr	vyvsdcee7hm	18	\N	\N	\N
+eolrwpo9lyf	ikcosgis0e5	17	\N	\N	\N
+eolrwpo9lyf	mv4uiuyqyzn	18	\N	\N	\N
+eolrwpo9lyf	vyvsdcee7hm	19	\N	\N	\N
+85c8uxmskwh	ikcosgis0e5	18	\N	\N	\N
+85c8uxmskwh	mv4uiuyqyzn	19	\N	\N	\N
+85c8uxmskwh	vyvsdcee7hm	20	\N	\N	\N
+2w360eurk19	ikcosgis0e5	19	\N	\N	\N
+2w360eurk19	mv4uiuyqyzn	20	\N	\N	\N
+2w360eurk19	vyvsdcee7hm	21	\N	\N	\N
+e2bz79kfn39	ikcosgis0e5	20	\N	\N	\N
+e2bz79kfn39	mv4uiuyqyzn	21	\N	\N	\N
+e2bz79kfn39	vyvsdcee7hm	22	\N	\N	\N
+2bwco99n47x	ikcosgis0e5	21	\N	\N	\N
+2bwco99n47x	mv4uiuyqyzn	22	\N	\N	\N
+2bwco99n47x	vyvsdcee7hm	23	\N	\N	\N
+ji9t3fgnkc0	ikcosgis0e5	22	\N	\N	\N
+ji9t3fgnkc0	mv4uiuyqyzn	23	\N	\N	\N
+ji9t3fgnkc0	vyvsdcee7hm	24	\N	\N	\N
+yjzd6s5ccq4	ikcosgis0e5	23	\N	\N	\N
+yjzd6s5ccq4	mv4uiuyqyzn	24	\N	\N	\N
+yjzd6s5ccq4	vyvsdcee7hm	25	\N	\N	\N
+imrhc9he5on	ikcosgis0e5	24	\N	\N	\N
+imrhc9he5on	mv4uiuyqyzn	25	\N	\N	\N
+imrhc9he5on	vyvsdcee7hm	26	\N	\N	\N
+82ikkgrog2y	ikcosgis0e5	25	\N	\N	\N
+82ikkgrog2y	mv4uiuyqyzn	26	\N	\N	\N
+82ikkgrog2y	vyvsdcee7hm	27	\N	\N	\N
+mmj417nrjpa	ikcosgis0e5	26	\N	\N	\N
+mmj417nrjpa	mv4uiuyqyzn	27	\N	\N	\N
+mmj417nrjpa	vyvsdcee7hm	28	\N	\N	\N
+lmgnrgroovk	ikcosgis0e5	27	\N	\N	\N
+lmgnrgroovk	mv4uiuyqyzn	28	\N	\N	\N
+lmgnrgroovk	vyvsdcee7hm	29	\N	\N	\N
+4cx141n1lb4	ikcosgis0e5	28	\N	\N	\N
+4cx141n1lb4	mv4uiuyqyzn	29	\N	\N	\N
+4cx141n1lb4	vyvsdcee7hm	30	\N	\N	\N
+k6pr2jh3wgd	ikcosgis0e5	29	\N	\N	\N
+k6pr2jh3wgd	mv4uiuyqyzn	30	\N	\N	\N
+k6pr2jh3wgd	vyvsdcee7hm	31	\N	\N	\N
+hchm15rxv74	ikcosgis0e5	30	\N	\N	\N
+hchm15rxv74	mv4uiuyqyzn	31	\N	\N	\N
+hchm15rxv74	vyvsdcee7hm	32	\N	\N	\N
+073buw1m70l	ikcosgis0e5	31	\N	\N	\N
+073buw1m70l	mv4uiuyqyzn	32	\N	\N	\N
+073buw1m70l	vyvsdcee7hm	33	\N	\N	\N
+nocobase-admin-menu	ikcosgis0e5	32	\N	\N	\N
+nocobase-admin-menu	mv4uiuyqyzn	33	\N	\N	\N
+nocobase-admin-menu	vyvsdcee7hm	34	\N	\N	\N
+ikcosgis0e5	ikcosgis0e5	0	f	properties	\N
+yv6e3li2bjt	ikcosgis0e5	1	\N	\N	1
+nhktcwvv2ah	awqa1ayxy60	2	\N	\N	\N
+njql3xmey97	awqa1ayxy60	3	\N	\N	\N
+p4pfnfr2kqa	awqa1ayxy60	4	\N	\N	\N
+cfhegsqw1xf	awqa1ayxy60	5	\N	\N	\N
+93u6f0cr9pz	awqa1ayxy60	6	\N	\N	\N
+awqa1ayxy60	awqa1ayxy60	0	f	properties	\N
+yv6e3li2bjt	awqa1ayxy60	1	\N	\N	2
+a3tjb34vpdm	a3tjb34vpdm	0	f	properties	\N
+yx8aphydgq6	mls534nrm3a	1	\N	\N	1
+own8lovfe8o	mls534nrm3a	2	\N	\N	\N
+0xyo5u2dbw5	yx8aphydgq6	2	\N	\N	\N
+0xyo5u2dbw5	mls534nrm3a	3	\N	\N	\N
+3v8laq7zjql	yx8aphydgq6	3	\N	\N	\N
+3v8laq7zjql	mls534nrm3a	4	\N	\N	\N
+4w66alip7h8	yx8aphydgq6	4	\N	\N	\N
+4w66alip7h8	mls534nrm3a	5	\N	\N	\N
+5j6aldekdhj	yx8aphydgq6	5	\N	\N	\N
+5j6aldekdhj	mls534nrm3a	6	\N	\N	\N
+n08xlr2pmaz	yx8aphydgq6	6	\N	\N	\N
+n08xlr2pmaz	mls534nrm3a	7	\N	\N	\N
+xaewf0sjo76	yx8aphydgq6	9	\N	\N	\N
+xaewf0sjo76	mls534nrm3a	10	\N	\N	\N
+fo7g83k4wnw	yx8aphydgq6	10	\N	\N	\N
+fo7g83k4wnw	mls534nrm3a	11	\N	\N	\N
+odmrtfsxjp5	yx8aphydgq6	11	\N	\N	\N
+odmrtfsxjp5	mls534nrm3a	12	\N	\N	\N
+alt2km13pi6	yx8aphydgq6	12	\N	\N	\N
+alt2km13pi6	mls534nrm3a	13	\N	\N	\N
+99wrtdh3vjb	yx8aphydgq6	13	\N	\N	\N
+99wrtdh3vjb	mls534nrm3a	14	\N	\N	\N
+mqma0oexw7v	yx8aphydgq6	14	\N	\N	\N
+mqma0oexw7v	mls534nrm3a	15	\N	\N	\N
+09yy6b78jxi	yx8aphydgq6	15	\N	\N	\N
+09yy6b78jxi	mls534nrm3a	16	\N	\N	\N
+1whdhzzrodk	yx8aphydgq6	16	\N	\N	\N
+1whdhzzrodk	mls534nrm3a	17	\N	\N	\N
+f205ix4mjg8	yx8aphydgq6	17	\N	\N	\N
+f205ix4mjg8	mls534nrm3a	18	\N	\N	\N
+fvx7g50y58n	yx8aphydgq6	18	\N	\N	\N
+fvx7g50y58n	mls534nrm3a	19	\N	\N	\N
+833uu3rb1nm	yx8aphydgq6	19	\N	\N	\N
+833uu3rb1nm	mls534nrm3a	20	\N	\N	\N
+ik0zt15yup2	yx8aphydgq6	20	\N	\N	\N
+ik0zt15yup2	mls534nrm3a	21	\N	\N	\N
+w1vttmfcjic	yx8aphydgq6	21	\N	\N	\N
+fh5hex4wag5	awqa1ayxy60	7	\N	\N	\N
+392bxnfb0cu	awqa1ayxy60	8	\N	\N	\N
+mrhyvojvqar	awqa1ayxy60	9	\N	\N	\N
+z9bj2qzcxd2	awqa1ayxy60	10	\N	\N	\N
+uqifi2qlukf	awqa1ayxy60	11	\N	\N	\N
+8796mm39d27	awqa1ayxy60	12	\N	\N	\N
+26xckt7cr9e	awqa1ayxy60	13	\N	\N	\N
+wbz1xh6nz3e	awqa1ayxy60	14	\N	\N	\N
+8o6mwjydnzx	awqa1ayxy60	15	\N	\N	\N
+iqvhwknbnrr	awqa1ayxy60	16	\N	\N	\N
+eolrwpo9lyf	awqa1ayxy60	17	\N	\N	\N
+85c8uxmskwh	awqa1ayxy60	18	\N	\N	\N
+2w360eurk19	awqa1ayxy60	19	\N	\N	\N
+e2bz79kfn39	awqa1ayxy60	20	\N	\N	\N
+2bwco99n47x	awqa1ayxy60	21	\N	\N	\N
+ji9t3fgnkc0	awqa1ayxy60	22	\N	\N	\N
+yjzd6s5ccq4	awqa1ayxy60	23	\N	\N	\N
+imrhc9he5on	awqa1ayxy60	24	\N	\N	\N
+82ikkgrog2y	awqa1ayxy60	25	\N	\N	\N
+mmj417nrjpa	awqa1ayxy60	26	\N	\N	\N
+lmgnrgroovk	awqa1ayxy60	27	\N	\N	\N
+4cx141n1lb4	awqa1ayxy60	28	\N	\N	\N
+k6pr2jh3wgd	awqa1ayxy60	29	\N	\N	\N
+hchm15rxv74	awqa1ayxy60	30	\N	\N	\N
+073buw1m70l	awqa1ayxy60	31	\N	\N	\N
+nocobase-admin-menu	awqa1ayxy60	32	\N	\N	\N
+nhktcwvv2ah	tipr5z4qodz	2	\N	\N	\N
+njql3xmey97	tipr5z4qodz	3	\N	\N	\N
+p4pfnfr2kqa	tipr5z4qodz	4	\N	\N	\N
+cfhegsqw1xf	tipr5z4qodz	5	\N	\N	\N
+93u6f0cr9pz	tipr5z4qodz	6	\N	\N	\N
+fh5hex4wag5	tipr5z4qodz	7	\N	\N	\N
+392bxnfb0cu	tipr5z4qodz	8	\N	\N	\N
+mrhyvojvqar	tipr5z4qodz	9	\N	\N	\N
+z9bj2qzcxd2	tipr5z4qodz	10	\N	\N	\N
+uqifi2qlukf	tipr5z4qodz	11	\N	\N	\N
+8796mm39d27	tipr5z4qodz	12	\N	\N	\N
+26xckt7cr9e	tipr5z4qodz	13	\N	\N	\N
+wbz1xh6nz3e	tipr5z4qodz	14	\N	\N	\N
+6x5dquvwxua	6x5dquvwxua	0	f	properties	\N
+w1vttmfcjic	mls534nrm3a	22	\N	\N	\N
+nocobase-admin-menu	yx8aphydgq6	22	\N	\N	\N
+nocobase-admin-menu	mls534nrm3a	23	\N	\N	\N
+fzzjta8vefz	yx8aphydgq6	7	\N	\N	\N
+fzzjta8vefz	mls534nrm3a	8	\N	\N	\N
+g4n9eb2icuo	yx8aphydgq6	8	\N	\N	\N
+g4n9eb2icuo	mls534nrm3a	9	\N	\N	\N
+yx8aphydgq6	yx8aphydgq6	0	f	properties	\N
+8o6mwjydnzx	tipr5z4qodz	15	\N	\N	\N
+own8lovfe8o	yx8aphydgq6	1	\N	\N	3
+iqvhwknbnrr	tipr5z4qodz	16	\N	\N	\N
+b8e4crdaije	9s4x9dms9lx	17	\N	\N	\N
+eolrwpo9lyf	tipr5z4qodz	17	\N	\N	\N
+9jjvxjijr66	02iuhwcnoro	1	\N	\N	1
+85c8uxmskwh	tipr5z4qodz	18	\N	\N	\N
+own8lovfe8o	02iuhwcnoro	2	\N	\N	\N
+0xyo5u2dbw5	9jjvxjijr66	2	\N	\N	\N
+2w360eurk19	tipr5z4qodz	19	\N	\N	\N
+0xyo5u2dbw5	02iuhwcnoro	3	\N	\N	\N
+3v8laq7zjql	9jjvxjijr66	3	\N	\N	\N
+e2bz79kfn39	tipr5z4qodz	20	\N	\N	\N
+3v8laq7zjql	02iuhwcnoro	4	\N	\N	\N
+4w66alip7h8	9jjvxjijr66	4	\N	\N	\N
+2bwco99n47x	tipr5z4qodz	21	\N	\N	\N
+4w66alip7h8	02iuhwcnoro	5	\N	\N	\N
+5j6aldekdhj	9jjvxjijr66	5	\N	\N	\N
+ji9t3fgnkc0	tipr5z4qodz	22	\N	\N	\N
+5j6aldekdhj	02iuhwcnoro	6	\N	\N	\N
+n08xlr2pmaz	9jjvxjijr66	6	\N	\N	\N
+yjzd6s5ccq4	tipr5z4qodz	23	\N	\N	\N
+n08xlr2pmaz	02iuhwcnoro	7	\N	\N	\N
+xaewf0sjo76	9jjvxjijr66	9	\N	\N	\N
+imrhc9he5on	tipr5z4qodz	24	\N	\N	\N
+xaewf0sjo76	02iuhwcnoro	10	\N	\N	\N
+fo7g83k4wnw	9jjvxjijr66	10	\N	\N	\N
+82ikkgrog2y	tipr5z4qodz	25	\N	\N	\N
+fo7g83k4wnw	02iuhwcnoro	11	\N	\N	\N
+odmrtfsxjp5	9jjvxjijr66	11	\N	\N	\N
+mmj417nrjpa	tipr5z4qodz	26	\N	\N	\N
+odmrtfsxjp5	02iuhwcnoro	12	\N	\N	\N
+alt2km13pi6	9jjvxjijr66	12	\N	\N	\N
+lmgnrgroovk	tipr5z4qodz	27	\N	\N	\N
+alt2km13pi6	02iuhwcnoro	13	\N	\N	\N
+99wrtdh3vjb	9jjvxjijr66	13	\N	\N	\N
+4cx141n1lb4	tipr5z4qodz	28	\N	\N	\N
+99wrtdh3vjb	02iuhwcnoro	14	\N	\N	\N
+mqma0oexw7v	9jjvxjijr66	14	\N	\N	\N
+k6pr2jh3wgd	tipr5z4qodz	29	\N	\N	\N
+mqma0oexw7v	02iuhwcnoro	15	\N	\N	\N
+09yy6b78jxi	9jjvxjijr66	15	\N	\N	\N
+hchm15rxv74	tipr5z4qodz	30	\N	\N	\N
+09yy6b78jxi	02iuhwcnoro	16	\N	\N	\N
+1whdhzzrodk	9jjvxjijr66	16	\N	\N	\N
+073buw1m70l	tipr5z4qodz	31	\N	\N	\N
+1whdhzzrodk	02iuhwcnoro	17	\N	\N	\N
+f205ix4mjg8	9jjvxjijr66	17	\N	\N	\N
+nocobase-admin-menu	tipr5z4qodz	32	\N	\N	\N
+f205ix4mjg8	02iuhwcnoro	18	\N	\N	\N
+fvx7g50y58n	9jjvxjijr66	18	\N	\N	\N
+tipr5z4qodz	tipr5z4qodz	0	f	properties	\N
+yv6e3li2bjt	tipr5z4qodz	1	\N	\N	3
+fvx7g50y58n	02iuhwcnoro	19	\N	\N	\N
+833uu3rb1nm	9jjvxjijr66	19	\N	\N	\N
+833uu3rb1nm	02iuhwcnoro	20	\N	\N	\N
+ik0zt15yup2	9jjvxjijr66	20	\N	\N	\N
+fl6193tpei8	fl6193tpei8	0	f	properties	\N
+m291sv0y712	fl6193tpei8	1	\N	\N	1
+ik0zt15yup2	02iuhwcnoro	21	\N	\N	\N
+w1vttmfcjic	9jjvxjijr66	21	\N	\N	\N
+w1vttmfcjic	02iuhwcnoro	22	\N	\N	\N
+nocobase-admin-menu	9jjvxjijr66	22	\N	\N	\N
+nhktcwvv2ah	n3mcecgqwlh	2	\N	\N	\N
+nocobase-admin-menu	02iuhwcnoro	23	\N	\N	\N
+fzzjta8vefz	9jjvxjijr66	7	\N	\N	\N
+njql3xmey97	n3mcecgqwlh	3	\N	\N	\N
+fzzjta8vefz	02iuhwcnoro	8	\N	\N	\N
+g4n9eb2icuo	9jjvxjijr66	8	\N	\N	\N
+p4pfnfr2kqa	n3mcecgqwlh	4	\N	\N	\N
+g4n9eb2icuo	02iuhwcnoro	9	\N	\N	\N
+9jjvxjijr66	9jjvxjijr66	0	f	properties	\N
+cfhegsqw1xf	n3mcecgqwlh	5	\N	\N	\N
+own8lovfe8o	9jjvxjijr66	1	\N	\N	4
+b8e4crdaije	7r8zgq47519	17	\N	\N	\N
+93u6f0cr9pz	n3mcecgqwlh	6	\N	\N	\N
+41zfs8bogys	4oxssoky5rw	14	\N	\N	\N
+41zfs8bogys	6ep0bs9yfkz	15	\N	\N	\N
+fh5hex4wag5	n3mcecgqwlh	7	\N	\N	\N
+41zfs8bogys	72l6kgv9pjk	16	\N	\N	\N
+41zfs8bogys	bakk21d86pg	17	\N	\N	\N
+392bxnfb0cu	n3mcecgqwlh	8	\N	\N	\N
+41zfs8bogys	9s4x9dms9lx	18	\N	\N	\N
+41zfs8bogys	7r8zgq47519	18	\N	\N	\N
+mrhyvojvqar	n3mcecgqwlh	9	\N	\N	\N
+073buw1m70l	4oxssoky5rw	15	\N	\N	\N
+z9bj2qzcxd2	n3mcecgqwlh	10	\N	\N	\N
+4ruz6norjcf	4ruz6norjcf	0	f	properties	\N
+qbrsluqev37	qbrsluqev37	0	f	properties	\N
+fl6193tpei8	qbrsluqev37	1	\N	\N	1
+60f4r8b0er6	60f4r8b0er6	0	f	properties	\N
+qbrsluqev37	60f4r8b0er6	1	\N	\N	1
+fl6193tpei8	60f4r8b0er6	2	\N	\N	1
+wj9ij1yidio	wj9ij1yidio	0	f	properties	\N
+60f4r8b0er6	wj9ij1yidio	1	\N	\N	1
+qbrsluqev37	wj9ij1yidio	2	\N	\N	1
+fl6193tpei8	wj9ij1yidio	3	\N	\N	1
+mlqmnjhazhe	mlqmnjhazhe	0	f	properties	\N
+wj9ij1yidio	mlqmnjhazhe	1	\N	\N	1
+60f4r8b0er6	mlqmnjhazhe	2	\N	\N	1
+qbrsluqev37	mlqmnjhazhe	3	\N	\N	1
+fl6193tpei8	mlqmnjhazhe	4	\N	\N	1
+m291sv0y712	qbrsluqev37	2	\N	\N	\N
+m291sv0y712	60f4r8b0er6	3	\N	\N	\N
+m291sv0y712	wj9ij1yidio	4	\N	\N	\N
+m291sv0y712	mlqmnjhazhe	5	\N	\N	\N
+3d4bg9et9gc	fl6193tpei8	2	\N	\N	\N
+3d4bg9et9gc	qbrsluqev37	3	\N	\N	\N
+3d4bg9et9gc	60f4r8b0er6	4	\N	\N	\N
+3d4bg9et9gc	wj9ij1yidio	5	\N	\N	\N
+3d4bg9et9gc	mlqmnjhazhe	6	\N	\N	\N
+pdtxkxhi0px	fl6193tpei8	3	\N	\N	\N
+pdtxkxhi0px	qbrsluqev37	4	\N	\N	\N
+pdtxkxhi0px	60f4r8b0er6	5	\N	\N	\N
+pdtxkxhi0px	wj9ij1yidio	6	\N	\N	\N
+pdtxkxhi0px	mlqmnjhazhe	7	\N	\N	\N
+9kxizfoklw7	fl6193tpei8	4	\N	\N	\N
+9kxizfoklw7	qbrsluqev37	5	\N	\N	\N
+9kxizfoklw7	60f4r8b0er6	6	\N	\N	\N
+9kxizfoklw7	wj9ij1yidio	7	\N	\N	\N
+9kxizfoklw7	mlqmnjhazhe	8	\N	\N	\N
+puz5i9w50bl	fl6193tpei8	5	\N	\N	\N
+puz5i9w50bl	qbrsluqev37	6	\N	\N	\N
+puz5i9w50bl	60f4r8b0er6	7	\N	\N	\N
+puz5i9w50bl	wj9ij1yidio	8	\N	\N	\N
+puz5i9w50bl	mlqmnjhazhe	9	\N	\N	\N
+idfhxat5qg6	fl6193tpei8	6	\N	\N	\N
+idfhxat5qg6	qbrsluqev37	7	\N	\N	\N
+idfhxat5qg6	60f4r8b0er6	8	\N	\N	\N
+idfhxat5qg6	wj9ij1yidio	9	\N	\N	\N
+idfhxat5qg6	mlqmnjhazhe	10	\N	\N	\N
+iqddf9bwww2	fl6193tpei8	7	\N	\N	\N
+iqddf9bwww2	qbrsluqev37	8	\N	\N	\N
+iqddf9bwww2	60f4r8b0er6	9	\N	\N	\N
+iqddf9bwww2	wj9ij1yidio	10	\N	\N	\N
+iqddf9bwww2	mlqmnjhazhe	11	\N	\N	\N
+eoxofxze047	fl6193tpei8	8	\N	\N	\N
+eoxofxze047	qbrsluqev37	9	\N	\N	\N
+eoxofxze047	60f4r8b0er6	10	\N	\N	\N
+eoxofxze047	wj9ij1yidio	11	\N	\N	\N
+eoxofxze047	mlqmnjhazhe	12	\N	\N	\N
+p3ls96regvr	fl6193tpei8	9	\N	\N	\N
+p3ls96regvr	qbrsluqev37	10	\N	\N	\N
+p3ls96regvr	60f4r8b0er6	11	\N	\N	\N
+p3ls96regvr	wj9ij1yidio	12	\N	\N	\N
+p3ls96regvr	mlqmnjhazhe	13	\N	\N	\N
+073buw1m70l	fl6193tpei8	10	\N	\N	\N
+073buw1m70l	qbrsluqev37	11	\N	\N	\N
+073buw1m70l	60f4r8b0er6	12	\N	\N	\N
+073buw1m70l	wj9ij1yidio	13	\N	\N	\N
+073buw1m70l	mlqmnjhazhe	14	\N	\N	\N
+nocobase-admin-menu	fl6193tpei8	11	\N	\N	\N
+nocobase-admin-menu	qbrsluqev37	12	\N	\N	\N
+nocobase-admin-menu	60f4r8b0er6	13	\N	\N	\N
+nocobase-admin-menu	wj9ij1yidio	14	\N	\N	\N
+nocobase-admin-menu	mlqmnjhazhe	15	\N	\N	\N
+uqifi2qlukf	n3mcecgqwlh	11	\N	\N	\N
+8796mm39d27	n3mcecgqwlh	12	\N	\N	\N
+26xckt7cr9e	n3mcecgqwlh	13	\N	\N	\N
+wbz1xh6nz3e	n3mcecgqwlh	14	\N	\N	\N
+8o6mwjydnzx	n3mcecgqwlh	15	\N	\N	\N
+3v8laq7zjql	dw1u3l9jxbf	2	\N	\N	\N
+iqvhwknbnrr	n3mcecgqwlh	16	\N	\N	\N
+eolrwpo9lyf	n3mcecgqwlh	17	\N	\N	\N
+4w66alip7h8	dw1u3l9jxbf	3	\N	\N	\N
+85c8uxmskwh	n3mcecgqwlh	18	\N	\N	\N
+5j6aldekdhj	dw1u3l9jxbf	4	\N	\N	\N
+2w360eurk19	n3mcecgqwlh	19	\N	\N	\N
+e2bz79kfn39	n3mcecgqwlh	20	\N	\N	\N
+n08xlr2pmaz	dw1u3l9jxbf	5	\N	\N	\N
+2bwco99n47x	n3mcecgqwlh	21	\N	\N	\N
+xaewf0sjo76	dw1u3l9jxbf	8	\N	\N	\N
+ji9t3fgnkc0	n3mcecgqwlh	22	\N	\N	\N
+yjzd6s5ccq4	n3mcecgqwlh	23	\N	\N	\N
+fo7g83k4wnw	dw1u3l9jxbf	9	\N	\N	\N
+imrhc9he5on	n3mcecgqwlh	24	\N	\N	\N
+odmrtfsxjp5	dw1u3l9jxbf	10	\N	\N	\N
+82ikkgrog2y	n3mcecgqwlh	25	\N	\N	\N
+mmj417nrjpa	n3mcecgqwlh	26	\N	\N	\N
+alt2km13pi6	dw1u3l9jxbf	11	\N	\N	\N
+lmgnrgroovk	n3mcecgqwlh	27	\N	\N	\N
+99wrtdh3vjb	dw1u3l9jxbf	12	\N	\N	\N
+4cx141n1lb4	n3mcecgqwlh	28	\N	\N	\N
+k6pr2jh3wgd	n3mcecgqwlh	29	\N	\N	\N
+mqma0oexw7v	dw1u3l9jxbf	13	\N	\N	\N
+hchm15rxv74	n3mcecgqwlh	30	\N	\N	\N
+09yy6b78jxi	dw1u3l9jxbf	14	\N	\N	\N
+073buw1m70l	n3mcecgqwlh	31	\N	\N	\N
+nocobase-admin-menu	n3mcecgqwlh	32	\N	\N	\N
+1whdhzzrodk	dw1u3l9jxbf	15	\N	\N	\N
+n3mcecgqwlh	n3mcecgqwlh	0	f	properties	\N
+yv6e3li2bjt	n3mcecgqwlh	1	\N	\N	4
+wp3edt8ujq4	wp3edt8ujq4	0	f	properties	\N
+f205ix4mjg8	dw1u3l9jxbf	16	\N	\N	\N
+9vo6wx4o57b	a3tjb34vpdm	1	\N	\N	1
+ikcosgis0e5	a3tjb34vpdm	2	\N	\N	\N
+yv6e3li2bjt	9vo6wx4o57b	2	\N	\N	\N
+yv6e3li2bjt	a3tjb34vpdm	3	\N	\N	\N
+nhktcwvv2ah	9vo6wx4o57b	3	\N	\N	\N
+nhktcwvv2ah	a3tjb34vpdm	4	\N	\N	\N
+njql3xmey97	9vo6wx4o57b	4	\N	\N	\N
+njql3xmey97	a3tjb34vpdm	5	\N	\N	\N
+p4pfnfr2kqa	9vo6wx4o57b	5	\N	\N	\N
+p4pfnfr2kqa	a3tjb34vpdm	6	\N	\N	\N
+cfhegsqw1xf	9vo6wx4o57b	6	\N	\N	\N
+cfhegsqw1xf	a3tjb34vpdm	7	\N	\N	\N
+93u6f0cr9pz	9vo6wx4o57b	7	\N	\N	\N
+43941gf2n0y	43941gf2n0y	0	f	properties	\N
+wp3edt8ujq4	43941gf2n0y	1	\N	\N	1
+fi2ue9h7mq4	fi2ue9h7mq4	0	f	properties	\N
+43941gf2n0y	fi2ue9h7mq4	1	\N	\N	1
+wp3edt8ujq4	fi2ue9h7mq4	2	\N	\N	1
+jkjog6plqji	jkjog6plqji	0	f	properties	\N
+fi2ue9h7mq4	jkjog6plqji	1	\N	\N	1
+43941gf2n0y	jkjog6plqji	2	\N	\N	1
+wp3edt8ujq4	jkjog6plqji	3	\N	\N	1
+a08gdeapwk3	a08gdeapwk3	0	f	properties	\N
+jkjog6plqji	a08gdeapwk3	1	\N	\N	1
+fi2ue9h7mq4	a08gdeapwk3	2	\N	\N	1
+93u6f0cr9pz	a3tjb34vpdm	8	\N	\N	\N
+fh5hex4wag5	9vo6wx4o57b	8	\N	\N	\N
+2nkoyrwgvs1	2nkoyrwgvs1	0	f	properties	\N
+43941gf2n0y	a08gdeapwk3	3	\N	\N	1
+wp3edt8ujq4	a08gdeapwk3	4	\N	\N	1
+zg36b96ttmj	zg36b96ttmj	0	f	properties	\N
+jkjog6plqji	zg36b96ttmj	1	\N	\N	2
+fi2ue9h7mq4	zg36b96ttmj	2	\N	\N	2
+43941gf2n0y	zg36b96ttmj	3	\N	\N	2
+wp3edt8ujq4	zg36b96ttmj	4	\N	\N	2
+mlqmnjhazhe	43941gf2n0y	2	\N	\N	\N
+mlqmnjhazhe	fi2ue9h7mq4	3	\N	\N	\N
+mlqmnjhazhe	jkjog6plqji	4	\N	\N	\N
+mlqmnjhazhe	a08gdeapwk3	5	\N	\N	\N
+mlqmnjhazhe	zg36b96ttmj	5	\N	\N	\N
+wj9ij1yidio	wp3edt8ujq4	2	\N	\N	\N
+wj9ij1yidio	43941gf2n0y	3	\N	\N	\N
+wj9ij1yidio	fi2ue9h7mq4	4	\N	\N	\N
+wj9ij1yidio	jkjog6plqji	5	\N	\N	\N
+wj9ij1yidio	a08gdeapwk3	6	\N	\N	\N
+wj9ij1yidio	zg36b96ttmj	6	\N	\N	\N
+60f4r8b0er6	wp3edt8ujq4	3	\N	\N	\N
+60f4r8b0er6	43941gf2n0y	4	\N	\N	\N
+60f4r8b0er6	fi2ue9h7mq4	5	\N	\N	\N
+60f4r8b0er6	jkjog6plqji	6	\N	\N	\N
+60f4r8b0er6	a08gdeapwk3	7	\N	\N	\N
+60f4r8b0er6	zg36b96ttmj	7	\N	\N	\N
+qbrsluqev37	wp3edt8ujq4	4	\N	\N	\N
+qbrsluqev37	43941gf2n0y	5	\N	\N	\N
+qbrsluqev37	fi2ue9h7mq4	6	\N	\N	\N
+qbrsluqev37	jkjog6plqji	7	\N	\N	\N
+qbrsluqev37	a08gdeapwk3	8	\N	\N	\N
+qbrsluqev37	zg36b96ttmj	8	\N	\N	\N
+fl6193tpei8	wp3edt8ujq4	5	\N	\N	\N
+fl6193tpei8	43941gf2n0y	6	\N	\N	\N
+fl6193tpei8	fi2ue9h7mq4	7	\N	\N	\N
+fl6193tpei8	jkjog6plqji	8	\N	\N	\N
+fl6193tpei8	a08gdeapwk3	9	\N	\N	\N
+fl6193tpei8	zg36b96ttmj	9	\N	\N	\N
+m291sv0y712	wp3edt8ujq4	6	\N	\N	\N
+m291sv0y712	43941gf2n0y	7	\N	\N	\N
+m291sv0y712	fi2ue9h7mq4	8	\N	\N	\N
+m291sv0y712	jkjog6plqji	9	\N	\N	\N
+m291sv0y712	a08gdeapwk3	10	\N	\N	\N
+m291sv0y712	zg36b96ttmj	10	\N	\N	\N
+3d4bg9et9gc	wp3edt8ujq4	7	\N	\N	\N
+3d4bg9et9gc	43941gf2n0y	8	\N	\N	\N
+3d4bg9et9gc	fi2ue9h7mq4	9	\N	\N	\N
+3d4bg9et9gc	jkjog6plqji	10	\N	\N	\N
+3d4bg9et9gc	a08gdeapwk3	11	\N	\N	\N
+3d4bg9et9gc	zg36b96ttmj	11	\N	\N	\N
+pdtxkxhi0px	wp3edt8ujq4	8	\N	\N	\N
+pdtxkxhi0px	43941gf2n0y	9	\N	\N	\N
+pdtxkxhi0px	fi2ue9h7mq4	10	\N	\N	\N
+pdtxkxhi0px	jkjog6plqji	11	\N	\N	\N
+pdtxkxhi0px	a08gdeapwk3	12	\N	\N	\N
+pdtxkxhi0px	zg36b96ttmj	12	\N	\N	\N
+9kxizfoklw7	wp3edt8ujq4	9	\N	\N	\N
+9kxizfoklw7	43941gf2n0y	10	\N	\N	\N
+9kxizfoklw7	fi2ue9h7mq4	11	\N	\N	\N
+9kxizfoklw7	jkjog6plqji	12	\N	\N	\N
+9kxizfoklw7	a08gdeapwk3	13	\N	\N	\N
+9kxizfoklw7	zg36b96ttmj	13	\N	\N	\N
+puz5i9w50bl	wp3edt8ujq4	10	\N	\N	\N
+puz5i9w50bl	43941gf2n0y	11	\N	\N	\N
+puz5i9w50bl	fi2ue9h7mq4	12	\N	\N	\N
+puz5i9w50bl	jkjog6plqji	13	\N	\N	\N
+puz5i9w50bl	a08gdeapwk3	14	\N	\N	\N
+puz5i9w50bl	zg36b96ttmj	14	\N	\N	\N
+idfhxat5qg6	wp3edt8ujq4	11	\N	\N	\N
+idfhxat5qg6	43941gf2n0y	12	\N	\N	\N
+idfhxat5qg6	fi2ue9h7mq4	13	\N	\N	\N
+idfhxat5qg6	jkjog6plqji	14	\N	\N	\N
+idfhxat5qg6	a08gdeapwk3	15	\N	\N	\N
+idfhxat5qg6	zg36b96ttmj	15	\N	\N	\N
+iqddf9bwww2	wp3edt8ujq4	12	\N	\N	\N
+iqddf9bwww2	43941gf2n0y	13	\N	\N	\N
+iqddf9bwww2	fi2ue9h7mq4	14	\N	\N	\N
+iqddf9bwww2	jkjog6plqji	15	\N	\N	\N
+iqddf9bwww2	a08gdeapwk3	16	\N	\N	\N
+iqddf9bwww2	zg36b96ttmj	16	\N	\N	\N
+eoxofxze047	wp3edt8ujq4	13	\N	\N	\N
+eoxofxze047	43941gf2n0y	14	\N	\N	\N
+eoxofxze047	fi2ue9h7mq4	15	\N	\N	\N
+eoxofxze047	jkjog6plqji	16	\N	\N	\N
+eoxofxze047	a08gdeapwk3	17	\N	\N	\N
+eoxofxze047	zg36b96ttmj	17	\N	\N	\N
+p3ls96regvr	wp3edt8ujq4	14	\N	\N	\N
+p3ls96regvr	43941gf2n0y	15	\N	\N	\N
+p3ls96regvr	fi2ue9h7mq4	16	\N	\N	\N
+p3ls96regvr	jkjog6plqji	17	\N	\N	\N
+p3ls96regvr	a08gdeapwk3	18	\N	\N	\N
+p3ls96regvr	zg36b96ttmj	18	\N	\N	\N
+073buw1m70l	wp3edt8ujq4	15	\N	\N	\N
+073buw1m70l	43941gf2n0y	16	\N	\N	\N
+073buw1m70l	fi2ue9h7mq4	17	\N	\N	\N
+073buw1m70l	jkjog6plqji	18	\N	\N	\N
+073buw1m70l	a08gdeapwk3	19	\N	\N	\N
+073buw1m70l	zg36b96ttmj	19	\N	\N	\N
+nocobase-admin-menu	wp3edt8ujq4	16	\N	\N	\N
+nocobase-admin-menu	43941gf2n0y	17	\N	\N	\N
+nocobase-admin-menu	fi2ue9h7mq4	18	\N	\N	\N
+nocobase-admin-menu	jkjog6plqji	19	\N	\N	\N
+nocobase-admin-menu	a08gdeapwk3	20	\N	\N	\N
+nocobase-admin-menu	zg36b96ttmj	20	\N	\N	\N
+mlqmnjhazhe	wp3edt8ujq4	1	\N	\N	1
+fh5hex4wag5	a3tjb34vpdm	9	\N	\N	\N
+392bxnfb0cu	9vo6wx4o57b	9	\N	\N	\N
+392bxnfb0cu	a3tjb34vpdm	10	\N	\N	\N
+mrhyvojvqar	9vo6wx4o57b	10	\N	\N	\N
+mrhyvojvqar	a3tjb34vpdm	11	\N	\N	\N
+z9bj2qzcxd2	9vo6wx4o57b	11	\N	\N	\N
+z9bj2qzcxd2	a3tjb34vpdm	12	\N	\N	\N
+uqifi2qlukf	9vo6wx4o57b	12	\N	\N	\N
+uqifi2qlukf	a3tjb34vpdm	13	\N	\N	\N
+8796mm39d27	9vo6wx4o57b	13	\N	\N	\N
+8796mm39d27	a3tjb34vpdm	14	\N	\N	\N
+26xckt7cr9e	9vo6wx4o57b	14	\N	\N	\N
+26xckt7cr9e	a3tjb34vpdm	15	\N	\N	\N
+wbz1xh6nz3e	9vo6wx4o57b	15	\N	\N	\N
+wbz1xh6nz3e	a3tjb34vpdm	16	\N	\N	\N
+8o6mwjydnzx	9vo6wx4o57b	16	\N	\N	\N
+8o6mwjydnzx	a3tjb34vpdm	17	\N	\N	\N
+iqvhwknbnrr	9vo6wx4o57b	17	\N	\N	\N
+iqvhwknbnrr	a3tjb34vpdm	18	\N	\N	\N
+eolrwpo9lyf	9vo6wx4o57b	18	\N	\N	\N
+eolrwpo9lyf	a3tjb34vpdm	19	\N	\N	\N
+85c8uxmskwh	9vo6wx4o57b	19	\N	\N	\N
+85c8uxmskwh	a3tjb34vpdm	20	\N	\N	\N
+2w360eurk19	9vo6wx4o57b	20	\N	\N	\N
+2w360eurk19	a3tjb34vpdm	21	\N	\N	\N
+e2bz79kfn39	9vo6wx4o57b	21	\N	\N	\N
+e2bz79kfn39	a3tjb34vpdm	22	\N	\N	\N
+2bwco99n47x	9vo6wx4o57b	22	\N	\N	\N
+2bwco99n47x	a3tjb34vpdm	23	\N	\N	\N
+ji9t3fgnkc0	9vo6wx4o57b	23	\N	\N	\N
+ji9t3fgnkc0	a3tjb34vpdm	24	\N	\N	\N
+yjzd6s5ccq4	9vo6wx4o57b	24	\N	\N	\N
+yjzd6s5ccq4	a3tjb34vpdm	25	\N	\N	\N
+imrhc9he5on	9vo6wx4o57b	25	\N	\N	\N
+imrhc9he5on	a3tjb34vpdm	26	\N	\N	\N
+82ikkgrog2y	9vo6wx4o57b	26	\N	\N	\N
+82ikkgrog2y	a3tjb34vpdm	27	\N	\N	\N
+mmj417nrjpa	9vo6wx4o57b	27	\N	\N	\N
+mmj417nrjpa	a3tjb34vpdm	28	\N	\N	\N
+lmgnrgroovk	9vo6wx4o57b	28	\N	\N	\N
+lmgnrgroovk	a3tjb34vpdm	29	\N	\N	\N
+4cx141n1lb4	9vo6wx4o57b	29	\N	\N	\N
+4cx141n1lb4	a3tjb34vpdm	30	\N	\N	\N
+k6pr2jh3wgd	9vo6wx4o57b	30	\N	\N	\N
+k6pr2jh3wgd	a3tjb34vpdm	31	\N	\N	\N
+hchm15rxv74	9vo6wx4o57b	31	\N	\N	\N
+hchm15rxv74	a3tjb34vpdm	32	\N	\N	\N
+073buw1m70l	9vo6wx4o57b	32	\N	\N	\N
+073buw1m70l	a3tjb34vpdm	33	\N	\N	\N
+nocobase-admin-menu	9vo6wx4o57b	33	\N	\N	\N
+nocobase-admin-menu	a3tjb34vpdm	34	\N	\N	\N
+9vo6wx4o57b	9vo6wx4o57b	0	f	properties	\N
+ikcosgis0e5	9vo6wx4o57b	1	\N	\N	2
+ky147pp2987	ky147pp2987	0	f	properties	\N
+22eyta8v19e	6x5dquvwxua	1	\N	\N	1
+ikcosgis0e5	6x5dquvwxua	2	\N	\N	\N
+yv6e3li2bjt	22eyta8v19e	2	\N	\N	\N
+yv6e3li2bjt	6x5dquvwxua	3	\N	\N	\N
+nhktcwvv2ah	22eyta8v19e	3	\N	\N	\N
+nhktcwvv2ah	6x5dquvwxua	4	\N	\N	\N
+njql3xmey97	22eyta8v19e	4	\N	\N	\N
+njql3xmey97	6x5dquvwxua	5	\N	\N	\N
+p4pfnfr2kqa	22eyta8v19e	5	\N	\N	\N
+p4pfnfr2kqa	6x5dquvwxua	6	\N	\N	\N
+cfhegsqw1xf	22eyta8v19e	6	\N	\N	\N
+cfhegsqw1xf	6x5dquvwxua	7	\N	\N	\N
+93u6f0cr9pz	22eyta8v19e	7	\N	\N	\N
+93u6f0cr9pz	6x5dquvwxua	8	\N	\N	\N
+fh5hex4wag5	22eyta8v19e	8	\N	\N	\N
+fh5hex4wag5	6x5dquvwxua	9	\N	\N	\N
+392bxnfb0cu	22eyta8v19e	9	\N	\N	\N
+392bxnfb0cu	6x5dquvwxua	10	\N	\N	\N
+mrhyvojvqar	22eyta8v19e	10	\N	\N	\N
+mrhyvojvqar	6x5dquvwxua	11	\N	\N	\N
+z9bj2qzcxd2	22eyta8v19e	11	\N	\N	\N
+z9bj2qzcxd2	6x5dquvwxua	12	\N	\N	\N
+uqifi2qlukf	22eyta8v19e	12	\N	\N	\N
+uqifi2qlukf	6x5dquvwxua	13	\N	\N	\N
+8796mm39d27	22eyta8v19e	13	\N	\N	\N
+8796mm39d27	6x5dquvwxua	14	\N	\N	\N
+26xckt7cr9e	22eyta8v19e	14	\N	\N	\N
+26xckt7cr9e	6x5dquvwxua	15	\N	\N	\N
+wbz1xh6nz3e	22eyta8v19e	15	\N	\N	\N
+wbz1xh6nz3e	6x5dquvwxua	16	\N	\N	\N
+8o6mwjydnzx	22eyta8v19e	16	\N	\N	\N
+8o6mwjydnzx	6x5dquvwxua	17	\N	\N	\N
+iqvhwknbnrr	22eyta8v19e	17	\N	\N	\N
+iqvhwknbnrr	6x5dquvwxua	18	\N	\N	\N
+eolrwpo9lyf	22eyta8v19e	18	\N	\N	\N
+eolrwpo9lyf	6x5dquvwxua	19	\N	\N	\N
+85c8uxmskwh	22eyta8v19e	19	\N	\N	\N
+85c8uxmskwh	6x5dquvwxua	20	\N	\N	\N
+2w360eurk19	22eyta8v19e	20	\N	\N	\N
+2w360eurk19	6x5dquvwxua	21	\N	\N	\N
+e2bz79kfn39	22eyta8v19e	21	\N	\N	\N
+e2bz79kfn39	6x5dquvwxua	22	\N	\N	\N
+2bwco99n47x	22eyta8v19e	22	\N	\N	\N
+2bwco99n47x	6x5dquvwxua	23	\N	\N	\N
+ji9t3fgnkc0	22eyta8v19e	23	\N	\N	\N
+ji9t3fgnkc0	6x5dquvwxua	24	\N	\N	\N
+yjzd6s5ccq4	22eyta8v19e	24	\N	\N	\N
+yjzd6s5ccq4	6x5dquvwxua	25	\N	\N	\N
+imrhc9he5on	22eyta8v19e	25	\N	\N	\N
+imrhc9he5on	6x5dquvwxua	26	\N	\N	\N
+82ikkgrog2y	22eyta8v19e	26	\N	\N	\N
+82ikkgrog2y	6x5dquvwxua	27	\N	\N	\N
+mmj417nrjpa	22eyta8v19e	27	\N	\N	\N
+mmj417nrjpa	6x5dquvwxua	28	\N	\N	\N
+lmgnrgroovk	22eyta8v19e	28	\N	\N	\N
+lmgnrgroovk	6x5dquvwxua	29	\N	\N	\N
+4cx141n1lb4	22eyta8v19e	29	\N	\N	\N
+4cx141n1lb4	6x5dquvwxua	30	\N	\N	\N
+k6pr2jh3wgd	22eyta8v19e	30	\N	\N	\N
+k6pr2jh3wgd	6x5dquvwxua	31	\N	\N	\N
+hchm15rxv74	22eyta8v19e	31	\N	\N	\N
+hchm15rxv74	6x5dquvwxua	32	\N	\N	\N
+073buw1m70l	22eyta8v19e	32	\N	\N	\N
+073buw1m70l	6x5dquvwxua	33	\N	\N	\N
+nocobase-admin-menu	22eyta8v19e	33	\N	\N	\N
+nocobase-admin-menu	6x5dquvwxua	34	\N	\N	\N
+22eyta8v19e	22eyta8v19e	0	f	properties	\N
+ikcosgis0e5	22eyta8v19e	1	\N	\N	3
+fvx7g50y58n	dw1u3l9jxbf	17	\N	\N	\N
+ky147pp2987	4ruz6norjcf	1	\N	\N	1
+ikcosgis0e5	4ruz6norjcf	2	\N	\N	\N
+yv6e3li2bjt	ky147pp2987	2	\N	\N	\N
+yv6e3li2bjt	4ruz6norjcf	3	\N	\N	\N
+nhktcwvv2ah	ky147pp2987	3	\N	\N	\N
+nhktcwvv2ah	4ruz6norjcf	4	\N	\N	\N
+njql3xmey97	ky147pp2987	4	\N	\N	\N
+njql3xmey97	4ruz6norjcf	5	\N	\N	\N
+p4pfnfr2kqa	ky147pp2987	5	\N	\N	\N
+p4pfnfr2kqa	4ruz6norjcf	6	\N	\N	\N
+cfhegsqw1xf	ky147pp2987	6	\N	\N	\N
+cfhegsqw1xf	4ruz6norjcf	7	\N	\N	\N
+93u6f0cr9pz	ky147pp2987	7	\N	\N	\N
+93u6f0cr9pz	4ruz6norjcf	8	\N	\N	\N
+fh5hex4wag5	ky147pp2987	8	\N	\N	\N
+fh5hex4wag5	4ruz6norjcf	9	\N	\N	\N
+392bxnfb0cu	ky147pp2987	9	\N	\N	\N
+392bxnfb0cu	4ruz6norjcf	10	\N	\N	\N
+mrhyvojvqar	ky147pp2987	10	\N	\N	\N
+mrhyvojvqar	4ruz6norjcf	11	\N	\N	\N
+z9bj2qzcxd2	ky147pp2987	11	\N	\N	\N
+z9bj2qzcxd2	4ruz6norjcf	12	\N	\N	\N
+uqifi2qlukf	ky147pp2987	12	\N	\N	\N
+uqifi2qlukf	4ruz6norjcf	13	\N	\N	\N
+8796mm39d27	ky147pp2987	13	\N	\N	\N
+8796mm39d27	4ruz6norjcf	14	\N	\N	\N
+26xckt7cr9e	ky147pp2987	14	\N	\N	\N
+26xckt7cr9e	4ruz6norjcf	15	\N	\N	\N
+wbz1xh6nz3e	ky147pp2987	15	\N	\N	\N
+wbz1xh6nz3e	4ruz6norjcf	16	\N	\N	\N
+8o6mwjydnzx	ky147pp2987	16	\N	\N	\N
+8o6mwjydnzx	4ruz6norjcf	17	\N	\N	\N
+iqvhwknbnrr	ky147pp2987	17	\N	\N	\N
+iqvhwknbnrr	4ruz6norjcf	18	\N	\N	\N
+eolrwpo9lyf	ky147pp2987	18	\N	\N	\N
+eolrwpo9lyf	4ruz6norjcf	19	\N	\N	\N
+85c8uxmskwh	ky147pp2987	19	\N	\N	\N
+85c8uxmskwh	4ruz6norjcf	20	\N	\N	\N
+ikcosgis0e5	ky147pp2987	1	\N	\N	4
+833uu3rb1nm	dw1u3l9jxbf	18	\N	\N	\N
+kfshzp2e8w3	kfshzp2e8w3	0	f	properties	\N
+zg36b96ttmj	seoty3c8shi	1	\N	\N	2
+2w360eurk19	ky147pp2987	20	\N	\N	\N
+2w360eurk19	4ruz6norjcf	21	\N	\N	\N
+e2bz79kfn39	ky147pp2987	21	\N	\N	\N
+e2bz79kfn39	4ruz6norjcf	22	\N	\N	\N
+2bwco99n47x	ky147pp2987	22	\N	\N	\N
+2bwco99n47x	4ruz6norjcf	23	\N	\N	\N
+ji9t3fgnkc0	ky147pp2987	23	\N	\N	\N
+ji9t3fgnkc0	4ruz6norjcf	24	\N	\N	\N
+yjzd6s5ccq4	ky147pp2987	24	\N	\N	\N
+yjzd6s5ccq4	4ruz6norjcf	25	\N	\N	\N
+imrhc9he5on	ky147pp2987	25	\N	\N	\N
+imrhc9he5on	4ruz6norjcf	26	\N	\N	\N
+82ikkgrog2y	ky147pp2987	26	\N	\N	\N
+82ikkgrog2y	4ruz6norjcf	27	\N	\N	\N
+mmj417nrjpa	ky147pp2987	27	\N	\N	\N
+mmj417nrjpa	4ruz6norjcf	28	\N	\N	\N
+lmgnrgroovk	ky147pp2987	28	\N	\N	\N
+lmgnrgroovk	4ruz6norjcf	29	\N	\N	\N
+4cx141n1lb4	ky147pp2987	29	\N	\N	\N
+4cx141n1lb4	4ruz6norjcf	30	\N	\N	\N
+k6pr2jh3wgd	ky147pp2987	30	\N	\N	\N
+91kpjw6935c	91kpjw6935c	0	f	properties	\N
+seoty3c8shi	91kpjw6935c	1	\N	\N	1
+lvvd97oho9w	lvvd97oho9w	0	f	properties	\N
+91kpjw6935c	lvvd97oho9w	1	\N	\N	1
+seoty3c8shi	lvvd97oho9w	2	\N	\N	1
+zg36b96ttmj	91kpjw6935c	2	\N	\N	\N
+zg36b96ttmj	lvvd97oho9w	3	\N	\N	\N
+jkjog6plqji	seoty3c8shi	2	\N	\N	\N
+jkjog6plqji	91kpjw6935c	3	\N	\N	\N
+jkjog6plqji	lvvd97oho9w	4	\N	\N	\N
+fi2ue9h7mq4	seoty3c8shi	3	\N	\N	\N
+fi2ue9h7mq4	91kpjw6935c	4	\N	\N	\N
+fi2ue9h7mq4	lvvd97oho9w	5	\N	\N	\N
+43941gf2n0y	seoty3c8shi	4	\N	\N	\N
+43941gf2n0y	91kpjw6935c	5	\N	\N	\N
+43941gf2n0y	lvvd97oho9w	6	\N	\N	\N
+wp3edt8ujq4	seoty3c8shi	5	\N	\N	\N
+wp3edt8ujq4	91kpjw6935c	6	\N	\N	\N
+wp3edt8ujq4	lvvd97oho9w	7	\N	\N	\N
+mlqmnjhazhe	seoty3c8shi	6	\N	\N	\N
+mlqmnjhazhe	91kpjw6935c	7	\N	\N	\N
+mlqmnjhazhe	lvvd97oho9w	8	\N	\N	\N
+wj9ij1yidio	seoty3c8shi	7	\N	\N	\N
+wj9ij1yidio	91kpjw6935c	8	\N	\N	\N
+wj9ij1yidio	lvvd97oho9w	9	\N	\N	\N
+60f4r8b0er6	seoty3c8shi	8	\N	\N	\N
+60f4r8b0er6	91kpjw6935c	9	\N	\N	\N
+60f4r8b0er6	lvvd97oho9w	10	\N	\N	\N
+qbrsluqev37	seoty3c8shi	9	\N	\N	\N
+qbrsluqev37	91kpjw6935c	10	\N	\N	\N
+qbrsluqev37	lvvd97oho9w	11	\N	\N	\N
+fl6193tpei8	seoty3c8shi	10	\N	\N	\N
+fl6193tpei8	91kpjw6935c	11	\N	\N	\N
+fl6193tpei8	lvvd97oho9w	12	\N	\N	\N
+m291sv0y712	seoty3c8shi	11	\N	\N	\N
+m291sv0y712	91kpjw6935c	12	\N	\N	\N
+m291sv0y712	lvvd97oho9w	13	\N	\N	\N
+3d4bg9et9gc	seoty3c8shi	12	\N	\N	\N
+3d4bg9et9gc	91kpjw6935c	13	\N	\N	\N
+3d4bg9et9gc	lvvd97oho9w	14	\N	\N	\N
+pdtxkxhi0px	seoty3c8shi	13	\N	\N	\N
+pdtxkxhi0px	91kpjw6935c	14	\N	\N	\N
+pdtxkxhi0px	lvvd97oho9w	15	\N	\N	\N
+9kxizfoklw7	seoty3c8shi	14	\N	\N	\N
+9kxizfoklw7	91kpjw6935c	15	\N	\N	\N
+9kxizfoklw7	lvvd97oho9w	16	\N	\N	\N
+puz5i9w50bl	seoty3c8shi	15	\N	\N	\N
+puz5i9w50bl	91kpjw6935c	16	\N	\N	\N
+puz5i9w50bl	lvvd97oho9w	17	\N	\N	\N
+idfhxat5qg6	seoty3c8shi	16	\N	\N	\N
+idfhxat5qg6	91kpjw6935c	17	\N	\N	\N
+idfhxat5qg6	lvvd97oho9w	18	\N	\N	\N
+iqddf9bwww2	seoty3c8shi	17	\N	\N	\N
+iqddf9bwww2	91kpjw6935c	18	\N	\N	\N
+iqddf9bwww2	lvvd97oho9w	19	\N	\N	\N
+eoxofxze047	seoty3c8shi	18	\N	\N	\N
+eoxofxze047	91kpjw6935c	19	\N	\N	\N
+eoxofxze047	lvvd97oho9w	20	\N	\N	\N
+p3ls96regvr	seoty3c8shi	19	\N	\N	\N
+p3ls96regvr	91kpjw6935c	20	\N	\N	\N
+p3ls96regvr	lvvd97oho9w	21	\N	\N	\N
+073buw1m70l	seoty3c8shi	20	\N	\N	\N
+073buw1m70l	91kpjw6935c	21	\N	\N	\N
+073buw1m70l	lvvd97oho9w	22	\N	\N	\N
+nocobase-admin-menu	seoty3c8shi	21	\N	\N	\N
+nocobase-admin-menu	91kpjw6935c	22	\N	\N	\N
+nocobase-admin-menu	lvvd97oho9w	23	\N	\N	\N
+seoty3c8shi	seoty3c8shi	0	f	properties	\N
+ik0zt15yup2	dw1u3l9jxbf	19	\N	\N	\N
+w1vttmfcjic	dw1u3l9jxbf	20	\N	\N	\N
+nocobase-admin-menu	dw1u3l9jxbf	21	\N	\N	\N
+fzzjta8vefz	dw1u3l9jxbf	6	\N	\N	\N
+g4n9eb2icuo	dw1u3l9jxbf	7	\N	\N	\N
+dw1u3l9jxbf	dw1u3l9jxbf	0	f	properties	\N
+0xyo5u2dbw5	dw1u3l9jxbf	1	\N	\N	4
+pcf9x56mn9j	2nkoyrwgvs1	1	\N	\N	1
+own8lovfe8o	2nkoyrwgvs1	2	\N	\N	\N
+0xyo5u2dbw5	pcf9x56mn9j	2	\N	\N	\N
+0xyo5u2dbw5	2nkoyrwgvs1	3	\N	\N	\N
+3v8laq7zjql	pcf9x56mn9j	3	\N	\N	\N
+3v8laq7zjql	2nkoyrwgvs1	4	\N	\N	\N
+4w66alip7h8	pcf9x56mn9j	4	\N	\N	\N
+4w66alip7h8	2nkoyrwgvs1	5	\N	\N	\N
+5j6aldekdhj	pcf9x56mn9j	5	\N	\N	\N
+5j6aldekdhj	2nkoyrwgvs1	6	\N	\N	\N
+n08xlr2pmaz	pcf9x56mn9j	6	\N	\N	\N
+n08xlr2pmaz	2nkoyrwgvs1	7	\N	\N	\N
+xaewf0sjo76	pcf9x56mn9j	9	\N	\N	\N
+xaewf0sjo76	2nkoyrwgvs1	10	\N	\N	\N
+fo7g83k4wnw	pcf9x56mn9j	10	\N	\N	\N
+fo7g83k4wnw	2nkoyrwgvs1	11	\N	\N	\N
+odmrtfsxjp5	pcf9x56mn9j	11	\N	\N	\N
+odmrtfsxjp5	2nkoyrwgvs1	12	\N	\N	\N
+alt2km13pi6	pcf9x56mn9j	12	\N	\N	\N
+k6pr2jh3wgd	4ruz6norjcf	31	\N	\N	\N
+hchm15rxv74	ky147pp2987	31	\N	\N	\N
+alt2km13pi6	2nkoyrwgvs1	13	\N	\N	\N
+99wrtdh3vjb	pcf9x56mn9j	13	\N	\N	\N
+99wrtdh3vjb	2nkoyrwgvs1	14	\N	\N	\N
+mqma0oexw7v	pcf9x56mn9j	14	\N	\N	\N
+mqma0oexw7v	2nkoyrwgvs1	15	\N	\N	\N
+09yy6b78jxi	pcf9x56mn9j	15	\N	\N	\N
+09yy6b78jxi	2nkoyrwgvs1	16	\N	\N	\N
+1whdhzzrodk	pcf9x56mn9j	16	\N	\N	\N
+1whdhzzrodk	2nkoyrwgvs1	17	\N	\N	\N
+f205ix4mjg8	pcf9x56mn9j	17	\N	\N	\N
+f205ix4mjg8	2nkoyrwgvs1	18	\N	\N	\N
+fvx7g50y58n	pcf9x56mn9j	18	\N	\N	\N
+fvx7g50y58n	2nkoyrwgvs1	19	\N	\N	\N
+833uu3rb1nm	pcf9x56mn9j	19	\N	\N	\N
+833uu3rb1nm	2nkoyrwgvs1	20	\N	\N	\N
+ik0zt15yup2	pcf9x56mn9j	20	\N	\N	\N
+ik0zt15yup2	2nkoyrwgvs1	21	\N	\N	\N
+w1vttmfcjic	pcf9x56mn9j	21	\N	\N	\N
+w1vttmfcjic	2nkoyrwgvs1	22	\N	\N	\N
+nocobase-admin-menu	pcf9x56mn9j	22	\N	\N	\N
+nocobase-admin-menu	2nkoyrwgvs1	23	\N	\N	\N
+fzzjta8vefz	pcf9x56mn9j	7	\N	\N	\N
+fzzjta8vefz	2nkoyrwgvs1	8	\N	\N	\N
+g4n9eb2icuo	pcf9x56mn9j	8	\N	\N	\N
+g4n9eb2icuo	2nkoyrwgvs1	9	\N	\N	\N
+pcf9x56mn9j	pcf9x56mn9j	0	f	properties	\N
+own8lovfe8o	pcf9x56mn9j	1	\N	\N	5
+073buw1m70l	6ep0bs9yfkz	16	\N	\N	\N
+073buw1m70l	72l6kgv9pjk	17	\N	\N	\N
+073buw1m70l	bakk21d86pg	18	\N	\N	\N
+073buw1m70l	9s4x9dms9lx	19	\N	\N	\N
+073buw1m70l	7r8zgq47519	19	\N	\N	\N
+nocobase-admin-menu	4oxssoky5rw	16	\N	\N	\N
+nocobase-admin-menu	6ep0bs9yfkz	17	\N	\N	\N
+nocobase-admin-menu	72l6kgv9pjk	18	\N	\N	\N
+nocobase-admin-menu	bakk21d86pg	19	\N	\N	\N
+jkjog6plqji	olewe3383tm	2	\N	\N	\N
+nocobase-admin-menu	9s4x9dms9lx	20	\N	\N	\N
+nocobase-admin-menu	7r8zgq47519	20	\N	\N	\N
+fi2ue9h7mq4	olewe3383tm	3	\N	\N	\N
+pe3qwkwq8a6	pe3qwkwq8a6	0	f	properties	\N
+43941gf2n0y	olewe3383tm	4	\N	\N	\N
+bakk21d86pg	pe3qwkwq8a6	2	\N	\N	\N
+wp3edt8ujq4	olewe3383tm	5	\N	\N	\N
+72l6kgv9pjk	pe3qwkwq8a6	3	\N	\N	\N
+6ep0bs9yfkz	pe3qwkwq8a6	4	\N	\N	\N
+mlqmnjhazhe	olewe3383tm	6	\N	\N	\N
+4oxssoky5rw	pe3qwkwq8a6	5	\N	\N	\N
+84mt4mce1w7	pe3qwkwq8a6	6	\N	\N	\N
+wj9ij1yidio	olewe3383tm	7	\N	\N	\N
+zeyg628q8t0	pe3qwkwq8a6	7	\N	\N	\N
+bg4rui84lj2	pe3qwkwq8a6	8	\N	\N	\N
+60f4r8b0er6	olewe3383tm	8	\N	\N	\N
+8oq39vqqx82	pe3qwkwq8a6	9	\N	\N	\N
+3ohbpid2iz3	pe3qwkwq8a6	10	\N	\N	\N
+qbrsluqev37	olewe3383tm	9	\N	\N	\N
+8sehmqjx6y1	pe3qwkwq8a6	11	\N	\N	\N
+9vahgw6b2zc	pe3qwkwq8a6	12	\N	\N	\N
+fl6193tpei8	olewe3383tm	10	\N	\N	\N
+v3o080ka847	pe3qwkwq8a6	13	\N	\N	\N
+culzjbos9r3	pe3qwkwq8a6	14	\N	\N	\N
+m291sv0y712	olewe3383tm	11	\N	\N	\N
+3owowmpqg3i	pe3qwkwq8a6	15	\N	\N	\N
+wu05wqno6t2	pe3qwkwq8a6	16	\N	\N	\N
+3d4bg9et9gc	olewe3383tm	12	\N	\N	\N
+fq548i6jjul	pe3qwkwq8a6	17	\N	\N	\N
+b8e4crdaije	pe3qwkwq8a6	18	\N	\N	\N
+pdtxkxhi0px	olewe3383tm	13	\N	\N	\N
+41zfs8bogys	pe3qwkwq8a6	19	\N	\N	\N
+073buw1m70l	pe3qwkwq8a6	20	\N	\N	\N
+9kxizfoklw7	olewe3383tm	14	\N	\N	\N
+nocobase-admin-menu	pe3qwkwq8a6	21	\N	\N	\N
+7r8zgq47519	pe3qwkwq8a6	1	\N	\N	1
+puz5i9w50bl	olewe3383tm	15	\N	\N	\N
+wu05wqno6t2	ib430oacml5	17	\N	\N	\N
+wu05wqno6t2	h908qhhdqx0	18	\N	\N	\N
+idfhxat5qg6	olewe3383tm	16	\N	\N	\N
+fq548i6jjul	vm0durc3u21	17	\N	\N	\N
+fq548i6jjul	ib430oacml5	18	\N	\N	\N
+iqddf9bwww2	olewe3383tm	17	\N	\N	\N
+fq548i6jjul	h908qhhdqx0	19	\N	\N	\N
+b8e4crdaije	vm0durc3u21	18	\N	\N	\N
+eoxofxze047	olewe3383tm	18	\N	\N	\N
+b8e4crdaije	ib430oacml5	19	\N	\N	\N
+b8e4crdaije	h908qhhdqx0	20	\N	\N	\N
+p3ls96regvr	olewe3383tm	19	\N	\N	\N
+41zfs8bogys	vm0durc3u21	19	\N	\N	\N
+41zfs8bogys	ib430oacml5	20	\N	\N	\N
+073buw1m70l	olewe3383tm	20	\N	\N	\N
+41zfs8bogys	h908qhhdqx0	21	\N	\N	\N
+nocobase-admin-menu	olewe3383tm	21	\N	\N	\N
+olewe3383tm	olewe3383tm	0	f	properties	\N
+8dzfyczph0t	8dzfyczph0t	0	f	properties	\N
+l64ub2rxrot	8dzfyczph0t	1	\N	\N	1
+p2vze33te52	p2vze33te52	0	f	properties	\N
+8dzfyczph0t	p2vze33te52	1	\N	\N	1
+l64ub2rxrot	p2vze33te52	2	\N	\N	1
+zg36b96ttmj	8dzfyczph0t	2	\N	\N	\N
+zg36b96ttmj	p2vze33te52	3	\N	\N	\N
+jkjog6plqji	l64ub2rxrot	2	\N	\N	\N
+jkjog6plqji	8dzfyczph0t	3	\N	\N	\N
+jkjog6plqji	p2vze33te52	4	\N	\N	\N
+fi2ue9h7mq4	l64ub2rxrot	3	\N	\N	\N
+fi2ue9h7mq4	8dzfyczph0t	4	\N	\N	\N
+fi2ue9h7mq4	p2vze33te52	5	\N	\N	\N
+43941gf2n0y	l64ub2rxrot	4	\N	\N	\N
+43941gf2n0y	8dzfyczph0t	5	\N	\N	\N
+43941gf2n0y	p2vze33te52	6	\N	\N	\N
+wp3edt8ujq4	l64ub2rxrot	5	\N	\N	\N
+wp3edt8ujq4	8dzfyczph0t	6	\N	\N	\N
+wp3edt8ujq4	p2vze33te52	7	\N	\N	\N
+mlqmnjhazhe	l64ub2rxrot	6	\N	\N	\N
+mlqmnjhazhe	8dzfyczph0t	7	\N	\N	\N
+mlqmnjhazhe	p2vze33te52	8	\N	\N	\N
+wj9ij1yidio	l64ub2rxrot	7	\N	\N	\N
+wj9ij1yidio	8dzfyczph0t	8	\N	\N	\N
+wj9ij1yidio	p2vze33te52	9	\N	\N	\N
+60f4r8b0er6	l64ub2rxrot	8	\N	\N	\N
+60f4r8b0er6	8dzfyczph0t	9	\N	\N	\N
+60f4r8b0er6	p2vze33te52	10	\N	\N	\N
+qbrsluqev37	l64ub2rxrot	9	\N	\N	\N
+qbrsluqev37	8dzfyczph0t	10	\N	\N	\N
+qbrsluqev37	p2vze33te52	11	\N	\N	\N
+l64ub2rxrot	l64ub2rxrot	0	f	properties	\N
+zg36b96ttmj	olewe3383tm	1	\N	\N	4
+zg36b96ttmj	l64ub2rxrot	1	\N	\N	5
+wlh4ozrsyng	wlh4ozrsyng	0	f	properties	\N
+hchm15rxv74	4ruz6norjcf	32	\N	\N	\N
+073buw1m70l	ky147pp2987	32	\N	\N	\N
+073buw1m70l	4ruz6norjcf	33	\N	\N	\N
+nocobase-admin-menu	ky147pp2987	33	\N	\N	\N
+nocobase-admin-menu	4ruz6norjcf	34	\N	\N	\N
+fl6193tpei8	l64ub2rxrot	10	\N	\N	\N
+fl6193tpei8	8dzfyczph0t	11	\N	\N	\N
+fl6193tpei8	p2vze33te52	12	\N	\N	\N
+m291sv0y712	l64ub2rxrot	11	\N	\N	\N
+m291sv0y712	8dzfyczph0t	12	\N	\N	\N
+m291sv0y712	p2vze33te52	13	\N	\N	\N
+3d4bg9et9gc	l64ub2rxrot	12	\N	\N	\N
+3d4bg9et9gc	8dzfyczph0t	13	\N	\N	\N
+3d4bg9et9gc	p2vze33te52	14	\N	\N	\N
+pdtxkxhi0px	l64ub2rxrot	13	\N	\N	\N
+pdtxkxhi0px	8dzfyczph0t	14	\N	\N	\N
+pdtxkxhi0px	p2vze33te52	15	\N	\N	\N
+9kxizfoklw7	l64ub2rxrot	14	\N	\N	\N
+9kxizfoklw7	8dzfyczph0t	15	\N	\N	\N
+9kxizfoklw7	p2vze33te52	16	\N	\N	\N
+puz5i9w50bl	l64ub2rxrot	15	\N	\N	\N
+puz5i9w50bl	8dzfyczph0t	16	\N	\N	\N
+puz5i9w50bl	p2vze33te52	17	\N	\N	\N
+idfhxat5qg6	l64ub2rxrot	16	\N	\N	\N
+idfhxat5qg6	8dzfyczph0t	17	\N	\N	\N
+idfhxat5qg6	p2vze33te52	18	\N	\N	\N
+iqddf9bwww2	l64ub2rxrot	17	\N	\N	\N
+iqddf9bwww2	8dzfyczph0t	18	\N	\N	\N
+iqddf9bwww2	p2vze33te52	19	\N	\N	\N
+eoxofxze047	l64ub2rxrot	18	\N	\N	\N
+eoxofxze047	8dzfyczph0t	19	\N	\N	\N
+eoxofxze047	p2vze33te52	20	\N	\N	\N
+p3ls96regvr	l64ub2rxrot	19	\N	\N	\N
+p3ls96regvr	8dzfyczph0t	20	\N	\N	\N
+p3ls96regvr	p2vze33te52	21	\N	\N	\N
+073buw1m70l	l64ub2rxrot	20	\N	\N	\N
+073buw1m70l	8dzfyczph0t	21	\N	\N	\N
+073buw1m70l	p2vze33te52	22	\N	\N	\N
+nocobase-admin-menu	l64ub2rxrot	21	\N	\N	\N
+nocobase-admin-menu	8dzfyczph0t	22	\N	\N	\N
+nocobase-admin-menu	p2vze33te52	23	\N	\N	\N
+ai8i45ojqri	wgnydnfsio9	2	\N	\N	\N
+rsvj3o8613d	wgnydnfsio9	3	\N	\N	\N
+w2xb0a6rkey	wgnydnfsio9	4	\N	\N	\N
+x8ujxnhlng7	wgnydnfsio9	5	\N	\N	\N
+evtz6ljqxdq	wgnydnfsio9	6	\N	\N	\N
+i80vemflinb	wgnydnfsio9	7	\N	\N	\N
+5bru92qlyrq	wgnydnfsio9	8	\N	\N	\N
+obl2auujo32	wgnydnfsio9	9	\N	\N	\N
+nocobase-admin-menu	wgnydnfsio9	10	\N	\N	\N
+wgnydnfsio9	wgnydnfsio9	0	f	properties	\N
+vyxprlubesu	wgnydnfsio9	1	\N	\N	7
+ex7labhox58	ex7labhox58	0	f	properties	\N
+vm0durc3u21	vm0durc3u21	0	f	properties	\N
+rpbi3yn053m	ex7labhox58	1	\N	\N	1
+ai8i45ojqri	rpbi3yn053m	3	\N	\N	\N
+ai8i45ojqri	ex7labhox58	4	\N	\N	\N
+rsvj3o8613d	rpbi3yn053m	4	\N	\N	\N
+rsvj3o8613d	ex7labhox58	5	\N	\N	\N
+w2xb0a6rkey	rpbi3yn053m	5	\N	\N	\N
+w2xb0a6rkey	ex7labhox58	6	\N	\N	\N
+h6d3ghccgs1	ex7labhox58	2	\N	\N	\N
+vyxprlubesu	rpbi3yn053m	2	\N	\N	\N
+vyxprlubesu	ex7labhox58	3	\N	\N	\N
+x8ujxnhlng7	rpbi3yn053m	6	\N	\N	\N
+x8ujxnhlng7	ex7labhox58	7	\N	\N	\N
+evtz6ljqxdq	rpbi3yn053m	7	\N	\N	\N
+evtz6ljqxdq	ex7labhox58	8	\N	\N	\N
+i80vemflinb	rpbi3yn053m	8	\N	\N	\N
+i80vemflinb	ex7labhox58	9	\N	\N	\N
+5bru92qlyrq	rpbi3yn053m	9	\N	\N	\N
+5bru92qlyrq	ex7labhox58	10	\N	\N	\N
+obl2auujo32	rpbi3yn053m	10	\N	\N	\N
+obl2auujo32	ex7labhox58	11	\N	\N	\N
+nocobase-admin-menu	rpbi3yn053m	11	\N	\N	\N
+nocobase-admin-menu	ex7labhox58	12	\N	\N	\N
+rpbi3yn053m	rpbi3yn053m	0	f	properties	\N
+h6d3ghccgs1	rpbi3yn053m	1	\N	\N	2
+ib430oacml5	ib430oacml5	0	f	properties	\N
+vm0durc3u21	ib430oacml5	1	\N	\N	1
+h908qhhdqx0	h908qhhdqx0	0	f	properties	\N
+ib430oacml5	h908qhhdqx0	1	\N	\N	1
+vm0durc3u21	h908qhhdqx0	2	\N	\N	1
+9s4x9dms9lx	ib430oacml5	2	\N	\N	\N
+9s4x9dms9lx	h908qhhdqx0	3	\N	\N	\N
+bakk21d86pg	vm0durc3u21	2	\N	\N	\N
+bakk21d86pg	ib430oacml5	3	\N	\N	\N
+bakk21d86pg	h908qhhdqx0	4	\N	\N	\N
+72l6kgv9pjk	vm0durc3u21	3	\N	\N	\N
+72l6kgv9pjk	ib430oacml5	4	\N	\N	\N
+72l6kgv9pjk	h908qhhdqx0	5	\N	\N	\N
+6ep0bs9yfkz	vm0durc3u21	4	\N	\N	\N
+6ep0bs9yfkz	ib430oacml5	5	\N	\N	\N
+6ep0bs9yfkz	h908qhhdqx0	6	\N	\N	\N
+4oxssoky5rw	vm0durc3u21	5	\N	\N	\N
+4oxssoky5rw	ib430oacml5	6	\N	\N	\N
+4oxssoky5rw	h908qhhdqx0	7	\N	\N	\N
+84mt4mce1w7	vm0durc3u21	6	\N	\N	\N
+84mt4mce1w7	ib430oacml5	7	\N	\N	\N
+84mt4mce1w7	h908qhhdqx0	8	\N	\N	\N
+zeyg628q8t0	vm0durc3u21	7	\N	\N	\N
+zeyg628q8t0	ib430oacml5	8	\N	\N	\N
+zeyg628q8t0	h908qhhdqx0	9	\N	\N	\N
+bg4rui84lj2	vm0durc3u21	8	\N	\N	\N
+bg4rui84lj2	ib430oacml5	9	\N	\N	\N
+bg4rui84lj2	h908qhhdqx0	10	\N	\N	\N
+8oq39vqqx82	vm0durc3u21	9	\N	\N	\N
+9s4x9dms9lx	vm0durc3u21	1	\N	\N	1
+073buw1m70l	vm0durc3u21	20	\N	\N	\N
+073buw1m70l	ib430oacml5	21	\N	\N	\N
+073buw1m70l	h908qhhdqx0	22	\N	\N	\N
+nocobase-admin-menu	vm0durc3u21	21	\N	\N	\N
+nocobase-admin-menu	ib430oacml5	22	\N	\N	\N
+nocobase-admin-menu	h908qhhdqx0	23	\N	\N	\N
+a3tspbm4ym8	a3tspbm4ym8	0	f	properties	\N
+0xjeiwliq30	a3tspbm4ym8	1	\N	\N	1
+3jla5qq6bwz	3jla5qq6bwz	0	f	properties	\N
+a3tspbm4ym8	3jla5qq6bwz	1	\N	\N	1
+0xjeiwliq30	3jla5qq6bwz	2	\N	\N	1
+9s4x9dms9lx	a3tspbm4ym8	2	\N	\N	\N
+9s4x9dms9lx	3jla5qq6bwz	3	\N	\N	\N
+bakk21d86pg	0xjeiwliq30	2	\N	\N	\N
+bakk21d86pg	a3tspbm4ym8	3	\N	\N	\N
+bakk21d86pg	3jla5qq6bwz	4	\N	\N	\N
+72l6kgv9pjk	0xjeiwliq30	3	\N	\N	\N
+72l6kgv9pjk	a3tspbm4ym8	4	\N	\N	\N
+72l6kgv9pjk	3jla5qq6bwz	5	\N	\N	\N
+6ep0bs9yfkz	0xjeiwliq30	4	\N	\N	\N
+6ep0bs9yfkz	a3tspbm4ym8	5	\N	\N	\N
+6ep0bs9yfkz	3jla5qq6bwz	6	\N	\N	\N
+4oxssoky5rw	0xjeiwliq30	5	\N	\N	\N
+4oxssoky5rw	a3tspbm4ym8	6	\N	\N	\N
+4oxssoky5rw	3jla5qq6bwz	7	\N	\N	\N
+84mt4mce1w7	0xjeiwliq30	6	\N	\N	\N
+84mt4mce1w7	a3tspbm4ym8	7	\N	\N	\N
+84mt4mce1w7	3jla5qq6bwz	8	\N	\N	\N
+zeyg628q8t0	0xjeiwliq30	7	\N	\N	\N
+zeyg628q8t0	a3tspbm4ym8	8	\N	\N	\N
+zeyg628q8t0	3jla5qq6bwz	9	\N	\N	\N
+bg4rui84lj2	0xjeiwliq30	8	\N	\N	\N
+bg4rui84lj2	a3tspbm4ym8	9	\N	\N	\N
+bg4rui84lj2	3jla5qq6bwz	10	\N	\N	\N
+8oq39vqqx82	0xjeiwliq30	9	\N	\N	\N
+8oq39vqqx82	a3tspbm4ym8	10	\N	\N	\N
+8oq39vqqx82	3jla5qq6bwz	11	\N	\N	\N
+3ohbpid2iz3	0xjeiwliq30	10	\N	\N	\N
+3ohbpid2iz3	a3tspbm4ym8	11	\N	\N	\N
+3ohbpid2iz3	3jla5qq6bwz	12	\N	\N	\N
+8sehmqjx6y1	0xjeiwliq30	11	\N	\N	\N
+8sehmqjx6y1	a3tspbm4ym8	12	\N	\N	\N
+8sehmqjx6y1	3jla5qq6bwz	13	\N	\N	\N
+9vahgw6b2zc	0xjeiwliq30	12	\N	\N	\N
+9vahgw6b2zc	a3tspbm4ym8	13	\N	\N	\N
+9vahgw6b2zc	3jla5qq6bwz	14	\N	\N	\N
+v3o080ka847	0xjeiwliq30	13	\N	\N	\N
+v3o080ka847	a3tspbm4ym8	14	\N	\N	\N
+v3o080ka847	3jla5qq6bwz	15	\N	\N	\N
+culzjbos9r3	0xjeiwliq30	14	\N	\N	\N
+culzjbos9r3	a3tspbm4ym8	15	\N	\N	\N
+culzjbos9r3	3jla5qq6bwz	16	\N	\N	\N
+3owowmpqg3i	0xjeiwliq30	15	\N	\N	\N
+3owowmpqg3i	a3tspbm4ym8	16	\N	\N	\N
+3owowmpqg3i	3jla5qq6bwz	17	\N	\N	\N
+wu05wqno6t2	0xjeiwliq30	16	\N	\N	\N
+wu05wqno6t2	a3tspbm4ym8	17	\N	\N	\N
+wu05wqno6t2	3jla5qq6bwz	18	\N	\N	\N
+fq548i6jjul	0xjeiwliq30	17	\N	\N	\N
+fq548i6jjul	a3tspbm4ym8	18	\N	\N	\N
+fq548i6jjul	3jla5qq6bwz	19	\N	\N	\N
+b8e4crdaije	0xjeiwliq30	18	\N	\N	\N
+b8e4crdaije	a3tspbm4ym8	19	\N	\N	\N
+b8e4crdaije	3jla5qq6bwz	20	\N	\N	\N
+41zfs8bogys	0xjeiwliq30	19	\N	\N	\N
+41zfs8bogys	a3tspbm4ym8	20	\N	\N	\N
+41zfs8bogys	3jla5qq6bwz	21	\N	\N	\N
+073buw1m70l	0xjeiwliq30	20	\N	\N	\N
+073buw1m70l	a3tspbm4ym8	21	\N	\N	\N
+073buw1m70l	3jla5qq6bwz	22	\N	\N	\N
+nocobase-admin-menu	0xjeiwliq30	21	\N	\N	\N
+nocobase-admin-menu	a3tspbm4ym8	22	\N	\N	\N
+nocobase-admin-menu	3jla5qq6bwz	23	\N	\N	\N
+0xjeiwliq30	0xjeiwliq30	0	f	properties	\N
+9s4x9dms9lx	0xjeiwliq30	1	\N	\N	2
+s7lkshl2tgu	s7lkshl2tgu	0	f	properties	\N
+yuoghbp55ls	s7lkshl2tgu	1	\N	\N	1
+fh4exng4bl4	fh4exng4bl4	0	f	properties	\N
+s7lkshl2tgu	fh4exng4bl4	1	\N	\N	1
+yuoghbp55ls	fh4exng4bl4	2	\N	\N	1
+9s4x9dms9lx	s7lkshl2tgu	2	\N	\N	\N
+9s4x9dms9lx	fh4exng4bl4	3	\N	\N	\N
+bakk21d86pg	yuoghbp55ls	2	\N	\N	\N
+bakk21d86pg	s7lkshl2tgu	3	\N	\N	\N
+bakk21d86pg	fh4exng4bl4	4	\N	\N	\N
+72l6kgv9pjk	yuoghbp55ls	3	\N	\N	\N
+72l6kgv9pjk	s7lkshl2tgu	4	\N	\N	\N
+72l6kgv9pjk	fh4exng4bl4	5	\N	\N	\N
+6ep0bs9yfkz	yuoghbp55ls	4	\N	\N	\N
+6ep0bs9yfkz	s7lkshl2tgu	5	\N	\N	\N
+6ep0bs9yfkz	fh4exng4bl4	6	\N	\N	\N
+4oxssoky5rw	yuoghbp55ls	5	\N	\N	\N
+4oxssoky5rw	s7lkshl2tgu	6	\N	\N	\N
+4oxssoky5rw	fh4exng4bl4	7	\N	\N	\N
+84mt4mce1w7	yuoghbp55ls	6	\N	\N	\N
+84mt4mce1w7	s7lkshl2tgu	7	\N	\N	\N
+84mt4mce1w7	fh4exng4bl4	8	\N	\N	\N
+zeyg628q8t0	yuoghbp55ls	7	\N	\N	\N
+zeyg628q8t0	s7lkshl2tgu	8	\N	\N	\N
+zeyg628q8t0	fh4exng4bl4	9	\N	\N	\N
+bg4rui84lj2	yuoghbp55ls	8	\N	\N	\N
+bg4rui84lj2	s7lkshl2tgu	9	\N	\N	\N
+bg4rui84lj2	fh4exng4bl4	10	\N	\N	\N
+8oq39vqqx82	yuoghbp55ls	9	\N	\N	\N
+8oq39vqqx82	s7lkshl2tgu	10	\N	\N	\N
+8oq39vqqx82	fh4exng4bl4	11	\N	\N	\N
+3ohbpid2iz3	yuoghbp55ls	10	\N	\N	\N
+3ohbpid2iz3	s7lkshl2tgu	11	\N	\N	\N
+3ohbpid2iz3	fh4exng4bl4	12	\N	\N	\N
+8sehmqjx6y1	yuoghbp55ls	11	\N	\N	\N
+8sehmqjx6y1	s7lkshl2tgu	12	\N	\N	\N
+8sehmqjx6y1	fh4exng4bl4	13	\N	\N	\N
+9vahgw6b2zc	yuoghbp55ls	12	\N	\N	\N
+9vahgw6b2zc	s7lkshl2tgu	13	\N	\N	\N
+9vahgw6b2zc	fh4exng4bl4	14	\N	\N	\N
+v3o080ka847	yuoghbp55ls	13	\N	\N	\N
+v3o080ka847	s7lkshl2tgu	14	\N	\N	\N
+v3o080ka847	fh4exng4bl4	15	\N	\N	\N
+culzjbos9r3	yuoghbp55ls	14	\N	\N	\N
+culzjbos9r3	s7lkshl2tgu	15	\N	\N	\N
+culzjbos9r3	fh4exng4bl4	16	\N	\N	\N
+3owowmpqg3i	yuoghbp55ls	15	\N	\N	\N
+3owowmpqg3i	s7lkshl2tgu	16	\N	\N	\N
+3owowmpqg3i	fh4exng4bl4	17	\N	\N	\N
+wu05wqno6t2	yuoghbp55ls	16	\N	\N	\N
+wu05wqno6t2	s7lkshl2tgu	17	\N	\N	\N
+wu05wqno6t2	fh4exng4bl4	18	\N	\N	\N
+fq548i6jjul	yuoghbp55ls	17	\N	\N	\N
+fq548i6jjul	s7lkshl2tgu	18	\N	\N	\N
+fq548i6jjul	fh4exng4bl4	19	\N	\N	\N
+yuoghbp55ls	yuoghbp55ls	0	f	properties	\N
+9s4x9dms9lx	yuoghbp55ls	1	\N	\N	3
+b8e4crdaije	yuoghbp55ls	18	\N	\N	\N
+b8e4crdaije	s7lkshl2tgu	19	\N	\N	\N
+b8e4crdaije	fh4exng4bl4	20	\N	\N	\N
+41zfs8bogys	yuoghbp55ls	19	\N	\N	\N
+41zfs8bogys	s7lkshl2tgu	20	\N	\N	\N
+41zfs8bogys	fh4exng4bl4	21	\N	\N	\N
+073buw1m70l	yuoghbp55ls	20	\N	\N	\N
+073buw1m70l	s7lkshl2tgu	21	\N	\N	\N
+073buw1m70l	fh4exng4bl4	22	\N	\N	\N
+nocobase-admin-menu	yuoghbp55ls	21	\N	\N	\N
+nocobase-admin-menu	s7lkshl2tgu	22	\N	\N	\N
+nocobase-admin-menu	fh4exng4bl4	23	\N	\N	\N
+3phq2idqbq3	3phq2idqbq3	0	f	properties	\N
+a3egwmwwjze	3phq2idqbq3	1	\N	\N	1
+xfofgif153a	xfofgif153a	0	f	properties	\N
+3phq2idqbq3	xfofgif153a	1	\N	\N	1
+a3egwmwwjze	xfofgif153a	2	\N	\N	1
+ork7cejk9of	ork7cejk9of	0	f	properties	\N
+xfofgif153a	ork7cejk9of	1	\N	\N	1
+3phq2idqbq3	ork7cejk9of	2	\N	\N	1
+a3egwmwwjze	ork7cejk9of	3	\N	\N	1
+4orxtl02xzo	4orxtl02xzo	0	f	properties	\N
+ork7cejk9of	4orxtl02xzo	1	\N	\N	1
+xfofgif153a	4orxtl02xzo	2	\N	\N	1
+3phq2idqbq3	4orxtl02xzo	3	\N	\N	1
+a3egwmwwjze	4orxtl02xzo	4	\N	\N	1
+e3eaa6uq9t8	a3egwmwwjze	3	\N	\N	\N
+e3eaa6uq9t8	3phq2idqbq3	4	\N	\N	\N
+e3eaa6uq9t8	xfofgif153a	5	\N	\N	\N
+e3eaa6uq9t8	ork7cejk9of	6	\N	\N	\N
+e3eaa6uq9t8	4orxtl02xzo	7	\N	\N	\N
+beq12cybpaz	a3egwmwwjze	4	\N	\N	\N
+beq12cybpaz	3phq2idqbq3	5	\N	\N	\N
+beq12cybpaz	xfofgif153a	6	\N	\N	\N
+beq12cybpaz	ork7cejk9of	7	\N	\N	\N
+beq12cybpaz	4orxtl02xzo	8	\N	\N	\N
+smd6vh6wzvh	a3egwmwwjze	5	\N	\N	\N
+smd6vh6wzvh	3phq2idqbq3	6	\N	\N	\N
+smd6vh6wzvh	xfofgif153a	7	\N	\N	\N
+smd6vh6wzvh	ork7cejk9of	8	\N	\N	\N
+smd6vh6wzvh	4orxtl02xzo	9	\N	\N	\N
+dac2j2kt870	a3egwmwwjze	6	\N	\N	\N
+dac2j2kt870	3phq2idqbq3	7	\N	\N	\N
+dac2j2kt870	xfofgif153a	8	\N	\N	\N
+dac2j2kt870	ork7cejk9of	9	\N	\N	\N
+dac2j2kt870	4orxtl02xzo	10	\N	\N	\N
+fq548i6jjul	a3egwmwwjze	7	\N	\N	\N
+fq548i6jjul	3phq2idqbq3	8	\N	\N	\N
+fq548i6jjul	xfofgif153a	9	\N	\N	\N
+fq548i6jjul	ork7cejk9of	10	\N	\N	\N
+fq548i6jjul	4orxtl02xzo	11	\N	\N	\N
+b8e4crdaije	a3egwmwwjze	8	\N	\N	\N
+b8e4crdaije	3phq2idqbq3	9	\N	\N	\N
+b8e4crdaije	xfofgif153a	10	\N	\N	\N
+b8e4crdaije	ork7cejk9of	11	\N	\N	\N
+b8e4crdaije	4orxtl02xzo	12	\N	\N	\N
+41zfs8bogys	a3egwmwwjze	9	\N	\N	\N
+41zfs8bogys	3phq2idqbq3	10	\N	\N	\N
+41zfs8bogys	xfofgif153a	11	\N	\N	\N
+41zfs8bogys	ork7cejk9of	12	\N	\N	\N
+41zfs8bogys	4orxtl02xzo	13	\N	\N	\N
+073buw1m70l	a3egwmwwjze	10	\N	\N	\N
+073buw1m70l	3phq2idqbq3	11	\N	\N	\N
+073buw1m70l	xfofgif153a	12	\N	\N	\N
+073buw1m70l	ork7cejk9of	13	\N	\N	\N
+073buw1m70l	4orxtl02xzo	14	\N	\N	\N
+nocobase-admin-menu	a3egwmwwjze	11	\N	\N	\N
+nocobase-admin-menu	3phq2idqbq3	12	\N	\N	\N
+nocobase-admin-menu	xfofgif153a	13	\N	\N	\N
+nocobase-admin-menu	ork7cejk9of	14	\N	\N	\N
+nocobase-admin-menu	4orxtl02xzo	15	\N	\N	\N
+lylp2daxzr6	3phq2idqbq3	2	\N	\N	\N
+lylp2daxzr6	xfofgif153a	3	\N	\N	\N
+lylp2daxzr6	ork7cejk9of	4	\N	\N	\N
+lylp2daxzr6	4orxtl02xzo	5	\N	\N	\N
+c8kzc0jfotm	a3egwmwwjze	2	\N	\N	\N
+c8kzc0jfotm	3phq2idqbq3	3	\N	\N	\N
+c8kzc0jfotm	xfofgif153a	4	\N	\N	\N
+c8kzc0jfotm	ork7cejk9of	5	\N	\N	\N
+c8kzc0jfotm	4orxtl02xzo	6	\N	\N	\N
+a3egwmwwjze	a3egwmwwjze	0	f	properties	\N
+lylp2daxzr6	a3egwmwwjze	1	\N	\N	1
+ywfmz10r1qq	ywfmz10r1qq	0	f	properties	\N
+e3eaa6uq9t8	ywfmz10r1qq	3	\N	\N	\N
+beq12cybpaz	ywfmz10r1qq	4	\N	\N	\N
+smd6vh6wzvh	ywfmz10r1qq	5	\N	\N	\N
+dac2j2kt870	ywfmz10r1qq	6	\N	\N	\N
+fq548i6jjul	ywfmz10r1qq	7	\N	\N	\N
+b8e4crdaije	ywfmz10r1qq	8	\N	\N	\N
+41zfs8bogys	ywfmz10r1qq	9	\N	\N	\N
+073buw1m70l	ywfmz10r1qq	10	\N	\N	\N
+nocobase-admin-menu	ywfmz10r1qq	11	\N	\N	\N
+c8kzc0jfotm	ywfmz10r1qq	2	\N	\N	\N
+lylp2daxzr6	ywfmz10r1qq	1	\N	\N	2
+vd48fobtobi	vd48fobtobi	0	f	properties	\N
+ryyh202zxdl	vd48fobtobi	1	\N	\N	1
+7lx5flwx3xa	7lx5flwx3xa	0	f	properties	\N
+vd48fobtobi	7lx5flwx3xa	1	\N	\N	1
+ryyh202zxdl	7lx5flwx3xa	2	\N	\N	1
+vzmpjuukesi	vzmpjuukesi	0	f	properties	\N
+7lx5flwx3xa	vzmpjuukesi	1	\N	\N	1
+vd48fobtobi	vzmpjuukesi	2	\N	\N	1
+ryyh202zxdl	vzmpjuukesi	3	\N	\N	1
+ooehkb2kxjf	ooehkb2kxjf	0	f	properties	\N
+vzmpjuukesi	ooehkb2kxjf	1	\N	\N	1
+7lx5flwx3xa	ooehkb2kxjf	2	\N	\N	1
+vd48fobtobi	ooehkb2kxjf	3	\N	\N	1
+ryyh202zxdl	ooehkb2kxjf	4	\N	\N	1
+2klrc3urjjn	2klrc3urjjn	0	f	properties	\N
+vzmpjuukesi	2klrc3urjjn	1	\N	\N	2
+7lx5flwx3xa	2klrc3urjjn	2	\N	\N	2
+vd48fobtobi	2klrc3urjjn	3	\N	\N	2
+ryyh202zxdl	2klrc3urjjn	4	\N	\N	2
+4orxtl02xzo	vd48fobtobi	2	\N	\N	\N
+4orxtl02xzo	7lx5flwx3xa	3	\N	\N	\N
+4orxtl02xzo	vzmpjuukesi	4	\N	\N	\N
+4orxtl02xzo	ooehkb2kxjf	5	\N	\N	\N
+4orxtl02xzo	2klrc3urjjn	5	\N	\N	\N
+ork7cejk9of	ryyh202zxdl	2	\N	\N	\N
+ork7cejk9of	vd48fobtobi	3	\N	\N	\N
+ork7cejk9of	7lx5flwx3xa	4	\N	\N	\N
+ork7cejk9of	vzmpjuukesi	5	\N	\N	\N
+ork7cejk9of	ooehkb2kxjf	6	\N	\N	\N
+ork7cejk9of	2klrc3urjjn	6	\N	\N	\N
+xfofgif153a	ryyh202zxdl	3	\N	\N	\N
+xfofgif153a	vd48fobtobi	4	\N	\N	\N
+xfofgif153a	7lx5flwx3xa	5	\N	\N	\N
+ryyh202zxdl	ryyh202zxdl	0	f	properties	\N
+4orxtl02xzo	ryyh202zxdl	1	\N	\N	1
+xfofgif153a	vzmpjuukesi	6	\N	\N	\N
+xfofgif153a	ooehkb2kxjf	7	\N	\N	\N
+xfofgif153a	2klrc3urjjn	7	\N	\N	\N
+3phq2idqbq3	ryyh202zxdl	4	\N	\N	\N
+3phq2idqbq3	vd48fobtobi	5	\N	\N	\N
+3phq2idqbq3	7lx5flwx3xa	6	\N	\N	\N
+3phq2idqbq3	vzmpjuukesi	7	\N	\N	\N
+3phq2idqbq3	ooehkb2kxjf	8	\N	\N	\N
+3phq2idqbq3	2klrc3urjjn	8	\N	\N	\N
+a3egwmwwjze	ryyh202zxdl	5	\N	\N	\N
+a3egwmwwjze	vd48fobtobi	6	\N	\N	\N
+a3egwmwwjze	7lx5flwx3xa	7	\N	\N	\N
+a3egwmwwjze	vzmpjuukesi	8	\N	\N	\N
+a3egwmwwjze	ooehkb2kxjf	9	\N	\N	\N
+a3egwmwwjze	2klrc3urjjn	9	\N	\N	\N
+e3eaa6uq9t8	ryyh202zxdl	8	\N	\N	\N
+e3eaa6uq9t8	vd48fobtobi	9	\N	\N	\N
+e3eaa6uq9t8	7lx5flwx3xa	10	\N	\N	\N
+e3eaa6uq9t8	vzmpjuukesi	11	\N	\N	\N
+e3eaa6uq9t8	ooehkb2kxjf	12	\N	\N	\N
+e3eaa6uq9t8	2klrc3urjjn	12	\N	\N	\N
+beq12cybpaz	ryyh202zxdl	9	\N	\N	\N
+beq12cybpaz	vd48fobtobi	10	\N	\N	\N
+beq12cybpaz	7lx5flwx3xa	11	\N	\N	\N
+beq12cybpaz	vzmpjuukesi	12	\N	\N	\N
+beq12cybpaz	ooehkb2kxjf	13	\N	\N	\N
+beq12cybpaz	2klrc3urjjn	13	\N	\N	\N
+smd6vh6wzvh	ryyh202zxdl	10	\N	\N	\N
+smd6vh6wzvh	vd48fobtobi	11	\N	\N	\N
+smd6vh6wzvh	7lx5flwx3xa	12	\N	\N	\N
+smd6vh6wzvh	vzmpjuukesi	13	\N	\N	\N
+smd6vh6wzvh	ooehkb2kxjf	14	\N	\N	\N
+smd6vh6wzvh	2klrc3urjjn	14	\N	\N	\N
+dac2j2kt870	ryyh202zxdl	11	\N	\N	\N
+dac2j2kt870	vd48fobtobi	12	\N	\N	\N
+dac2j2kt870	7lx5flwx3xa	13	\N	\N	\N
+dac2j2kt870	vzmpjuukesi	14	\N	\N	\N
+dac2j2kt870	ooehkb2kxjf	15	\N	\N	\N
+dac2j2kt870	2klrc3urjjn	15	\N	\N	\N
+fq548i6jjul	ryyh202zxdl	12	\N	\N	\N
+fq548i6jjul	vd48fobtobi	13	\N	\N	\N
+fq548i6jjul	7lx5flwx3xa	14	\N	\N	\N
+fq548i6jjul	vzmpjuukesi	15	\N	\N	\N
+fq548i6jjul	ooehkb2kxjf	16	\N	\N	\N
+fq548i6jjul	2klrc3urjjn	16	\N	\N	\N
+b8e4crdaije	ryyh202zxdl	13	\N	\N	\N
+b8e4crdaije	vd48fobtobi	14	\N	\N	\N
+b8e4crdaije	7lx5flwx3xa	15	\N	\N	\N
+b8e4crdaije	vzmpjuukesi	16	\N	\N	\N
+b8e4crdaije	ooehkb2kxjf	17	\N	\N	\N
+b8e4crdaije	2klrc3urjjn	17	\N	\N	\N
+41zfs8bogys	ryyh202zxdl	14	\N	\N	\N
+41zfs8bogys	vd48fobtobi	15	\N	\N	\N
+41zfs8bogys	7lx5flwx3xa	16	\N	\N	\N
+41zfs8bogys	vzmpjuukesi	17	\N	\N	\N
+41zfs8bogys	ooehkb2kxjf	18	\N	\N	\N
+41zfs8bogys	2klrc3urjjn	18	\N	\N	\N
+073buw1m70l	ryyh202zxdl	15	\N	\N	\N
+073buw1m70l	vd48fobtobi	16	\N	\N	\N
+073buw1m70l	7lx5flwx3xa	17	\N	\N	\N
+073buw1m70l	vzmpjuukesi	18	\N	\N	\N
+073buw1m70l	ooehkb2kxjf	19	\N	\N	\N
+073buw1m70l	2klrc3urjjn	19	\N	\N	\N
+nocobase-admin-menu	ryyh202zxdl	16	\N	\N	\N
+nocobase-admin-menu	vd48fobtobi	17	\N	\N	\N
+nocobase-admin-menu	7lx5flwx3xa	18	\N	\N	\N
+nocobase-admin-menu	vzmpjuukesi	19	\N	\N	\N
+nocobase-admin-menu	ooehkb2kxjf	20	\N	\N	\N
+nocobase-admin-menu	2klrc3urjjn	20	\N	\N	\N
+lylp2daxzr6	ryyh202zxdl	6	\N	\N	\N
+lylp2daxzr6	vd48fobtobi	7	\N	\N	\N
+lylp2daxzr6	7lx5flwx3xa	8	\N	\N	\N
+lylp2daxzr6	vzmpjuukesi	9	\N	\N	\N
+lylp2daxzr6	ooehkb2kxjf	10	\N	\N	\N
+lylp2daxzr6	2klrc3urjjn	10	\N	\N	\N
+c8kzc0jfotm	ryyh202zxdl	7	\N	\N	\N
+c8kzc0jfotm	vd48fobtobi	8	\N	\N	\N
+c8kzc0jfotm	7lx5flwx3xa	9	\N	\N	\N
+c8kzc0jfotm	vzmpjuukesi	10	\N	\N	\N
+c8kzc0jfotm	ooehkb2kxjf	11	\N	\N	\N
+c8kzc0jfotm	2klrc3urjjn	11	\N	\N	\N
+6lhw0fo1gmc	6lhw0fo1gmc	0	f	properties	\N
+1vya1z7mbar	6lhw0fo1gmc	1	\N	\N	1
+rzley8jxou1	rzley8jxou1	0	f	properties	\N
+6lhw0fo1gmc	rzley8jxou1	1	\N	\N	1
+1vya1z7mbar	rzley8jxou1	2	\N	\N	1
+ooehkb2kxjf	6lhw0fo1gmc	2	\N	\N	\N
+ooehkb2kxjf	rzley8jxou1	3	\N	\N	\N
+vzmpjuukesi	1vya1z7mbar	2	\N	\N	\N
+vzmpjuukesi	6lhw0fo1gmc	3	\N	\N	\N
+vzmpjuukesi	rzley8jxou1	4	\N	\N	\N
+7lx5flwx3xa	1vya1z7mbar	3	\N	\N	\N
+7lx5flwx3xa	6lhw0fo1gmc	4	\N	\N	\N
+7lx5flwx3xa	rzley8jxou1	5	\N	\N	\N
+vd48fobtobi	1vya1z7mbar	4	\N	\N	\N
+vd48fobtobi	6lhw0fo1gmc	5	\N	\N	\N
+vd48fobtobi	rzley8jxou1	6	\N	\N	\N
+ryyh202zxdl	1vya1z7mbar	5	\N	\N	\N
+ryyh202zxdl	6lhw0fo1gmc	6	\N	\N	\N
+ryyh202zxdl	rzley8jxou1	7	\N	\N	\N
+4orxtl02xzo	1vya1z7mbar	6	\N	\N	\N
+4orxtl02xzo	6lhw0fo1gmc	7	\N	\N	\N
+4orxtl02xzo	rzley8jxou1	8	\N	\N	\N
+ork7cejk9of	1vya1z7mbar	7	\N	\N	\N
+ork7cejk9of	6lhw0fo1gmc	8	\N	\N	\N
+ork7cejk9of	rzley8jxou1	9	\N	\N	\N
+xfofgif153a	1vya1z7mbar	8	\N	\N	\N
+xfofgif153a	6lhw0fo1gmc	9	\N	\N	\N
+xfofgif153a	rzley8jxou1	10	\N	\N	\N
+3phq2idqbq3	1vya1z7mbar	9	\N	\N	\N
+3phq2idqbq3	6lhw0fo1gmc	10	\N	\N	\N
+3phq2idqbq3	rzley8jxou1	11	\N	\N	\N
+a3egwmwwjze	1vya1z7mbar	10	\N	\N	\N
+a3egwmwwjze	6lhw0fo1gmc	11	\N	\N	\N
+a3egwmwwjze	rzley8jxou1	12	\N	\N	\N
+e3eaa6uq9t8	1vya1z7mbar	13	\N	\N	\N
+e3eaa6uq9t8	6lhw0fo1gmc	14	\N	\N	\N
+e3eaa6uq9t8	rzley8jxou1	15	\N	\N	\N
+beq12cybpaz	1vya1z7mbar	14	\N	\N	\N
+beq12cybpaz	6lhw0fo1gmc	15	\N	\N	\N
+beq12cybpaz	rzley8jxou1	16	\N	\N	\N
+smd6vh6wzvh	1vya1z7mbar	15	\N	\N	\N
+smd6vh6wzvh	6lhw0fo1gmc	16	\N	\N	\N
+smd6vh6wzvh	rzley8jxou1	17	\N	\N	\N
+dac2j2kt870	1vya1z7mbar	16	\N	\N	\N
+dac2j2kt870	6lhw0fo1gmc	17	\N	\N	\N
+dac2j2kt870	rzley8jxou1	18	\N	\N	\N
+fq548i6jjul	1vya1z7mbar	17	\N	\N	\N
+fq548i6jjul	6lhw0fo1gmc	18	\N	\N	\N
+fq548i6jjul	rzley8jxou1	19	\N	\N	\N
+b8e4crdaije	1vya1z7mbar	18	\N	\N	\N
+b8e4crdaije	6lhw0fo1gmc	19	\N	\N	\N
+b8e4crdaije	rzley8jxou1	20	\N	\N	\N
+41zfs8bogys	1vya1z7mbar	19	\N	\N	\N
+41zfs8bogys	6lhw0fo1gmc	20	\N	\N	\N
+41zfs8bogys	rzley8jxou1	21	\N	\N	\N
+073buw1m70l	1vya1z7mbar	20	\N	\N	\N
+073buw1m70l	6lhw0fo1gmc	21	\N	\N	\N
+073buw1m70l	rzley8jxou1	22	\N	\N	\N
+nocobase-admin-menu	1vya1z7mbar	21	\N	\N	\N
+nocobase-admin-menu	6lhw0fo1gmc	22	\N	\N	\N
+nocobase-admin-menu	rzley8jxou1	23	\N	\N	\N
+lylp2daxzr6	1vya1z7mbar	11	\N	\N	\N
+lylp2daxzr6	6lhw0fo1gmc	12	\N	\N	\N
+lylp2daxzr6	rzley8jxou1	13	\N	\N	\N
+c8kzc0jfotm	1vya1z7mbar	12	\N	\N	\N
+c8kzc0jfotm	6lhw0fo1gmc	13	\N	\N	\N
+c8kzc0jfotm	rzley8jxou1	14	\N	\N	\N
+1vya1z7mbar	1vya1z7mbar	0	f	properties	\N
+ooehkb2kxjf	1vya1z7mbar	1	\N	\N	1
+h3j9ee4jx8o	h3j9ee4jx8o	0	f	properties	\N
+qeu2ozl8f5y	h3j9ee4jx8o	1	\N	\N	1
+hsgy9deorfz	hsgy9deorfz	0	f	properties	\N
+h3j9ee4jx8o	hsgy9deorfz	1	\N	\N	1
+qeu2ozl8f5y	hsgy9deorfz	2	\N	\N	1
+ooehkb2kxjf	h3j9ee4jx8o	2	\N	\N	\N
+ooehkb2kxjf	hsgy9deorfz	3	\N	\N	\N
+vzmpjuukesi	qeu2ozl8f5y	2	\N	\N	\N
+vzmpjuukesi	h3j9ee4jx8o	3	\N	\N	\N
+vzmpjuukesi	hsgy9deorfz	4	\N	\N	\N
+7lx5flwx3xa	qeu2ozl8f5y	3	\N	\N	\N
+7lx5flwx3xa	h3j9ee4jx8o	4	\N	\N	\N
+7lx5flwx3xa	hsgy9deorfz	5	\N	\N	\N
+vd48fobtobi	qeu2ozl8f5y	4	\N	\N	\N
+vd48fobtobi	h3j9ee4jx8o	5	\N	\N	\N
+vd48fobtobi	hsgy9deorfz	6	\N	\N	\N
+ryyh202zxdl	qeu2ozl8f5y	5	\N	\N	\N
+ryyh202zxdl	h3j9ee4jx8o	6	\N	\N	\N
+ryyh202zxdl	hsgy9deorfz	7	\N	\N	\N
+4orxtl02xzo	qeu2ozl8f5y	6	\N	\N	\N
+4orxtl02xzo	h3j9ee4jx8o	7	\N	\N	\N
+4orxtl02xzo	hsgy9deorfz	8	\N	\N	\N
+ork7cejk9of	qeu2ozl8f5y	7	\N	\N	\N
+ork7cejk9of	h3j9ee4jx8o	8	\N	\N	\N
+ork7cejk9of	hsgy9deorfz	9	\N	\N	\N
+xfofgif153a	qeu2ozl8f5y	8	\N	\N	\N
+xfofgif153a	h3j9ee4jx8o	9	\N	\N	\N
+xfofgif153a	hsgy9deorfz	10	\N	\N	\N
+3phq2idqbq3	qeu2ozl8f5y	9	\N	\N	\N
+3phq2idqbq3	h3j9ee4jx8o	10	\N	\N	\N
+3phq2idqbq3	hsgy9deorfz	11	\N	\N	\N
+a3egwmwwjze	qeu2ozl8f5y	10	\N	\N	\N
+a3egwmwwjze	h3j9ee4jx8o	11	\N	\N	\N
+a3egwmwwjze	hsgy9deorfz	12	\N	\N	\N
+e3eaa6uq9t8	qeu2ozl8f5y	13	\N	\N	\N
+e3eaa6uq9t8	h3j9ee4jx8o	14	\N	\N	\N
+e3eaa6uq9t8	hsgy9deorfz	15	\N	\N	\N
+beq12cybpaz	qeu2ozl8f5y	14	\N	\N	\N
+beq12cybpaz	h3j9ee4jx8o	15	\N	\N	\N
+beq12cybpaz	hsgy9deorfz	16	\N	\N	\N
+smd6vh6wzvh	qeu2ozl8f5y	15	\N	\N	\N
+smd6vh6wzvh	h3j9ee4jx8o	16	\N	\N	\N
+smd6vh6wzvh	hsgy9deorfz	17	\N	\N	\N
+dac2j2kt870	qeu2ozl8f5y	16	\N	\N	\N
+dac2j2kt870	h3j9ee4jx8o	17	\N	\N	\N
+dac2j2kt870	hsgy9deorfz	18	\N	\N	\N
+fq548i6jjul	qeu2ozl8f5y	17	\N	\N	\N
+fq548i6jjul	h3j9ee4jx8o	18	\N	\N	\N
+fq548i6jjul	hsgy9deorfz	19	\N	\N	\N
+b8e4crdaije	qeu2ozl8f5y	18	\N	\N	\N
+b8e4crdaije	h3j9ee4jx8o	19	\N	\N	\N
+b8e4crdaije	hsgy9deorfz	20	\N	\N	\N
+41zfs8bogys	qeu2ozl8f5y	19	\N	\N	\N
+41zfs8bogys	h3j9ee4jx8o	20	\N	\N	\N
+41zfs8bogys	hsgy9deorfz	21	\N	\N	\N
+073buw1m70l	qeu2ozl8f5y	20	\N	\N	\N
+073buw1m70l	h3j9ee4jx8o	21	\N	\N	\N
+073buw1m70l	hsgy9deorfz	22	\N	\N	\N
+nocobase-admin-menu	qeu2ozl8f5y	21	\N	\N	\N
+nocobase-admin-menu	h3j9ee4jx8o	22	\N	\N	\N
+nocobase-admin-menu	hsgy9deorfz	23	\N	\N	\N
+lylp2daxzr6	qeu2ozl8f5y	11	\N	\N	\N
+lylp2daxzr6	h3j9ee4jx8o	12	\N	\N	\N
+lylp2daxzr6	hsgy9deorfz	13	\N	\N	\N
+c8kzc0jfotm	qeu2ozl8f5y	12	\N	\N	\N
+c8kzc0jfotm	h3j9ee4jx8o	13	\N	\N	\N
+c8kzc0jfotm	hsgy9deorfz	14	\N	\N	\N
+qeu2ozl8f5y	qeu2ozl8f5y	0	f	properties	\N
+ooehkb2kxjf	qeu2ozl8f5y	1	\N	\N	2
+o4ztgkz2oa5	o4ztgkz2oa5	0	f	properties	\N
+vzmpjuukesi	o4ztgkz2oa5	2	\N	\N	\N
+7lx5flwx3xa	o4ztgkz2oa5	3	\N	\N	\N
+vd48fobtobi	o4ztgkz2oa5	4	\N	\N	\N
+ryyh202zxdl	o4ztgkz2oa5	5	\N	\N	\N
+4orxtl02xzo	o4ztgkz2oa5	6	\N	\N	\N
+ork7cejk9of	o4ztgkz2oa5	7	\N	\N	\N
+xfofgif153a	o4ztgkz2oa5	8	\N	\N	\N
+3phq2idqbq3	o4ztgkz2oa5	9	\N	\N	\N
+a3egwmwwjze	o4ztgkz2oa5	10	\N	\N	\N
+e3eaa6uq9t8	o4ztgkz2oa5	13	\N	\N	\N
+beq12cybpaz	o4ztgkz2oa5	14	\N	\N	\N
+smd6vh6wzvh	o4ztgkz2oa5	15	\N	\N	\N
+dac2j2kt870	o4ztgkz2oa5	16	\N	\N	\N
+fq548i6jjul	o4ztgkz2oa5	17	\N	\N	\N
+b8e4crdaije	o4ztgkz2oa5	18	\N	\N	\N
+41zfs8bogys	o4ztgkz2oa5	19	\N	\N	\N
+073buw1m70l	o4ztgkz2oa5	20	\N	\N	\N
+nocobase-admin-menu	o4ztgkz2oa5	21	\N	\N	\N
+lylp2daxzr6	o4ztgkz2oa5	11	\N	\N	\N
+c8kzc0jfotm	o4ztgkz2oa5	12	\N	\N	\N
+2klrc3urjjn	o4ztgkz2oa5	1	\N	\N	1
+galt7hbd78y	cr7ggy2zrl6	6	\N	\N	\N
+e87ogy2w48b	cr7ggy2zrl6	7	\N	\N	\N
+i0bqeajbvwo	cr7ggy2zrl6	8	\N	\N	\N
+pdot2ybyfc0	cr7ggy2zrl6	9	\N	\N	\N
+a7e860jrx5o	cr7ggy2zrl6	10	\N	\N	\N
+zxh1oe1qx5t	cr7ggy2zrl6	11	\N	\N	\N
+861gmcfwhia	cr7ggy2zrl6	12	\N	\N	\N
+9yos6i0cjm3	cr7ggy2zrl6	13	\N	\N	\N
+n3yigbe0k9v	cr7ggy2zrl6	14	\N	\N	\N
+073buw1m70l	cr7ggy2zrl6	15	\N	\N	\N
+nocobase-admin-menu	cr7ggy2zrl6	16	\N	\N	\N
+galt7hbd78y	oyy61gowm8y	7	\N	\N	\N
+e87ogy2w48b	oyy61gowm8y	8	\N	\N	\N
+i0bqeajbvwo	oyy61gowm8y	9	\N	\N	\N
+pdot2ybyfc0	oyy61gowm8y	10	\N	\N	\N
+a7e860jrx5o	oyy61gowm8y	11	\N	\N	\N
+zxh1oe1qx5t	oyy61gowm8y	12	\N	\N	\N
+861gmcfwhia	oyy61gowm8y	13	\N	\N	\N
+9yos6i0cjm3	oyy61gowm8y	14	\N	\N	\N
+n3yigbe0k9v	oyy61gowm8y	15	\N	\N	\N
+073buw1m70l	oyy61gowm8y	16	\N	\N	\N
+nocobase-admin-menu	oyy61gowm8y	17	\N	\N	\N
+galt7hbd78y	tmbbsnq2x5b	8	\N	\N	\N
+e87ogy2w48b	tmbbsnq2x5b	9	\N	\N	\N
+i0bqeajbvwo	tmbbsnq2x5b	10	\N	\N	\N
+pdot2ybyfc0	tmbbsnq2x5b	11	\N	\N	\N
+a7e860jrx5o	tmbbsnq2x5b	12	\N	\N	\N
+zxh1oe1qx5t	tmbbsnq2x5b	13	\N	\N	\N
+861gmcfwhia	tmbbsnq2x5b	14	\N	\N	\N
+9yos6i0cjm3	tmbbsnq2x5b	15	\N	\N	\N
+n3yigbe0k9v	tmbbsnq2x5b	16	\N	\N	\N
+073buw1m70l	tmbbsnq2x5b	17	\N	\N	\N
+nocobase-admin-menu	tmbbsnq2x5b	18	\N	\N	\N
+galt7hbd78y	2oimqa9byrp	9	\N	\N	\N
+e87ogy2w48b	2oimqa9byrp	10	\N	\N	\N
+i0bqeajbvwo	2oimqa9byrp	11	\N	\N	\N
+pdot2ybyfc0	2oimqa9byrp	12	\N	\N	\N
+a7e860jrx5o	2oimqa9byrp	13	\N	\N	\N
+zxh1oe1qx5t	2oimqa9byrp	14	\N	\N	\N
+861gmcfwhia	2oimqa9byrp	15	\N	\N	\N
+9yos6i0cjm3	2oimqa9byrp	16	\N	\N	\N
+n3yigbe0k9v	2oimqa9byrp	17	\N	\N	\N
+073buw1m70l	2oimqa9byrp	18	\N	\N	\N
+nocobase-admin-menu	2oimqa9byrp	19	\N	\N	\N
+galt7hbd78y	730yg8t8myy	10	\N	\N	\N
+e87ogy2w48b	730yg8t8myy	11	\N	\N	\N
+i0bqeajbvwo	730yg8t8myy	12	\N	\N	\N
+pdot2ybyfc0	730yg8t8myy	13	\N	\N	\N
+a7e860jrx5o	730yg8t8myy	14	\N	\N	\N
+zxh1oe1qx5t	730yg8t8myy	15	\N	\N	\N
+861gmcfwhia	730yg8t8myy	16	\N	\N	\N
+9yos6i0cjm3	730yg8t8myy	17	\N	\N	\N
+n3yigbe0k9v	730yg8t8myy	18	\N	\N	\N
+073buw1m70l	730yg8t8myy	19	\N	\N	\N
+nocobase-admin-menu	730yg8t8myy	20	\N	\N	\N
+galt7hbd78y	foi2992qtlm	10	\N	\N	\N
+e87ogy2w48b	foi2992qtlm	11	\N	\N	\N
+i0bqeajbvwo	foi2992qtlm	12	\N	\N	\N
+pdot2ybyfc0	foi2992qtlm	13	\N	\N	\N
+a7e860jrx5o	foi2992qtlm	14	\N	\N	\N
+zxh1oe1qx5t	foi2992qtlm	15	\N	\N	\N
+861gmcfwhia	foi2992qtlm	16	\N	\N	\N
+9yos6i0cjm3	foi2992qtlm	17	\N	\N	\N
+n3yigbe0k9v	foi2992qtlm	18	\N	\N	\N
+073buw1m70l	foi2992qtlm	19	\N	\N	\N
+nocobase-admin-menu	foi2992qtlm	20	\N	\N	\N
+galt7hbd78y	8i28yvimg4p	2	\N	\N	\N
+e87ogy2w48b	8i28yvimg4p	3	\N	\N	\N
+i0bqeajbvwo	8i28yvimg4p	4	\N	\N	\N
+pdot2ybyfc0	8i28yvimg4p	5	\N	\N	\N
+a7e860jrx5o	8i28yvimg4p	6	\N	\N	\N
+zxh1oe1qx5t	8i28yvimg4p	7	\N	\N	\N
+861gmcfwhia	8i28yvimg4p	8	\N	\N	\N
+9yos6i0cjm3	8i28yvimg4p	9	\N	\N	\N
+n3yigbe0k9v	8i28yvimg4p	10	\N	\N	\N
+073buw1m70l	8i28yvimg4p	11	\N	\N	\N
+nocobase-admin-menu	8i28yvimg4p	12	\N	\N	\N
+galt7hbd78y	muv6h06t8mi	3	\N	\N	\N
+e87ogy2w48b	muv6h06t8mi	4	\N	\N	\N
+i0bqeajbvwo	muv6h06t8mi	5	\N	\N	\N
+pdot2ybyfc0	muv6h06t8mi	6	\N	\N	\N
+a7e860jrx5o	muv6h06t8mi	7	\N	\N	\N
+zxh1oe1qx5t	muv6h06t8mi	8	\N	\N	\N
+861gmcfwhia	muv6h06t8mi	9	\N	\N	\N
+9yos6i0cjm3	muv6h06t8mi	10	\N	\N	\N
+n3yigbe0k9v	muv6h06t8mi	11	\N	\N	\N
+073buw1m70l	muv6h06t8mi	12	\N	\N	\N
+nocobase-admin-menu	muv6h06t8mi	13	\N	\N	\N
+galt7hbd78y	ybdxp7v91jn	4	\N	\N	\N
+e87ogy2w48b	ybdxp7v91jn	5	\N	\N	\N
+i0bqeajbvwo	ybdxp7v91jn	6	\N	\N	\N
+pdot2ybyfc0	ybdxp7v91jn	7	\N	\N	\N
+a7e860jrx5o	ybdxp7v91jn	8	\N	\N	\N
+zxh1oe1qx5t	ybdxp7v91jn	9	\N	\N	\N
+861gmcfwhia	ybdxp7v91jn	10	\N	\N	\N
+9yos6i0cjm3	ybdxp7v91jn	11	\N	\N	\N
+n3yigbe0k9v	ybdxp7v91jn	12	\N	\N	\N
+073buw1m70l	ybdxp7v91jn	13	\N	\N	\N
+nocobase-admin-menu	ybdxp7v91jn	14	\N	\N	\N
+galt7hbd78y	9cngdl646v0	5	\N	\N	\N
+e87ogy2w48b	9cngdl646v0	6	\N	\N	\N
+i0bqeajbvwo	9cngdl646v0	7	\N	\N	\N
+pdot2ybyfc0	9cngdl646v0	8	\N	\N	\N
+a7e860jrx5o	9cngdl646v0	9	\N	\N	\N
+zxh1oe1qx5t	9cngdl646v0	10	\N	\N	\N
+861gmcfwhia	9cngdl646v0	11	\N	\N	\N
+9yos6i0cjm3	9cngdl646v0	12	\N	\N	\N
+n3yigbe0k9v	9cngdl646v0	13	\N	\N	\N
+073buw1m70l	9cngdl646v0	14	\N	\N	\N
+nocobase-admin-menu	9cngdl646v0	15	\N	\N	\N
+galt7hbd78y	x4kjbk4wyiq	11	\N	\N	\N
+e87ogy2w48b	x4kjbk4wyiq	12	\N	\N	\N
+i0bqeajbvwo	x4kjbk4wyiq	13	\N	\N	\N
+pdot2ybyfc0	x4kjbk4wyiq	14	\N	\N	\N
+a7e860jrx5o	x4kjbk4wyiq	15	\N	\N	\N
+zxh1oe1qx5t	x4kjbk4wyiq	16	\N	\N	\N
+861gmcfwhia	x4kjbk4wyiq	17	\N	\N	\N
+9yos6i0cjm3	x4kjbk4wyiq	18	\N	\N	\N
+n3yigbe0k9v	x4kjbk4wyiq	19	\N	\N	\N
+073buw1m70l	x4kjbk4wyiq	20	\N	\N	\N
+nocobase-admin-menu	x4kjbk4wyiq	21	\N	\N	\N
+galt7hbd78y	s10y0pbvftv	12	\N	\N	\N
+e87ogy2w48b	s10y0pbvftv	13	\N	\N	\N
+i0bqeajbvwo	s10y0pbvftv	14	\N	\N	\N
+pdot2ybyfc0	s10y0pbvftv	15	\N	\N	\N
+a7e860jrx5o	s10y0pbvftv	16	\N	\N	\N
+zxh1oe1qx5t	s10y0pbvftv	17	\N	\N	\N
+861gmcfwhia	s10y0pbvftv	18	\N	\N	\N
+9yos6i0cjm3	s10y0pbvftv	19	\N	\N	\N
+n3yigbe0k9v	s10y0pbvftv	20	\N	\N	\N
+073buw1m70l	s10y0pbvftv	21	\N	\N	\N
+nocobase-admin-menu	s10y0pbvftv	22	\N	\N	\N
+galt7hbd78y	2h4y1wh8hgp	13	\N	\N	\N
+e87ogy2w48b	2h4y1wh8hgp	14	\N	\N	\N
+i0bqeajbvwo	2h4y1wh8hgp	15	\N	\N	\N
+pdot2ybyfc0	2h4y1wh8hgp	16	\N	\N	\N
+a7e860jrx5o	2h4y1wh8hgp	17	\N	\N	\N
+zxh1oe1qx5t	2h4y1wh8hgp	18	\N	\N	\N
+861gmcfwhia	2h4y1wh8hgp	19	\N	\N	\N
+9yos6i0cjm3	2h4y1wh8hgp	20	\N	\N	\N
+n3yigbe0k9v	2h4y1wh8hgp	21	\N	\N	\N
+073buw1m70l	2h4y1wh8hgp	22	\N	\N	\N
+nocobase-admin-menu	2h4y1wh8hgp	23	\N	\N	\N
+galt7hbd78y	n6yds6ez043	11	\N	\N	\N
+e87ogy2w48b	n6yds6ez043	12	\N	\N	\N
+i0bqeajbvwo	n6yds6ez043	13	\N	\N	\N
+pdot2ybyfc0	n6yds6ez043	14	\N	\N	\N
+a7e860jrx5o	n6yds6ez043	15	\N	\N	\N
+zxh1oe1qx5t	n6yds6ez043	16	\N	\N	\N
+861gmcfwhia	n6yds6ez043	17	\N	\N	\N
+9yos6i0cjm3	n6yds6ez043	18	\N	\N	\N
+n3yigbe0k9v	n6yds6ez043	19	\N	\N	\N
+073buw1m70l	n6yds6ez043	20	\N	\N	\N
+nocobase-admin-menu	n6yds6ez043	21	\N	\N	\N
+galt7hbd78y	ftinb1yr6ki	12	\N	\N	\N
+e87ogy2w48b	ftinb1yr6ki	13	\N	\N	\N
+i0bqeajbvwo	ftinb1yr6ki	14	\N	\N	\N
+pdot2ybyfc0	ftinb1yr6ki	15	\N	\N	\N
+a7e860jrx5o	ftinb1yr6ki	16	\N	\N	\N
+zxh1oe1qx5t	ftinb1yr6ki	17	\N	\N	\N
+861gmcfwhia	ftinb1yr6ki	18	\N	\N	\N
+9yos6i0cjm3	ftinb1yr6ki	19	\N	\N	\N
+n3yigbe0k9v	ftinb1yr6ki	20	\N	\N	\N
+073buw1m70l	ftinb1yr6ki	21	\N	\N	\N
+nocobase-admin-menu	ftinb1yr6ki	22	\N	\N	\N
+galt7hbd78y	utrw9hfhybk	13	\N	\N	\N
+e87ogy2w48b	utrw9hfhybk	14	\N	\N	\N
+i0bqeajbvwo	utrw9hfhybk	15	\N	\N	\N
+pdot2ybyfc0	utrw9hfhybk	16	\N	\N	\N
+a7e860jrx5o	utrw9hfhybk	17	\N	\N	\N
+zxh1oe1qx5t	utrw9hfhybk	18	\N	\N	\N
+861gmcfwhia	utrw9hfhybk	19	\N	\N	\N
+9yos6i0cjm3	utrw9hfhybk	20	\N	\N	\N
+n3yigbe0k9v	utrw9hfhybk	21	\N	\N	\N
+073buw1m70l	utrw9hfhybk	22	\N	\N	\N
+nocobase-admin-menu	utrw9hfhybk	23	\N	\N	\N
+galt7hbd78y	lwcllr1qdag	11	\N	\N	\N
+e87ogy2w48b	lwcllr1qdag	12	\N	\N	\N
+i0bqeajbvwo	lwcllr1qdag	13	\N	\N	\N
+pdot2ybyfc0	lwcllr1qdag	14	\N	\N	\N
+a7e860jrx5o	lwcllr1qdag	15	\N	\N	\N
+zxh1oe1qx5t	lwcllr1qdag	16	\N	\N	\N
+861gmcfwhia	lwcllr1qdag	17	\N	\N	\N
+9yos6i0cjm3	lwcllr1qdag	18	\N	\N	\N
+n3yigbe0k9v	lwcllr1qdag	19	\N	\N	\N
+073buw1m70l	lwcllr1qdag	20	\N	\N	\N
+nocobase-admin-menu	lwcllr1qdag	21	\N	\N	\N
+galt7hbd78y	u8scozktrmw	12	\N	\N	\N
+e87ogy2w48b	u8scozktrmw	13	\N	\N	\N
+i0bqeajbvwo	u8scozktrmw	14	\N	\N	\N
+pdot2ybyfc0	u8scozktrmw	15	\N	\N	\N
+a7e860jrx5o	u8scozktrmw	16	\N	\N	\N
+zxh1oe1qx5t	u8scozktrmw	17	\N	\N	\N
+861gmcfwhia	u8scozktrmw	18	\N	\N	\N
+9yos6i0cjm3	u8scozktrmw	19	\N	\N	\N
+n3yigbe0k9v	u8scozktrmw	20	\N	\N	\N
+073buw1m70l	u8scozktrmw	21	\N	\N	\N
+nocobase-admin-menu	u8scozktrmw	22	\N	\N	\N
+galt7hbd78y	zo0rdear4lv	13	\N	\N	\N
+e87ogy2w48b	zo0rdear4lv	14	\N	\N	\N
+i0bqeajbvwo	zo0rdear4lv	15	\N	\N	\N
+pdot2ybyfc0	zo0rdear4lv	16	\N	\N	\N
+a7e860jrx5o	zo0rdear4lv	17	\N	\N	\N
+zxh1oe1qx5t	zo0rdear4lv	18	\N	\N	\N
+861gmcfwhia	zo0rdear4lv	19	\N	\N	\N
+9yos6i0cjm3	zo0rdear4lv	20	\N	\N	\N
+n3yigbe0k9v	zo0rdear4lv	21	\N	\N	\N
+073buw1m70l	zo0rdear4lv	22	\N	\N	\N
+nocobase-admin-menu	zo0rdear4lv	23	\N	\N	\N
+galt7hbd78y	ma2di65n17c	11	\N	\N	\N
+e87ogy2w48b	ma2di65n17c	12	\N	\N	\N
+i0bqeajbvwo	ma2di65n17c	13	\N	\N	\N
+pdot2ybyfc0	ma2di65n17c	14	\N	\N	\N
+a7e860jrx5o	ma2di65n17c	15	\N	\N	\N
+zxh1oe1qx5t	ma2di65n17c	16	\N	\N	\N
+861gmcfwhia	ma2di65n17c	17	\N	\N	\N
+9yos6i0cjm3	ma2di65n17c	18	\N	\N	\N
+n3yigbe0k9v	ma2di65n17c	19	\N	\N	\N
+073buw1m70l	ma2di65n17c	20	\N	\N	\N
+nocobase-admin-menu	ma2di65n17c	21	\N	\N	\N
+galt7hbd78y	k8z10036m6x	12	\N	\N	\N
+e87ogy2w48b	k8z10036m6x	13	\N	\N	\N
+i0bqeajbvwo	k8z10036m6x	14	\N	\N	\N
+pdot2ybyfc0	k8z10036m6x	15	\N	\N	\N
+a7e860jrx5o	k8z10036m6x	16	\N	\N	\N
+zxh1oe1qx5t	k8z10036m6x	17	\N	\N	\N
+861gmcfwhia	k8z10036m6x	18	\N	\N	\N
+9yos6i0cjm3	k8z10036m6x	19	\N	\N	\N
+n3yigbe0k9v	k8z10036m6x	20	\N	\N	\N
+073buw1m70l	k8z10036m6x	21	\N	\N	\N
+nocobase-admin-menu	k8z10036m6x	22	\N	\N	\N
+galt7hbd78y	na0ex1r025g	13	\N	\N	\N
+e87ogy2w48b	na0ex1r025g	14	\N	\N	\N
+i0bqeajbvwo	na0ex1r025g	15	\N	\N	\N
+pdot2ybyfc0	na0ex1r025g	16	\N	\N	\N
+a7e860jrx5o	na0ex1r025g	17	\N	\N	\N
+zxh1oe1qx5t	na0ex1r025g	18	\N	\N	\N
+861gmcfwhia	na0ex1r025g	19	\N	\N	\N
+9yos6i0cjm3	na0ex1r025g	20	\N	\N	\N
+n3yigbe0k9v	na0ex1r025g	21	\N	\N	\N
+073buw1m70l	na0ex1r025g	22	\N	\N	\N
+nocobase-admin-menu	na0ex1r025g	23	\N	\N	\N
+galt7hbd78y	f2bcdfxqi9r	11	\N	\N	\N
+e87ogy2w48b	f2bcdfxqi9r	12	\N	\N	\N
+i0bqeajbvwo	f2bcdfxqi9r	13	\N	\N	\N
+pdot2ybyfc0	f2bcdfxqi9r	14	\N	\N	\N
+a7e860jrx5o	f2bcdfxqi9r	15	\N	\N	\N
+zxh1oe1qx5t	f2bcdfxqi9r	16	\N	\N	\N
+861gmcfwhia	f2bcdfxqi9r	17	\N	\N	\N
+9yos6i0cjm3	f2bcdfxqi9r	18	\N	\N	\N
+n3yigbe0k9v	f2bcdfxqi9r	19	\N	\N	\N
+073buw1m70l	f2bcdfxqi9r	20	\N	\N	\N
+nocobase-admin-menu	f2bcdfxqi9r	21	\N	\N	\N
+galt7hbd78y	ce4ima9tbnd	11	\N	\N	\N
+e87ogy2w48b	ce4ima9tbnd	12	\N	\N	\N
+i0bqeajbvwo	ce4ima9tbnd	13	\N	\N	\N
+pdot2ybyfc0	ce4ima9tbnd	14	\N	\N	\N
+a7e860jrx5o	ce4ima9tbnd	15	\N	\N	\N
+zxh1oe1qx5t	ce4ima9tbnd	16	\N	\N	\N
+861gmcfwhia	ce4ima9tbnd	17	\N	\N	\N
+9yos6i0cjm3	ce4ima9tbnd	18	\N	\N	\N
+n3yigbe0k9v	ce4ima9tbnd	19	\N	\N	\N
+073buw1m70l	ce4ima9tbnd	20	\N	\N	\N
+nocobase-admin-menu	ce4ima9tbnd	21	\N	\N	\N
+galt7hbd78y	g9filp3q56w	12	\N	\N	\N
+e87ogy2w48b	g9filp3q56w	13	\N	\N	\N
+i0bqeajbvwo	g9filp3q56w	14	\N	\N	\N
+pdot2ybyfc0	g9filp3q56w	15	\N	\N	\N
+a7e860jrx5o	g9filp3q56w	16	\N	\N	\N
+zxh1oe1qx5t	g9filp3q56w	17	\N	\N	\N
+861gmcfwhia	g9filp3q56w	18	\N	\N	\N
+9yos6i0cjm3	g9filp3q56w	19	\N	\N	\N
+n3yigbe0k9v	g9filp3q56w	20	\N	\N	\N
+073buw1m70l	g9filp3q56w	21	\N	\N	\N
+nocobase-admin-menu	g9filp3q56w	22	\N	\N	\N
+galt7hbd78y	lnegk2e449v	11	\N	\N	\N
+e87ogy2w48b	lnegk2e449v	12	\N	\N	\N
+i0bqeajbvwo	lnegk2e449v	13	\N	\N	\N
+pdot2ybyfc0	lnegk2e449v	14	\N	\N	\N
+a7e860jrx5o	lnegk2e449v	15	\N	\N	\N
+zxh1oe1qx5t	lnegk2e449v	16	\N	\N	\N
+861gmcfwhia	lnegk2e449v	17	\N	\N	\N
+9yos6i0cjm3	lnegk2e449v	18	\N	\N	\N
+n3yigbe0k9v	lnegk2e449v	19	\N	\N	\N
+073buw1m70l	lnegk2e449v	20	\N	\N	\N
+nocobase-admin-menu	lnegk2e449v	21	\N	\N	\N
+galt7hbd78y	rixb2qdf4cv	12	\N	\N	\N
+e87ogy2w48b	rixb2qdf4cv	13	\N	\N	\N
+i0bqeajbvwo	rixb2qdf4cv	14	\N	\N	\N
+pdot2ybyfc0	rixb2qdf4cv	15	\N	\N	\N
+a7e860jrx5o	rixb2qdf4cv	16	\N	\N	\N
+zxh1oe1qx5t	rixb2qdf4cv	17	\N	\N	\N
+861gmcfwhia	rixb2qdf4cv	18	\N	\N	\N
+9yos6i0cjm3	rixb2qdf4cv	19	\N	\N	\N
+n3yigbe0k9v	rixb2qdf4cv	20	\N	\N	\N
+073buw1m70l	rixb2qdf4cv	21	\N	\N	\N
+nocobase-admin-menu	rixb2qdf4cv	22	\N	\N	\N
+galt7hbd78y	rhl1529zt7b	11	\N	\N	\N
+e87ogy2w48b	rhl1529zt7b	12	\N	\N	\N
+i0bqeajbvwo	rhl1529zt7b	13	\N	\N	\N
+pdot2ybyfc0	rhl1529zt7b	14	\N	\N	\N
+a7e860jrx5o	rhl1529zt7b	15	\N	\N	\N
+zxh1oe1qx5t	rhl1529zt7b	16	\N	\N	\N
+861gmcfwhia	rhl1529zt7b	17	\N	\N	\N
+9yos6i0cjm3	rhl1529zt7b	18	\N	\N	\N
+n3yigbe0k9v	rhl1529zt7b	19	\N	\N	\N
+073buw1m70l	rhl1529zt7b	20	\N	\N	\N
+nocobase-admin-menu	rhl1529zt7b	21	\N	\N	\N
+galt7hbd78y	ky5jq7m1dcv	12	\N	\N	\N
+e87ogy2w48b	ky5jq7m1dcv	13	\N	\N	\N
+i0bqeajbvwo	ky5jq7m1dcv	14	\N	\N	\N
+pdot2ybyfc0	ky5jq7m1dcv	15	\N	\N	\N
+a7e860jrx5o	ky5jq7m1dcv	16	\N	\N	\N
+zxh1oe1qx5t	ky5jq7m1dcv	17	\N	\N	\N
+861gmcfwhia	ky5jq7m1dcv	18	\N	\N	\N
+9yos6i0cjm3	ky5jq7m1dcv	19	\N	\N	\N
+n3yigbe0k9v	ky5jq7m1dcv	20	\N	\N	\N
+073buw1m70l	ky5jq7m1dcv	21	\N	\N	\N
+nocobase-admin-menu	ky5jq7m1dcv	22	\N	\N	\N
+galt7hbd78y	nx706cf6ton	11	\N	\N	\N
+e87ogy2w48b	nx706cf6ton	12	\N	\N	\N
+i0bqeajbvwo	nx706cf6ton	13	\N	\N	\N
+pdot2ybyfc0	nx706cf6ton	14	\N	\N	\N
+a7e860jrx5o	nx706cf6ton	15	\N	\N	\N
+zxh1oe1qx5t	nx706cf6ton	16	\N	\N	\N
+861gmcfwhia	nx706cf6ton	17	\N	\N	\N
+9yos6i0cjm3	nx706cf6ton	18	\N	\N	\N
+n3yigbe0k9v	nx706cf6ton	19	\N	\N	\N
+073buw1m70l	nx706cf6ton	20	\N	\N	\N
+nocobase-admin-menu	nx706cf6ton	21	\N	\N	\N
+galt7hbd78y	czvibg44drs	12	\N	\N	\N
+e87ogy2w48b	czvibg44drs	13	\N	\N	\N
+i0bqeajbvwo	czvibg44drs	14	\N	\N	\N
+pdot2ybyfc0	czvibg44drs	15	\N	\N	\N
+a7e860jrx5o	czvibg44drs	16	\N	\N	\N
+zxh1oe1qx5t	czvibg44drs	17	\N	\N	\N
+861gmcfwhia	czvibg44drs	18	\N	\N	\N
+9yos6i0cjm3	czvibg44drs	19	\N	\N	\N
+n3yigbe0k9v	czvibg44drs	20	\N	\N	\N
+073buw1m70l	czvibg44drs	21	\N	\N	\N
+nocobase-admin-menu	czvibg44drs	22	\N	\N	\N
+galt7hbd78y	2mvvg3tfmqn	13	\N	\N	\N
+e87ogy2w48b	2mvvg3tfmqn	14	\N	\N	\N
+i0bqeajbvwo	2mvvg3tfmqn	15	\N	\N	\N
+pdot2ybyfc0	2mvvg3tfmqn	16	\N	\N	\N
+a7e860jrx5o	2mvvg3tfmqn	17	\N	\N	\N
+zxh1oe1qx5t	2mvvg3tfmqn	18	\N	\N	\N
+861gmcfwhia	2mvvg3tfmqn	19	\N	\N	\N
+9yos6i0cjm3	2mvvg3tfmqn	20	\N	\N	\N
+n3yigbe0k9v	2mvvg3tfmqn	21	\N	\N	\N
+073buw1m70l	2mvvg3tfmqn	22	\N	\N	\N
+nocobase-admin-menu	2mvvg3tfmqn	23	\N	\N	\N
+galt7hbd78y	eauv9tqlcmc	11	\N	\N	\N
+e87ogy2w48b	eauv9tqlcmc	12	\N	\N	\N
+i0bqeajbvwo	eauv9tqlcmc	13	\N	\N	\N
+pdot2ybyfc0	eauv9tqlcmc	14	\N	\N	\N
+a7e860jrx5o	eauv9tqlcmc	15	\N	\N	\N
+zxh1oe1qx5t	eauv9tqlcmc	16	\N	\N	\N
+861gmcfwhia	eauv9tqlcmc	17	\N	\N	\N
+9yos6i0cjm3	eauv9tqlcmc	18	\N	\N	\N
+n3yigbe0k9v	eauv9tqlcmc	19	\N	\N	\N
+073buw1m70l	eauv9tqlcmc	20	\N	\N	\N
+nocobase-admin-menu	eauv9tqlcmc	21	\N	\N	\N
+galt7hbd78y	jyf3gvko6m0	12	\N	\N	\N
+e87ogy2w48b	jyf3gvko6m0	13	\N	\N	\N
+i0bqeajbvwo	jyf3gvko6m0	14	\N	\N	\N
+pdot2ybyfc0	jyf3gvko6m0	15	\N	\N	\N
+a7e860jrx5o	jyf3gvko6m0	16	\N	\N	\N
+zxh1oe1qx5t	jyf3gvko6m0	17	\N	\N	\N
+861gmcfwhia	jyf3gvko6m0	18	\N	\N	\N
+9yos6i0cjm3	jyf3gvko6m0	19	\N	\N	\N
+n3yigbe0k9v	jyf3gvko6m0	20	\N	\N	\N
+073buw1m70l	jyf3gvko6m0	21	\N	\N	\N
+nocobase-admin-menu	jyf3gvko6m0	22	\N	\N	\N
+galt7hbd78y	obr6c35u15y	13	\N	\N	\N
+e87ogy2w48b	obr6c35u15y	14	\N	\N	\N
+i0bqeajbvwo	obr6c35u15y	15	\N	\N	\N
+pdot2ybyfc0	obr6c35u15y	16	\N	\N	\N
+a7e860jrx5o	obr6c35u15y	17	\N	\N	\N
+zxh1oe1qx5t	obr6c35u15y	18	\N	\N	\N
+861gmcfwhia	obr6c35u15y	19	\N	\N	\N
+9yos6i0cjm3	obr6c35u15y	20	\N	\N	\N
+n3yigbe0k9v	obr6c35u15y	21	\N	\N	\N
+073buw1m70l	obr6c35u15y	22	\N	\N	\N
+nocobase-admin-menu	obr6c35u15y	23	\N	\N	\N
+galt7hbd78y	bawj0uea3a0	12	\N	\N	\N
+e87ogy2w48b	bawj0uea3a0	13	\N	\N	\N
+i0bqeajbvwo	bawj0uea3a0	14	\N	\N	\N
+pdot2ybyfc0	bawj0uea3a0	15	\N	\N	\N
+a7e860jrx5o	bawj0uea3a0	16	\N	\N	\N
+zxh1oe1qx5t	bawj0uea3a0	17	\N	\N	\N
+861gmcfwhia	bawj0uea3a0	18	\N	\N	\N
+9yos6i0cjm3	bawj0uea3a0	19	\N	\N	\N
+n3yigbe0k9v	bawj0uea3a0	20	\N	\N	\N
+073buw1m70l	bawj0uea3a0	21	\N	\N	\N
+nocobase-admin-menu	bawj0uea3a0	22	\N	\N	\N
+galt7hbd78y	912mn4py2yd	13	\N	\N	\N
+e87ogy2w48b	912mn4py2yd	14	\N	\N	\N
+i0bqeajbvwo	912mn4py2yd	15	\N	\N	\N
+pdot2ybyfc0	912mn4py2yd	16	\N	\N	\N
+a7e860jrx5o	912mn4py2yd	17	\N	\N	\N
+zxh1oe1qx5t	912mn4py2yd	18	\N	\N	\N
+861gmcfwhia	912mn4py2yd	19	\N	\N	\N
+9yos6i0cjm3	912mn4py2yd	20	\N	\N	\N
+n3yigbe0k9v	912mn4py2yd	21	\N	\N	\N
+073buw1m70l	912mn4py2yd	22	\N	\N	\N
+nocobase-admin-menu	912mn4py2yd	23	\N	\N	\N
+galt7hbd78y	07jjkjhplo6	11	\N	\N	\N
+e87ogy2w48b	07jjkjhplo6	12	\N	\N	\N
+i0bqeajbvwo	07jjkjhplo6	13	\N	\N	\N
+pdot2ybyfc0	07jjkjhplo6	14	\N	\N	\N
+a7e860jrx5o	07jjkjhplo6	15	\N	\N	\N
+zxh1oe1qx5t	07jjkjhplo6	16	\N	\N	\N
+861gmcfwhia	07jjkjhplo6	17	\N	\N	\N
+9yos6i0cjm3	07jjkjhplo6	18	\N	\N	\N
+n3yigbe0k9v	07jjkjhplo6	19	\N	\N	\N
+073buw1m70l	07jjkjhplo6	20	\N	\N	\N
+nocobase-admin-menu	07jjkjhplo6	21	\N	\N	\N
+e87ogy2w48b	66xqkev137r	2	\N	\N	\N
+i0bqeajbvwo	66xqkev137r	3	\N	\N	\N
+pdot2ybyfc0	66xqkev137r	4	\N	\N	\N
+a7e860jrx5o	66xqkev137r	5	\N	\N	\N
+zxh1oe1qx5t	66xqkev137r	6	\N	\N	\N
+861gmcfwhia	66xqkev137r	7	\N	\N	\N
+9yos6i0cjm3	66xqkev137r	8	\N	\N	\N
+n3yigbe0k9v	66xqkev137r	9	\N	\N	\N
+073buw1m70l	66xqkev137r	10	\N	\N	\N
+nocobase-admin-menu	66xqkev137r	11	\N	\N	\N
+66xqkev137r	66xqkev137r	0	f	properties	\N
+galt7hbd78y	66xqkev137r	1	\N	\N	3
+ppkkw2ktn7w	ppkkw2ktn7w	0	f	properties	\N
+41m30pr7tm0	ppkkw2ktn7w	1	\N	\N	1
+ppkkw2ktn7w	lhhb4d5lz96	3	\N	\N	\N
+ppkkw2ktn7w	mm99ajvazt8	4	\N	\N	\N
+ppkkw2ktn7w	yfijfhpa0n1	5	\N	\N	\N
+ppkkw2ktn7w	sr4x5sl1mby	2	\N	\N	\N
+41m30pr7tm0	p3st627y95d	2	\N	\N	\N
+41m30pr7tm0	lhhb4d5lz96	4	\N	\N	\N
+41m30pr7tm0	mm99ajvazt8	5	\N	\N	\N
+41m30pr7tm0	yfijfhpa0n1	6	\N	\N	\N
+41m30pr7tm0	sr4x5sl1mby	3	\N	\N	\N
+ppkkw2ktn7w	p3st627y95d	1	\N	\N	1
+22pnzqtybji	ppkkw2ktn7w	2	\N	\N	\N
+22pnzqtybji	p3st627y95d	3	\N	\N	\N
+22pnzqtybji	lhhb4d5lz96	5	\N	\N	\N
+22pnzqtybji	mm99ajvazt8	6	\N	\N	\N
+22pnzqtybji	yfijfhpa0n1	7	\N	\N	\N
+22pnzqtybji	sr4x5sl1mby	4	\N	\N	\N
+mqma0oexw7v	41m30pr7tm0	2	\N	\N	\N
+mqma0oexw7v	ppkkw2ktn7w	3	\N	\N	\N
+mqma0oexw7v	p3st627y95d	4	\N	\N	\N
+mqma0oexw7v	lhhb4d5lz96	6	\N	\N	\N
+mqma0oexw7v	mm99ajvazt8	7	\N	\N	\N
+mqma0oexw7v	yfijfhpa0n1	8	\N	\N	\N
+mqma0oexw7v	sr4x5sl1mby	5	\N	\N	\N
+09yy6b78jxi	41m30pr7tm0	3	\N	\N	\N
+09yy6b78jxi	ppkkw2ktn7w	4	\N	\N	\N
+09yy6b78jxi	p3st627y95d	5	\N	\N	\N
+09yy6b78jxi	lhhb4d5lz96	7	\N	\N	\N
+09yy6b78jxi	mm99ajvazt8	8	\N	\N	\N
+09yy6b78jxi	yfijfhpa0n1	9	\N	\N	\N
+09yy6b78jxi	sr4x5sl1mby	6	\N	\N	\N
+1whdhzzrodk	41m30pr7tm0	4	\N	\N	\N
+1whdhzzrodk	ppkkw2ktn7w	5	\N	\N	\N
+1whdhzzrodk	p3st627y95d	6	\N	\N	\N
+1whdhzzrodk	lhhb4d5lz96	8	\N	\N	\N
+1whdhzzrodk	mm99ajvazt8	9	\N	\N	\N
+1whdhzzrodk	yfijfhpa0n1	10	\N	\N	\N
+1whdhzzrodk	sr4x5sl1mby	7	\N	\N	\N
+f205ix4mjg8	41m30pr7tm0	5	\N	\N	\N
+f205ix4mjg8	ppkkw2ktn7w	6	\N	\N	\N
+f205ix4mjg8	p3st627y95d	7	\N	\N	\N
+f205ix4mjg8	lhhb4d5lz96	9	\N	\N	\N
+f205ix4mjg8	mm99ajvazt8	10	\N	\N	\N
+f205ix4mjg8	yfijfhpa0n1	11	\N	\N	\N
+f205ix4mjg8	sr4x5sl1mby	8	\N	\N	\N
+fvx7g50y58n	41m30pr7tm0	6	\N	\N	\N
+fvx7g50y58n	ppkkw2ktn7w	7	\N	\N	\N
+fvx7g50y58n	p3st627y95d	8	\N	\N	\N
+fvx7g50y58n	lhhb4d5lz96	10	\N	\N	\N
+fvx7g50y58n	mm99ajvazt8	11	\N	\N	\N
+fvx7g50y58n	yfijfhpa0n1	12	\N	\N	\N
+fvx7g50y58n	sr4x5sl1mby	9	\N	\N	\N
+833uu3rb1nm	41m30pr7tm0	7	\N	\N	\N
+833uu3rb1nm	ppkkw2ktn7w	8	\N	\N	\N
+833uu3rb1nm	p3st627y95d	9	\N	\N	\N
+833uu3rb1nm	lhhb4d5lz96	11	\N	\N	\N
+833uu3rb1nm	mm99ajvazt8	12	\N	\N	\N
+41m30pr7tm0	41m30pr7tm0	0	f	properties	\N
+833uu3rb1nm	yfijfhpa0n1	13	\N	\N	\N
+833uu3rb1nm	sr4x5sl1mby	10	\N	\N	\N
+ik0zt15yup2	41m30pr7tm0	8	\N	\N	\N
+ik0zt15yup2	ppkkw2ktn7w	9	\N	\N	\N
+ik0zt15yup2	p3st627y95d	10	\N	\N	\N
+ik0zt15yup2	lhhb4d5lz96	12	\N	\N	\N
+ik0zt15yup2	mm99ajvazt8	13	\N	\N	\N
+ik0zt15yup2	yfijfhpa0n1	14	\N	\N	\N
+ik0zt15yup2	sr4x5sl1mby	11	\N	\N	\N
+w1vttmfcjic	41m30pr7tm0	9	\N	\N	\N
+w1vttmfcjic	ppkkw2ktn7w	10	\N	\N	\N
+w1vttmfcjic	p3st627y95d	11	\N	\N	\N
+w1vttmfcjic	lhhb4d5lz96	13	\N	\N	\N
+w1vttmfcjic	mm99ajvazt8	14	\N	\N	\N
+w1vttmfcjic	yfijfhpa0n1	15	\N	\N	\N
+w1vttmfcjic	sr4x5sl1mby	12	\N	\N	\N
+nocobase-admin-menu	41m30pr7tm0	10	\N	\N	\N
+nocobase-admin-menu	ppkkw2ktn7w	11	\N	\N	\N
+nocobase-admin-menu	p3st627y95d	12	\N	\N	\N
+nocobase-admin-menu	lhhb4d5lz96	14	\N	\N	\N
+nocobase-admin-menu	mm99ajvazt8	15	\N	\N	\N
+nocobase-admin-menu	yfijfhpa0n1	16	\N	\N	\N
+nocobase-admin-menu	sr4x5sl1mby	13	\N	\N	\N
+22pnzqtybji	y6sl19mjcff	1	\N	\N	19
+53yk2iaibro	53yk2iaibro	0	f	properties	\N
+w2xb0a6rkey	53yk2iaibro	2	\N	\N	\N
+x8ujxnhlng7	53yk2iaibro	3	\N	\N	\N
+evtz6ljqxdq	53yk2iaibro	4	\N	\N	\N
+i80vemflinb	53yk2iaibro	5	\N	\N	\N
+5bru92qlyrq	53yk2iaibro	6	\N	\N	\N
+obl2auujo32	53yk2iaibro	7	\N	\N	\N
+nocobase-admin-menu	53yk2iaibro	8	\N	\N	\N
+5uo2qh1l9qt	53yk2iaibro	1	\N	\N	2
+22pnzqtybji	cjgytsf96xm	1	\N	\N	20
+22pnzqtybji	udmmaahgp9z	1	\N	\N	21
+22pnzqtybji	y3668x0h41o	1	\N	\N	14
+22pnzqtybji	e4samnonhij	1	\N	\N	16
+22pnzqtybji	0sygad82cqs	1	\N	\N	13
+22pnzqtybji	aezmizce5n2	1	\N	\N	12
+22pnzqtybji	4ta56kbw4tp	1	\N	\N	11
+22pnzqtybji	bbrxrup6ylf	1	\N	\N	9
+22pnzqtybji	41m30pr7tm0	1	\N	\N	7
+22pnzqtybji	9ss1gvlutz5	1	\N	\N	4
+5idf4nxla3u	5idf4nxla3u	0	f	properties	\N
+mqma0oexw7v	9ss1gvlutz5	2	\N	\N	\N
+09yy6b78jxi	9ss1gvlutz5	3	\N	\N	\N
+1whdhzzrodk	9ss1gvlutz5	4	\N	\N	\N
+f205ix4mjg8	9ss1gvlutz5	5	\N	\N	\N
+fvx7g50y58n	9ss1gvlutz5	6	\N	\N	\N
+833uu3rb1nm	9ss1gvlutz5	7	\N	\N	\N
+ik0zt15yup2	9ss1gvlutz5	8	\N	\N	\N
+w1vttmfcjic	9ss1gvlutz5	9	\N	\N	\N
+nocobase-admin-menu	9ss1gvlutz5	10	\N	\N	\N
+9ss1gvlutz5	9ss1gvlutz5	0	f	properties	\N
+p2vze33te52	qy6tyh6ck14	1	\N	\N	1
+mqma0oexw7v	x7htd31qjy2	2	\N	\N	\N
+09yy6b78jxi	x7htd31qjy2	3	\N	\N	\N
+1whdhzzrodk	x7htd31qjy2	4	\N	\N	\N
+f205ix4mjg8	x7htd31qjy2	5	\N	\N	\N
+fvx7g50y58n	x7htd31qjy2	6	\N	\N	\N
+833uu3rb1nm	x7htd31qjy2	7	\N	\N	\N
+ik0zt15yup2	x7htd31qjy2	8	\N	\N	\N
+w1vttmfcjic	x7htd31qjy2	9	\N	\N	\N
+nocobase-admin-menu	x7htd31qjy2	10	\N	\N	\N
+x7htd31qjy2	x7htd31qjy2	0	f	properties	\N
+22pnzqtybji	x7htd31qjy2	1	\N	\N	3
+kxpzfdx2wzr	5idf4nxla3u	1	\N	\N	1
+mqma0oexw7v	kxpzfdx2wzr	3	\N	\N	\N
+mqma0oexw7v	5idf4nxla3u	4	\N	\N	\N
+09yy6b78jxi	kxpzfdx2wzr	4	\N	\N	\N
+09yy6b78jxi	5idf4nxla3u	5	\N	\N	\N
+1whdhzzrodk	kxpzfdx2wzr	5	\N	\N	\N
+1whdhzzrodk	5idf4nxla3u	6	\N	\N	\N
+f205ix4mjg8	kxpzfdx2wzr	6	\N	\N	\N
+f205ix4mjg8	5idf4nxla3u	7	\N	\N	\N
+fvx7g50y58n	kxpzfdx2wzr	7	\N	\N	\N
+fvx7g50y58n	5idf4nxla3u	8	\N	\N	\N
+833uu3rb1nm	kxpzfdx2wzr	8	\N	\N	\N
+833uu3rb1nm	5idf4nxla3u	9	\N	\N	\N
+ik0zt15yup2	kxpzfdx2wzr	9	\N	\N	\N
+ik0zt15yup2	5idf4nxla3u	10	\N	\N	\N
+w1vttmfcjic	kxpzfdx2wzr	10	\N	\N	\N
+w1vttmfcjic	5idf4nxla3u	11	\N	\N	\N
+nocobase-admin-menu	kxpzfdx2wzr	11	\N	\N	\N
+nocobase-admin-menu	5idf4nxla3u	12	\N	\N	\N
+t1avimtuwpm	5idf4nxla3u	2	\N	\N	\N
+22pnzqtybji	kxpzfdx2wzr	2	\N	\N	\N
+22pnzqtybji	5idf4nxla3u	3	\N	\N	\N
+kxpzfdx2wzr	kxpzfdx2wzr	0	f	properties	\N
+t1avimtuwpm	kxpzfdx2wzr	1	\N	\N	2
+gtvqaohgxm8	gtvqaohgxm8	0	f	properties	\N
+qy6tyh6ck14	gtvqaohgxm8	1	\N	\N	1
+p2vze33te52	gtvqaohgxm8	2	\N	\N	\N
+8dzfyczph0t	qy6tyh6ck14	2	\N	\N	\N
+8dzfyczph0t	gtvqaohgxm8	3	\N	\N	\N
+l64ub2rxrot	qy6tyh6ck14	3	\N	\N	\N
+l64ub2rxrot	gtvqaohgxm8	4	\N	\N	\N
+zg36b96ttmj	qy6tyh6ck14	4	\N	\N	\N
+zg36b96ttmj	gtvqaohgxm8	5	\N	\N	\N
+jkjog6plqji	qy6tyh6ck14	5	\N	\N	\N
+jkjog6plqji	gtvqaohgxm8	6	\N	\N	\N
+fi2ue9h7mq4	qy6tyh6ck14	6	\N	\N	\N
+fi2ue9h7mq4	gtvqaohgxm8	7	\N	\N	\N
+43941gf2n0y	qy6tyh6ck14	7	\N	\N	\N
+43941gf2n0y	gtvqaohgxm8	8	\N	\N	\N
+wp3edt8ujq4	qy6tyh6ck14	8	\N	\N	\N
+wp3edt8ujq4	gtvqaohgxm8	9	\N	\N	\N
+mlqmnjhazhe	qy6tyh6ck14	9	\N	\N	\N
+mlqmnjhazhe	gtvqaohgxm8	10	\N	\N	\N
+wj9ij1yidio	qy6tyh6ck14	10	\N	\N	\N
+wj9ij1yidio	gtvqaohgxm8	11	\N	\N	\N
+60f4r8b0er6	qy6tyh6ck14	11	\N	\N	\N
+60f4r8b0er6	gtvqaohgxm8	12	\N	\N	\N
+qbrsluqev37	qy6tyh6ck14	12	\N	\N	\N
+qbrsluqev37	gtvqaohgxm8	13	\N	\N	\N
+fl6193tpei8	qy6tyh6ck14	13	\N	\N	\N
+fl6193tpei8	gtvqaohgxm8	14	\N	\N	\N
+m291sv0y712	qy6tyh6ck14	14	\N	\N	\N
+m291sv0y712	gtvqaohgxm8	15	\N	\N	\N
+3d4bg9et9gc	qy6tyh6ck14	15	\N	\N	\N
+3d4bg9et9gc	gtvqaohgxm8	16	\N	\N	\N
+pdtxkxhi0px	qy6tyh6ck14	16	\N	\N	\N
+pdtxkxhi0px	gtvqaohgxm8	17	\N	\N	\N
+9kxizfoklw7	qy6tyh6ck14	17	\N	\N	\N
+9kxizfoklw7	gtvqaohgxm8	18	\N	\N	\N
+puz5i9w50bl	qy6tyh6ck14	18	\N	\N	\N
+puz5i9w50bl	gtvqaohgxm8	19	\N	\N	\N
+idfhxat5qg6	qy6tyh6ck14	19	\N	\N	\N
+idfhxat5qg6	gtvqaohgxm8	20	\N	\N	\N
+iqddf9bwww2	qy6tyh6ck14	20	\N	\N	\N
+iqddf9bwww2	gtvqaohgxm8	21	\N	\N	\N
+eoxofxze047	qy6tyh6ck14	21	\N	\N	\N
+eoxofxze047	gtvqaohgxm8	22	\N	\N	\N
+p3ls96regvr	qy6tyh6ck14	22	\N	\N	\N
+p3ls96regvr	gtvqaohgxm8	23	\N	\N	\N
+073buw1m70l	qy6tyh6ck14	23	\N	\N	\N
+073buw1m70l	gtvqaohgxm8	24	\N	\N	\N
+nocobase-admin-menu	qy6tyh6ck14	24	\N	\N	\N
+nocobase-admin-menu	gtvqaohgxm8	25	\N	\N	\N
+qy6tyh6ck14	qy6tyh6ck14	0	f	properties	\N
+367j9rm7qvl	367j9rm7qvl	0	f	properties	\N
+5j6aldekdhj	367j9rm7qvl	2	\N	\N	\N
+n08xlr2pmaz	367j9rm7qvl	3	\N	\N	\N
+xaewf0sjo76	367j9rm7qvl	6	\N	\N	\N
+fo7g83k4wnw	367j9rm7qvl	7	\N	\N	\N
+odmrtfsxjp5	367j9rm7qvl	8	\N	\N	\N
+alt2km13pi6	367j9rm7qvl	9	\N	\N	\N
+99wrtdh3vjb	367j9rm7qvl	10	\N	\N	\N
+mqma0oexw7v	367j9rm7qvl	11	\N	\N	\N
+09yy6b78jxi	367j9rm7qvl	12	\N	\N	\N
+1whdhzzrodk	367j9rm7qvl	13	\N	\N	\N
+f205ix4mjg8	367j9rm7qvl	14	\N	\N	\N
+fvx7g50y58n	367j9rm7qvl	15	\N	\N	\N
+833uu3rb1nm	367j9rm7qvl	16	\N	\N	\N
+ik0zt15yup2	367j9rm7qvl	17	\N	\N	\N
+w1vttmfcjic	367j9rm7qvl	18	\N	\N	\N
+nocobase-admin-menu	367j9rm7qvl	19	\N	\N	\N
+fzzjta8vefz	367j9rm7qvl	4	\N	\N	\N
+g4n9eb2icuo	367j9rm7qvl	5	\N	\N	\N
+bb7nfngcfhq	367j9rm7qvl	1	\N	\N	2
+024s22ncu12	024s22ncu12	0	f	properties	\N
+77ts7szo3co	024s22ncu12	1	\N	\N	1
+azr8rt58jhq	azr8rt58jhq	0	f	properties	\N
+024s22ncu12	azr8rt58jhq	1	\N	\N	1
+77ts7szo3co	azr8rt58jhq	2	\N	\N	1
+53onwv1p0ao	53onwv1p0ao	0	f	properties	\N
+azr8rt58jhq	53onwv1p0ao	1	\N	\N	1
+024s22ncu12	53onwv1p0ao	2	\N	\N	1
+77ts7szo3co	53onwv1p0ao	3	\N	\N	1
+uatnso3i8u3	uatnso3i8u3	0	f	properties	\N
+53onwv1p0ao	uatnso3i8u3	1	\N	\N	1
+azr8rt58jhq	uatnso3i8u3	2	\N	\N	1
+024s22ncu12	uatnso3i8u3	3	\N	\N	1
+77ts7szo3co	uatnso3i8u3	4	\N	\N	1
+tmiqe6j1j64	024s22ncu12	2	\N	\N	\N
+tmiqe6j1j64	azr8rt58jhq	3	\N	\N	\N
+tmiqe6j1j64	53onwv1p0ao	4	\N	\N	\N
+tmiqe6j1j64	uatnso3i8u3	5	\N	\N	\N
+hw80ixyrjgz	77ts7szo3co	2	\N	\N	\N
+hw80ixyrjgz	024s22ncu12	3	\N	\N	\N
+hw80ixyrjgz	azr8rt58jhq	4	\N	\N	\N
+hw80ixyrjgz	53onwv1p0ao	5	\N	\N	\N
+hw80ixyrjgz	uatnso3i8u3	6	\N	\N	\N
+me1ohauow6f	77ts7szo3co	3	\N	\N	\N
+me1ohauow6f	024s22ncu12	4	\N	\N	\N
+me1ohauow6f	azr8rt58jhq	5	\N	\N	\N
+me1ohauow6f	53onwv1p0ao	6	\N	\N	\N
+me1ohauow6f	uatnso3i8u3	7	\N	\N	\N
+xqf45rvay4g	77ts7szo3co	4	\N	\N	\N
+xqf45rvay4g	024s22ncu12	5	\N	\N	\N
+xqf45rvay4g	azr8rt58jhq	6	\N	\N	\N
+xqf45rvay4g	53onwv1p0ao	7	\N	\N	\N
+xqf45rvay4g	uatnso3i8u3	8	\N	\N	\N
+2mxzcpz5cle	77ts7szo3co	5	\N	\N	\N
+2mxzcpz5cle	024s22ncu12	6	\N	\N	\N
+2mxzcpz5cle	azr8rt58jhq	7	\N	\N	\N
+2mxzcpz5cle	53onwv1p0ao	8	\N	\N	\N
+2mxzcpz5cle	uatnso3i8u3	9	\N	\N	\N
+jqr7lgri2e0	77ts7szo3co	6	\N	\N	\N
+jqr7lgri2e0	024s22ncu12	7	\N	\N	\N
+jqr7lgri2e0	azr8rt58jhq	8	\N	\N	\N
+jqr7lgri2e0	53onwv1p0ao	9	\N	\N	\N
+jqr7lgri2e0	uatnso3i8u3	10	\N	\N	\N
+5vjhonzhs45	77ts7szo3co	7	\N	\N	\N
+5vjhonzhs45	024s22ncu12	8	\N	\N	\N
+5vjhonzhs45	azr8rt58jhq	9	\N	\N	\N
+5vjhonzhs45	53onwv1p0ao	10	\N	\N	\N
+5vjhonzhs45	uatnso3i8u3	11	\N	\N	\N
+073buw1m70l	77ts7szo3co	8	\N	\N	\N
+073buw1m70l	024s22ncu12	9	\N	\N	\N
+073buw1m70l	azr8rt58jhq	10	\N	\N	\N
+073buw1m70l	53onwv1p0ao	11	\N	\N	\N
+073buw1m70l	uatnso3i8u3	12	\N	\N	\N
+nocobase-admin-menu	77ts7szo3co	9	\N	\N	\N
+nocobase-admin-menu	024s22ncu12	10	\N	\N	\N
+nocobase-admin-menu	azr8rt58jhq	11	\N	\N	\N
+nocobase-admin-menu	53onwv1p0ao	12	\N	\N	\N
+nocobase-admin-menu	uatnso3i8u3	13	\N	\N	\N
+77ts7szo3co	77ts7szo3co	0	f	properties	\N
+tmiqe6j1j64	77ts7szo3co	1	\N	\N	3
+lkhgik8xv90	lkhgik8xv90	0	f	properties	\N
+o8147vmdwcq	lkhgik8xv90	1	\N	\N	1
+msr8trei5uf	msr8trei5uf	0	f	properties	\N
+lkhgik8xv90	msr8trei5uf	1	\N	\N	1
+o8147vmdwcq	msr8trei5uf	2	\N	\N	1
+nxqum1qxnv4	nxqum1qxnv4	0	f	properties	\N
+msr8trei5uf	nxqum1qxnv4	1	\N	\N	1
+lkhgik8xv90	nxqum1qxnv4	2	\N	\N	1
+o8147vmdwcq	nxqum1qxnv4	3	\N	\N	1
+658x6srrpsl	658x6srrpsl	0	f	properties	\N
+nxqum1qxnv4	658x6srrpsl	1	\N	\N	1
+msr8trei5uf	658x6srrpsl	2	\N	\N	1
+lkhgik8xv90	658x6srrpsl	3	\N	\N	1
+o8147vmdwcq	658x6srrpsl	4	\N	\N	1
+3nx5wrm9dsv	3nx5wrm9dsv	0	f	properties	\N
+nxqum1qxnv4	3nx5wrm9dsv	1	\N	\N	2
+msr8trei5uf	3nx5wrm9dsv	2	\N	\N	2
+lkhgik8xv90	3nx5wrm9dsv	3	\N	\N	2
+o8147vmdwcq	3nx5wrm9dsv	4	\N	\N	2
+uatnso3i8u3	lkhgik8xv90	2	\N	\N	\N
+uatnso3i8u3	msr8trei5uf	3	\N	\N	\N
+uatnso3i8u3	nxqum1qxnv4	4	\N	\N	\N
+uatnso3i8u3	658x6srrpsl	5	\N	\N	\N
+uatnso3i8u3	3nx5wrm9dsv	5	\N	\N	\N
+53onwv1p0ao	o8147vmdwcq	2	\N	\N	\N
+53onwv1p0ao	lkhgik8xv90	3	\N	\N	\N
+53onwv1p0ao	msr8trei5uf	4	\N	\N	\N
+53onwv1p0ao	nxqum1qxnv4	5	\N	\N	\N
+53onwv1p0ao	658x6srrpsl	6	\N	\N	\N
+53onwv1p0ao	3nx5wrm9dsv	6	\N	\N	\N
+azr8rt58jhq	o8147vmdwcq	3	\N	\N	\N
+azr8rt58jhq	lkhgik8xv90	4	\N	\N	\N
+azr8rt58jhq	msr8trei5uf	5	\N	\N	\N
+azr8rt58jhq	nxqum1qxnv4	6	\N	\N	\N
+azr8rt58jhq	658x6srrpsl	7	\N	\N	\N
+azr8rt58jhq	3nx5wrm9dsv	7	\N	\N	\N
+024s22ncu12	o8147vmdwcq	4	\N	\N	\N
+024s22ncu12	lkhgik8xv90	5	\N	\N	\N
+024s22ncu12	msr8trei5uf	6	\N	\N	\N
+024s22ncu12	nxqum1qxnv4	7	\N	\N	\N
+024s22ncu12	658x6srrpsl	8	\N	\N	\N
+024s22ncu12	3nx5wrm9dsv	8	\N	\N	\N
+77ts7szo3co	o8147vmdwcq	5	\N	\N	\N
+77ts7szo3co	lkhgik8xv90	6	\N	\N	\N
+77ts7szo3co	msr8trei5uf	7	\N	\N	\N
+77ts7szo3co	nxqum1qxnv4	8	\N	\N	\N
+77ts7szo3co	658x6srrpsl	9	\N	\N	\N
+77ts7szo3co	3nx5wrm9dsv	9	\N	\N	\N
+tmiqe6j1j64	o8147vmdwcq	6	\N	\N	\N
+tmiqe6j1j64	lkhgik8xv90	7	\N	\N	\N
+tmiqe6j1j64	msr8trei5uf	8	\N	\N	\N
+tmiqe6j1j64	nxqum1qxnv4	9	\N	\N	\N
+tmiqe6j1j64	658x6srrpsl	10	\N	\N	\N
+tmiqe6j1j64	3nx5wrm9dsv	10	\N	\N	\N
+hw80ixyrjgz	o8147vmdwcq	7	\N	\N	\N
+hw80ixyrjgz	lkhgik8xv90	8	\N	\N	\N
+hw80ixyrjgz	msr8trei5uf	9	\N	\N	\N
+hw80ixyrjgz	nxqum1qxnv4	10	\N	\N	\N
+hw80ixyrjgz	658x6srrpsl	11	\N	\N	\N
+hw80ixyrjgz	3nx5wrm9dsv	11	\N	\N	\N
+me1ohauow6f	o8147vmdwcq	8	\N	\N	\N
+me1ohauow6f	lkhgik8xv90	9	\N	\N	\N
+me1ohauow6f	msr8trei5uf	10	\N	\N	\N
+me1ohauow6f	nxqum1qxnv4	11	\N	\N	\N
+me1ohauow6f	658x6srrpsl	12	\N	\N	\N
+me1ohauow6f	3nx5wrm9dsv	12	\N	\N	\N
+xqf45rvay4g	o8147vmdwcq	9	\N	\N	\N
+xqf45rvay4g	lkhgik8xv90	10	\N	\N	\N
+o8147vmdwcq	o8147vmdwcq	0	f	properties	\N
+xqf45rvay4g	msr8trei5uf	11	\N	\N	\N
+xqf45rvay4g	nxqum1qxnv4	12	\N	\N	\N
+xqf45rvay4g	658x6srrpsl	13	\N	\N	\N
+xqf45rvay4g	3nx5wrm9dsv	13	\N	\N	\N
+2mxzcpz5cle	o8147vmdwcq	10	\N	\N	\N
+2mxzcpz5cle	lkhgik8xv90	11	\N	\N	\N
+2mxzcpz5cle	msr8trei5uf	12	\N	\N	\N
+2mxzcpz5cle	nxqum1qxnv4	13	\N	\N	\N
+2mxzcpz5cle	658x6srrpsl	14	\N	\N	\N
+2mxzcpz5cle	3nx5wrm9dsv	14	\N	\N	\N
+jqr7lgri2e0	o8147vmdwcq	11	\N	\N	\N
+jqr7lgri2e0	lkhgik8xv90	12	\N	\N	\N
+jqr7lgri2e0	msr8trei5uf	13	\N	\N	\N
+jqr7lgri2e0	nxqum1qxnv4	14	\N	\N	\N
+jqr7lgri2e0	658x6srrpsl	15	\N	\N	\N
+jqr7lgri2e0	3nx5wrm9dsv	15	\N	\N	\N
+5vjhonzhs45	o8147vmdwcq	12	\N	\N	\N
+5vjhonzhs45	lkhgik8xv90	13	\N	\N	\N
+5vjhonzhs45	msr8trei5uf	14	\N	\N	\N
+5vjhonzhs45	nxqum1qxnv4	15	\N	\N	\N
+5vjhonzhs45	658x6srrpsl	16	\N	\N	\N
+5vjhonzhs45	3nx5wrm9dsv	16	\N	\N	\N
+073buw1m70l	o8147vmdwcq	13	\N	\N	\N
+073buw1m70l	lkhgik8xv90	14	\N	\N	\N
+073buw1m70l	msr8trei5uf	15	\N	\N	\N
+073buw1m70l	nxqum1qxnv4	16	\N	\N	\N
+073buw1m70l	658x6srrpsl	17	\N	\N	\N
+073buw1m70l	3nx5wrm9dsv	17	\N	\N	\N
+nocobase-admin-menu	o8147vmdwcq	14	\N	\N	\N
+nocobase-admin-menu	lkhgik8xv90	15	\N	\N	\N
+nocobase-admin-menu	msr8trei5uf	16	\N	\N	\N
+nocobase-admin-menu	nxqum1qxnv4	17	\N	\N	\N
+nocobase-admin-menu	658x6srrpsl	18	\N	\N	\N
+nocobase-admin-menu	3nx5wrm9dsv	18	\N	\N	\N
+uatnso3i8u3	o8147vmdwcq	1	\N	\N	1
+l4gmsjuzhm4	l4gmsjuzhm4	0	f	properties	\N
+88s7o745fdq	l4gmsjuzhm4	1	\N	\N	1
+k519ukw8iau	k519ukw8iau	0	f	properties	\N
+l4gmsjuzhm4	k519ukw8iau	1	\N	\N	1
+88s7o745fdq	k519ukw8iau	2	\N	\N	1
+658x6srrpsl	l4gmsjuzhm4	2	\N	\N	\N
+658x6srrpsl	k519ukw8iau	3	\N	\N	\N
+nxqum1qxnv4	88s7o745fdq	2	\N	\N	\N
+nxqum1qxnv4	l4gmsjuzhm4	3	\N	\N	\N
+nxqum1qxnv4	k519ukw8iau	4	\N	\N	\N
+msr8trei5uf	88s7o745fdq	3	\N	\N	\N
+msr8trei5uf	l4gmsjuzhm4	4	\N	\N	\N
+msr8trei5uf	k519ukw8iau	5	\N	\N	\N
+lkhgik8xv90	88s7o745fdq	4	\N	\N	\N
+lkhgik8xv90	l4gmsjuzhm4	5	\N	\N	\N
+lkhgik8xv90	k519ukw8iau	6	\N	\N	\N
+o8147vmdwcq	88s7o745fdq	5	\N	\N	\N
+o8147vmdwcq	l4gmsjuzhm4	6	\N	\N	\N
+o8147vmdwcq	k519ukw8iau	7	\N	\N	\N
+uatnso3i8u3	88s7o745fdq	6	\N	\N	\N
+uatnso3i8u3	l4gmsjuzhm4	7	\N	\N	\N
+uatnso3i8u3	k519ukw8iau	8	\N	\N	\N
+53onwv1p0ao	88s7o745fdq	7	\N	\N	\N
+53onwv1p0ao	l4gmsjuzhm4	8	\N	\N	\N
+53onwv1p0ao	k519ukw8iau	9	\N	\N	\N
+azr8rt58jhq	88s7o745fdq	8	\N	\N	\N
+azr8rt58jhq	l4gmsjuzhm4	9	\N	\N	\N
+azr8rt58jhq	k519ukw8iau	10	\N	\N	\N
+024s22ncu12	88s7o745fdq	9	\N	\N	\N
+024s22ncu12	l4gmsjuzhm4	10	\N	\N	\N
+024s22ncu12	k519ukw8iau	11	\N	\N	\N
+77ts7szo3co	88s7o745fdq	10	\N	\N	\N
+77ts7szo3co	l4gmsjuzhm4	11	\N	\N	\N
+77ts7szo3co	k519ukw8iau	12	\N	\N	\N
+tmiqe6j1j64	88s7o745fdq	11	\N	\N	\N
+tmiqe6j1j64	l4gmsjuzhm4	12	\N	\N	\N
+tmiqe6j1j64	k519ukw8iau	13	\N	\N	\N
+hw80ixyrjgz	88s7o745fdq	12	\N	\N	\N
+hw80ixyrjgz	l4gmsjuzhm4	13	\N	\N	\N
+hw80ixyrjgz	k519ukw8iau	14	\N	\N	\N
+me1ohauow6f	88s7o745fdq	13	\N	\N	\N
+me1ohauow6f	l4gmsjuzhm4	14	\N	\N	\N
+me1ohauow6f	k519ukw8iau	15	\N	\N	\N
+xqf45rvay4g	88s7o745fdq	14	\N	\N	\N
+xqf45rvay4g	l4gmsjuzhm4	15	\N	\N	\N
+xqf45rvay4g	k519ukw8iau	16	\N	\N	\N
+2mxzcpz5cle	88s7o745fdq	15	\N	\N	\N
+2mxzcpz5cle	l4gmsjuzhm4	16	\N	\N	\N
+2mxzcpz5cle	k519ukw8iau	17	\N	\N	\N
+jqr7lgri2e0	88s7o745fdq	16	\N	\N	\N
+jqr7lgri2e0	l4gmsjuzhm4	17	\N	\N	\N
+jqr7lgri2e0	k519ukw8iau	18	\N	\N	\N
+5vjhonzhs45	88s7o745fdq	17	\N	\N	\N
+5vjhonzhs45	l4gmsjuzhm4	18	\N	\N	\N
+5vjhonzhs45	k519ukw8iau	19	\N	\N	\N
+073buw1m70l	88s7o745fdq	18	\N	\N	\N
+073buw1m70l	l4gmsjuzhm4	19	\N	\N	\N
+073buw1m70l	k519ukw8iau	20	\N	\N	\N
+nocobase-admin-menu	88s7o745fdq	19	\N	\N	\N
+nocobase-admin-menu	l4gmsjuzhm4	20	\N	\N	\N
+nocobase-admin-menu	k519ukw8iau	21	\N	\N	\N
+88s7o745fdq	88s7o745fdq	0	f	properties	\N
+658x6srrpsl	88s7o745fdq	1	\N	\N	1
+p6bn6qruz31	p6bn6qruz31	0	f	properties	\N
+jxsrhg1ryiq	p6bn6qruz31	1	\N	\N	1
+dbyel17qbz6	dbyel17qbz6	0	f	properties	\N
+p6bn6qruz31	dbyel17qbz6	1	\N	\N	1
+jxsrhg1ryiq	dbyel17qbz6	2	\N	\N	1
+658x6srrpsl	p6bn6qruz31	2	\N	\N	\N
+658x6srrpsl	dbyel17qbz6	3	\N	\N	\N
+nxqum1qxnv4	jxsrhg1ryiq	2	\N	\N	\N
+nxqum1qxnv4	p6bn6qruz31	3	\N	\N	\N
+nxqum1qxnv4	dbyel17qbz6	4	\N	\N	\N
+msr8trei5uf	jxsrhg1ryiq	3	\N	\N	\N
+msr8trei5uf	p6bn6qruz31	4	\N	\N	\N
+msr8trei5uf	dbyel17qbz6	5	\N	\N	\N
+lkhgik8xv90	jxsrhg1ryiq	4	\N	\N	\N
+lkhgik8xv90	p6bn6qruz31	5	\N	\N	\N
+lkhgik8xv90	dbyel17qbz6	6	\N	\N	\N
+o8147vmdwcq	jxsrhg1ryiq	5	\N	\N	\N
+o8147vmdwcq	p6bn6qruz31	6	\N	\N	\N
+o8147vmdwcq	dbyel17qbz6	7	\N	\N	\N
+uatnso3i8u3	jxsrhg1ryiq	6	\N	\N	\N
+uatnso3i8u3	p6bn6qruz31	7	\N	\N	\N
+uatnso3i8u3	dbyel17qbz6	8	\N	\N	\N
+53onwv1p0ao	jxsrhg1ryiq	7	\N	\N	\N
+53onwv1p0ao	p6bn6qruz31	8	\N	\N	\N
+53onwv1p0ao	dbyel17qbz6	9	\N	\N	\N
+azr8rt58jhq	jxsrhg1ryiq	8	\N	\N	\N
+azr8rt58jhq	p6bn6qruz31	9	\N	\N	\N
+azr8rt58jhq	dbyel17qbz6	10	\N	\N	\N
+024s22ncu12	jxsrhg1ryiq	9	\N	\N	\N
+024s22ncu12	p6bn6qruz31	10	\N	\N	\N
+024s22ncu12	dbyel17qbz6	11	\N	\N	\N
+77ts7szo3co	jxsrhg1ryiq	10	\N	\N	\N
+jxsrhg1ryiq	jxsrhg1ryiq	0	f	properties	\N
+658x6srrpsl	jxsrhg1ryiq	1	\N	\N	2
+77ts7szo3co	p6bn6qruz31	11	\N	\N	\N
+77ts7szo3co	dbyel17qbz6	12	\N	\N	\N
+tmiqe6j1j64	jxsrhg1ryiq	11	\N	\N	\N
+tmiqe6j1j64	p6bn6qruz31	12	\N	\N	\N
+tmiqe6j1j64	dbyel17qbz6	13	\N	\N	\N
+hw80ixyrjgz	jxsrhg1ryiq	12	\N	\N	\N
+hw80ixyrjgz	p6bn6qruz31	13	\N	\N	\N
+hw80ixyrjgz	dbyel17qbz6	14	\N	\N	\N
+me1ohauow6f	jxsrhg1ryiq	13	\N	\N	\N
+me1ohauow6f	p6bn6qruz31	14	\N	\N	\N
+me1ohauow6f	dbyel17qbz6	15	\N	\N	\N
+xqf45rvay4g	jxsrhg1ryiq	14	\N	\N	\N
+xqf45rvay4g	p6bn6qruz31	15	\N	\N	\N
+xqf45rvay4g	dbyel17qbz6	16	\N	\N	\N
+2mxzcpz5cle	jxsrhg1ryiq	15	\N	\N	\N
+2mxzcpz5cle	p6bn6qruz31	16	\N	\N	\N
+2mxzcpz5cle	dbyel17qbz6	17	\N	\N	\N
+jqr7lgri2e0	jxsrhg1ryiq	16	\N	\N	\N
+jqr7lgri2e0	p6bn6qruz31	17	\N	\N	\N
+jqr7lgri2e0	dbyel17qbz6	18	\N	\N	\N
+5vjhonzhs45	jxsrhg1ryiq	17	\N	\N	\N
+5vjhonzhs45	p6bn6qruz31	18	\N	\N	\N
+5vjhonzhs45	dbyel17qbz6	19	\N	\N	\N
+073buw1m70l	jxsrhg1ryiq	18	\N	\N	\N
+073buw1m70l	p6bn6qruz31	19	\N	\N	\N
+073buw1m70l	dbyel17qbz6	20	\N	\N	\N
+nocobase-admin-menu	jxsrhg1ryiq	19	\N	\N	\N
+nocobase-admin-menu	p6bn6qruz31	20	\N	\N	\N
+nocobase-admin-menu	dbyel17qbz6	21	\N	\N	\N
+xbpsy39t0e1	xbpsy39t0e1	0	f	properties	\N
+0o6llbg5pk4	xbpsy39t0e1	1	\N	\N	1
+26c3eby94dx	26c3eby94dx	0	f	properties	\N
+xbpsy39t0e1	26c3eby94dx	1	\N	\N	1
+0o6llbg5pk4	26c3eby94dx	2	\N	\N	1
+658x6srrpsl	xbpsy39t0e1	2	\N	\N	\N
+658x6srrpsl	26c3eby94dx	3	\N	\N	\N
+nxqum1qxnv4	0o6llbg5pk4	2	\N	\N	\N
+nxqum1qxnv4	xbpsy39t0e1	3	\N	\N	\N
+nxqum1qxnv4	26c3eby94dx	4	\N	\N	\N
+msr8trei5uf	0o6llbg5pk4	3	\N	\N	\N
+msr8trei5uf	xbpsy39t0e1	4	\N	\N	\N
+msr8trei5uf	26c3eby94dx	5	\N	\N	\N
+lkhgik8xv90	0o6llbg5pk4	4	\N	\N	\N
+lkhgik8xv90	xbpsy39t0e1	5	\N	\N	\N
+lkhgik8xv90	26c3eby94dx	6	\N	\N	\N
+o8147vmdwcq	0o6llbg5pk4	5	\N	\N	\N
+o8147vmdwcq	xbpsy39t0e1	6	\N	\N	\N
+o8147vmdwcq	26c3eby94dx	7	\N	\N	\N
+uatnso3i8u3	0o6llbg5pk4	6	\N	\N	\N
+uatnso3i8u3	xbpsy39t0e1	7	\N	\N	\N
+uatnso3i8u3	26c3eby94dx	8	\N	\N	\N
+53onwv1p0ao	0o6llbg5pk4	7	\N	\N	\N
+53onwv1p0ao	xbpsy39t0e1	8	\N	\N	\N
+53onwv1p0ao	26c3eby94dx	9	\N	\N	\N
+azr8rt58jhq	0o6llbg5pk4	8	\N	\N	\N
+azr8rt58jhq	xbpsy39t0e1	9	\N	\N	\N
+azr8rt58jhq	26c3eby94dx	10	\N	\N	\N
+024s22ncu12	0o6llbg5pk4	9	\N	\N	\N
+024s22ncu12	xbpsy39t0e1	10	\N	\N	\N
+024s22ncu12	26c3eby94dx	11	\N	\N	\N
+77ts7szo3co	0o6llbg5pk4	10	\N	\N	\N
+77ts7szo3co	xbpsy39t0e1	11	\N	\N	\N
+77ts7szo3co	26c3eby94dx	12	\N	\N	\N
+tmiqe6j1j64	0o6llbg5pk4	11	\N	\N	\N
+tmiqe6j1j64	xbpsy39t0e1	12	\N	\N	\N
+tmiqe6j1j64	26c3eby94dx	13	\N	\N	\N
+hw80ixyrjgz	0o6llbg5pk4	12	\N	\N	\N
+hw80ixyrjgz	xbpsy39t0e1	13	\N	\N	\N
+hw80ixyrjgz	26c3eby94dx	14	\N	\N	\N
+me1ohauow6f	0o6llbg5pk4	13	\N	\N	\N
+me1ohauow6f	xbpsy39t0e1	14	\N	\N	\N
+me1ohauow6f	26c3eby94dx	15	\N	\N	\N
+xqf45rvay4g	0o6llbg5pk4	14	\N	\N	\N
+xqf45rvay4g	xbpsy39t0e1	15	\N	\N	\N
+xqf45rvay4g	26c3eby94dx	16	\N	\N	\N
+2mxzcpz5cle	0o6llbg5pk4	15	\N	\N	\N
+2mxzcpz5cle	xbpsy39t0e1	16	\N	\N	\N
+2mxzcpz5cle	26c3eby94dx	17	\N	\N	\N
+jqr7lgri2e0	0o6llbg5pk4	16	\N	\N	\N
+jqr7lgri2e0	xbpsy39t0e1	17	\N	\N	\N
+jqr7lgri2e0	26c3eby94dx	18	\N	\N	\N
+5vjhonzhs45	0o6llbg5pk4	17	\N	\N	\N
+5vjhonzhs45	xbpsy39t0e1	18	\N	\N	\N
+5vjhonzhs45	26c3eby94dx	19	\N	\N	\N
+073buw1m70l	0o6llbg5pk4	18	\N	\N	\N
+073buw1m70l	xbpsy39t0e1	19	\N	\N	\N
+073buw1m70l	26c3eby94dx	20	\N	\N	\N
+nocobase-admin-menu	0o6llbg5pk4	19	\N	\N	\N
+nocobase-admin-menu	xbpsy39t0e1	20	\N	\N	\N
+nocobase-admin-menu	26c3eby94dx	21	\N	\N	\N
+0o6llbg5pk4	0o6llbg5pk4	0	f	properties	\N
+658x6srrpsl	0o6llbg5pk4	1	\N	\N	3
+110a4f3nenj	110a4f3nenj	0	f	properties	\N
+4ap6581smcx	110a4f3nenj	1	\N	\N	1
+tn3dqsa088d	tn3dqsa088d	0	f	properties	\N
+110a4f3nenj	tn3dqsa088d	1	\N	\N	1
+4ap6581smcx	tn3dqsa088d	2	\N	\N	1
+658x6srrpsl	110a4f3nenj	2	\N	\N	\N
+658x6srrpsl	tn3dqsa088d	3	\N	\N	\N
+nxqum1qxnv4	4ap6581smcx	2	\N	\N	\N
+nxqum1qxnv4	110a4f3nenj	3	\N	\N	\N
+nxqum1qxnv4	tn3dqsa088d	4	\N	\N	\N
+msr8trei5uf	4ap6581smcx	3	\N	\N	\N
+msr8trei5uf	110a4f3nenj	4	\N	\N	\N
+msr8trei5uf	tn3dqsa088d	5	\N	\N	\N
+lkhgik8xv90	4ap6581smcx	4	\N	\N	\N
+lkhgik8xv90	110a4f3nenj	5	\N	\N	\N
+lkhgik8xv90	tn3dqsa088d	6	\N	\N	\N
+o8147vmdwcq	4ap6581smcx	5	\N	\N	\N
+o8147vmdwcq	110a4f3nenj	6	\N	\N	\N
+o8147vmdwcq	tn3dqsa088d	7	\N	\N	\N
+uatnso3i8u3	4ap6581smcx	6	\N	\N	\N
+uatnso3i8u3	110a4f3nenj	7	\N	\N	\N
+uatnso3i8u3	tn3dqsa088d	8	\N	\N	\N
+53onwv1p0ao	4ap6581smcx	7	\N	\N	\N
+53onwv1p0ao	110a4f3nenj	8	\N	\N	\N
+53onwv1p0ao	tn3dqsa088d	9	\N	\N	\N
+azr8rt58jhq	4ap6581smcx	8	\N	\N	\N
+azr8rt58jhq	110a4f3nenj	9	\N	\N	\N
+azr8rt58jhq	tn3dqsa088d	10	\N	\N	\N
+024s22ncu12	4ap6581smcx	9	\N	\N	\N
+024s22ncu12	110a4f3nenj	10	\N	\N	\N
+024s22ncu12	tn3dqsa088d	11	\N	\N	\N
+77ts7szo3co	4ap6581smcx	10	\N	\N	\N
+77ts7szo3co	110a4f3nenj	11	\N	\N	\N
+77ts7szo3co	tn3dqsa088d	12	\N	\N	\N
+tmiqe6j1j64	4ap6581smcx	11	\N	\N	\N
+tmiqe6j1j64	110a4f3nenj	12	\N	\N	\N
+tmiqe6j1j64	tn3dqsa088d	13	\N	\N	\N
+hw80ixyrjgz	4ap6581smcx	12	\N	\N	\N
+4ap6581smcx	4ap6581smcx	0	f	properties	\N
+658x6srrpsl	4ap6581smcx	1	\N	\N	4
+hw80ixyrjgz	110a4f3nenj	13	\N	\N	\N
+hw80ixyrjgz	tn3dqsa088d	14	\N	\N	\N
+me1ohauow6f	4ap6581smcx	13	\N	\N	\N
+me1ohauow6f	110a4f3nenj	14	\N	\N	\N
+me1ohauow6f	tn3dqsa088d	15	\N	\N	\N
+xqf45rvay4g	4ap6581smcx	14	\N	\N	\N
+xqf45rvay4g	110a4f3nenj	15	\N	\N	\N
+xqf45rvay4g	tn3dqsa088d	16	\N	\N	\N
+2mxzcpz5cle	4ap6581smcx	15	\N	\N	\N
+2mxzcpz5cle	110a4f3nenj	16	\N	\N	\N
+2mxzcpz5cle	tn3dqsa088d	17	\N	\N	\N
+jqr7lgri2e0	4ap6581smcx	16	\N	\N	\N
+jqr7lgri2e0	110a4f3nenj	17	\N	\N	\N
+jqr7lgri2e0	tn3dqsa088d	18	\N	\N	\N
+5vjhonzhs45	4ap6581smcx	17	\N	\N	\N
+5vjhonzhs45	110a4f3nenj	18	\N	\N	\N
+5vjhonzhs45	tn3dqsa088d	19	\N	\N	\N
+073buw1m70l	4ap6581smcx	18	\N	\N	\N
+073buw1m70l	110a4f3nenj	19	\N	\N	\N
+073buw1m70l	tn3dqsa088d	20	\N	\N	\N
+nocobase-admin-menu	4ap6581smcx	19	\N	\N	\N
+nocobase-admin-menu	110a4f3nenj	20	\N	\N	\N
+nocobase-admin-menu	tn3dqsa088d	21	\N	\N	\N
+ndlxv6qkxig	ndlxv6qkxig	0	f	properties	\N
+nxqum1qxnv4	ndlxv6qkxig	2	\N	\N	\N
+msr8trei5uf	ndlxv6qkxig	3	\N	\N	\N
+lkhgik8xv90	ndlxv6qkxig	4	\N	\N	\N
+o8147vmdwcq	ndlxv6qkxig	5	\N	\N	\N
+uatnso3i8u3	ndlxv6qkxig	6	\N	\N	\N
+53onwv1p0ao	ndlxv6qkxig	7	\N	\N	\N
+azr8rt58jhq	ndlxv6qkxig	8	\N	\N	\N
+024s22ncu12	ndlxv6qkxig	9	\N	\N	\N
+77ts7szo3co	ndlxv6qkxig	10	\N	\N	\N
+tmiqe6j1j64	ndlxv6qkxig	11	\N	\N	\N
+hw80ixyrjgz	ndlxv6qkxig	12	\N	\N	\N
+me1ohauow6f	ndlxv6qkxig	13	\N	\N	\N
+xqf45rvay4g	ndlxv6qkxig	14	\N	\N	\N
+2mxzcpz5cle	ndlxv6qkxig	15	\N	\N	\N
+jqr7lgri2e0	ndlxv6qkxig	16	\N	\N	\N
+5vjhonzhs45	ndlxv6qkxig	17	\N	\N	\N
+073buw1m70l	ndlxv6qkxig	18	\N	\N	\N
+nocobase-admin-menu	ndlxv6qkxig	19	\N	\N	\N
+3nx5wrm9dsv	ndlxv6qkxig	1	\N	\N	1
 \.
 
 
 --
--- TOC entry 3919 (class 0 OID 34138)
--- Dependencies: 287
+-- TOC entry 3938 (class 0 OID 17231)
+-- Dependencies: 290
 -- Data for Name: uiSchemas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -12179,33 +19589,28 @@ k6pr2jh3wgd	page	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-co
 p3ls96regvr	vpd0mbajv2w	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Giao dịch","x-component":"Menu.Item","x-decorator":"ACLMenuItemProvider","x-component-props":{"icon":"transactionoutlined"},"x-server-hooks":[{"type":"onSelfCreate","method":"bindMenuToRole"},{"type":"onSelfSave","method":"extractTextToLocale"}]}
 eoxofxze047	page	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page"}
 iqddf9bwww2	r5wbpwss2r6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"page:addBlock"}
-bljegelqea8	kznvjz7npg2	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Smart contract","x-component":"Menu.Item","x-decorator":"ACLMenuItemProvider","x-component-props":{"icon":"codesandboxoutlined"},"x-server-hooks":[{"type":"onSelfCreate","method":"bindMenuToRole"},{"type":"onSelfSave","method":"extractTextToLocale"}]}
-rjo62izvmhu	page	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page"}
-8cbzsnycxqk	qtm42mezcms	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"page:addBlock"}
+wgnydnfsio9	a5yhkk1zbil	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+nf3x14p3vf3	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"View record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"}}
+ajlhev8hgld	9rozvkrj2c7	{"x-uid":"ajlhev8hgld","name":"9rozvkrj2c7","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Lọc","x-action":"filter","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:filter","x-component":"Filter.Action","x-use-component-props":"useFilterActionProps","x-component-props":{"icon":"FilterOutlined"},"x-align":"left","x-app-version":"1.3.51"}
 r5ux2dhnfq1	bmc65vm7oek	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 9j3mrze0kdh	ck2n8ze8r3d	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 iiek91fm1lg	l2lhkhzls9l	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableBlockProvider","x-acl-action":"proposes:list","x-use-decorator-props":"useTableBlockDecoratorProps","x-decorator-props":{"collection":"proposes","dataSource":"main","action":"list","params":{"pageSize":20},"rowKey":"id","showIndex":true,"dragSort":false},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:table","x-component":"CardItem","x-filter-targets":[],"x-app-version":"1.3.51"}
 uz1e0k6wjf1	actions	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"table:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":"var(--nb-spacing)"}},"x-app-version":"1.3.51"}
 dwzj4kwyaia	71vlny9zunq	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-initializer":"table:configureColumns","x-component":"TableV2","x-use-component-props":"useTableBlockProps","x-component-props":{"rowKey":"id","rowSelection":{"type":"checkbox"}},"x-app-version":"1.3.51"}
 fuvpnwuajhl	iqoozezgs5j	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DndContext","x-component":"Space","x-component-props":{"split":"|"},"x-app-version":"1.3.51"}
-ajlhev8hgld	9rozvkrj2c7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Filter\\") }}","x-action":"filter","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:filter","x-component":"Filter.Action","x-use-component-props":"useFilterActionProps","x-component-props":{"icon":"FilterOutlined"},"x-align":"left","x-app-version":"1.3.51"}
 yqj4tsj0tp5	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Add record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"},"x-app-version":"1.3.51"}
 39vgsrzpqyp	qgpr705cwij	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 5i62m584bjk	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab","x-initializer-props":{"gridInitializer":"popup:addNew:addBlock"},"x-app-version":"1.3.51"}
-lqc01b4n2xe	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Add new\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{},"x-app-version":"1.3.51"}
 2dp1sgeoanq	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:addNew:addBlock","x-app-version":"1.3.51"}
 y90c6xine07	bblw9raqkur	{"x-uid":"y90c6xine07","name":"bblw9raqkur","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-action":"create","x-acl-action":"create","title":"Thêm mới","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:addNew","x-component":"Action","x-decorator":"ACLActionProvider","x-component-props":{"openMode":"drawer","type":"primary","component":"CreateRecordAction","icon":"PlusOutlined","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"proposes"},"x-align":"right","x-acl-action-props":{"skipScopeCheck":true},"x-app-version":"1.3.51"}
 3g77tkiq3m4	nmwk4isho9n	{"x-uid":"3g77tkiq3m4","name":"nmwk4isho9n","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action","x-use-component-props":"useBulkDestroyActionProps","x-component-props":{"icon":"DeleteOutlined","confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"iconColor":"#1677FF","danger":true,"type":"danger"},"x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:bulkDelete","x-decorator":"ACLActionProvider","x-acl-action-props":{"skipScopeCheck":true},"x-action-settings":{"triggerWorkflows":[]},"x-acl-action":"proposes:destroy","x-align":"right","type":"void","x-app-version":"1.3.51"}
 qbzhqbkp363	dmlrbabuhjq	{"x-uid":"qbzhqbkp363","name":"dmlrbabuhjq","_isJSONSchemaObject":true,"version":"2.0","title":"Cập nhật dữ liệu","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined","iconColor":"#1677FF","danger":false,"type":"default"},"x-align":"right","type":"void","x-app-version":"1.3.51"}
 8qtz3wrc8jb	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"View record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"}}
 sge8s8r9kdv	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab"}
-0pc9xw649k4	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Details\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{}}
 1vvvk5b0mrj	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock"}
 scx9pufw9ld	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Edit record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"}}
 ftwn0si2s5e	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab"}
-a2izctpt2dm	t0ejkkbw0r3	{"x-uid":"a2izctpt2dm","name":"t0ejkkbw0r3","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết","x-action":"view","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:view","x-component":"Action.Link","x-component-props":{"openMode":"modal","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"proposes"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
-7i8vn1nplyc	1cg2zke439f	{"x-uid":"7i8vn1nplyc","name":"1cg2zke439f","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chỉnh sửa","x-action":"update","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:edit","x-component":"Action.Link","x-component-props":{"openMode":"drawer","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"proposes"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
-que1e0cmz1z	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Edit\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{}}
+sgmqm607par	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab"}
 wwfnvseziiz	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock"}
 6ex1fiqbfa8	2j3z3i8xk2k	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
 lm0dfpdoltg	name	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"proposes.name","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
@@ -12217,8 +19622,13 @@ mk0btnborli	address	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-fi
 ii9oyxsb8c5	uuzr43fvadq	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 bjya50ieh5c	q8al7jgyowr	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action-props":{"skipScopeCheck":true},"x-acl-action":"proposes:create","x-decorator":"FormBlockProvider","x-use-decorator-props":"useCreateFormBlockDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"proposes"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:createForm","x-component":"CardItem","x-app-version":"1.3.51"}
 a8q5n051fdr	wrcwju358r1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+que1e0cmz1z	tab1	{"x-uid":"que1e0cmz1z","name":"tab1","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chỉnh sửa","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{"icon":"editoutlined"}}
+0pc9xw649k4	tab1	{"x-uid":"0pc9xw649k4","name":"tab1","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{"icon":"eyeoutlined"}}
+fsid1btc6ef	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock"}
+qjnwfwgzhuv	tab1	{"x-uid":"qjnwfwgzhuv","name":"tab1","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{"icon":"eyeoutlined"}}
 qusl2hqi7gk	mm967xi2nmz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"FormV2","x-use-component-props":"useCreateFormBlockProps","x-app-version":"1.3.51"}
 7wvztesg1l9	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"form:configureFields","x-app-version":"1.3.51"}
+n1q88j8ccbz	p1e31nnoxyw	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 9lqwydcclbh	upldv76ibuh	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"createForm:configureActions","x-component":"ActionBar","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.51"}
 5xc37z6hvd7	p8vjtli8p0h	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 xh6ua2oy0ak	e4ub2f18j5z	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
@@ -12226,7 +19636,6 @@ h12h75lwjjk	name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-
 neokhhxlkag	98my6jt9p4n	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 qam3nz2fvrb	g2u0hu850qu	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 kwi6avb0snz	address	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"proposes.address","x-component-props":{},"x-app-version":"1.3.51"}
-gf7yu1fk5fu	h10b1gu707v	{"x-uid":"gf7yu1fk5fu","name":"h10b1gu707v","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action.Link","x-use-component-props":"useDestroyActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:delete","x-component-props":{"confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"refreshDataBlockRequest":true,"iconColor":"#1677FF","danger":false},"x-action-settings":{"triggerWorkflows":[]},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"type":"void"}
 v5n63r5xizu	2g9zqjhxmeu	{"x-uid":"v5n63r5xizu","name":"2g9zqjhxmeu","_isJSONSchemaObject":true,"version":"2.0","title":"Lưu","x-action":"submit","x-component":"Action","x-use-component-props":"useCreateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:createSubmit","x-component-props":{"type":"primary","htmlType":"submit","iconColor":"#1677FF","icon":"saveoutlined","danger":false},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.51"}
 zxh1oe1qx5t	r5yfkbojbyj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 a7e860jrx5o	pevvd8rma2g	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
@@ -12244,51 +19653,50 @@ q0et9i0iaar	c3d2z6nrq3e	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 2honxaktv0l	agprpz7n4uu	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
 f6or5f1urqn	total_amount	{"x-uid":"f6or5f1urqn","name":"total_amount","_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"projects.total_amount","x-component":"CollectionField","x-component-props":{"formatStyle":"normal","separator":"0.0,00","step":"1","addonAfter":" đ"},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
 l3sn84hkipn	address	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"projects.address","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+4kjgbxlns7y	mlidi6ah207	{"x-uid":"4kjgbxlns7y","name":"mlidi6ah207","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-component-props":{"width":50}}
+i24ncoyiipi	col_oxd7clrekau	{"x-uid":"i24ncoyiipi","name":"col_oxd7clrekau","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
+lt0cyvyx555	ijm4q4mlewq	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+fw74h47qf2m	jzfwsxv0trx	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 b7zq62km2nh	w7jceua9e3x	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
-ix3eneqbhqt	fund_id	{"x-uid":"ix3eneqbhqt","name":"fund_id","_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"projects.fund_id","x-component":"CollectionField","x-component-props":{"ellipsis":true,"size":"small","fieldNames":{"value":"id","label":"name"}},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+30afm9j9mof	djyrzsqdn4b	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+3yn0m2wrfox	fv6jdj6m7e3	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+mph5umu4xyy	vpeln6wbo59	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 e87ogy2w48b	actions	{"x-uid":"e87ogy2w48b","name":"actions","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chức năng","x-action-column":"actions","x-decorator":"TableV2.Column.ActionBar","x-component":"TableV2.Column","x-toolbar":"TableColumnSchemaToolbar","x-initializer":"table:configureItemActions","x-settings":"fieldSettings:TableColumn","x-toolbar-props":{"initializer":"table:configureItemActions"},"x-app-version":"1.3.51"}
 hg9tvy6yuph	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"View record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"}}
 k4kftsn5ht7	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab"}
-ebu29iqsaqx	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Details\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{}}
+ybdxp7v91jn	tab1	{"x-uid":"ybdxp7v91jn","name":"tab1","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chỉnh sửa","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{"icon":"editoutlined"}}
 4gdmc9g083s	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock"}
 8i28yvimg4p	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Edit record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"}}
 muv6h06t8mi	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab"}
-ybdxp7v91jn	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Edit\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{}}
 9cngdl646v0	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock"}
-0m1gm5ozwh9	gwxq2p74eeo	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Filter\\") }}","x-action":"filter","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:filter","x-component":"Filter.Action","x-use-component-props":"useFilterActionProps","x-component-props":{"icon":"FilterOutlined"},"x-align":"left","x-app-version":"1.3.51"}
 64hct65otbl	name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"proposes.name","x-component-props":{},"x-app-version":"1.3.51"}
 xfwxsmz494e	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Add record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"},"x-app-version":"1.3.51"}
 3gtgg35z6e8	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab","x-initializer-props":{"gridInitializer":"popup:addNew:addBlock"},"x-app-version":"1.3.51"}
-alnwl1ouj3h	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Add new\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{},"x-app-version":"1.3.51"}
 adxntkyyx2m	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:addNew:addBlock","x-app-version":"1.3.51"}
 vukfpwp37qn	umro5nck6q4	{"x-uid":"vukfpwp37qn","name":"umro5nck6q4","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-action":"create","x-acl-action":"create","title":"Thêm mới","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:addNew","x-component":"Action","x-decorator":"ACLActionProvider","x-component-props":{"openMode":"drawer","type":"primary","component":"CreateRecordAction","icon":"PlusOutlined","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"projects"},"x-align":"right","x-acl-action-props":{"skipScopeCheck":true},"x-app-version":"1.3.51"}
 yjzd6s5ccq4	actions	{"x-uid":"yjzd6s5ccq4","name":"actions","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chức năng","x-action-column":"actions","x-decorator":"TableV2.Column.ActionBar","x-component":"TableV2.Column","x-toolbar":"TableColumnSchemaToolbar","x-initializer":"table:configureItemActions","x-settings":"fieldSettings:TableColumn","x-toolbar-props":{"initializer":"table:configureItemActions"},"x-app-version":"1.3.51"}
 xcztu1xwchz	i3hosra3hbv	{"x-uid":"xcztu1xwchz","name":"i3hosra3hbv","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action","x-use-component-props":"useBulkDestroyActionProps","x-component-props":{"icon":"DeleteOutlined","confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"iconColor":"#1677FF","danger":true,"type":"danger"},"x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:bulkDelete","x-decorator":"ACLActionProvider","x-acl-action-props":{"skipScopeCheck":true},"x-action-settings":{"triggerWorkflows":[]},"x-acl-action":"projects:destroy","x-align":"right","type":"void","x-app-version":"1.3.51"}
-bzirblya7qw	2d5bonbo3za	{"x-uid":"bzirblya7qw","name":"2d5bonbo3za","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết","x-action":"view","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:view","x-component":"Action.Link","x-component-props":{"openMode":"drawer","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"projects"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
 gtl3wuwfl32	mw9q0l3421a	{"x-uid":"gtl3wuwfl32","name":"mw9q0l3421a","_isJSONSchemaObject":true,"version":"2.0","title":"Cập nhật dữ liệu","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined","iconColor":"#1677FF","danger":false,"type":"default"},"x-align":"right","type":"void","x-app-version":"1.3.51"}
 lmgnrgroovk	77ots1dons1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 mmj417nrjpa	fn1exsxa5rt	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 o75drsj41f1	type	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"kafka_topics.type","x-component":"CollectionField","x-component-props":{"style":{"width":"100%"},"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+bzirblya7qw	2d5bonbo3za	{"x-uid":"bzirblya7qw","name":"2d5bonbo3za","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết","x-action":"view","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:view","x-component":"Action.Link","x-component-props":{"openMode":"modal","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"projects"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
+iqvhwknbnrr	ndvjmrunhjs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+8o6mwjydnzx	7dc1q41zvyj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+zkyx4v84ep5	7rtffd4q0d2	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 82ikkgrog2y	dmhl5rxle76	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableBlockProvider","x-acl-action":"funds:list","x-use-decorator-props":"useTableBlockDecoratorProps","x-decorator-props":{"collection":"funds","dataSource":"main","action":"list","params":{"pageSize":20},"rowKey":"id","showIndex":true,"dragSort":false},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:table","x-component":"CardItem","x-filter-targets":[],"x-app-version":"1.3.51"}
 6kbk2ko53xi	actions	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"table:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":"var(--nb-spacing)"}},"x-app-version":"1.3.51"}
+0fz8ktp083z	aka8wmpxpb4	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Details","x-read-pretty":true,"x-use-component-props":"useDetailsProps","x-app-version":"1.3.51"}
 imrhc9he5on	vw28iyypvz2	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-initializer":"table:configureColumns","x-component":"TableV2","x-use-component-props":"useTableBlockProps","x-component-props":{"rowKey":"id","rowSelection":{"type":"checkbox"}},"x-app-version":"1.3.51"}
 ji9t3fgnkc0	q2808mxk0pe	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DndContext","x-component":"Space","x-component-props":{"split":"|"},"x-app-version":"1.3.51"}
 e2bz79kfn39	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"View record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"}}
 2w360eurk19	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab"}
-85c8uxmskwh	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Details\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{}}
 eolrwpo9lyf	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock"}
 pvmgj00ippd	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Edit record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"}}
 zkmofdtbl6m	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab"}
-iniy0emerbt	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Edit\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{}}
 u4pz1nv2zu7	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock"}
 s9lar6nxkb9	45lbr8ny2kh	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 7bgianrailm	aavurbu5jec	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
-ykxbmnj3qtf	12r4kfx4fsx	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Filter\\") }}","x-action":"filter","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:filter","x-component":"Filter.Action","x-use-component-props":"useFilterActionProps","x-component-props":{"icon":"FilterOutlined"},"x-align":"left","x-app-version":"1.3.51"}
-kxwxa5snxqj	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Add record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"},"x-app-version":"1.3.51"}
-kaqxzol2uzz	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab","x-initializer-props":{"gridInitializer":"popup:addNew:addBlock"},"x-app-version":"1.3.51"}
-49vizxk9deo	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Add new\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{},"x-app-version":"1.3.51"}
-kn2leva9pcs	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:addNew:addBlock","x-app-version":"1.3.51"}
-hrottqihhik	w2rvu96kp41	{"x-uid":"hrottqihhik","name":"w2rvu96kp41","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-action":"create","x-acl-action":"create","title":"Thêm mới","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:addNew","x-component":"Action","x-decorator":"ACLActionProvider","x-component-props":{"openMode":"drawer","type":"primary","component":"CreateRecordAction","icon":"PlusOutlined","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"funds"},"x-align":"right","x-acl-action-props":{"skipScopeCheck":true},"x-app-version":"1.3.51"}
 y6sl19mjcff	dixr6oerwtq	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 sgipr99uvpy	y90ydq50buw	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 sm99m0bwdty	address	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.address","x-component-props":{},"x-app-version":"1.3.51"}
@@ -12297,11 +19705,13 @@ m22ogp0s8dv	k8dnlcgx2mr	{"x-uid":"m22ogp0s8dv","name":"k8dnlcgx2mr","_isJSONSche
 z6frz5xuu4k	x0rzl0t10nj	{"x-uid":"z6frz5xuu4k","name":"x0rzl0t10nj","_isJSONSchemaObject":true,"version":"2.0","title":"Cập nhật dữ liệu","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined","iconColor":"#1677FF","danger":false,"type":"default"},"x-align":"right","type":"void","x-app-version":"1.3.51"}
 08ul9zdtvmm	06q4p77791h	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
 0ykb0dwa7qn	name	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"funds.name","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+85c8uxmskwh	tab1	{"x-uid":"85c8uxmskwh","name":"tab1","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{"icon":"eyeoutlined"}}
+iniy0emerbt	tab1	{"x-uid":"iniy0emerbt","name":"tab1","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chỉnh sửa","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{"icon":"editoutlined"}}
 2l1dxgil9m0	ojehn0yvsfo	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
 2yp2l3a5rvg	nyewwt1gtzp	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
-h9b6ss6g5n5	current_amount	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"funds.current_amount","x-component":"CollectionField","x-component-props":{},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
 r15lkroggz5	qvbxu7c6bh0	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
-bj7dti4exso	project	{"x-uid":"bj7dti4exso","name":"project","_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"funds.project","x-component":"CollectionField","x-component-props":{"ellipsis":true,"size":"small","fieldNames":{"value":"id","label":"name"}},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+3k4d6voqqmv	t358f6ldd3g	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+ex7labhox58	transaction_code	{"x-uid":"ex7labhox58","name":"transaction_code","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.transaction_code","x-component-props":{},"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
 6hd31g8yv4w	crh1ir8b003	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 ic7u2lri0wu	3wve3pm9pji	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 4z1o600a2we	dpu1osfq901	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action-props":{"skipScopeCheck":false},"x-acl-action":"proposes:update","x-decorator":"FormBlockProvider","x-use-decorator-props":"useEditFormBlockDecoratorProps","x-decorator-props":{"action":"get","dataSource":"main","collection":"proposes"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:editForm","x-component":"CardItem","x-app-version":"1.3.51"}
@@ -12313,7 +19723,6 @@ x747kf9mxwc	wy7yzxl7mk1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 p6s217wf7ct	address	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"proposes.address","x-component-props":{},"x-app-version":"1.3.51"}
 uhyna377ejo	kqfnftlrx7e	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 uqefruvwdrj	jx4pyf90i5t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
-49du3kw1vk3	1ulbalutbtz	{"x-uid":"49du3kw1vk3","name":"1ulbalutbtz","_isJSONSchemaObject":true,"version":"2.0","title":"Lưu","x-action":"submit","x-component":"Action","x-use-component-props":"useUpdateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:updateSubmit","x-component-props":{"type":"primary","htmlType":"submit","iconColor":"#1677FF","icon":"saveoutlined","danger":false,"confirm":{}},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.51"}
 7608d2qrms5	rupq83lhexj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 3wjttvlbvom	vinaz42y392	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 7b0nw7tckru	d1leacdeh0n	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action-props":{"skipScopeCheck":true},"x-acl-action":"projects:create","x-decorator":"FormBlockProvider","x-use-decorator-props":"useCreateFormBlockDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"projects"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:createForm","x-component":"CardItem","x-app-version":"1.3.51"}
@@ -12326,9 +19735,10 @@ gknyqq41xnt	vqellucd481	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 694yihv1mt2	total_amount	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.total_amount","x-component-props":{},"x-app-version":"1.3.51"}
 prfw0qv3j86	qwwqjrnv319	{"x-uid":"prfw0qv3j86","name":"qwwqjrnv319","_isJSONSchemaObject":true,"version":"2.0","title":"Lưu","x-action":"submit","x-component":"Action","x-use-component-props":"useCreateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:createSubmit","x-component-props":{"type":"primary","htmlType":"submit","iconColor":"#1677FF","icon":"saveoutlined","danger":false},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.51"}
 qu64eoa7amg	eobg71nkffb	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
+h9b6ss6g5n5	current_amount	{"x-uid":"h9b6ss6g5n5","name":"current_amount","_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"funds.current_amount","x-component":"CollectionField","x-component-props":{"formatStyle":"normal","separator":"0.0,00","step":"1","addonAfter":" đ"},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+kfb8elqjp0o	col_zigb92fkqpw	{"x-uid":"kfb8elqjp0o","name":"col_zigb92fkqpw","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":"54.19"}}
 t1avimtuwpm	2ls8k57yctn	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 9t4p5s7w6b5	qr_code_url	{"x-uid":"9t4p5s7w6b5","name":"qr_code_url","_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"funds.qr_code_url","x-component":"CollectionField","x-component-props":{"component":"Input.Preview","size":"large"},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
-2bwco99n47x	d4mud4uha2e	{"x-uid":"2bwco99n47x","name":"d4mud4uha2e","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết","x-action":"view","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:view","x-component":"Action.Link","x-component-props":{"openMode":"drawer","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"funds"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
 w1vttmfcjic	ktpm10m72a3	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Dự án đang kêu gọi","x-component":"Menu.Item","x-decorator":"ACLMenuItemProvider","x-component-props":{"icon":"fundprojectionscreenoutlined"},"x-server-hooks":[{"type":"onSelfCreate","method":"bindMenuToRole"},{"type":"onSelfSave","method":"extractTextToLocale"}],"x-app-version":"1.3.51"}
 833uu3rb1nm	8mnbevqrjyp	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"page:addBlock","x-app-version":"1.3.51"}
 ik0zt15yup2	page	{"x-uid":"ik0zt15yup2","name":"page","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page","x-app-version":"1.3.51","x-component-props":{"disablePageHeader":true}}
@@ -12345,21 +19755,22 @@ e4samnonhij	tr2gblfn7ay	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 nmsro2sp378	fiudpr5topq	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 j6v7p1dgvc9	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.sub_title","x-component-props":{},"x-app-version":"1.3.51"}
 04nart2ippj	images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.images","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.51"}
-5du82txc6va	km6tw2enmyw	{"x-uid":"5du82txc6va","name":"km6tw2enmyw","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":100}}
+0watzzc6ypj	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Edit record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"}}
 62kkj5k4vhn	hzuj9h6kur3	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 udmmaahgp9z	4r68wxww90v	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 qujstuiy3k2	vmsy7tvgnx5	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 p3st627y95d	fund_id	{"x-uid":"p3st627y95d","name":"fund_id","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.fund_id","x-component-props":{"fieldNames":{"value":"id","label":"name"},"enableLink":false},"x-app-version":"1.3.51","x-action-context":{"dataSource":"main","association":"projects.fund_id"}}
-lgkny2plcta	eh6mnnzg5yv	{"x-uid":"lgkny2plcta","name":"eh6mnnzg5yv","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action.Link","x-use-component-props":"useDestroyActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:delete","x-component-props":{"confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"refreshDataBlockRequest":true,"iconColor":"#1677FF","danger":false},"x-action-settings":{"triggerWorkflows":[]},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"type":"void"}
-66xqkev137r	98c11tkibc9	{"x-uid":"66xqkev137r","name":"98c11tkibc9","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chỉnh sửa","x-action":"update","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:edit","x-component":"Action.Link","x-component-props":{"openMode":"modal","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"projects"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
+bffo2i5n7zb	row_udcdhlctlhz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":9}
+2bwco99n47x	d4mud4uha2e	{"x-uid":"2bwco99n47x","name":"d4mud4uha2e","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết","x-action":"view","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:view","x-component":"Action.Link","x-component-props":{"openMode":"modal","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"funds"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
+rpbi3yn053m	col_8s7rz6p5qpy	{"x-uid":"rpbi3yn053m","name":"col_8s7rz6p5qpy","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":"18.54"}}
 jjset43gbyy	yar5i7pvcf9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
 e43yauc7npg	progress_images	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"projects.progress_images","x-component":"CollectionField","x-component-props":{"size":"small"},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.51"}
 1bwhaq1v3y8	vee2be14vvd	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
 jjgq2nh2ik3	images	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"projects.images","x-component":"CollectionField","x-component-props":{"size":"small"},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.51"}
-vrwoxsmqz7z	x6bsn3v9vpy	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
-5pjzqrzcwxl	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"projects.sub_title","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
-o8jbt34ilny	gg591whiik9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
-u4x9wfxqbko	description	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"projects.description","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+9ykupik4f4g	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab"}
+5z3gl0zrzxm	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock"}
+xo5vgqdp3pj	actions	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"table:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":"var(--nb-spacing)"}},"x-app-version":"1.3.51"}
+bj7dti4exso	project	{"x-uid":"bj7dti4exso","name":"project","_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"funds.project","x-component":"CollectionField","x-component-props":{"ellipsis":true,"size":"small","fieldNames":{"value":"id","label":"name"},"enableLink":false},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51","x-action-context":{"dataSource":"main","association":"funds.project"}}
 zq78mhjzir3	b4lwgbvrde9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 iibr9bsne2i	pv9o86v5idr	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 22rasa1ixp1	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.sub_title","x-component-props":{},"x-app-version":"1.3.51"}
@@ -12382,37 +19793,34 @@ odmrtfsxjp5	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","ti
 fo7g83k4wnw	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab","x-app-version":"1.3.51"}
 xaewf0sjo76	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Details\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{},"x-app-version":"1.3.51"}
 g4n9eb2icuo	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock","x-app-version":"1.3.51"}
+6zbn1svqu3t	tab1	{"x-uid":"6zbn1svqu3t","name":"tab1","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chỉnh sửa","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{"icon":"editoutlined"}}
 4lk9neaacek	tz4s8sus379	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-5bru92qlyrq	page	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page","x-app-version":"1.3.51"}
 i80vemflinb	7ph0kivnyy2	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"page:addBlock","x-app-version":"1.3.51"}
-gt78k6uibhm	xm1oktbjr30	{"x-uid":"gt78k6uibhm","name":"xm1oktbjr30","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết","x-action":"customize:link","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:link","x-component":"Action.Link","x-use-component-props":"useLinkActionProps","x-app-version":"1.3.51","x-component-props":{"iconColor":"#1677FF","danger":false,"url":"/admin/obl2auujo32","params":[{"name":"id","value":"{{$nRecord.id}}"},{"name":"fund_id","value":"{{$nRecord.fund_id.id}}"}],"openInNewWindow":true}}
 alt2km13pi6	psw3evjqwcs	{"x-uid":"alt2km13pi6","name":"psw3evjqwcs","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Đóng góp ngay","x-action":"view","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:view","x-component":"Action.Link","x-component-props":{"openMode":"modal","iconColor":"#1677FF","danger":false,"openSize":"large"},"x-action-context":{"dataSource":"main","collection":"projects"},"x-decorator":"ACLActionProvider","x-align":"left","x-app-version":"1.3.51"}
 fzzjta8vefz	7796t9liv6a	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-qea4hkirot0	actionBar	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"list:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":"var(--nb-spacing)"}},"x-app-version":"1.3.51"}
-fuhvhiwfe1n	list	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-component":"List","x-use-component-props":"useListBlockProps","x-app-version":"1.3.51"}
-r9bunptonmc	item	{"_isJSONSchemaObject":true,"version":"2.0","type":"object","x-component":"List.Item","x-read-pretty":true,"x-use-component-props":"useListItemProps","x-app-version":"1.3.51"}
-e2breqfve4x	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"details:configureFields","x-app-version":"1.3.51"}
-iyimw3a9uc2	actionBar	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-align":"left","x-initializer":"list:configureItemActions","x-component":"ActionBar","x-use-component-props":"useListActionBarProps","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.51"}
-ml67mod4ivt	0shlplcajzn	{"x-uid":"ml67mod4ivt","name":"0shlplcajzn","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"transactions:view","x-decorator":"List.Decorator","x-use-decorator-props":"useListBlockDecoratorProps","x-decorator-props":{"collection":"transactions","dataSource":"main","readPretty":true,"action":"list","params":{"pageSize":10},"runWhenParamsChanged":true,"rowKey":"id"},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:list","x-app-version":"1.3.51","x-component-props":{"heightMode":"specifyValue","height":450}}
-xgcak2lw2iz	12rz8k1re6g	{"x-uid":"xgcak2lw2iz","name":"12rz8k1re6g","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":"32.32"}}
+cysvcwwaf4c	j9h30hgc25p	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Filter\\") }}","x-action":"filter","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:filter","x-component":"Filter.Action","x-use-component-props":"useFilterActionProps","x-component-props":{"icon":"FilterOutlined"},"x-align":"left","x-app-version":"1.3.51"}
+nlou4s5aouj	broker_host	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"kafka_topics.broker_host","x-component-props":{},"x-app-version":"1.3.51"}
+ix3eneqbhqt	fund_id	{"x-uid":"ix3eneqbhqt","name":"fund_id","_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"projects.fund_id","x-component":"CollectionField","x-component-props":{"ellipsis":true,"size":"small","fieldNames":{"value":"id","label":"name"},"enableLink":false},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+u9fqp7maxs8	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Add record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"},"x-app-version":"1.3.51"}
+5m33jos871r	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab","x-initializer-props":{"gridInitializer":"popup:addNew:addBlock"},"x-app-version":"1.3.51"}
+ucehls8s69t	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:addNew:addBlock","x-app-version":"1.3.51"}
 wklx0s4mt5t	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:addNew:addBlock","x-app-version":"1.3.51"}
-je71b5yiapc	vmm2dgtvtor	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Submit\\") }}","x-action":"submit","x-component":"Action","x-use-component-props":"useCreateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:createSubmit","x-component-props":{"type":"primary","htmlType":"submit"},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.51"}
-0jc7b0j4ca8	csq9ob0c25v	{"x-uid":"0jc7b0j4ca8","name":"csq9ob0c25v","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-settings":"blockSettings:iframe","x-decorator":"BlockItem","x-decorator-props":{"name":"iframe"},"x-component":"Iframe","x-component-props":{"heightMode":"specifyValue","height":450,"mode":"html","engine":"string","params":[],"htmlId":"y8wo4qdjyby"},"x-app-version":"1.3.51"}
-kbm738ecszi	col_wktnsi6ch4a	{"x-uid":"kbm738ecszi","name":"col_wktnsi6ch4a","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":"67.60"}}
+je71b5yiapc	vmm2dgtvtor	{"x-uid":"je71b5yiapc","name":"vmm2dgtvtor","_isJSONSchemaObject":true,"version":"2.0","title":"Lưu","x-action":"submit","x-component":"Action","x-use-component-props":"useCreateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:createSubmit","x-component-props":{"type":"primary","htmlType":"submit","iconColor":"#1677FF","icon":"saveoutlined","danger":false},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.51"}
 0sygad82cqs	row_wx1773xzqj7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":1}
-0yu3l905f1t	iix60ebv9ss	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col"}
-xkqldchxl9c	row_vjfo12ymuge	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":3}
-elx91vnsmjj	pu2cldss0h9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col"}
+1i8j6q1xnzk	tab1	{"x-uid":"1i8j6q1xnzk","name":"tab1","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Thêm mới","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{"icon":"plusoutlined"},"x-app-version":"1.3.51"}
+slyvobazfq4	cl254bnak8k	{"x-uid":"slyvobazfq4","name":"cl254bnak8k","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Lọc","x-action":"filter","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:filter","x-component":"Filter.Action","x-use-component-props":"useFilterActionProps","x-component-props":{"icon":"FilterOutlined"},"x-align":"left","x-app-version":"1.3.51"}
 aezmizce5n2	row_sp19u2s8p4h	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":1}
-slyvobazfq4	cl254bnak8k	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Filter\\") }}","x-action":"filter","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:filter","x-component":"Filter.Action","x-use-component-props":"useFilterActionProps","x-component-props":{"icon":"FilterOutlined"},"x-align":"left","x-app-version":"1.3.51"}
 4ta56kbw4tp	row_in4q7blra2x	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":1}
-k2mxivm0oqa	5qn0eqyp2an	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col"}
 41zfs8bogys	fly9kqbi88f	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Kafka config","x-component":"Menu.Item","x-decorator":"ACLMenuItemProvider","x-component-props":{"icon":"bugoutlined"},"x-server-hooks":[{"type":"onSelfCreate","method":"bindMenuToRole"},{"type":"onSelfSave","method":"extractTextToLocale"}]}
 fq548i6jjul	0du3uau7m3w	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"page:addBlock"}
 b8e4crdaije	page	{"x-uid":"b8e4crdaije","name":"page","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page","x-component-props":{"hidePageTitle":true}}
 wu05wqno6t2	ltf8wyoaf1a	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 3owowmpqg3i	jl58t0i7noi	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 uqksfd0oriv	xbho66vyd8n	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
+5bru92qlyrq	page	{"x-uid":"5bru92qlyrq","name":"page","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page","x-app-version":"1.3.51","x-component-props":{"hidePageTitle":false,"disablePageHeader":true}}
+xgcak2lw2iz	12rz8k1re6g	{"x-uid":"xgcak2lw2iz","name":"12rz8k1re6g","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":"33.48"}}
+gt78k6uibhm	xm1oktbjr30	{"x-uid":"gt78k6uibhm","name":"xm1oktbjr30","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết","x-action":"customize:link","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:link","x-component":"Action.Link","x-use-component-props":"useLinkActionProps","x-app-version":"1.3.51","x-component-props":{"iconColor":"#1677FF","danger":false,"url":"/admin/obl2auujo32","params":[{"name":"id","value":"{{$nRecord.id}}"},{"name":"fund_id","value":"{{$nRecord.fund_id.id}}"}],"openInNewWindow":false}}
+0jc7b0j4ca8	csq9ob0c25v	{"x-uid":"0jc7b0j4ca8","name":"csq9ob0c25v","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-settings":"blockSettings:iframe","x-decorator":"BlockItem","x-decorator-props":{"name":"iframe"},"x-component":"Iframe","x-component-props":{"heightMode":"specifyValue","height":450,"mode":"html","engine":"string","params":[],"htmlId":"y8wo4qdjyby"},"x-app-version":"1.3.51"}
 culzjbos9r3	7jw9hs1r616	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableBlockProvider","x-acl-action":"kafka_topics:list","x-use-decorator-props":"useTableBlockDecoratorProps","x-decorator-props":{"collection":"kafka_topics","dataSource":"main","action":"list","params":{"pageSize":20},"rowKey":"id","showIndex":true,"dragSort":false},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:table","x-component":"CardItem","x-filter-targets":[],"x-app-version":"1.3.51"}
 tw82t2es2ty	actions	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"table:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":"var(--nb-spacing)"}},"x-app-version":"1.3.51"}
 v3o080ka847	d9t9v2jcaiw	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-initializer":"table:configureColumns","x-component":"TableV2","x-use-component-props":"useTableBlockProps","x-component-props":{"rowKey":"id","rowSelection":{"type":"checkbox"}},"x-app-version":"1.3.51"}
@@ -12425,17 +19833,16 @@ h57ad49xfey	actions	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x
 e3eaa6uq9t8	nxi9l2l50r1	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-initializer":"table:configureColumns","x-component":"TableV2","x-use-component-props":"useTableBlockProps","x-component-props":{"rowKey":"id","rowSelection":{"type":"checkbox"}},"x-app-version":"1.3.51"}
 c8kzc0jfotm	actions	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Actions\\") }}","x-action-column":"actions","x-decorator":"TableV2.Column.ActionBar","x-component":"TableV2.Column","x-toolbar":"TableColumnSchemaToolbar","x-initializer":"table:configureItemActions","x-settings":"fieldSettings:TableColumn","x-toolbar-props":{"initializer":"table:configureItemActions"},"x-app-version":"1.3.51"}
 lylp2daxzr6	22q4y5s0cr1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DndContext","x-component":"Space","x-component-props":{"split":"|"},"x-app-version":"1.3.51"}
-dknwg9949yr	7cu6novy6t3	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-action":"create","x-acl-action":"create","title":"{{t('Add new')}}","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:addNew","x-component":"Action","x-decorator":"ACLActionProvider","x-component-props":{"openMode":"drawer","type":"primary","component":"CreateRecordAction","icon":"PlusOutlined"},"x-action-context":{"dataSource":"main","collection":"kafka_topics"},"x-align":"right","x-acl-action-props":{"skipScopeCheck":true},"x-app-version":"1.3.51"}
 9c1c2orwoq7	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Add record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"},"x-app-version":"1.3.51"}
 826yic3e7bk	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab","x-initializer-props":{"gridInitializer":"popup:addNew:addBlock"},"x-app-version":"1.3.51"}
-yt77srlsive	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Add new\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{},"x-app-version":"1.3.51"}
-5w0u5l0eba3	zjasrrgzflw	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Delete\\") }}","x-action":"destroy","x-component":"Action","x-use-component-props":"useBulkDestroyActionProps","x-component-props":{"icon":"DeleteOutlined","confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"}},"x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:bulkDelete","x-decorator":"ACLActionProvider","x-acl-action-props":{"skipScopeCheck":true},"x-action-settings":{"triggerWorkflows":[]},"x-acl-action":"kafka_topics:destroy","x-align":"right","type":"void","x-app-version":"1.3.51"}
-2ziyozcgtvr	xpwfak3bd4k	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Refresh\\") }}","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined"},"x-align":"right","type":"void","x-app-version":"1.3.51"}
+yt77srlsive	tab1	{"x-uid":"yt77srlsive","name":"tab1","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Thêm mới","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{"icon":"plusoutlined"},"x-app-version":"1.3.51"}
 p9tevlo816p	kqikspnvfrv	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
 8kbnum15b1u	yldce01d8xu	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
 n9ajlii3rdt	topic_name	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"kafka_topics.topic_name","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
 datiyxz3yqb	j5lzl8a038o	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
 4nsqtpiaris	broker_host	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"kafka_topics.broker_host","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+l94gox2g6sk	fldfg7tcxxq	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col"}
+2ziyozcgtvr	xpwfak3bd4k	{"x-uid":"2ziyozcgtvr","name":"xpwfak3bd4k","_isJSONSchemaObject":true,"version":"2.0","title":"Cập nhật dữ liệu","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined","iconColor":"#1677FF","danger":false,"type":"default"},"x-align":"right","type":"void","x-app-version":"1.3.51"}
 0c9o95n7ckl	group_id	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"kafka_configs.group_id","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
 tgg2yk2x7el	s7em4s3k2zw	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
 5p4ay8t5i8m	client_id	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"kafka_configs.client_id","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
@@ -12446,24 +19853,18 @@ sfa4kawo4ky	zmw07b8ao7s	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 4sqtmnjqy3l	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"form:configureFields","x-app-version":"1.3.51"}
 eupy33wyahw	7aax1ngr3t4	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"createForm:configureActions","x-component":"ActionBar","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.51"}
 8bk7zmz6xb6	dfia52r9qz6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-n1q88j8ccbz	p1e31nnoxyw	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
-nlou4s5aouj	broker_host	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"kafka_topics.broker_host","x-component-props":{},"x-app-version":"1.3.51"}
-30afm9j9mof	djyrzsqdn4b	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-3k4d6voqqmv	t358f6ldd3g	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 nk1o1xq6m6v	topic_name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"kafka_topics.topic_name","x-component-props":{},"x-app-version":"1.3.51"}
 p75pmr75t0d	g4ylyoivqmz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 74s44xtfq9i	kwrxyjmf7w7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 cyqcbe8h8e3	type	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"kafka_topics.type","x-component-props":{"style":{"width":"100%"}},"x-app-version":"1.3.51"}
-9261692m4qa	7r5g47kqrfh	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-action":"create","x-acl-action":"create","title":"{{t('Add new')}}","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:addNew","x-component":"Action","x-decorator":"ACLActionProvider","x-component-props":{"openMode":"drawer","type":"primary","component":"CreateRecordAction","icon":"PlusOutlined"},"x-action-context":{"dataSource":"main","collection":"kafka_configs"},"x-align":"right","x-acl-action-props":{"skipScopeCheck":true},"x-app-version":"1.3.51"}
 evlfkn2k9ay	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Add record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"},"x-app-version":"1.3.51"}
 siizaqdcc7g	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab","x-initializer-props":{"gridInitializer":"popup:addNew:addBlock"},"x-app-version":"1.3.51"}
-ziv7xyw0rep	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Add new\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{},"x-app-version":"1.3.51"}
 9i5rajl4o7f	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:addNew:addBlock","x-app-version":"1.3.51"}
-2is90czs6ox	6a261zxmkia	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Filter\\") }}","x-action":"filter","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:filter","x-component":"Filter.Action","x-use-component-props":"useFilterActionProps","x-component-props":{"icon":"FilterOutlined"},"x-align":"left","x-app-version":"1.3.51"}
-hm0dk2bjmly	uk1vt55cyyw	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Delete\\") }}","x-action":"destroy","x-component":"Action","x-use-component-props":"useBulkDestroyActionProps","x-component-props":{"icon":"DeleteOutlined","confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"}},"x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:bulkDelete","x-decorator":"ACLActionProvider","x-acl-action-props":{"skipScopeCheck":true},"x-action-settings":{"triggerWorkflows":[]},"x-acl-action":"kafka_configs:destroy","x-align":"right","type":"void","x-app-version":"1.3.51"}
-41rxrx9byzc	bafztjgsrly	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Refresh\\") }}","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined"},"x-align":"right","type":"void","x-app-version":"1.3.51"}
+jxt0ubhh4pf	images	{"x-uid":"jxt0ubhh4pf","name":"images","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.images","x-component-props":{"size":"default"},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.51"}
 mk3xa4vi82o	f0lwl32va4r	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-3yn0m2wrfox	fv6jdj6m7e3	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+41rxrx9byzc	bafztjgsrly	{"x-uid":"41rxrx9byzc","name":"bafztjgsrly","_isJSONSchemaObject":true,"version":"2.0","title":"Cập nhật dữ liệu","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined","iconColor":"#1677FF","danger":false,"type":"default"},"x-align":"right","type":"void","x-app-version":"1.3.51"}
+2is90czs6ox	6a261zxmkia	{"x-uid":"2is90czs6ox","name":"6a261zxmkia","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Lọc","x-action":"filter","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:filter","x-component":"Filter.Action","x-use-component-props":"useFilterActionProps","x-component-props":{"icon":"FilterOutlined"},"x-align":"left","x-app-version":"1.3.51"}
+ziv7xyw0rep	tab1	{"x-uid":"ziv7xyw0rep","name":"tab1","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Thêm mới","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{"icon":"plusoutlined"},"x-app-version":"1.3.51"}
 ydsit0px4rd	jlpflkrb4dv	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action-props":{"skipScopeCheck":true},"x-acl-action":"kafka_configs:create","x-decorator":"FormBlockProvider","x-use-decorator-props":"useCreateFormBlockDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"kafka_configs"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:createForm","x-component":"CardItem","x-app-version":"1.3.51"}
 un4uti49os0	88zwupdypzw	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"FormV2","x-use-component-props":"useCreateFormBlockProps","x-app-version":"1.3.51"}
 hhlmur67sro	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"form:configureFields","x-app-version":"1.3.51"}
@@ -12474,7 +19875,6 @@ nua7kket7hz	group_id	{"_isJSONSchemaObject":true,"version":"2.0","type":"string"
 hwdhwy2que9	v908ckr82o5	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 ln1lttr31if	5nnu7ipjnl9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 whfdv9dw36r	client_id	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"kafka_configs.client_id","x-component-props":{},"x-app-version":"1.3.51"}
-05ogzmyvz6t	jjgsm9bsewf	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Submit\\") }}","x-action":"submit","x-component":"Action","x-use-component-props":"useCreateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:createSubmit","x-component-props":{"type":"primary","htmlType":"submit"},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.51"}
 5vjhonzhs45	e0fxy36rrse	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Blockchain config","x-component":"Menu.Item","x-decorator":"ACLMenuItemProvider","x-component-props":{"icon":"codesandboxoutlined"},"x-server-hooks":[{"type":"onSelfCreate","method":"bindMenuToRole"},{"type":"onSelfSave","method":"extractTextToLocale"}]}
 jqr7lgri2e0	page	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page"}
 2mxzcpz5cle	0prlg05u4b6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"page:addBlock"}
@@ -12487,36 +19887,12 @@ to668yqpfbk	2s0hp9ccddn	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 lnl6ixhbtoa	transaction_code	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"transactions.transaction_code","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
 oku0n57sd7x	rn51scs5964	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 oy9b77omeje	carousel	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Carousel","x-use-component-props":"useCarouselBlockProps","x-app-version":"1.3.51"}
-hnxlnz7kz6g	tfitjlmc6hi	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-oam5lsqaqw1	qdbg7w5bdby	{"x-uid":"oam5lsqaqw1","name":"qdbg7w5bdby","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-component":"FormItem","x-settings":"blockSettings:carousel","x-toolbar":"BlockSchemaToolbar","x-decorator-props":{"carousel":{"height":400},"rowKey":"id","runWhenParamsChanged":true,"readPretty":true,"dataSource":"main","collection":"projects","action":"list","params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]},"appends":["images"]}},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.51"}
-olvl2c3hlpk	20a54iv6yiq	{"x-uid":"olvl2c3hlpk","name":"20a54iv6yiq","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":50}}
-mi71c1ge6na	p8igwddvx71	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-q5uzs9ydsfq	hn0bytpg4rj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
-zhmd8340u9p	ylvoirp7d2n	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action-props":{"skipScopeCheck":true},"x-acl-action":"transactions:create","x-decorator":"FormBlockProvider","x-use-decorator-props":"useCreateFormBlockDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"transactions"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:createForm","x-component":"CardItem","x-app-version":"1.3.51"}
-269ugsobf0q	r15a3xet0ag	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"FormV2","x-use-component-props":"useCreateFormBlockProps","x-app-version":"1.3.51"}
-1zppis56hgq	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"form:configureFields","x-app-version":"1.3.51"}
-2734c1npcd3	v3xc7j591od	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"createForm:configureActions","x-component":"ActionBar","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.51"}
-lbqrwbc300m	l6qnuppgj7p	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-k8wly6qev2x	rt8p5vz3yul	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
-kuzt62annzq	transaction_code	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.transaction_code","x-component-props":{},"x-app-version":"1.3.51"}
-1la4yan1f8i	po5szcpamsl	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-o9u7omjfm9v	10y8qhb4a3d	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
-3l8rauopr1i	amount	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.amount","x-component-props":{},"x-app-version":"1.3.51"}
-vlp8rv3bdrm	fk0y94vbiim	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-rbo4f75swb8	28yyn6um09r	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
-xp5thab18zp	direction	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.direction","x-component-props":{"style":{"width":"100%"}},"x-app-version":"1.3.51"}
-hu4f6iqkias	epiazjmc24g	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-wf6i0l1rq5h	cfllr35lwr5	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
-b19flc450d4	fund	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.fund","x-component-props":{"fieldNames":{"value":"id","label":"id"}},"x-app-version":"1.3.51"}
-w8z0t7km6y6	v89lrsuqljj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-bl5cko9dc2s	u2neu25z50f	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
-q8iw0s2gord	from_account_no	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_account_no","x-component-props":{},"x-app-version":"1.3.51"}
-oppm7g32hpv	rh2lre5vbsq	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
-f4w58chv2n1	from_account_name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_account_name","x-component-props":{},"x-app-version":"1.3.51"}
-k3s1inyl7od	ghkwe4tml2j	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-zhznhya5d4k	j9oa9p5bvff	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
-wczmtfqkbe7	from_bank_name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_bank_name","x-component-props":{},"x-app-version":"1.3.51"}
-2dan6q3aj1j	75wuu4empdc	{"x-uid":"2dan6q3aj1j","name":"75wuu4empdc","_isJSONSchemaObject":true,"version":"2.0","title":"Lưu","x-action":"submit","x-component":"Action","x-use-component-props":"useCreateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:createSubmit","x-component-props":{"type":"primary","htmlType":"submit","iconColor":"#1677FF","icon":"saveoutlined","danger":false},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.51"}
+olvl2c3hlpk	20a54iv6yiq	{"x-uid":"olvl2c3hlpk","name":"20a54iv6yiq","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":"45.81"}}
+si3vlr9fojx	5cgaliofi17	{"x-uid":"si3vlr9fojx","name":"5cgaliofi17","_isJSONSchemaObject":true,"version":"2.0","title":"Cập nhật dữ liệu","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined","iconColor":"#1677FF","danger":false,"type":"default"},"x-align":"right","type":"void","x-app-version":"1.3.51"}
+d59ikwp6g2w	col_0gp42hgig5b	{"x-uid":"d59ikwp6g2w","name":"col_0gp42hgig5b","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
+ox367wpayts	ry24e4gpp0x	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"details:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":24}},"x-app-version":"1.3.51"}
+05ogzmyvz6t	jjgsm9bsewf	{"x-uid":"05ogzmyvz6t","name":"jjgsm9bsewf","_isJSONSchemaObject":true,"version":"2.0","title":"Lưu","x-action":"submit","x-component":"Action","x-use-component-props":"useCreateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:createSubmit","x-component-props":{"type":"primary","htmlType":"submit","iconColor":"#1677FF","icon":"saveoutlined","danger":false},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.51"}
+soippfj7tmy	col_nltfvoufhes	{"x-uid":"soippfj7tmy","name":"col_nltfvoufhes","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
 br2iml0jo4g	43so4zxpte2	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 x7rtah7eo6m	header picker	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"HeaderPickerBlock","x-app-version":"1.3.51"}
 7cqqh5i0a2o	fields	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"info:configureFields","x-app-version":"1.3.51"}
@@ -12526,27 +19902,36 @@ y1rrkjssybd	b8d6lq5gc13	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 y5cb9mdp2aj	b8iyfcm0qwb	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 uy8iun5lic9	name	{"x-uid":"uy8iun5lic9","name":"name","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"InfoField","x-component-props":{"name":"name","headerType":"h2"},"x-settings":"fieldSettings:component:header picker","x-decorator":"FormItem","x-app-version":"1.3.51"}
 huog9umg369	sub_title	{"x-uid":"huog9umg369","name":"sub_title","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"InfoField","x-component-props":{"name":"sub_title","headerType":"p"},"x-settings":"fieldSettings:component:header picker","x-decorator":"FormItem","x-app-version":"1.3.51"}
-kfb8elqjp0o	col_zigb92fkqpw	{"x-uid":"kfb8elqjp0o","name":"col_zigb92fkqpw","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
-h2074c82qcd	e373z3s3xvv	{"x-uid":"h2074c82qcd","name":"e373z3s3xvv","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-decorator-props":{"myHeaderPicker":{"height":300},"dataSource":"main","collection":"projects","action":"list"},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:header picker","x-designer":"FormV2.Designer","x-component-props":{"useConfigureFields":true},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.51"}
-szv3v13lwap	9klmp3sxg8f	{"x-uid":"szv3v13lwap","name":"9klmp3sxg8f","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chỉnh sửa","x-action":"update","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:edit","x-component":"Action.Link","x-component-props":{"openMode":"drawer","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"funds"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
-ugbscwjg6mp	j7l692pcy26	{"x-uid":"ugbscwjg6mp","name":"j7l692pcy26","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action.Link","x-use-component-props":"useDestroyActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:delete","x-component-props":{"confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"refreshDataBlockRequest":true,"iconColor":"#1677FF","danger":false},"x-action-settings":{"triggerWorkflows":[]},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"type":"void"}
+bawj0uea3a0	col_21mu919weg8	{"x-uid":"bawj0uea3a0","name":"col_21mu919weg8","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
+bb7nfngcfhq	actionBar	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"list:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":"var(--nb-spacing)"}},"x-app-version":"1.3.51"}
+4w66alip7h8	list	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-component":"List","x-use-component-props":"useListBlockProps","x-app-version":"1.3.51"}
+3v8laq7zjql	item	{"_isJSONSchemaObject":true,"version":"2.0","type":"object","x-component":"List.Item","x-read-pretty":true,"x-use-component-props":"useListItemProps","x-app-version":"1.3.51"}
+0xyo5u2dbw5	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"details:configureFields","x-app-version":"1.3.51"}
+qnw2iuej1qj	actionBar	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-align":"left","x-initializer":"list:configureItemActions","x-component":"ActionBar","x-use-component-props":"useListActionBarProps","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.51"}
+u7z981cpekd	plaf1ct1612	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-initializer":"table:configureColumns","x-component":"TableV2","x-use-component-props":"useTableBlockProps","x-component-props":{"rowKey":"id","rowSelection":{"type":"checkbox"}},"x-app-version":"1.3.51"}
+p6lb6lassso	op8grx8e1m3	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DndContext","x-component":"Space","x-component-props":{"split":"|"},"x-app-version":"1.3.51"}
+eod987x7p4g	xr628x7t1do	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
+epcvlfsnapu	script	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"smart_contracts.script","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+sv9gmqdjn75	246tpkaxbsc	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
+9yj23v0c5mr	abi	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"smart_contracts.abi","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+wy3sma2jc6n	epfnttd0t7k	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
+llxobi4pfu8	bytecode	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"smart_contracts.bytecode","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+u0p14qm90g3	actions	{"x-uid":"u0p14qm90g3","name":"actions","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chức năng","x-action-column":"actions","x-decorator":"TableV2.Column.ActionBar","x-component":"TableV2.Column","x-toolbar":"TableColumnSchemaToolbar","x-initializer":"table:configureItemActions","x-settings":"fieldSettings:TableColumn","x-toolbar-props":{"initializer":"table:configureItemActions"},"x-app-version":"1.3.51"}
+y3668x0h41o	row_x7hewpvx1fu	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":4}
+dze7wwfv7ug	row_qrxfbffto9t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":1}
+8vwr3yh0weq	psbbf9kzbop	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+9vll9qbbcql	yfb1wbkdklz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+8oq39vqqx82	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Edit record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"}}
 02fwa86zov7	yyujx4o43ri	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 5qaj9xi6q1y	7y4wx5tw1nc	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 bu7t898gulm	3kh18nsa5sq	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action-props":{"skipScopeCheck":false},"x-acl-action":"funds:update","x-decorator":"FormBlockProvider","x-use-decorator-props":"useEditFormBlockDecoratorProps","x-decorator-props":{"action":"get","dataSource":"main","collection":"funds"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:editForm","x-component":"CardItem","x-app-version":"1.3.51"}
 i4n9asspbd4	eumj3wlim8b	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"FormV2","x-use-component-props":"useEditFormBlockProps","x-app-version":"1.3.51"}
 5ndh82rjiih	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"form:configureFields","x-app-version":"1.3.51"}
 es37ibmvv1x	progress	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Progress","x-use-component-props":"useProgressBlockProps","x-app-version":"1.3.51"}
-gfmff5ur0jg	wzcrw2fzqek	{"x-uid":"gfmff5ur0jg","name":"wzcrw2fzqek","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-component":"CardItem","x-settings":"blockSettings:progress","x-toolbar":"BlockSchemaToolbar","x-decorator-props":{"progress":{},"rowKey":"id","runWhenParamsChanged":true,"readPretty":true,"dataSource":"main","collection":"funds","action":"list","params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.fund_id}}"}}]}}},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.51"}
 kj70yf1en4o	qzzyude2n6v	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"editForm:configureActions","x-component":"ActionBar","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.51"}
 bvvdhzo9s04	x8z02s6633s	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 618tdc60kn1	sy39bntzfdh	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
 gfqvdpu1eu4	name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"funds.name","x-component-props":{},"x-app-version":"1.3.51"}
-8a8q29s3pam	pi2c8jmzqp0	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-g910prz5n6j	zru1uia7q12	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
-okqx007j2i9	target_amount	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"funds.target_amount","x-component-props":{},"x-app-version":"1.3.51"}
-dxixmathoof	9lmg418ee58	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-cksn73owy57	j36p9jx9k4v	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
-3fbm9qpyq34	current_amount	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"funds.current_amount","x-component-props":{},"x-app-version":"1.3.51"}
 evtz6ljqxdq	fflbnl6y0bu	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 hinf8z4a0c0	oqa3j6mr3ld	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Details","x-read-pretty":true,"x-use-component-props":"useDetailsWithPaginationProps","x-app-version":"1.3.51"}
 efkn3sb524k	aax9e9ofvs9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"details:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":24}},"x-app-version":"1.3.51"}
@@ -12557,21 +19942,28 @@ t41h1b5ogjp	3c3ni7zsboe	{"_isJSONSchemaObject":true,"version":"2.0","type":"void
 ffgmrwpmg44	description	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.description","x-component-props":{},"x-app-version":"1.3.51"}
 idfhxat5qg6	bt6mupq2mdn	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 puz5i9w50bl	c5sx9uz6yuq	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+i7gwmqodnug	yxmwfgrzy6e	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-initializer":"table:configureColumns","x-component":"TableV2","x-use-component-props":"useTableBlockProps","x-component-props":{"rowKey":"id","rowSelection":{"type":"checkbox"}},"x-app-version":"1.3.51"}
+syscnwrifc8	8xl8qr7e414	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DndContext","x-component":"Space","x-component-props":{"split":"|"},"x-app-version":"1.3.51"}
+5du82txc6va	km6tw2enmyw	{"x-uid":"5du82txc6va","name":"km6tw2enmyw","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":50}}
+h2074c82qcd	e373z3s3xvv	{"x-uid":"h2074c82qcd","name":"e373z3s3xvv","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-decorator-props":{"myHeaderPicker":{"height":300},"dataSource":"main","collection":"projects","action":"list","params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]}}},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:header picker","x-designer":"FormV2.Designer","x-component-props":{"useConfigureFields":true},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.51"}
+gfmff5ur0jg	wzcrw2fzqek	{"x-uid":"gfmff5ur0jg","name":"wzcrw2fzqek","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-component":"CardItem","x-settings":"blockSettings:progress","x-toolbar":"BlockSchemaToolbar","x-decorator-props":{"progress":{},"rowKey":"id","runWhenParamsChanged":true,"readPretty":true,"dataSource":"main","collection":"funds","action":"list","params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.fund_id}}"}}]}}},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.51"}
+bg4rui84lj2	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab"}
+zeyg628q8t0	tab1	{"x-uid":"zeyg628q8t0","name":"tab1","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chỉnh sửa","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{"icon":"editoutlined"}}
+3ohbpid2iz3	4ad4ygaha7u	{"x-uid":"3ohbpid2iz3","name":"4ad4ygaha7u","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chỉnh sửa","x-action":"update","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:edit","x-component":"Action.Link","x-component-props":{"openMode":"modal","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"kafka_topics"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
 9kxizfoklw7	ebxsaytv2yv	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableBlockProvider","x-acl-action":"transactions:list","x-use-decorator-props":"useTableBlockDecoratorProps","x-decorator-props":{"collection":"transactions","dataSource":"main","action":"list","params":{"pageSize":20},"rowKey":"id","showIndex":true,"dragSort":false},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:table","x-component":"CardItem","x-filter-targets":[],"x-app-version":"1.3.51"}
 am0lmjthjqi	actions	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"table:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":"var(--nb-spacing)"}},"x-app-version":"1.3.51"}
 pdtxkxhi0px	0eaq4z5qxui	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-initializer":"table:configureColumns","x-component":"TableV2","x-use-component-props":"useTableBlockProps","x-component-props":{"rowKey":"id","rowSelection":{"type":"checkbox"}},"x-app-version":"1.3.51"}
 m291sv0y712	7lfdql7u8y9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DndContext","x-component":"Space","x-component-props":{"split":"|"},"x-app-version":"1.3.51"}
 3d4bg9et9gc	actions	{"x-uid":"3d4bg9et9gc","name":"actions","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chức năng","x-action-column":"actions","x-decorator":"TableV2.Column.ActionBar","x-component":"TableV2.Column","x-toolbar":"TableColumnSchemaToolbar","x-initializer":"table:configureItemActions","x-settings":"fieldSettings:TableColumn","x-toolbar-props":{"initializer":"table:configureItemActions"},"x-app-version":"1.3.51"}
 kycuv3ul77x	5g3w4zowsf6	{"x-uid":"kycuv3ul77x","name":"5g3w4zowsf6","_isJSONSchemaObject":true,"version":"2.0","title":"Lưu","x-action":"submit","x-component":"Action","x-use-component-props":"useUpdateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:updateSubmit","x-component-props":{"type":"primary","htmlType":"submit","iconColor":"#1677FF","icon":"saveoutlined","danger":false},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.51"}
-byou5tpcmg3	9ab6662qw26	{"x-uid":"byou5tpcmg3","name":"9ab6662qw26","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":50}}
+x30auskvyut	col_t7kg1i54aqr	{"x-uid":"x30auskvyut","name":"col_t7kg1i54aqr","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
 2r8rihvxbxo	8xnpwon1zgc	{"x-uid":"2r8rihvxbxo","name":"8xnpwon1zgc","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"projects:view","x-decorator":"DetailsBlockProvider","x-use-decorator-props":"useDetailsWithPaginationDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"projects","readPretty":true,"action":"list","params":{"pageSize":1,"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]}}},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:detailsWithPagination","x-component":"CardItem","x-app-version":"1.3.51","x-component-props":{"heightMode":"specifyValue","height":455}}
 okedwk5bmwj	n95l12arx1b	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
-fyur6k3frte	amount	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"transactions.amount","x-component":"CollectionField","x-component-props":{},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+nz66cob6vdf	fund	{"x-uid":"nz66cob6vdf","name":"fund","_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"transactions.fund","x-component":"CollectionField","x-component-props":{"fieldNames":{"value":"id","label":"name"},"ellipsis":true,"size":"small","enableLink":false},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
 w6aolvhz2fn	3nqbnmxc4jb	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
 xhy05nql4d0	direction	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"transactions.direction","x-component":"CollectionField","x-component-props":{"style":{"width":"100%"},"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
 efjsld3xk23	ub6ushaykb2	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
 h6d3ghccgs1	be9uvjl213g	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-nz66cob6vdf	fund	{"x-uid":"nz66cob6vdf","name":"fund","_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"transactions.fund","x-component":"CollectionField","x-component-props":{"fieldNames":{"value":"id","label":"name"},"ellipsis":true,"size":"small"},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
 xz0vx55hcc4	j03i5641uyf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 5uo2qh1l9qt	actionBar	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"list:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":"var(--nb-spacing)"}},"x-app-version":"1.3.51"}
 rsvj3o8613d	list	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-component":"List","x-use-component-props":"useListBlockProps","x-app-version":"1.3.51"}
@@ -12581,49 +19973,442 @@ ln3hk72efta	actionBar	{"_isJSONSchemaObject":true,"version":"2.0","type":"void",
 g5s8ryvvhrz	s3cq4ovddyi	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 cpsgd6q8tor	540148rdvfs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 acba1j7epdp	97t1blnuc7y	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-wbf59rpu21x	pgunca9eyoo	{"x-uid":"wbf59rpu21x","name":"pgunca9eyoo","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":20}}
-svvvwbieur7	col_4b6kyfbq5c7	{"x-uid":"svvvwbieur7","name":"col_4b6kyfbq5c7","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":20}}
+svvvwbieur7	col_4b6kyfbq5c7	{"x-uid":"svvvwbieur7","name":"col_4b6kyfbq5c7","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":"21.24"}}
+84mt4mce1w7	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock"}
 s3eai5hxpps	col_aubgcbtbsyp	{"x-uid":"s3eai5hxpps","name":"col_aubgcbtbsyp","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":2,"x-component-props":{"width":20}}
-zdule12dho7	transaction_code	{"x-uid":"zdule12dho7","name":"transaction_code","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.transaction_code","x-component-props":{},"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
-w2xb0a6rkey	7pxrva2it2e	{"x-uid":"w2xb0a6rkey","name":"7pxrva2it2e","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"transactions:view","x-decorator":"List.Decorator","x-use-decorator-props":"useListBlockDecoratorProps","x-decorator-props":{"collection":"transactions","dataSource":"main","readPretty":true,"action":"list","params":{"pageSize":10,"filter":{"$and":[{"fund":{"id":{"$eq":"{{$nURLSearchParams.fund_id}}"}}}]}},"runWhenParamsChanged":true,"rowKey":"id"},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:list","x-app-version":"1.3.51","x-component-props":{"heightMode":"specifyValue","height":500}}
+df0a92eizx3	afdqfwo3leu	{"x-uid":"df0a92eizx3","name":"afdqfwo3leu","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action.Link","x-use-component-props":"useDestroyActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:delete","x-component-props":{"confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"refreshDataBlockRequest":true,"iconColor":"#1677FF","danger":false},"x-action-settings":{"triggerWorkflows":[]},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"type":"void"}
 6rat324pm10	from_account_name	{"x-uid":"6rat324pm10","name":"from_account_name","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_account_name","x-component-props":{},"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
-14iywme93h8	from_bank_name	{"x-uid":"14iywme93h8","name":"from_bank_name","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_bank_name","x-component-props":{},"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
 mgzf1cosw9o	amount	{"x-uid":"mgzf1cosw9o","name":"amount","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.amount","x-component-props":{"formatStyle":"normal","separator":"0.0,00","step":"1","addonAfter":" đ"},"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
-28b4u7eth02	s5f57j98etm	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Filter\\") }}","x-action":"filter","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:filter","x-component":"Filter.Action","x-use-component-props":"useFilterActionProps","x-component-props":{"icon":"FilterOutlined"},"x-align":"left","x-app-version":"1.3.51"}
-82e6meyr33d	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Add record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"},"x-app-version":"1.3.51"}
-r0rbal9gwoa	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab","x-initializer-props":{"gridInitializer":"popup:addNew:addBlock"},"x-app-version":"1.3.51"}
-dlbotzk5ta3	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Add new\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{},"x-app-version":"1.3.51"}
-47lzjhwq4e3	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:addNew:addBlock","x-app-version":"1.3.51"}
-h9kgonsr277	j0mpvol7p5d	{"x-uid":"h9kgonsr277","name":"j0mpvol7p5d","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-action":"create","x-acl-action":"create","title":"Thêm mới","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:addNew","x-component":"Action","x-decorator":"ACLActionProvider","x-component-props":{"openMode":"drawer","type":"primary","component":"CreateRecordAction","icon":"PlusOutlined","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"transactions"},"x-align":"right","x-acl-action-props":{"skipScopeCheck":true},"x-app-version":"1.3.51"}
-949ol9g4pk3	dni9re4qn7f	{"x-uid":"949ol9g4pk3","name":"dni9re4qn7f","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action","x-use-component-props":"useBulkDestroyActionProps","x-component-props":{"icon":"DeleteOutlined","confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"iconColor":"#1677FF","danger":true,"type":"danger"},"x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:bulkDelete","x-decorator":"ACLActionProvider","x-acl-action-props":{"skipScopeCheck":true},"x-action-settings":{"triggerWorkflows":[]},"x-acl-action":"transactions:destroy","x-align":"right","type":"void","x-app-version":"1.3.51"}
+ynl1lraa9vt	createdAt	{"x-uid":"ynl1lraa9vt","name":"createdAt","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.createdAt","x-component-props":{"dateFormat":"dddd, DD/MM/YYYY"},"x-read-pretty":true,"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
+ivd8t19ab1b	col_ln3c1z1tko3	{"x-uid":"ivd8t19ab1b","name":"col_ln3c1z1tko3","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":0,"x-component-props":{"width":"23.80"}}
 97jnvf1ludu	5x9uwytpo5o	{"x-uid":"97jnvf1ludu","name":"5x9uwytpo5o","_isJSONSchemaObject":true,"version":"2.0","title":"Cập nhật dữ liệu","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined","iconColor":"#1677FF","danger":false,"type":"default"},"x-align":"right","type":"void","x-app-version":"1.3.51"}
 rtb84viwmc5	9qw5sf9n3wn	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
-ivd8t19ab1b	col_ln3c1z1tko3	{"x-uid":"ivd8t19ab1b","name":"col_ln3c1z1tko3","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":0,"x-component-props":{"width":20}}
-kgtaxni455a	col_w6g5r01xvge	{"x-uid":"kgtaxni455a","name":"col_w6g5r01xvge","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":3,"x-component-props":{"width":20}}
-x8ujxnhlng7	col_3hbcnbiwdbc	{"x-uid":"x8ujxnhlng7","name":"col_3hbcnbiwdbc","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
-ynl1lraa9vt	createdAt	{"x-uid":"ynl1lraa9vt","name":"createdAt","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.createdAt","x-component-props":{"dateFormat":"DD/MM/YYYY"},"x-read-pretty":true,"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
 0pf6qa0lzh7	zsdfbua2snt	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableBlockProvider","x-acl-action":"smart_contracts:list","x-use-decorator-props":"useTableBlockDecoratorProps","x-decorator-props":{"collection":"smart_contracts","dataSource":"main","action":"list","params":{"pageSize":20},"rowKey":"id","showIndex":true,"dragSort":false},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:table","x-component":"CardItem","x-filter-targets":[],"x-app-version":"1.3.51"}
 grji76conif	actions	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"table:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":"var(--nb-spacing)"}},"x-app-version":"1.3.51"}
+kse6ldex1eg	row_qjtu6x2d2qn	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":2}
+h55y4nxqk03	row_plb527jlly4	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":2}
+gwo3711lqyc	3nopdplohiw	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+b91w7gjtydd	mg953hcuc6m	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+rfh8b0zirug	4u1a5ydi1sh	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+0ebdl8hmsnm	d1he1gez3st	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+x8ujxnhlng7	col_3hbcnbiwdbc	{"x-uid":"x8ujxnhlng7","name":"col_3hbcnbiwdbc","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":"54.12"}}
+6hxxlzxmifr	58gz5zri7js	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
 cm30c5qrll3	ge1965w6chm	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-initializer":"table:configureColumns","x-component":"TableV2","x-use-component-props":"useTableBlockProps","x-component-props":{"rowKey":"id","rowSelection":{"type":"checkbox"}},"x-app-version":"1.3.51"}
-bsbjghcvrvf	jtyla9qm1pi	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Delete\\") }}","x-action":"destroy","x-component":"Action","x-use-component-props":"useBulkDestroyActionProps","x-component-props":{"icon":"DeleteOutlined","confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"}},"x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:bulkDelete","x-decorator":"ACLActionProvider","x-acl-action-props":{"skipScopeCheck":true},"x-action-settings":{"triggerWorkflows":[]},"x-acl-action":"smart_contracts:destroy","x-align":"right","type":"void","x-app-version":"1.3.51"}
-ylb28qrdtcf	qh410uokviv	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Refresh\\") }}","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined"},"x-align":"right","type":"void","x-app-version":"1.3.51"}
+bsbjghcvrvf	jtyla9qm1pi	{"x-uid":"bsbjghcvrvf","name":"jtyla9qm1pi","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action","x-use-component-props":"useBulkDestroyActionProps","x-component-props":{"icon":"DeleteOutlined","confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"iconColor":"#1677FF","danger":true,"type":"danger"},"x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:bulkDelete","x-decorator":"ACLActionProvider","x-acl-action-props":{"skipScopeCheck":true},"x-action-settings":{"triggerWorkflows":[]},"x-acl-action":"smart_contracts:destroy","x-align":"right","type":"void","x-app-version":"1.3.51"}
+ylb28qrdtcf	qh410uokviv	{"x-uid":"ylb28qrdtcf","name":"qh410uokviv","_isJSONSchemaObject":true,"version":"2.0","title":"Cập nhật dữ liệu","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined","iconColor":"#1677FF","danger":false,"type":"default"},"x-align":"right","type":"void","x-app-version":"1.3.51"}
+ex2jr21my7l	eshyjuu1j9q	{"x-uid":"ex2jr21my7l","name":"eshyjuu1j9q","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action","x-use-component-props":"useBulkDestroyActionProps","x-component-props":{"icon":"DeleteOutlined","confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"iconColor":"#1677FF","danger":true,"type":"danger"},"x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:bulkDelete","x-decorator":"ACLActionProvider","x-acl-action-props":{"skipScopeCheck":true},"x-action-settings":{"triggerWorkflows":[]},"x-acl-action":"videos:destroy","x-align":"right","type":"void","x-app-version":"1.3.51"}
+vqty0zmif5g	uzcn6gn90b0	{"x-uid":"vqty0zmif5g","name":"uzcn6gn90b0","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-action":"create","x-acl-action":"create","title":"Thêm mới","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:addNew","x-component":"Action","x-decorator":"ACLActionProvider","x-component-props":{"openMode":"modal","type":"primary","component":"CreateRecordAction","icon":"PlusOutlined","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"videos"},"x-align":"right","x-acl-action-props":{"skipScopeCheck":true},"x-app-version":"1.3.51"}
+913ntol9s3t	col_g0avvf8nmuo	{"x-uid":"913ntol9s3t","name":"col_g0avvf8nmuo","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
+0m1gm5ozwh9	gwxq2p74eeo	{"x-uid":"0m1gm5ozwh9","name":"gwxq2p74eeo","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Lọc","x-action":"filter","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:filter","x-component":"Filter.Action","x-use-component-props":"useFilterActionProps","x-component-props":{"icon":"FilterOutlined"},"x-align":"left","x-app-version":"1.3.51"}
+ykxbmnj3qtf	12r4kfx4fsx	{"x-uid":"ykxbmnj3qtf","name":"12r4kfx4fsx","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Lọc","x-action":"filter","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:filter","x-component":"Filter.Action","x-use-component-props":"useFilterActionProps","x-component-props":{"icon":"FilterOutlined"},"x-align":"left","x-app-version":"1.3.51"}
+49du3kw1vk3	1ulbalutbtz	{"x-uid":"49du3kw1vk3","name":"1ulbalutbtz","_isJSONSchemaObject":true,"version":"2.0","title":"Lưu","x-action":"submit","x-component":"Action","x-use-component-props":"useUpdateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:updateSubmit","x-component-props":{"type":"primary","htmlType":"submit","iconColor":"#1677FF","icon":"saveoutlined","danger":false,"confirm":{}},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.51","x-linkage-rules":[{"condition":{"$and":[{"status":{"$eq":"PENDING"}}]},"actions":[],"title":"Linkage rule"}]}
+gf7yu1fk5fu	h10b1gu707v	{"x-uid":"gf7yu1fk5fu","name":"h10b1gu707v","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action.Link","x-use-component-props":"useDestroyActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:delete","x-component-props":{"confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"refreshDataBlockRequest":true,"iconColor":"#1677FF","danger":false},"x-action-settings":{"triggerWorkflows":[]},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"type":"void","x-linkage-rules":[{"condition":{"$and":[{"status":{"$ne":"PENDING"}}]},"actions":[{"operator":"disabled"}]}]}
+8zqt09paw0b	name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"funds.name","x-component-props":{},"x-app-version":"1.3.51"}
+cs7d1m5kauw	66x6dmrj6ce	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+vhphcnc4ttd	0xmn9uunglb	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+4oxssoky5rw	ij33m5a87ky	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+6ep0bs9yfkz	a4s2s556y4k	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+65mchif2h4a	jd6f4csz108	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+72l6kgv9pjk	6gnmz2yuus6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action-props":{"skipScopeCheck":false},"x-acl-action":"kafka_topics:update","x-decorator":"FormBlockProvider","x-use-decorator-props":"useEditFormBlockDecoratorProps","x-decorator-props":{"action":"get","dataSource":"main","collection":"kafka_topics"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:editForm","x-component":"CardItem","x-app-version":"1.3.51"}
+l18clsyirh4	bh5vgxzq7n8	{"x-uid":"l18clsyirh4","name":"bh5vgxzq7n8","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":50}}
+72xc8wgq75s	target_amount	{"x-uid":"72xc8wgq75s","name":"target_amount","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"funds.target_amount","x-component-props":{"formatStyle":"normal","separator":"0.0,00","step":"1","addonAfter":" đ"},"x-app-version":"1.3.51"}
+69vxhu28z6j	pt19gxggysm	{"x-uid":"69vxhu28z6j","name":"pt19gxggysm","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":50}}
+07jjkjhplo6	ppauux4uble	{"x-uid":"07jjkjhplo6","name":"ppauux4uble","_isJSONSchemaObject":true,"version":"2.0","title":"Lưu","x-action":"submit","x-component":"Action","x-use-component-props":"useUpdateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:updateSubmit","x-component-props":{"type":"primary","htmlType":"submit","iconColor":"#1677FF","icon":"saveoutlined","danger":false},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.51"}
+lfzrxis4nkc	6gu9k101na7	{"x-uid":"lfzrxis4nkc","name":"6gu9k101na7","_isJSONSchemaObject":true,"version":"2.0","title":"Cập nhật","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined","iconColor":"#1677FF","danger":false,"type":"default"},"x-align":"right","type":"void","x-app-version":"1.3.51"}
+5j6aldekdhj	xqvd2xgu372	{"x-uid":"5j6aldekdhj","name":"xqvd2xgu372","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"transactions:view","x-decorator":"List.Decorator","x-use-decorator-props":"useListBlockDecoratorProps","x-decorator-props":{"collection":"transactions","dataSource":"main","readPretty":true,"action":"list","params":{"pageSize":10},"runWhenParamsChanged":true,"rowKey":"id"},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:list","x-app-version":"1.3.51","x-component-props":{"heightMode":"specifyValue","height":450}}
+nmo9mk3zqna	50ku5d0kf0s	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Video cứu trợ","x-component":"Menu.Item","x-decorator":"ACLMenuItemProvider","x-component-props":{"icon":"videocameraoutlined"},"x-server-hooks":[{"type":"onSelfCreate","method":"bindMenuToRole"},{"type":"onSelfSave","method":"extractTextToLocale"}]}
+xr71y0bi2gt	page	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Page"}
+o7z0dukywzh	i0e48w1iloj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"page:addBlock"}
+z8z84alfqmc	m7zd5da93z2	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
+gs87kzzh4rw	contractAddress	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"transactions_config.contractAddress","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+0ned8lv8tr0	zzxsc301gn3	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
+off13dwx10v	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"details:configureFields","x-app-version":"1.3.51"}
+wdzdn81bdog	private_key	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"transactions_config.private_key","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+bpfoz5bejx7	04s7srfdu4g	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
+f138kbfbbi9	provider	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"transactions_config.provider","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+aqrcdcvwl3m	o4o8lsnpi3a	{"x-uid":"aqrcdcvwl3m","name":"o4o8lsnpi3a","_isJSONSchemaObject":true,"version":"2.0","title":"Cập nhật dữ liệu","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"ReloadOutlined","iconColor":"#1677FF","danger":false,"type":"default"},"x-align":"right","type":"void","x-app-version":"1.3.51"}
+0uxd7gkozx9	84egfmlzr5d	{"x-uid":"0uxd7gkozx9","name":"84egfmlzr5d","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action","x-use-component-props":"useBulkDestroyActionProps","x-component-props":{"icon":"DeleteOutlined","confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"iconColor":"#1677FF","danger":true,"type":"danger"},"x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:bulkDelete","x-decorator":"ACLActionProvider","x-acl-action-props":{"skipScopeCheck":true},"x-action-settings":{"triggerWorkflows":[]},"x-acl-action":"transactions_config:destroy","x-align":"right","type":"void","x-app-version":"1.3.51"}
+40nktpbceua	7d7io3bh6o8	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
+s1j0jdf8dnc	contractAddress	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"smart_contracts.contractAddress","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+bbrxrup6ylf	row_1d79aw0ap89	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":4}
+ufo3e48kfjx	r0ar5730qf1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"View record\\") }}","x-component":"AssociationField.Viewer","x-component-props":{"className":"nb-action-popup"},"x-index":0,"x-app-version":"1.3.51"}
+q7ncd26y5uu	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab","x-app-version":"1.3.51"}
+5icb5ehclhr	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Details\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{},"x-app-version":"1.3.51"}
+728qrnw1msn	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock","x-app-version":"1.3.51"}
+r0oxpk3aest	rin58rsz0ja	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+2a65jddiv1c	fe1k8ce2jaj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+xm2aghmu342	bhv54xgclt5	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action-props":{"skipScopeCheck":true},"x-acl-action":"videos:create","x-decorator":"FormBlockProvider","x-use-decorator-props":"useCreateFormBlockDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"videos"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:createForm","x-component":"CardItem","x-app-version":"1.3.51"}
+n08xlr2pmaz	col_9z1vogn1dzp	{"x-uid":"n08xlr2pmaz","name":"col_9z1vogn1dzp","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":"66.44"}}
+plv56k9qjio	zie1kn4fwv2	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"FormV2","x-use-component-props":"useCreateFormBlockProps","x-app-version":"1.3.51"}
+zsp37nlw2gj	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"form:configureFields","x-app-version":"1.3.51"}
+ucr27vnzxga	p1kayxotrh8	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"createForm:configureActions","x-component":"ActionBar","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.51"}
+772x26dg2a4	7lfs6hy2lz6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+6r00qlukgvq	9wioqxkh6cx	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+70esyi2cnyt	title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.title","x-component-props":{},"x-app-version":"1.3.51"}
+c3d67iotm0p	19qwt8rte5t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+zv4te5eopz2	mk0szsyfse6	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+pfvvuk2fqbo	filename	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.filename","x-component-props":{},"x-app-version":"1.3.51"}
+4vx0e8ud0z3	rulr6bjahyk	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+acs4g8jp9ar	siyet6isjcu	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+3jguinc9v6q	extname	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.extname","x-component-props":{},"x-app-version":"1.3.51"}
+ohomslsy6yb	3e2zo2mzst7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+58svvznpmsd	qenozow8ywf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+u805m877nud	size	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.size","x-component-props":{},"x-app-version":"1.3.51"}
+xqf45rvay4g	q57f42y2c7i	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+me1ohauow6f	anl7vewwkt4	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+hw80ixyrjgz	xewmr5emhcv	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableBlockProvider","x-acl-action":"transactions_config:list","x-use-decorator-props":"useTableBlockDecoratorProps","x-decorator-props":{"collection":"transactions_config","dataSource":"main","action":"list","params":{"pageSize":20},"rowKey":"id","showIndex":true,"dragSort":false},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:table","x-component":"CardItem","x-filter-targets":[],"x-app-version":"1.3.51"}
+tmiqe6j1j64	actions	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"table:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":"var(--nb-spacing)"}},"x-app-version":"1.3.51"}
+5i8jn18vzoz	2mbsjx1qhl2	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+lm3ruhnl2ld	qfsdhtnb2zh	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+g6z05qupqe7	mimetype	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.mimetype","x-component-props":{},"x-app-version":"1.3.51"}
+c0viahn9y3r	i801zyy3eog	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+zn0lqlao06v	xc26cqh2y0j	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+ngrf6w7ddjg	path	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.path","x-component-props":{},"x-app-version":"1.3.51"}
+bakk21d86pg	vidf4c1hazy	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"FormV2","x-use-component-props":"useEditFormBlockProps","x-app-version":"1.3.51"}
+cr7ggy2zrl6	pvcjivbtv1q	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+oyy61gowm8y	u373ys9hh7e	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+tmbbsnq2x5b	9xxe8o32d93	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action-props":{"skipScopeCheck":false},"x-acl-action":"projects:update","x-decorator":"FormBlockProvider","x-use-decorator-props":"useEditFormBlockDecoratorProps","x-decorator-props":{"action":"get","dataSource":"main","collection":"projects"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:editForm","x-component":"CardItem","x-app-version":"1.3.51"}
+2oimqa9byrp	au9e8qurxn9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"FormV2","x-use-component-props":"useEditFormBlockProps","x-app-version":"1.3.51"}
+730yg8t8myy	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"form:configureFields","x-app-version":"1.3.51"}
+foi2992qtlm	fiiwm0jgv4m	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"editForm:configureActions","x-component":"ActionBar","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.51"}
+x4kjbk4wyiq	3ffbnns52rr	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+2h4y1wh8hgp	name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.name","x-component-props":{},"x-app-version":"1.3.51"}
+n6yds6ez043	l87ljkcg5hy	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+ftinb1yr6ki	p5n3xqgj9z9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+utrw9hfhybk	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.sub_title","x-component-props":{},"x-app-version":"1.3.51"}
+lwcllr1qdag	r3h9zf64txe	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+u8scozktrmw	o845aoj4uqr	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+zo0rdear4lv	description	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.description","x-component-props":{},"x-app-version":"1.3.51"}
+ma2di65n17c	lsq6002h8c1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+na0ex1r025g	images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.images","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.51"}
+f2bcdfxqi9r	1uc4gce8gix	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+9s4x9dms9lx	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"form:configureFields","x-app-version":"1.3.51"}
+obr6c35u15y	progress_images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.progress_images","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.51"}
+ce4ima9tbnd	94xfp3rjbbr	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+g9filp3q56w	mll8kibvitd	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+bqg6ip9wrs8	oypugom56ba	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+2mvvg3tfmqn	address	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.address","x-component-props":{},"x-app-version":"1.3.51"}
+lnegk2e449v	80ne9c4381r	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+rixb2qdf4cv	qvho5m7uwvi	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+912mn4py2yd	total_amount	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.total_amount","x-component-props":{},"x-app-version":"1.3.51"}
+rhl1529zt7b	row_nvd6pvetfam	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":3}
+ky5jq7m1dcv	nd05sg1604x	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col"}
+nx706cf6ton	row_1hygnzu50ub	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":1}
+czvibg44drs	ach4wix9jqi	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col"}
+eauv9tqlcmc	row_9926oq3v80k	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":2}
+7r8zgq47519	4rkvk57zbnv	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"editForm:configureActions","x-component":"ActionBar","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.51"}
+s10y0pbvftv	xp7xpcbrtyk	{"x-uid":"s10y0pbvftv","name":"xp7xpcbrtyk","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":50}}
+v1gxctci6id	pke0hbsy6h3	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+oab97ze0n2o	gm15m3bl302	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DndContext","x-component":"Space","x-component-props":{"split":"|"},"x-app-version":"1.3.51"}
+k8z10036m6x	fhp9rjo1l2b	{"x-uid":"k8z10036m6x","name":"fhp9rjo1l2b","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":"50.01"}}
+ukbvo0sx6s7	st6ypa8ig6g	{"x-uid":"ukbvo0sx6s7","name":"st6ypa8ig6g","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chức năng","x-decorator":"TableV2.Column.ActionBar","x-component":"TableV2.Column","x-toolbar":"TableColumnSchemaToolbar","x-initializer":"table:configureItemActions","x-settings":"fieldSettings:TableColumn","x-toolbar-props":{"initializer":"table:configureItemActions"},"x-action-column":"actions","x-app-version":"1.3.51"}
+6fiymfhu4i9	oqwou7q0fvr	{"x-uid":"6fiymfhu4i9","name":"oqwou7q0fvr","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Đóng góp ngay","x-action":"customize:popup","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:popup","x-component":"Action","x-component-props":{"openMode":"modal","refreshDataBlockRequest":true,"iconColor":"#1677FF","icon":"dollaroutlined","danger":false,"type":"primary","openSize":"small"},"x-action-context":{"dataSource":"main","collection":"projects"},"x-app-version":"1.3.51"}
+qcs2ctmr4zo	7z9b01wssot	{"x-uid":"qcs2ctmr4zo","name":"7z9b01wssot","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-settings":"blockSettings:iframe","x-decorator":"BlockItem","x-decorator-props":{"name":"iframe"},"x-component":"Iframe","x-component-props":{"mode":"html","height":"60vh","engine":"string","params":[],"htmlId":"zptdr68vzey"},"x-app-version":"1.3.51"}
+l9ys75laoy9	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Popup\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"},"x-app-version":"1.3.51"}
+58gpo0mxaav	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab","x-app-version":"1.3.51"}
+yyevygbo1uu	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock","x-app-version":"1.3.51"}
+7s4541t6mnz	tab1	{"x-uid":"7s4541t6mnz","name":"tab1","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Đóng góp","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{},"x-app-version":"1.3.51"}
+e51qk20c0d0	b6yw1s50ihw	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+u6n64igjsnc	umdbbxh0i3o	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+0u9og1l0ayz	url	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.url","x-component-props":{},"x-app-version":"1.3.51"}
+viy4v1a8xb3	lej7bw6dwvf	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+a6x737uy2ck	ry7aydw38i8	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+rokb34rd4g3	pktfa95euvm	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action-props":{"skipScopeCheck":false},"x-acl-action":"videos:update","x-decorator":"FormBlockProvider","x-use-decorator-props":"useEditFormBlockDecoratorProps","x-decorator-props":{"action":"get","dataSource":"main","collection":"videos"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:editForm","x-component":"CardItem","x-app-version":"1.3.51"}
+izezp8luufk	5pvsxoqbzaq	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"FormV2","x-use-component-props":"useEditFormBlockProps","x-app-version":"1.3.51"}
+9zobk2255u4	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"form:configureFields","x-app-version":"1.3.51"}
+5yp5xmj3tbq	m7vilb2gdt7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"editForm:configureActions","x-component":"ActionBar","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.51"}
+u5r5euyjfkl	nhajltd40dn	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+reqejqzgy55	title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.title","x-component-props":{},"x-app-version":"1.3.51"}
+kzu0z0rc3kj	17jv98jkj1p	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+h4evdl1m9bv	filename	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.filename","x-component-props":{},"x-app-version":"1.3.51"}
+7vmvw0bzrb2	sern0znrf76	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+tr2scgye6wr	extname	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.extname","x-component-props":{},"x-app-version":"1.3.51"}
+av90cjb6y6a	uxvf3h6hanm	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+0bv6nrpcwn1	py4xpa9lxtx	{"x-uid":"0bv6nrpcwn1","name":"py4xpa9lxtx","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":50}}
+ar4ks05q9gy	7du7w0lxmus	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableBlockProvider","x-acl-action":"videos:list","x-use-decorator-props":"useTableBlockDecoratorProps","x-decorator-props":{"collection":"videos","dataSource":"main","action":"list","params":{"pageSize":20},"rowKey":"id","showIndex":true,"dragSort":false},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:table","x-component":"CardItem","x-filter-targets":[],"x-app-version":"1.3.51"}
+ca17vjb0am6	actions	{"x-uid":"ca17vjb0am6","name":"actions","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chức năng","x-action-column":"actions","x-decorator":"TableV2.Column.ActionBar","x-component":"TableV2.Column","x-toolbar":"TableColumnSchemaToolbar","x-initializer":"table:configureItemActions","x-settings":"fieldSettings:TableColumn","x-toolbar-props":{"initializer":"table:configureItemActions"},"x-app-version":"1.3.51"}
+3b15cjh55zk	u3ftxev6wfr	{"x-uid":"3b15cjh55zk","name":"u3ftxev6wfr","_isJSONSchemaObject":true,"version":"2.0","title":"Lưu","x-action":"submit","x-component":"Action","x-use-component-props":"useCreateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:createSubmit","x-component-props":{"type":"primary","htmlType":"submit","iconColor":"#1677FF","icon":"saveoutlined","danger":false},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.51"}
+v606ze8ib4p	size	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.size","x-component-props":{},"x-app-version":"1.3.51"}
+27a8bo41q04	3lw0q69cjtd	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+xmj5mcz01hm	mimetype	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.mimetype","x-component-props":{},"x-app-version":"1.3.51"}
+o84g8mrafwq	ywjmhnzo5ff	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+iwkkhp3lojz	path	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.path","x-component-props":{},"x-app-version":"1.3.51"}
+xwl9vxbcn6t	bghqglhjtp2	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+yk09kxtvwf0	url	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.url","x-component-props":{},"x-app-version":"1.3.51"}
+pzmr5vwllm8	q78hqlb1r1h	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+q0utqwiy404	preview	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.preview","x-component-props":{},"x-app-version":"1.3.51"}
+ptxxkjf5h9k	44u26n8usqd	{"x-uid":"ptxxkjf5h9k","name":"44u26n8usqd","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":50}}
+8c30dff8vrk	col_rlys47n5hkh	{"x-uid":"8c30dff8vrk","name":"col_rlys47n5hkh","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
+dfrzos4gq19	6frf2d558pj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
+7gjosk8ispe	filename	{"_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"videos.filename","x-component":"CollectionField","x-component-props":{"ellipsis":true},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+p214f4koyu4	xbvkdetu36s	{"x-uid":"p214f4koyu4","name":"xbvkdetu36s","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":50}}
+zzorgnw59p2	4iewp8i82l9	{"x-uid":"zzorgnw59p2","name":"4iewp8i82l9","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":50}}
+x8la2jn4vsf	preview	{"x-uid":"x8la2jn4vsf","name":"preview","_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"videos.preview","x-component":"CollectionField","x-component-props":{"component":"Input.Preview","size":"large"},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+07z8wmyqobp	5oo246e0ury	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
+prjoakdy53w	y5bnd3t9agw	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"TableV2.Column.Decorator","x-toolbar":"TableColumnSchemaToolbar","x-settings":"fieldSettings:TableColumn","x-component":"TableV2.Column","x-app-version":"1.3.51"}
+q8w4jtx49bi	gc7chx3rqos	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"proposes:get","x-decorator":"DetailsBlockProvider","x-use-decorator-props":"useDetailsDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"proposes","readPretty":true,"action":"get"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:details","x-component":"CardItem","x-app-version":"1.3.51"}
+oy4ddftka2v	name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"proposes.name","x-component-props":{},"x-app-version":"1.3.51"}
+6oovi6xy2v1	o8c0b0v2n2i	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+5kczql5413e	ekgjwe2slii	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+c4s1r60q2cb	zmdqtlnvffc	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+mvzmqoerkj9	address	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"proposes.address","x-component-props":{},"x-app-version":"1.3.51"}
+hpsahlctqoi	8y1hn5rtm44	{"x-uid":"hpsahlctqoi","name":"8y1hn5rtm44","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action.Link","x-use-component-props":"useDestroyActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:delete","x-component-props":{"confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"refreshDataBlockRequest":true,"iconColor":"#1677FF","danger":false},"x-action-settings":{"triggerWorkflows":[]},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"type":"void"}
+jf9rc4sketo	8mwvm7lve9m	{"x-uid":"jf9rc4sketo","name":"8mwvm7lve9m","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết","x-action":"view","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:view","x-component":"Action.Link","x-component-props":{"openMode":"modal","iconColor":"#1677FF","danger":false,"openSize":"small"},"x-action-context":{"dataSource":"main","collection":"videos"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
+879a48xod34	zq153xer4op	{"x-uid":"879a48xod34","name":"zq153xer4op","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chỉnh sửa","x-action":"update","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:edit","x-component":"Action.Link","x-component-props":{"openMode":"modal","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"videos"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
+byb2bv7alh0	status	{"x-uid":"byb2bv7alh0","name":"status","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"proposes.status","x-component-props":{"style":{"width":"100%"}},"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
+a2izctpt2dm	t0ejkkbw0r3	{"x-uid":"a2izctpt2dm","name":"t0ejkkbw0r3","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết","x-action":"view","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:view","x-component":"Action.Link","x-component-props":{"openMode":"modal","iconColor":"#1677FF","danger":false,"openSize":"small"},"x-action-context":{"dataSource":"main","collection":"proposes"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
+0kogh8w0fiz	ye7zy43xa90	{"x-uid":"0kogh8w0fiz","name":"ye7zy43xa90","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":"71.02"}}
+osyxi68g3zz	col_9yvc3veexa6	{"x-uid":"osyxi68g3zz","name":"col_9yvc3veexa6","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":"28.95"}}
+cebvumnm27b	zgd7i5b0c4s	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+lq50y39kk3o	novx9k5smnz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+pe3qwkwq8a6	3e5yoos2k6b	{"x-uid":"pe3qwkwq8a6","name":"3e5yoos2k6b","_isJSONSchemaObject":true,"version":"2.0","title":"Lưu","x-action":"submit","x-component":"Action","x-use-component-props":"useUpdateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:updateSubmit","x-component-props":{"type":"primary","htmlType":"submit","iconColor":"#1677FF","icon":"saveoutlined","danger":false},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.51"}
+vm0durc3u21	pkh5vjymnpc	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+ib430oacml5	yuetj7bwr48	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+z7ksqgxvuzy	71laf07repe	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+mclja8pd27f	hkeniyuyu3a	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"projects:get","x-decorator":"DetailsBlockProvider","x-use-decorator-props":"useDetailsDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"projects","readPretty":true,"action":"get"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:details","x-component":"CardItem","x-app-version":"1.3.51"}
+l1ipy29yo2a	w92zsr94oyj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Details","x-read-pretty":true,"x-use-component-props":"useDetailsProps","x-app-version":"1.3.51"}
+4afg865vv97	q4kqkh6gy3m	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"details:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":24}},"x-app-version":"1.3.51"}
+xrp5qlqau5q	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"details:configureFields","x-app-version":"1.3.51"}
+tlfnt0boisu	d7gt1034a5f	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+jt7r6jj9feb	name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.name","x-component-props":{},"x-app-version":"1.3.51"}
+z9lj2jjs0vu	hnsrfm6ansm	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+hr7pq2e0scs	ztu7qyftmja	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"videos:get","x-decorator":"DetailsBlockProvider","x-use-decorator-props":"useDetailsDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"videos","readPretty":true,"action":"get"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:details","x-component":"CardItem","x-app-version":"1.3.51"}
+17zo1wc4bx2	sub_title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.sub_title","x-component-props":{},"x-app-version":"1.3.51"}
+0impb4x69gm	y99d5t9d9oh	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Details","x-read-pretty":true,"x-use-component-props":"useDetailsProps","x-app-version":"1.3.51"}
+h908qhhdqx0	broker_host	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"kafka_topics.broker_host","x-component-props":{},"x-app-version":"1.3.51"}
+vwn6lemtpg5	description	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.description","x-component-props":{},"x-app-version":"1.3.51"}
+0xjeiwliq30	wdhn8lprc8g	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+a3tspbm4ym8	9i8mxwu225l	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+q08v9jd7dg4	qx93uec5ys7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+sz0mwlh5dil	progress_images	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.progress_images","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.51"}
+7cx1kijceou	zlbhvy5eqrl	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+j79z2ezw4u7	xe4243d1rly	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+bzs04pddyuf	address	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.address","x-component-props":{},"x-app-version":"1.3.51"}
+sahukln2zh1	x1ixc0f82jc	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+r7pxiimvjdq	0mqllhre7u5	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+pyehrn2t87k	fund_id	{"x-uid":"pyehrn2t87k","name":"fund_id","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.fund_id","x-component-props":{"fieldNames":{"value":"id","label":"name"},"enableLink":false},"x-app-version":"1.3.51"}
+g8u88gsirl6	row_meuz423vwbl	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":8}
+ow53peiz14y	total_amount	{"x-uid":"ow53peiz14y","name":"total_amount","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.total_amount","x-component-props":{"formatStyle":"normal","separator":"0.0,00","step":"1","addonAfter":" đ"},"x-app-version":"1.3.51"}
+kqnzmy29uch	row_8sv1zayozh2	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":4}
+u80bniwjt35	row_yd03h7hde7h	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":8}
+igpbp2pemzb	8r2mjahktn3	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col"}
+qvfyd51819e	row_khd9efukcp3	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":2}
+witwersym5s	ugyufqq0zkc	{"x-uid":"witwersym5s","name":"ugyufqq0zkc","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":50}}
+qjp62asznio	col_7qyka6qlads	{"x-uid":"qjp62asznio","name":"col_7qyka6qlads","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
+lxbhdk7z637	1owr623t7jw	{"x-uid":"lxbhdk7z637","name":"1owr623t7jw","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-component-props":{"width":50}}
+hydu0z83jh2	qzwvywquful	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"details:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":24}},"x-app-version":"1.3.51"}
+wgcvjndfrvw	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"details:configureFields","x-app-version":"1.3.51"}
+nfene7r30ma	ah5yucd9m9t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+exga92l7mh5	row_y1i5isytg5v	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":3}
+z595m38iop1	x4q2n3wob9z	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col"}
+f1o22122e0b	col_fdotdelguep	{"x-uid":"f1o22122e0b","name":"col_fdotdelguep","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
+ebu29iqsaqx	tab1	{"x-uid":"ebu29iqsaqx","name":"tab1","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{"icon":"eyeoutlined"}}
+y8mxjqz88i5	title	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.title","x-component-props":{},"x-app-version":"1.3.51"}
+z8ca2swxhme	m3be679vpq9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+rz42ykg1hy9	filename	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.filename","x-component-props":{},"x-app-version":"1.3.51"}
+qzjj9i7fxxa	5598hd3t2ox	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+x7htd31qjy2	row_ofutcixrdq9	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":1}
+l9edxsf2w1h	extname	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.extname","x-component-props":{},"x-app-version":"1.3.51"}
+e4nm5wtud7n	b3qnmi6b5zz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+ouiu2vzoc6n	size	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.size","x-component-props":{},"x-app-version":"1.3.51"}
+bwzebaw19re	nhqmllrsf74	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+r1s9zu8ij7p	mimetype	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.mimetype","x-component-props":{},"x-app-version":"1.3.51"}
+sb54wjm938r	2bgzqq16qt4	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+blzgd8l2cyf	path	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.path","x-component-props":{},"x-app-version":"1.3.51"}
+ubi2zj8g4jj	yta9zirrfwp	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+uydn0hxd9xk	w5gnt4v114f	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+e74voefj399	977nybjh3h0	{"x-uid":"e74voefj399","name":"977nybjh3h0","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":50}}
+cdn8yidhnyo	695a40tsfnt	{"x-uid":"cdn8yidhnyo","name":"695a40tsfnt","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":50}}
+y1fzeh6hzvi	gfp90a06hd1	{"x-uid":"y1fzeh6hzvi","name":"gfp90a06hd1","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":50}}
+7x18dkx9lgq	47ndr705phl	{"x-uid":"7x18dkx9lgq","name":"47ndr705phl","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":50}}
+jjez19p133y	col_54scvhoul2z	{"x-uid":"jjez19p133y","name":"col_54scvhoul2z","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
+ne0nw849rkm	url	{"x-uid":"ne0nw849rkm","name":"url","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.url","x-component-props":{"component":"Input.Preview","size":"large"},"x-app-version":"1.3.51"}
+lare2rsw1vy	col_mhxr6lt27ta	{"x-uid":"lare2rsw1vy","name":"col_mhxr6lt27ta","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
+iiyftop2g1d	preview	{"x-uid":"iiyftop2g1d","name":"preview","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"videos.preview","x-component-props":{"component":"Input.Preview","size":"large"},"x-app-version":"1.3.51"}
+qkz9nfba5db	col_1dzwl8jy9s2	{"x-uid":"qkz9nfba5db","name":"col_1dzwl8jy9s2","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
+rcpaf1v3k8y	eirip9k8w0y	{"x-uid":"rcpaf1v3k8y","name":"eirip9k8w0y","_isJSONSchemaObject":true,"version":"2.0","title":"Lưu","x-action":"submit","x-component":"Action","x-use-component-props":"useUpdateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:updateSubmit","x-component-props":{"type":"primary","htmlType":"submit","iconColor":"#1677FF","icon":"saveoutlined","danger":false},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.51"}
+28b4u7eth02	s5f57j98etm	{"x-uid":"28b4u7eth02","name":"s5f57j98etm","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Lọc","x-action":"filter","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:filter","x-component":"Filter.Action","x-use-component-props":"useFilterActionProps","x-component-props":{"icon":"FilterOutlined"},"x-align":"left","x-app-version":"1.3.51"}
+lgkny2plcta	eh6mnnzg5yv	{"x-uid":"lgkny2plcta","name":"eh6mnnzg5yv","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action.Link","x-use-component-props":"useDestroyActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:delete","x-component-props":{"confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"refreshDataBlockRequest":true,"iconColor":"#1677FF","danger":false},"x-action-settings":{"triggerWorkflows":[]},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"type":"void","x-linkage-rules":[{"condition":{"$and":[{"fund_id":{"current_amount":{"$gt":0}}}]},"actions":[{"operator":"disabled"}]}]}
+3jla5qq6bwz	topic_name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"kafka_topics.topic_name","x-component-props":{},"x-app-version":"1.3.51"}
+yuoghbp55ls	f3mvwd2p82l	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+s7lkshl2tgu	ktvnn3rfpid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+fh4exng4bl4	type	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"kafka_topics.type","x-component-props":{"style":{"width":"100%"}},"x-app-version":"1.3.51"}
+wbz1xh6nz3e	4mpm0diexp2	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"funds:get","x-decorator":"DetailsBlockProvider","x-use-decorator-props":"useDetailsDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"funds","readPretty":true,"action":"get"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:details","x-component":"CardItem","x-app-version":"1.3.51"}
+26xckt7cr9e	m0rqxx2fe9h	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Details","x-read-pretty":true,"x-use-component-props":"useDetailsProps","x-app-version":"1.3.51"}
+8796mm39d27	wqsnnexqriv	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"details:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":24}},"x-app-version":"1.3.51"}
+jej2s5rr3sb	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"details:configureFields","x-app-version":"1.3.51"}
+3phq2idqbq3	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Edit record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"}}
+xfofgif153a	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab"}
+ork7cejk9of	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Edit\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{}}
+4orxtl02xzo	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock"}
+a3egwmwwjze	8wp0t1w00eq	{"x-uid":"a3egwmwwjze","name":"8wp0t1w00eq","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chỉnh sửa","x-action":"update","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:edit","x-component":"Action.Link","x-component-props":{"openMode":"modal","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"kafka_configs"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
+ryyh202zxdl	k4j8caz52b7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+q0gcg192mnb	qr_code_url	{"x-uid":"q0gcg192mnb","name":"qr_code_url","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"funds.qr_code_url","x-component-props":{"component":"Input.Preview","size":"large"},"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
+2q8zkqaunm6	col_x1xkffd4az2	{"x-uid":"2q8zkqaunm6","name":"col_x1xkffd4az2","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
+vx6nbptjtrd	current_amount	{"x-uid":"vx6nbptjtrd","name":"current_amount","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"funds.current_amount","x-component-props":{"formatStyle":"normal","separator":"0.0,00","step":"1","addonAfter":" đ"},"x-app-version":"1.3.51"}
+7t02vmtr3vo	col_vyujdqr937i	{"x-uid":"7t02vmtr3vo","name":"col_vyujdqr937i","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
+z9bj2qzcxd2	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Popup\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"},"x-app-version":"1.3.51"}
+mrhyvojvqar	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab","x-app-version":"1.3.51"}
+fh5hex4wag5	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock","x-app-version":"1.3.51"}
+vd48fobtobi	gg3uyi6lgsi	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+uqifi2qlukf	yzx91ywr5nk	{"x-uid":"uqifi2qlukf","name":"yzx91ywr5nk","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Các giao dịch","x-action":"customize:popup","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:popup","x-component":"Action","x-component-props":{"openMode":"modal","refreshDataBlockRequest":true,"iconColor":"#1677FF","icon":"transactionoutlined","danger":false,"type":"default"},"x-action-context":{"dataSource":"main","collection":"funds"},"x-app-version":"1.3.51"}
+392bxnfb0cu	tab1	{"x-uid":"392bxnfb0cu","name":"tab1","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Các giao dịch","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{"icon":"transactionoutlined"},"x-app-version":"1.3.51"}
+7lx5flwx3xa	ljppeu8xjm2	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action-props":{"skipScopeCheck":false},"x-acl-action":"kafka_configs:update","x-decorator":"FormBlockProvider","x-use-decorator-props":"useEditFormBlockDecoratorProps","x-decorator-props":{"action":"get","dataSource":"main","collection":"kafka_configs"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:editForm","x-component":"CardItem","x-app-version":"1.3.51"}
+vzmpjuukesi	jmemqtjfvx4	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"FormV2","x-use-component-props":"useEditFormBlockProps","x-app-version":"1.3.51"}
+ooehkb2kxjf	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"form:configureFields","x-app-version":"1.3.51"}
+2klrc3urjjn	cdp81m9xhec	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"editForm:configureActions","x-component":"ActionBar","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.51"}
+1vya1z7mbar	ph9uut8b6rw	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+6lhw0fo1gmc	ro5y3jsmeo4	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+rzley8jxou1	group_id	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"kafka_configs.group_id","x-component-props":{},"x-app-version":"1.3.51"}
+qeu2ozl8f5y	3sxl4p640ei	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+h3j9ee4jx8o	lg6wsiw5r96	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+hsgy9deorfz	client_id	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"kafka_configs.client_id","x-component-props":{},"x-app-version":"1.3.51"}
+33ev73s2rws	kbzk2qg5djj	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"AssociationField.Nester","x-index":0,"x-app-version":"1.3.51"}
+kcr42v3jgbb	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"form:configureFields","x-app-version":"1.3.51"}
+o4ztgkz2oa5	k0cuvo4pjea	{"x-uid":"o4ztgkz2oa5","name":"k0cuvo4pjea","_isJSONSchemaObject":true,"version":"2.0","title":"Lưu","x-action":"submit","x-component":"Action","x-use-component-props":"useUpdateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:updateSubmit","x-component-props":{"type":"primary","htmlType":"submit","iconColor":"#1677FF","icon":"saveoutlined","danger":false},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.51"}
+9aqeadp45k5	project	{"x-uid":"9aqeadp45k5","name":"project","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"funds.project","x-component-props":{"fieldNames":{"value":"id","label":"id"},"enableLink":false,"mode":"Nester"},"x-app-version":"1.3.51","title":"Của dự án"}
+fsnz7aljs1s	name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.name","x-component-props":{},"x-app-version":"1.3.51"}
+nwepw14mg73	6t2nltpqx3d	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+gw8prir7bzn	address	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.address","x-component-props":{},"x-app-version":"1.3.51"}
+t39o1fpmett	images	{"x-uid":"t39o1fpmett","name":"images","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"projects.images","x-component-props":{},"x-use-component-props":"useAttachmentFieldProps","x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
+yda4m7u7sdn	row_j7juiwndx4b	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":3}
+gmmwllboscx	d38nznysfxh	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col"}
+rea2rwj1d4a	vg8t3hpzbof	{"x-uid":"rea2rwj1d4a","name":"vg8t3hpzbof","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":50}}
+szrzvew7kqh	col_6nydkfigl4b	{"x-uid":"szrzvew7kqh","name":"col_6nydkfigl4b","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
+fyur6k3frte	amount	{"x-uid":"fyur6k3frte","name":"amount","_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"transactions.amount","x-component":"CollectionField","x-component-props":{"formatStyle":"normal","separator":"0.0,00","step":"1","addonAfter":" đ"},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+qbrsluqev37	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"View record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"}}
+fl6193tpei8	whc977ibdfl	{"x-uid":"fl6193tpei8","name":"whc977ibdfl","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết","x-action":"view","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:view","x-component":"Action.Link","x-component-props":{"openMode":"modal","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"transactions"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true}}
+60f4r8b0er6	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab"}
+mlqmnjhazhe	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:common:addBlock"}
+wp3edt8ujq4	v7k53saxji4	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+43941gf2n0y	hx96k607bl3	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+fi2ue9h7mq4	wzaxiv9ir0y	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"transactions:get","x-decorator":"DetailsBlockProvider","x-use-decorator-props":"useDetailsDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"transactions","readPretty":true,"action":"get"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:details","x-component":"CardItem","x-app-version":"1.3.51"}
+jkjog6plqji	qfieq2sgb9d	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Details","x-read-pretty":true,"x-use-component-props":"useDetailsProps","x-app-version":"1.3.51"}
+a08gdeapwk3	d3rr9u9mclo	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"details:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":24}},"x-app-version":"1.3.51"}
+zg36b96ttmj	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"details:configureFields","x-app-version":"1.3.51"}
+wj9ij1yidio	tab1	{"x-uid":"wj9ij1yidio","name":"tab1","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chi tiết","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{"icon":"eyeoutlined"}}
+seoty3c8shi	5ztrdqipmkz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+lvvd97oho9w	transaction_code	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.transaction_code","x-component-props":{},"x-app-version":"1.3.51"}
+olewe3383tm	cx8ooi09nfo	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+l64ub2rxrot	v4m0muef58j	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+8dzfyczph0t	llb6e39l3te	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+nfqlgjzo91t	k7foj9jnoqp	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+kfshzp2e8w3	amount	{"x-uid":"kfshzp2e8w3","name":"amount","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.amount","x-component-props":{"formatStyle":"normal","separator":"0.0,00","step":"1","addonAfter":" đ"},"x-app-version":"1.3.51"}
+k8qqt79vy2u	from_account_name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_account_name","x-component-props":{},"x-app-version":"1.3.51"}
+wlh4ozrsyng	direction	{"x-uid":"wlh4ozrsyng","name":"direction","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.direction","x-component-props":{"style":{"width":"100%"}},"x-app-version":"1.3.51","x-decorator-props":{"showTitle":true}}
+91kpjw6935c	6zuwsxww4v1	{"x-uid":"91kpjw6935c","name":"6zuwsxww4v1","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":33.333333333333336}}
+c59ka4huk49	from_account_no	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_account_no","x-component-props":{},"x-app-version":"1.3.51"}
+eb8ywubhlwn	from_bank_name	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_bank_name","x-component-props":{},"x-app-version":"1.3.51"}
+vx2uqvbzof3	row_zj7qhefbshv	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":0}
+p4pfnfr2kqa	6oqzpx9tctj	{"x-uid":"p4pfnfr2kqa","name":"6oqzpx9tctj","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"transactions:view","x-decorator":"List.Decorator","x-use-decorator-props":"useListBlockDecoratorProps","x-decorator-props":{"collection":"transactions","dataSource":"main","readPretty":true,"action":"list","params":{"pageSize":10,"filter":{"$and":[{"fund_id":{"$eq":"{{$nParentPopupRecord.id}}"}}]}},"runWhenParamsChanged":true,"rowKey":"id"},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:list","x-app-version":"1.3.51"}
+ugbscwjg6mp	j7l692pcy26	{"x-uid":"ugbscwjg6mp","name":"j7l692pcy26","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action.Link","x-use-component-props":"useDestroyActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:delete","x-component-props":{"confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"refreshDataBlockRequest":true,"iconColor":"#1677FF","danger":false},"x-action-settings":{"triggerWorkflows":[]},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"type":"void","x-linkage-rules":[{"condition":{"$and":[{"current_amount":{"$gt":0}}]},"actions":[{"operator":"disabled"}]}]}
+bt575py2m17	col_xs7cenyio7p	{"x-uid":"bt575py2m17","name":"col_xs7cenyio7p","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":33.333333333333336}}
+7wejzdrys98	col_e3h43zdy7q7	{"x-uid":"7wejzdrys98","name":"col_e3h43zdy7q7","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":2,"x-component-props":{"width":33.333333333333336}}
+dknwg9949yr	7cu6novy6t3	{"x-uid":"dknwg9949yr","name":"7cu6novy6t3","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-action":"create","x-acl-action":"create","title":"Thêm mới","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:addNew","x-component":"Action","x-decorator":"ACLActionProvider","x-component-props":{"openMode":"drawer","type":"primary","component":"CreateRecordAction","icon":"PlusOutlined","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"kafka_topics"},"x-align":"right","x-acl-action-props":{"skipScopeCheck":true},"x-app-version":"1.3.51"}
+5w0u5l0eba3	zjasrrgzflw	{"x-uid":"5w0u5l0eba3","name":"zjasrrgzflw","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action","x-use-component-props":"useBulkDestroyActionProps","x-component-props":{"icon":"DeleteOutlined","confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"iconColor":"#1677FF","danger":true,"type":"danger"},"x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:bulkDelete","x-decorator":"ACLActionProvider","x-acl-action-props":{"skipScopeCheck":true},"x-action-settings":{"triggerWorkflows":[]},"x-acl-action":"kafka_topics:destroy","x-align":"right","type":"void","x-app-version":"1.3.51"}
+9261692m4qa	7r5g47kqrfh	{"x-uid":"9261692m4qa","name":"7r5g47kqrfh","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-action":"create","x-acl-action":"create","title":"Thêm mới","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:addNew","x-component":"Action","x-decorator":"ACLActionProvider","x-component-props":{"openMode":"drawer","type":"primary","component":"CreateRecordAction","icon":"PlusOutlined","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"kafka_configs"},"x-align":"right","x-acl-action-props":{"skipScopeCheck":true},"x-app-version":"1.3.51"}
+kxpzfdx2wzr	col_dcjeuy762pd	{"x-uid":"kxpzfdx2wzr","name":"col_dcjeuy762pd","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":50}}
+p2vze33te52	fund	{"x-uid":"p2vze33te52","name":"fund","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.fund","x-component-props":{"fieldNames":{"value":"id","label":"name"},"enableLink":false,"mode":"Select"},"x-app-version":"1.3.51","title":"Thuộc quỹ"}
+hm0dk2bjmly	uk1vt55cyyw	{"x-uid":"hm0dk2bjmly","name":"uk1vt55cyyw","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action","x-use-component-props":"useBulkDestroyActionProps","x-component-props":{"icon":"DeleteOutlined","confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"iconColor":"#1677FF","danger":true,"type":"danger"},"x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:bulkDelete","x-decorator":"ACLActionProvider","x-acl-action-props":{"skipScopeCheck":true},"x-action-settings":{"triggerWorkflows":[]},"x-acl-action":"kafka_configs:destroy","x-align":"right","type":"void","x-app-version":"1.3.51"}
+93u6f0cr9pz	y8mhc2ckz6i	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+cfhegsqw1xf	1i219f07wju	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+van1dl98k9d	actionBar	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"list:configureActions","x-component":"ActionBar","x-component-props":{"style":{"marginBottom":"var(--nb-spacing)"}},"x-app-version":"1.3.51"}
+njql3xmey97	list	{"_isJSONSchemaObject":true,"version":"2.0","type":"array","x-component":"List","x-use-component-props":"useListBlockProps","x-app-version":"1.3.51"}
+nhktcwvv2ah	item	{"_isJSONSchemaObject":true,"version":"2.0","type":"object","x-component":"List.Item","x-read-pretty":true,"x-use-component-props":"useListItemProps","x-app-version":"1.3.51"}
+yv6e3li2bjt	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"details:configureFields","x-app-version":"1.3.51"}
+ur8ffij9br0	actionBar	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-align":"left","x-initializer":"list:configureItemActions","x-component":"ActionBar","x-use-component-props":"useListActionBarProps","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.51"}
+ikcosgis0e5	66suwj55u9b	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+awqa1ayxy60	a1wiglgg2uh	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+tipr5z4qodz	2ncs8g8y1sd	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+n3mcecgqwlh	sud6wfvmq2v	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+4ruz6norjcf	direction	{"x-uid":"4ruz6norjcf","name":"direction","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.direction","x-component-props":{"style":{"width":"100%"}},"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
+vyvsdcee7hm	createdAt	{"x-uid":"vyvsdcee7hm","name":"createdAt","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.createdAt","x-component-props":{"dateFormat":"dddd, DD/MM/YYYY"},"x-read-pretty":true,"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
+6x5dquvwxua	amount	{"x-uid":"6x5dquvwxua","name":"amount","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.amount","x-component-props":{"formatStyle":"normal","separator":"0.0,00","step":"1","addonAfter":" đ"},"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
+mv4uiuyqyzn	w8rzo4nkkdb	{"x-uid":"mv4uiuyqyzn","name":"w8rzo4nkkdb","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":25}}
+9vo6wx4o57b	col_2bxj4y9x428	{"x-uid":"9vo6wx4o57b","name":"col_2bxj4y9x428","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":25}}
+22eyta8v19e	col_gevagwxk8dv	{"x-uid":"22eyta8v19e","name":"col_gevagwxk8dv","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":2,"x-component-props":{"width":25}}
+ky147pp2987	col_tmext6yst76	{"x-uid":"ky147pp2987","name":"col_tmext6yst76","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":3,"x-component-props":{"width":25}}
+a3tjb34vpdm	transaction_code	{"x-uid":"a3tjb34vpdm","name":"transaction_code","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.transaction_code","x-component-props":{},"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
+91lcpp0pj02	o41p3b6o37g	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"BlockTemplate","x-component-props":{"templateId":"1nkkcob03hi"}}
+w2xb0a6rkey	7pxrva2it2e	{"x-uid":"w2xb0a6rkey","name":"7pxrva2it2e","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action":"transactions:view","x-decorator":"List.Decorator","x-use-decorator-props":"useListBlockDecoratorProps","x-decorator-props":{"collection":"transactions","dataSource":"main","readPretty":true,"action":"list","params":{"pageSize":10,"filter":{"$and":[{"fund":{"id":{"$eq":"{{$nURLSearchParams.fund_id}}"}}}]}},"runWhenParamsChanged":true,"rowKey":"id"},"x-component":"CardItem","x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:list","x-app-version":"1.3.51","x-component-props":{"heightMode":"specifyValue","height":500}}
+jwnxh1b7ric	m9lujv01v9f	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+d9qi0cos24j	col_k6qniznx6av	{"x-uid":"d9qi0cos24j","name":"col_k6qniznx6av","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":2,"x-component-props":{"width":"16.44"}}
+lqc01b4n2xe	tab1	{"x-uid":"lqc01b4n2xe","name":"tab1","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Thêm mới","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{"icon":"plusoutlined"},"x-app-version":"1.3.51"}
+ofko4hxvwyn	direction	{"x-uid":"ofko4hxvwyn","name":"direction","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.direction","x-component-props":{"style":{"width":"100%"}},"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
+oky56x9ydxr	5t1wexu06bb	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+own8lovfe8o	qro1ysdn9ka	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+z9tzg59hlcb	lh9b1z6xpn5	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+giqw0w75voy	8i120ypz09a	{"x-uid":"giqw0w75voy","name":"8i120ypz09a","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":25}}
+mls534nrm3a	amount	{"x-uid":"mls534nrm3a","name":"amount","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.amount","x-component-props":{"formatStyle":"normal","separator":"0.0,00","step":"1","addonAfter":" đ"},"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
+02iuhwcnoro	direction	{"x-uid":"02iuhwcnoro","name":"direction","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.direction","x-component-props":{"style":{"width":"100%"}},"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
+dw1u3l9jxbf	llznyr2pta3	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+2nkoyrwgvs1	from_account_name	{"x-uid":"2nkoyrwgvs1","name":"from_account_name","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.from_account_name","x-component-props":{},"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
+yx8aphydgq6	col_nv99dqvzbu2	{"x-uid":"yx8aphydgq6","name":"col_nv99dqvzbu2","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":2,"x-component-props":{"width":25}}
+9jjvxjijr66	col_lm97n469u3r	{"x-uid":"9jjvxjijr66","name":"col_lm97n469u3r","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":3,"x-component-props":{"width":25}}
+pcf9x56mn9j	col_rdsew53osms	{"x-uid":"pcf9x56mn9j","name":"col_rdsew53osms","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":3,"x-component-props":{"width":25}}
+vszki6sjnvj	createdAt	{"x-uid":"vszki6sjnvj","name":"createdAt","_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions.createdAt","x-component-props":{"dateFormat":"dddd, DD/MM/YYYY"},"x-read-pretty":true,"x-app-version":"1.3.51","x-decorator-props":{"showTitle":false}}
+66xqkev137r	98c11tkibc9	{"x-uid":"66xqkev137r","name":"98c11tkibc9","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chỉnh sửa","x-action":"update","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:edit","x-component":"Action.Link","x-component-props":{"openMode":"modal","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"projects"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"x-linkage-rules":[{"condition":{"$and":[{"fund_id":{"current_amount":{"$gt":0}}}]},"actions":[{"operator":"disabled"}]}]}
+alnwl1ouj3h	tab1	{"x-uid":"alnwl1ouj3h","name":"tab1","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Thêm mới","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{"icon":"plusoutlined"},"x-app-version":"1.3.51"}
+szv3v13lwap	9klmp3sxg8f	{"x-uid":"szv3v13lwap","name":"9klmp3sxg8f","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chỉnh sửa","x-action":"update","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:edit","x-component":"Action.Link","x-component-props":{"openMode":"modal","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"funds"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"x-linkage-rules":[{"condition":{"$and":[{"current_amount":{"$gt":0}}]},"actions":[{"operator":"disabled"}]}]}
+jyf3gvko6m0	col_rk9bqkr38wh	{"x-uid":"jyf3gvko6m0","name":"col_rk9bqkr38wh","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-index":1,"x-component-props":{"width":"50.01"}}
+qy6tyh6ck14	aifba5pmpin	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"AssociationField.Nester","x-index":0,"x-app-version":"1.3.51"}
+gtvqaohgxm8	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"form:configureFields","x-app-version":"1.3.51"}
+7i8vn1nplyc	1cg2zke439f	{"x-uid":"7i8vn1nplyc","name":"1cg2zke439f","_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"Chỉnh sửa","x-action":"update","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:edit","x-component":"Action.Link","x-component-props":{"openMode":"modal","iconColor":"#1677FF","danger":false},"x-action-context":{"dataSource":"main","collection":"proposes"},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"x-linkage-rules":[{"condition":{"$and":[{"status":{"$ne":"PENDING"}}]},"actions":[{"operator":"disabled"}],"title":"Linkage rule"}]}
+ywfmz10r1qq	my8sd0mf2be	{"x-uid":"ywfmz10r1qq","name":"my8sd0mf2be","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action.Link","x-use-component-props":"useDestroyActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:delete","x-component-props":{"confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"refreshDataBlockRequest":true,"iconColor":"#1677FF","danger":false},"x-action-settings":{"triggerWorkflows":[]},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"type":"void"}
+41m30pr7tm0	row_t5vn93jl6oo	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":3}
+ppkkw2ktn7w	84thx928c3t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col"}
+bn77syhm2pe	ktaecnbjbfn	{"x-uid":"bn77syhm2pe","name":"ktaecnbjbfn","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-component-props":{"width":100}}
+brwprt2m80b	url	{"x-uid":"brwprt2m80b","name":"url","_isJSONSchemaObject":true,"version":"2.0","x-collection-field":"videos.url","x-component":"CollectionField","x-component-props":{"component":"Input.URL"},"x-read-pretty":true,"x-decorator":null,"x-decorator-props":{"labelStyle":{"display":"none"}},"x-app-version":"1.3.51"}
+byou5tpcmg3	9ab6662qw26	{"x-uid":"byou5tpcmg3","name":"9ab6662qw26","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51","x-component-props":{"width":"45.88"}}
+53yk2iaibro	9xpz7xw1o70	{"x-uid":"53yk2iaibro","name":"9xpz7xw1o70","_isJSONSchemaObject":true,"version":"2.0","title":"Nạp giao dịch mới","x-component":"CustomRequestAction","x-action":"customize:form:request","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:customRequest","x-decorator":"CustomRequestAction.Decorator","x-action-settings":{"onSuccess":{"manualClose":false,"redirecting":false,"successMessage":"{{t(\\"Request success\\")}}"}},"type":"void","x-app-version":"1.3.51","x-component-props":{"iconColor":"#1677FF","danger":false,"type":"primary"},"x-response-type":"json"}
+n7gwoyocqxm	9f6xuo1gnop	{"x-uid":"n7gwoyocqxm","name":"9f6xuo1gnop","_isJSONSchemaObject":true,"version":"2.0","title":"Cập nhật giao dịch","x-action":"refresh","x-component":"Action","x-use-component-props":"useRefreshActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:refresh","x-component-props":{"icon":"clouddownloadoutlined","iconColor":"#1677FF","danger":false,"type":"default"},"x-align":"right","type":"void","x-app-version":"1.3.51"}
+367j9rm7qvl	2bc8kr5o8b2	{"x-uid":"367j9rm7qvl","name":"2bc8kr5o8b2","_isJSONSchemaObject":true,"version":"2.0","title":"Nạp giao dịch","x-component":"CustomRequestAction","x-action":"customize:form:request","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:customRequest","x-decorator":"CustomRequestAction.Decorator","x-action-settings":{"onSuccess":{"manualClose":false,"redirecting":false,"successMessage":"{{t(\\"Request success\\")}}"}},"type":"void","x-app-version":"1.3.51","x-response-type":"json","x-component-props":{"iconColor":"#1677FF","icon":"clouddownloadoutlined","danger":false,"type":"primary"}}
+oam5lsqaqw1	qdbg7w5bdby	{"x-uid":"oam5lsqaqw1","name":"qdbg7w5bdby","_isJSONSchemaObject":true,"version":"2.0","type":"void","x-decorator":"DataBlockProvider","x-component":"FormItem","x-settings":"blockSettings:carousel","x-toolbar":"BlockSchemaToolbar","x-decorator-props":{"carousel":{"height":320,"autoplay":true},"rowKey":"id","runWhenParamsChanged":true,"readPretty":true,"dataSource":"main","collection":"projects","action":"list","params":{"filter":{"$and":[{"id":{"$eq":"{{$nURLSearchParams.id}}"}}]},"appends":["images"]}},"x-use-decorator-props":"useBlockScopeDecoratorProps","x-app-version":"1.3.51"}
+wcrqjis5vk6	3y5g7eiio78	{"x-uid":"wcrqjis5vk6","name":"3y5g7eiio78","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action.Link","x-use-component-props":"useDestroyActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:delete","x-component-props":{"confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"refreshDataBlockRequest":true,"iconColor":"#1677FF","danger":false},"x-action-settings":{"triggerWorkflows":[]},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"type":"void"}
+xviw8ru0k6f	1mrzsuoggzv	{"x-uid":"xviw8ru0k6f","name":"1mrzsuoggzv","_isJSONSchemaObject":true,"version":"2.0","title":"Xoá bỏ","x-action":"destroy","x-component":"Action.Link","x-use-component-props":"useDestroyActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:delete","x-component-props":{"confirm":{"title":"{{t('Delete record')}}","content":"{{t('Are you sure you want to delete it?')}}"},"refreshDataBlockRequest":true,"iconColor":"#1677FF","danger":false},"x-action-settings":{"triggerWorkflows":[]},"x-decorator":"ACLActionProvider","x-designer-props":{"linkageAction":true},"type":"void"}
+9ss1gvlutz5	row_6zt634df0jw	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-index":1}
+77ts7szo3co	fv3qzuyndie	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-action":"create","x-acl-action":"create","title":"{{t('Add new')}}","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:addNew","x-component":"Action","x-decorator":"ACLActionProvider","x-component-props":{"openMode":"drawer","type":"primary","component":"CreateRecordAction","icon":"PlusOutlined"},"x-action-context":{"dataSource":"main","collection":"transactions_config"},"x-align":"right","x-acl-action-props":{"skipScopeCheck":true},"x-app-version":"1.3.51"}
+024s22ncu12	drawer	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{ t(\\"Add record\\") }}","x-component":"Action.Container","x-component-props":{"className":"nb-action-popup"},"x-app-version":"1.3.51"}
+azr8rt58jhq	tabs	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Tabs","x-component-props":{},"x-initializer":"popup:addTab","x-initializer-props":{"gridInitializer":"popup:addNew:addBlock"},"x-app-version":"1.3.51"}
+53onwv1p0ao	tab1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","title":"{{t(\\"Add new\\")}}","x-component":"Tabs.TabPane","x-designer":"Tabs.Designer","x-component-props":{},"x-app-version":"1.3.51"}
+uatnso3i8u3	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"popup:addNew:addBlock","x-app-version":"1.3.51"}
+o8147vmdwcq	1bddcqmitl1	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+lkhgik8xv90	b85c0af62v7	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+msr8trei5uf	2juor9cmp2t	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-acl-action-props":{"skipScopeCheck":true},"x-acl-action":"transactions_config:create","x-decorator":"FormBlockProvider","x-use-decorator-props":"useCreateFormBlockDecoratorProps","x-decorator-props":{"dataSource":"main","collection":"transactions_config"},"x-toolbar":"BlockSchemaToolbar","x-settings":"blockSettings:createForm","x-component":"CardItem","x-app-version":"1.3.51"}
+nxqum1qxnv4	ot0a5e4mfto	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"FormV2","x-use-component-props":"useCreateFormBlockProps","x-app-version":"1.3.51"}
+658x6srrpsl	grid	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid","x-initializer":"form:configureFields","x-app-version":"1.3.51"}
+3nx5wrm9dsv	yg2fguu7741	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-initializer":"createForm:configureActions","x-component":"ActionBar","x-component-props":{"layout":"one-column"},"x-app-version":"1.3.51"}
+88s7o745fdq	fmp0l9jvjqo	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+l4gmsjuzhm4	h52edscmx31	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+k519ukw8iau	private_key	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions_config.private_key","x-component-props":{},"x-app-version":"1.3.51"}
+jxsrhg1ryiq	mopj42k5o4a	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+p6bn6qruz31	2xtrmr22a7m	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+dbyel17qbz6	provider	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions_config.provider","x-component-props":{},"x-app-version":"1.3.51"}
+0o6llbg5pk4	c96hjsmu45f	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+xbpsy39t0e1	2zfi2bvu4hz	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+26c3eby94dx	abi	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions_config.abi","x-component-props":{},"x-app-version":"1.3.51"}
+4ap6581smcx	81cm0gricdb	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Row","x-app-version":"1.3.51"}
+110a4f3nenj	69nxkl7fbww	{"_isJSONSchemaObject":true,"version":"2.0","type":"void","x-component":"Grid.Col","x-app-version":"1.3.51"}
+tn3dqsa088d	contractAddress	{"_isJSONSchemaObject":true,"version":"2.0","type":"string","x-toolbar":"FormItemSchemaToolbar","x-settings":"fieldSettings:FormItem","x-component":"CollectionField","x-decorator":"FormItem","x-collection-field":"transactions_config.contractAddress","x-component-props":{},"x-app-version":"1.3.51"}
+ndlxv6qkxig	q7kyukbtmi2	{"_isJSONSchemaObject":true,"version":"2.0","title":"{{ t(\\"Submit\\") }}","x-action":"submit","x-component":"Action","x-use-component-props":"useCreateActionProps","x-toolbar":"ActionSchemaToolbar","x-settings":"actionSettings:createSubmit","x-component-props":{"type":"primary","htmlType":"submit"},"x-action-settings":{"triggerWorkflows":[]},"type":"void","x-app-version":"1.3.51"}
 \.
 
 
 --
--- TOC entry 3920 (class 0 OID 34144)
--- Dependencies: 288
+-- TOC entry 3939 (class 0 OID 17237)
+-- Dependencies: 291
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.users (id, "createdAt", "updatedAt", nickname, username, email, phone, password, "appLang", "resetToken", "systemSettings", sort, "createdById", "updatedById") FROM stdin;
 1	2024-12-04 09:18:59.855+00	2024-12-04 09:18:59.855+00	Super Admin	nocobase	admin@nocobase.com	\N	0825501766129c55ad8995f0dcae9519a915a77023debaae2f147951dc0164b4	\N	\N	{}	1	\N	\N
+2	2024-12-07 11:24:24.106+00	2024-12-07 11:24:24.106+00	Duy Khánh	tnduykhanh	tnduykhanhdng@gmail.com	0905081330	a793c48e7102bd58820c08287d103405d8351fa7fcd6bc5419607880e2cc88dc	\N	\N	{}	2	1	1
 \.
 
 
 --
--- TOC entry 3921 (class 0 OID 34150)
--- Dependencies: 289
+-- TOC entry 3940 (class 0 OID 17243)
+-- Dependencies: 292
 -- Data for Name: usersAuthenticators; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -12632,8 +20417,8 @@ COPY public."usersAuthenticators" ("createdAt", "updatedAt", authenticator, "use
 
 
 --
--- TOC entry 3923 (class 0 OID 34159)
--- Dependencies: 291
+-- TOC entry 3942 (class 0 OID 17252)
+-- Dependencies: 294
 -- Data for Name: users_jobs; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -12642,8 +20427,8 @@ COPY public.users_jobs (id, "createdAt", "updatedAt", "jobId", "userId", "execut
 
 
 --
--- TOC entry 3925 (class 0 OID 34165)
--- Dependencies: 293
+-- TOC entry 3944 (class 0 OID 17258)
+-- Dependencies: 296
 -- Data for Name: verifications; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -12652,8 +20437,8 @@ COPY public.verifications (id, "createdAt", "updatedAt", type, receiver, status,
 
 
 --
--- TOC entry 3926 (class 0 OID 34171)
--- Dependencies: 294
+-- TOC entry 3945 (class 0 OID 17264)
+-- Dependencies: 297
 -- Data for Name: verifications_providers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -12662,48 +20447,60 @@ COPY public.verifications_providers (id, "createdAt", "updatedAt", title, type, 
 
 
 --
--- TOC entry 3927 (class 0 OID 34176)
--- Dependencies: 295
--- Data for Name: workflows; Type: TABLE DATA; Schema: public; Owner: postgres
+-- TOC entry 3946 (class 0 OID 17269)
+-- Dependencies: 298
+-- Data for Name: videos; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.workflows (id, "createdAt", "updatedAt", key, title, enabled, description, type, "triggerTitle", config, executed, "allExecuted", current, sync, options) FROM stdin;
-6	2024-12-04 13:12:38.844+00	2024-12-04 13:59:31.973+00	j62ztm6t709	Chấp thuận yêu cầu xây dựng	t	\N	collection	\N	{"mode": 2, "appends": ["createdBy", "updatedBy"], "changed": ["status"], "condition": {"$and": [{"status": {"$eq": "APPROVED"}}]}, "collection": "proposes"}	3	3	t	f	{}
-2	2024-12-04 12:25:13.117+00	2024-12-04 14:43:51.177+00	htfnmps0m41	Thêm mới dự án	t	\N	collection	Thêm mới dự án	{"mode": 1, "appends": ["createdBy", "updatedBy"], "changed": [], "condition": {"$and": []}, "collection": "projects"}	7	7	t	f	{}
-3	2024-12-04 12:25:30.302+00	2024-12-04 14:43:51.208+00	0f9c722cpnx	Thêm mới quỹ dự án	t	\N	collection	\N	{"mode": 1, "appends": ["createdBy", "updatedBy", "project"], "changed": [], "condition": {"$and": []}, "collection": "funds"}	7	7	t	f	{}
-7	2024-12-04 13:14:08.983+00	2024-12-04 14:43:51.222+00	31trl35v3w1	Thêm mới quỹ dự án	t	\N	collection	\N	{"mode": 1, "appends": ["createdBy", "updatedBy", "project"], "condition": {"$and": []}, "collection": "funds"}	6	6	t	f	{}
+COPY public.videos ("createdAt", "updatedAt", id, "createdById", "updatedById", title, filename, extname, size, mimetype, path, url, preview) FROM stdin;
 \.
 
 
 --
--- TOC entry 3977 (class 0 OID 0)
+-- TOC entry 3948 (class 0 OID 17275)
+-- Dependencies: 300
+-- Data for Name: workflows; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.workflows (id, "createdAt", "updatedAt", key, title, enabled, description, type, "triggerTitle", config, executed, "allExecuted", current, sync, options) FROM stdin;
+9	2024-12-07 03:39:50.24+00	2024-12-07 03:40:51.868+00	bp299mwgj3f	Cập nhật số tiền quỹ dự án	f	\N	collection	Cập nhật số tiền quỹ dự án	{"mode": 3, "appends": ["createdBy", "updatedBy", "fund"], "changed": ["amount"], "condition": {"$and": []}, "collection": "transactions"}	0	0	t	f	{"deleteExecutionOnStatus": []}
+6	2024-12-04 13:12:38.844+00	2024-12-07 03:30:02.564+00	j62ztm6t709	Chấp thuận yêu cầu xây dựng	t	\N	collection	\N	{"mode": 2, "appends": ["createdBy", "updatedBy"], "changed": ["status"], "condition": {"$and": [{"status": {"$eq": "APPROVED"}}]}, "collection": "proposes"}	16	16	t	f	{}
+2	2024-12-04 12:25:13.117+00	2024-12-07 03:30:02.603+00	htfnmps0m41	Thêm mới dự án	t	\N	collection	Thêm mới dự án	{"mode": 1, "appends": ["createdBy", "updatedBy"], "changed": [], "condition": {"$and": []}, "collection": "projects"}	20	20	t	f	{}
+3	2024-12-04 12:25:30.302+00	2024-12-07 03:30:02.647+00	0f9c722cpnx	Thêm mới quỹ dự án	t	\N	collection	\N	{"mode": 1, "appends": ["createdBy", "updatedBy", "project"], "changed": [], "condition": {"$and": []}, "collection": "funds"}	20	20	t	f	{}
+7	2024-12-04 13:14:08.983+00	2024-12-07 03:30:02.657+00	31trl35v3w1	Thêm mới quỹ dự án	t	\N	collection	\N	{"mode": 1, "appends": ["createdBy", "updatedBy", "project"], "condition": {"$and": []}, "collection": "funds"}	19	19	t	f	{}
+8	2024-12-07 00:08:51.959+00	2024-12-07 03:34:42.085+00	c03do2s4433	Cập nhật tổng tiền dự án	t	\N	collection	\N	{"mode": 2, "appends": ["fund_id", "progress_images", "images", "updatedBy", "createdBy"], "changed": ["total_amount"], "condition": {"$and": []}, "collection": "projects"}	9	9	t	f	{"deleteExecutionOnStatus": []}
+\.
+
+
+--
+-- TOC entry 3999 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: applicationPlugins_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."applicationPlugins_id_seq"', 62, true);
+SELECT pg_catalog.setval('public."applicationPlugins_id_seq"', 63, true);
 
 
 --
--- TOC entry 3978 (class 0 OID 0)
+-- TOC entry 4000 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: applicationVersion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."applicationVersion_id_seq"', 9, true);
+SELECT pg_catalog.setval('public."applicationVersion_id_seq"', 33, true);
 
 
 --
--- TOC entry 3979 (class 0 OID 0)
+-- TOC entry 4001 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: attachments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.attachments_id_seq', 13, true);
+SELECT pg_catalog.setval('public.attachments_id_seq', 65, true);
 
 
 --
--- TOC entry 3980 (class 0 OID 0)
+-- TOC entry 4002 (class 0 OID 0)
 -- Dependencies: 226
 -- Name: authenticators_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -12712,7 +20509,7 @@ SELECT pg_catalog.setval('public.authenticators_id_seq', 1, true);
 
 
 --
--- TOC entry 3981 (class 0 OID 0)
+-- TOC entry 4003 (class 0 OID 0)
 -- Dependencies: 229
 -- Name: collectionCategories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -12721,7 +20518,7 @@ SELECT pg_catalog.setval('public."collectionCategories_id_seq"', 1, false);
 
 
 --
--- TOC entry 3982 (class 0 OID 0)
+-- TOC entry 4004 (class 0 OID 0)
 -- Dependencies: 240
 -- Name: dataSourcesRolesResourcesActions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -12730,7 +20527,7 @@ SELECT pg_catalog.setval('public."dataSourcesRolesResourcesActions_id_seq"', 1, 
 
 
 --
--- TOC entry 3983 (class 0 OID 0)
+-- TOC entry 4005 (class 0 OID 0)
 -- Dependencies: 242
 -- Name: dataSourcesRolesResourcesScopes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -12739,7 +20536,7 @@ SELECT pg_catalog.setval('public."dataSourcesRolesResourcesScopes_id_seq"', 2, t
 
 
 --
--- TOC entry 3984 (class 0 OID 0)
+-- TOC entry 4006 (class 0 OID 0)
 -- Dependencies: 243
 -- Name: dataSourcesRolesResources_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -12748,61 +20545,61 @@ SELECT pg_catalog.setval('public."dataSourcesRolesResources_id_seq"', 1, false);
 
 
 --
--- TOC entry 3985 (class 0 OID 0)
+-- TOC entry 4007 (class 0 OID 0)
 -- Dependencies: 245
 -- Name: executions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.executions_id_seq', 25, true);
+SELECT pg_catalog.setval('public.executions_id_seq', 86, true);
 
 
 --
--- TOC entry 3986 (class 0 OID 0)
+-- TOC entry 4008 (class 0 OID 0)
 -- Dependencies: 248
 -- Name: flow_nodes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.flow_nodes_id_seq', 8, true);
+SELECT pg_catalog.setval('public.flow_nodes_id_seq', 10, true);
 
 
 --
--- TOC entry 3987 (class 0 OID 0)
+-- TOC entry 4009 (class 0 OID 0)
 -- Dependencies: 250
 -- Name: funds_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.funds_id_seq', 7, true);
+SELECT pg_catalog.setval('public.funds_id_seq', 20, true);
 
 
 --
--- TOC entry 3988 (class 0 OID 0)
+-- TOC entry 4010 (class 0 OID 0)
 -- Dependencies: 253
 -- Name: jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.jobs_id_seq', 25, true);
+SELECT pg_catalog.setval('public.jobs_id_seq', 86, true);
 
 
 --
--- TOC entry 3989 (class 0 OID 0)
+-- TOC entry 4011 (class 0 OID 0)
 -- Dependencies: 258
 -- Name: projects_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.projects_id_seq', 8, true);
+SELECT pg_catalog.setval('public.projects_id_seq', 21, true);
 
 
 --
--- TOC entry 3990 (class 0 OID 0)
+-- TOC entry 4012 (class 0 OID 0)
 -- Dependencies: 260
 -- Name: proposes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.proposes_id_seq', 9, true);
+SELECT pg_catalog.setval('public.proposes_id_seq', 22, true);
 
 
 --
--- TOC entry 3991 (class 0 OID 0)
+-- TOC entry 4013 (class 0 OID 0)
 -- Dependencies: 264
 -- Name: rolesResourcesActions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -12811,7 +20608,7 @@ SELECT pg_catalog.setval('public."rolesResourcesActions_id_seq"', 1, false);
 
 
 --
--- TOC entry 3992 (class 0 OID 0)
+-- TOC entry 4014 (class 0 OID 0)
 -- Dependencies: 266
 -- Name: rolesResourcesScopes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -12820,7 +20617,7 @@ SELECT pg_catalog.setval('public."rolesResourcesScopes_id_seq"', 1, false);
 
 
 --
--- TOC entry 3993 (class 0 OID 0)
+-- TOC entry 4015 (class 0 OID 0)
 -- Dependencies: 267
 -- Name: rolesResources_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -12829,7 +20626,7 @@ SELECT pg_catalog.setval('public."rolesResources_id_seq"', 1, false);
 
 
 --
--- TOC entry 3994 (class 0 OID 0)
+-- TOC entry 4016 (class 0 OID 0)
 -- Dependencies: 271
 -- Name: sequences_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -12838,8 +20635,8 @@ SELECT pg_catalog.setval('public.sequences_id_seq', 1, false);
 
 
 --
--- TOC entry 3995 (class 0 OID 0)
--- Dependencies: 273
+-- TOC entry 4017 (class 0 OID 0)
+-- Dependencies: 274
 -- Name: storages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -12847,8 +20644,8 @@ SELECT pg_catalog.setval('public.storages_id_seq', 1, true);
 
 
 --
--- TOC entry 3996 (class 0 OID 0)
--- Dependencies: 274
+-- TOC entry 4018 (class 0 OID 0)
+-- Dependencies: 275
 -- Name: student_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -12856,8 +20653,8 @@ SELECT pg_catalog.setval('public.student_id_seq', 1, false);
 
 
 --
--- TOC entry 3997 (class 0 OID 0)
--- Dependencies: 276
+-- TOC entry 4019 (class 0 OID 0)
+-- Dependencies: 277
 -- Name: systemSettings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -12865,26 +20662,35 @@ SELECT pg_catalog.setval('public."systemSettings_id_seq"', 1, true);
 
 
 --
--- TOC entry 3998 (class 0 OID 0)
--- Dependencies: 280
+-- TOC entry 4020 (class 0 OID 0)
+-- Dependencies: 281
 -- Name: tokenBlacklist_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."tokenBlacklist_id_seq"', 1, false);
+SELECT pg_catalog.setval('public."tokenBlacklist_id_seq"', 2, true);
 
 
 --
--- TOC entry 3999 (class 0 OID 0)
--- Dependencies: 282
+-- TOC entry 4021 (class 0 OID 0)
+-- Dependencies: 284
+-- Name: transactions_config_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.transactions_config_id_seq', 2, true);
+
+
+--
+-- TOC entry 4022 (class 0 OID 0)
+-- Dependencies: 285
 -- Name: transactions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.transactions_id_seq', 1, true);
+SELECT pg_catalog.setval('public.transactions_id_seq', 20, true);
 
 
 --
--- TOC entry 4000 (class 0 OID 0)
--- Dependencies: 284
+-- TOC entry 4023 (class 0 OID 0)
+-- Dependencies: 287
 -- Name: uiSchemaServerHooks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -12892,17 +20698,17 @@ SELECT pg_catalog.setval('public."uiSchemaServerHooks_id_seq"', 1, false);
 
 
 --
--- TOC entry 4001 (class 0 OID 0)
--- Dependencies: 290
+-- TOC entry 4024 (class 0 OID 0)
+-- Dependencies: 293
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 1, true);
+SELECT pg_catalog.setval('public.users_id_seq', 2, true);
 
 
 --
--- TOC entry 4002 (class 0 OID 0)
--- Dependencies: 292
+-- TOC entry 4025 (class 0 OID 0)
+-- Dependencies: 295
 -- Name: users_jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -12910,16 +20716,25 @@ SELECT pg_catalog.setval('public.users_jobs_id_seq', 1, false);
 
 
 --
--- TOC entry 4003 (class 0 OID 0)
--- Dependencies: 296
+-- TOC entry 4026 (class 0 OID 0)
+-- Dependencies: 299
+-- Name: videos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.videos_id_seq', 1, true);
+
+
+--
+-- TOC entry 4027 (class 0 OID 0)
+-- Dependencies: 301
 -- Name: workflows_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.workflows_id_seq', 7, true);
+SELECT pg_catalog.setval('public.workflows_id_seq', 9, true);
 
 
 --
--- TOC entry 3519 (class 2606 OID 34216)
+-- TOC entry 3531 (class 2606 OID 17325)
 -- Name: kafka-topics kafka-topics_pkey; Type: CONSTRAINT; Schema: KafkaTopic; Owner: postgres
 --
 
@@ -12928,7 +20743,7 @@ ALTER TABLE ONLY "KafkaTopic"."kafka-topics"
 
 
 --
--- TOC entry 3521 (class 2606 OID 34218)
+-- TOC entry 3533 (class 2606 OID 17327)
 -- Name: applicationPlugins applicationPlugins_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -12937,7 +20752,7 @@ ALTER TABLE ONLY public."applicationPlugins"
 
 
 --
--- TOC entry 3523 (class 2606 OID 34220)
+-- TOC entry 3535 (class 2606 OID 17329)
 -- Name: applicationPlugins applicationPlugins_packageName_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -12946,7 +20761,7 @@ ALTER TABLE ONLY public."applicationPlugins"
 
 
 --
--- TOC entry 3525 (class 2606 OID 34222)
+-- TOC entry 3537 (class 2606 OID 17331)
 -- Name: applicationPlugins applicationPlugins_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -12955,7 +20770,7 @@ ALTER TABLE ONLY public."applicationPlugins"
 
 
 --
--- TOC entry 3527 (class 2606 OID 34224)
+-- TOC entry 3539 (class 2606 OID 17333)
 -- Name: applicationVersion applicationVersion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -12964,7 +20779,7 @@ ALTER TABLE ONLY public."applicationVersion"
 
 
 --
--- TOC entry 3530 (class 2606 OID 34226)
+-- TOC entry 3542 (class 2606 OID 17335)
 -- Name: attachments attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -12973,7 +20788,7 @@ ALTER TABLE ONLY public.attachments
 
 
 --
--- TOC entry 3534 (class 2606 OID 34228)
+-- TOC entry 3546 (class 2606 OID 17337)
 -- Name: authenticators authenticators_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -12982,7 +20797,7 @@ ALTER TABLE ONLY public.authenticators
 
 
 --
--- TOC entry 3536 (class 2606 OID 34230)
+-- TOC entry 3548 (class 2606 OID 17339)
 -- Name: authenticators authenticators_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -12991,7 +20806,7 @@ ALTER TABLE ONLY public.authenticators
 
 
 --
--- TOC entry 3538 (class 2606 OID 34232)
+-- TOC entry 3550 (class 2606 OID 17341)
 -- Name: chinaRegions chinaRegions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13000,7 +20815,7 @@ ALTER TABLE ONLY public."chinaRegions"
 
 
 --
--- TOC entry 3541 (class 2606 OID 34234)
+-- TOC entry 3553 (class 2606 OID 17343)
 -- Name: collectionCategories collectionCategories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13009,7 +20824,7 @@ ALTER TABLE ONLY public."collectionCategories"
 
 
 --
--- TOC entry 3543 (class 2606 OID 34236)
+-- TOC entry 3555 (class 2606 OID 17345)
 -- Name: collectionCategory collectionCategory_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13018,7 +20833,7 @@ ALTER TABLE ONLY public."collectionCategory"
 
 
 --
--- TOC entry 3546 (class 2606 OID 34238)
+-- TOC entry 3558 (class 2606 OID 17347)
 -- Name: collections collections_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13027,7 +20842,7 @@ ALTER TABLE ONLY public.collections
 
 
 --
--- TOC entry 3548 (class 2606 OID 34240)
+-- TOC entry 3560 (class 2606 OID 17349)
 -- Name: collections collections_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13036,7 +20851,7 @@ ALTER TABLE ONLY public.collections
 
 
 --
--- TOC entry 3552 (class 2606 OID 34242)
+-- TOC entry 3564 (class 2606 OID 17351)
 -- Name: customRequestsRoles customRequestsRoles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13045,7 +20860,7 @@ ALTER TABLE ONLY public."customRequestsRoles"
 
 
 --
--- TOC entry 3550 (class 2606 OID 34244)
+-- TOC entry 3562 (class 2606 OID 17353)
 -- Name: customRequests customRequests_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13054,7 +20869,7 @@ ALTER TABLE ONLY public."customRequests"
 
 
 --
--- TOC entry 3557 (class 2606 OID 34246)
+-- TOC entry 3569 (class 2606 OID 17355)
 -- Name: dataSourcesCollections dataSourcesCollections_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13063,7 +20878,7 @@ ALTER TABLE ONLY public."dataSourcesCollections"
 
 
 --
--- TOC entry 3561 (class 2606 OID 34248)
+-- TOC entry 3573 (class 2606 OID 17357)
 -- Name: dataSourcesFields dataSourcesFields_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13072,7 +20887,7 @@ ALTER TABLE ONLY public."dataSourcesFields"
 
 
 --
--- TOC entry 3574 (class 2606 OID 34250)
+-- TOC entry 3586 (class 2606 OID 17359)
 -- Name: dataSourcesRolesResourcesActions dataSourcesRolesResourcesActions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13081,7 +20896,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResourcesActions"
 
 
 --
--- TOC entry 3578 (class 2606 OID 34252)
+-- TOC entry 3590 (class 2606 OID 17361)
 -- Name: dataSourcesRolesResourcesScopes dataSourcesRolesResourcesScopes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13090,7 +20905,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResourcesScopes"
 
 
 --
--- TOC entry 3570 (class 2606 OID 34254)
+-- TOC entry 3582 (class 2606 OID 17363)
 -- Name: dataSourcesRolesResources dataSourcesRolesResources_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13099,7 +20914,7 @@ ALTER TABLE ONLY public."dataSourcesRolesResources"
 
 
 --
--- TOC entry 3566 (class 2606 OID 34256)
+-- TOC entry 3578 (class 2606 OID 17365)
 -- Name: dataSourcesRoles dataSourcesRoles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13108,7 +20923,7 @@ ALTER TABLE ONLY public."dataSourcesRoles"
 
 
 --
--- TOC entry 3555 (class 2606 OID 34258)
+-- TOC entry 3567 (class 2606 OID 17367)
 -- Name: dataSources dataSources_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13117,7 +20932,7 @@ ALTER TABLE ONLY public."dataSources"
 
 
 --
--- TOC entry 3581 (class 2606 OID 34260)
+-- TOC entry 3593 (class 2606 OID 17369)
 -- Name: executions executions_eventKey_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13126,7 +20941,7 @@ ALTER TABLE ONLY public.executions
 
 
 --
--- TOC entry 3583 (class 2606 OID 34262)
+-- TOC entry 3595 (class 2606 OID 17371)
 -- Name: executions executions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13135,7 +20950,7 @@ ALTER TABLE ONLY public.executions
 
 
 --
--- TOC entry 3588 (class 2606 OID 34264)
+-- TOC entry 3600 (class 2606 OID 17373)
 -- Name: fields fields_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13144,7 +20959,7 @@ ALTER TABLE ONLY public.fields
 
 
 --
--- TOC entry 3592 (class 2606 OID 34266)
+-- TOC entry 3604 (class 2606 OID 17375)
 -- Name: flow_nodes flow_nodes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13153,7 +20968,7 @@ ALTER TABLE ONLY public.flow_nodes
 
 
 --
--- TOC entry 3597 (class 2606 OID 34268)
+-- TOC entry 3609 (class 2606 OID 17377)
 -- Name: funds funds_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13162,7 +20977,7 @@ ALTER TABLE ONLY public.funds
 
 
 --
--- TOC entry 3601 (class 2606 OID 34270)
+-- TOC entry 3613 (class 2606 OID 17379)
 -- Name: iframeHtml iframeHtml_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13171,7 +20986,7 @@ ALTER TABLE ONLY public."iframeHtml"
 
 
 --
--- TOC entry 3606 (class 2606 OID 34272)
+-- TOC entry 3618 (class 2606 OID 17381)
 -- Name: jobs jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13180,7 +20995,7 @@ ALTER TABLE ONLY public.jobs
 
 
 --
--- TOC entry 3609 (class 2606 OID 34274)
+-- TOC entry 3621 (class 2606 OID 17383)
 -- Name: kafka_configs kafka_configs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13189,7 +21004,7 @@ ALTER TABLE ONLY public.kafka_configs
 
 
 --
--- TOC entry 3611 (class 2606 OID 34276)
+-- TOC entry 3623 (class 2606 OID 17385)
 -- Name: kafka_topics kafka_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13198,7 +21013,7 @@ ALTER TABLE ONLY public.kafka_topics
 
 
 --
--- TOC entry 3613 (class 2606 OID 34278)
+-- TOC entry 3625 (class 2606 OID 17387)
 -- Name: migrations migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13207,7 +21022,7 @@ ALTER TABLE ONLY public.migrations
 
 
 --
--- TOC entry 3615 (class 2606 OID 34280)
+-- TOC entry 3627 (class 2606 OID 17389)
 -- Name: projects projects_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13216,7 +21031,7 @@ ALTER TABLE ONLY public.projects
 
 
 --
--- TOC entry 3617 (class 2606 OID 34282)
+-- TOC entry 3629 (class 2606 OID 17391)
 -- Name: proposes proposes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13225,7 +21040,7 @@ ALTER TABLE ONLY public.proposes
 
 
 --
--- TOC entry 3626 (class 2606 OID 34284)
+-- TOC entry 3638 (class 2606 OID 17393)
 -- Name: rolesResourcesActions rolesResourcesActions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13234,7 +21049,7 @@ ALTER TABLE ONLY public."rolesResourcesActions"
 
 
 --
--- TOC entry 3630 (class 2606 OID 34286)
+-- TOC entry 3642 (class 2606 OID 17395)
 -- Name: rolesResourcesScopes rolesResourcesScopes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13243,7 +21058,7 @@ ALTER TABLE ONLY public."rolesResourcesScopes"
 
 
 --
--- TOC entry 3623 (class 2606 OID 34288)
+-- TOC entry 3635 (class 2606 OID 17397)
 -- Name: rolesResources rolesResources_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13252,7 +21067,7 @@ ALTER TABLE ONLY public."rolesResources"
 
 
 --
--- TOC entry 3632 (class 2606 OID 34290)
+-- TOC entry 3644 (class 2606 OID 17399)
 -- Name: rolesUischemas rolesUischemas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13261,7 +21076,7 @@ ALTER TABLE ONLY public."rolesUischemas"
 
 
 --
--- TOC entry 3635 (class 2606 OID 34292)
+-- TOC entry 3647 (class 2606 OID 17401)
 -- Name: rolesUsers rolesUsers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13270,7 +21085,7 @@ ALTER TABLE ONLY public."rolesUsers"
 
 
 --
--- TOC entry 3619 (class 2606 OID 34294)
+-- TOC entry 3631 (class 2606 OID 17403)
 -- Name: roles roles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13279,7 +21094,7 @@ ALTER TABLE ONLY public.roles
 
 
 --
--- TOC entry 3621 (class 2606 OID 34296)
+-- TOC entry 3633 (class 2606 OID 17405)
 -- Name: roles roles_title_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13288,7 +21103,7 @@ ALTER TABLE ONLY public.roles
 
 
 --
--- TOC entry 3638 (class 2606 OID 34298)
+-- TOC entry 3650 (class 2606 OID 17407)
 -- Name: sequences sequences_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13297,7 +21112,7 @@ ALTER TABLE ONLY public.sequences
 
 
 --
--- TOC entry 3704 (class 2606 OID 34437)
+-- TOC entry 3652 (class 2606 OID 17409)
 -- Name: smart_contracts smart_contracts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13306,7 +21121,7 @@ ALTER TABLE ONLY public.smart_contracts
 
 
 --
--- TOC entry 3640 (class 2606 OID 34302)
+-- TOC entry 3654 (class 2606 OID 17411)
 -- Name: storages storages_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13315,7 +21130,7 @@ ALTER TABLE ONLY public.storages
 
 
 --
--- TOC entry 3642 (class 2606 OID 34304)
+-- TOC entry 3656 (class 2606 OID 17413)
 -- Name: storages storages_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13324,7 +21139,7 @@ ALTER TABLE ONLY public.storages
 
 
 --
--- TOC entry 3644 (class 2606 OID 34306)
+-- TOC entry 3658 (class 2606 OID 17415)
 -- Name: systemSettings systemSettings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13333,7 +21148,7 @@ ALTER TABLE ONLY public."systemSettings"
 
 
 --
--- TOC entry 3648 (class 2606 OID 34308)
+-- TOC entry 3662 (class 2606 OID 17417)
 -- Name: t_1vx9kyb7k1h t_1vx9kyb7k1h_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13342,7 +21157,7 @@ ALTER TABLE ONLY public.t_1vx9kyb7k1h
 
 
 --
--- TOC entry 3651 (class 2606 OID 34310)
+-- TOC entry 3665 (class 2606 OID 17419)
 -- Name: t_54opx8rhenu t_54opx8rhenu_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13351,7 +21166,7 @@ ALTER TABLE ONLY public.t_54opx8rhenu
 
 
 --
--- TOC entry 3653 (class 2606 OID 34312)
+-- TOC entry 3667 (class 2606 OID 17421)
 -- Name: tokenBlacklist tokenBlacklist_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13360,7 +21175,16 @@ ALTER TABLE ONLY public."tokenBlacklist"
 
 
 --
--- TOC entry 3658 (class 2606 OID 34314)
+-- TOC entry 3675 (class 2606 OID 17423)
+-- Name: transactions_config transactions_config_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.transactions_config
+    ADD CONSTRAINT transactions_config_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3672 (class 2606 OID 17425)
 -- Name: transactions transactions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13369,7 +21193,7 @@ ALTER TABLE ONLY public.transactions
 
 
 --
--- TOC entry 3661 (class 2606 OID 34316)
+-- TOC entry 3677 (class 2606 OID 17427)
 -- Name: uiSchemaServerHooks uiSchemaServerHooks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13378,7 +21202,7 @@ ALTER TABLE ONLY public."uiSchemaServerHooks"
 
 
 --
--- TOC entry 3664 (class 2606 OID 34318)
+-- TOC entry 3680 (class 2606 OID 17429)
 -- Name: uiSchemaTemplates uiSchemaTemplates_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13387,7 +21211,7 @@ ALTER TABLE ONLY public."uiSchemaTemplates"
 
 
 --
--- TOC entry 3667 (class 2606 OID 34320)
+-- TOC entry 3683 (class 2606 OID 17431)
 -- Name: uiSchemaTreePath uiSchemaTreePath_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13396,7 +21220,7 @@ ALTER TABLE ONLY public."uiSchemaTreePath"
 
 
 --
--- TOC entry 3670 (class 2606 OID 34322)
+-- TOC entry 3686 (class 2606 OID 17433)
 -- Name: uiSchemas uiSchemas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13405,7 +21229,7 @@ ALTER TABLE ONLY public."uiSchemas"
 
 
 --
--- TOC entry 3683 (class 2606 OID 34324)
+-- TOC entry 3699 (class 2606 OID 17435)
 -- Name: usersAuthenticators usersAuthenticators_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13414,7 +21238,7 @@ ALTER TABLE ONLY public."usersAuthenticators"
 
 
 --
--- TOC entry 3673 (class 2606 OID 34326)
+-- TOC entry 3689 (class 2606 OID 17437)
 -- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13423,7 +21247,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3688 (class 2606 OID 34328)
+-- TOC entry 3704 (class 2606 OID 17439)
 -- Name: users_jobs users_jobs_jobId_userId_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13432,7 +21256,7 @@ ALTER TABLE ONLY public.users_jobs
 
 
 --
--- TOC entry 3692 (class 2606 OID 34330)
+-- TOC entry 3708 (class 2606 OID 17441)
 -- Name: users_jobs users_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13441,7 +21265,7 @@ ALTER TABLE ONLY public.users_jobs
 
 
 --
--- TOC entry 3675 (class 2606 OID 34332)
+-- TOC entry 3691 (class 2606 OID 17443)
 -- Name: users users_phone_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13450,7 +21274,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3677 (class 2606 OID 34334)
+-- TOC entry 3693 (class 2606 OID 17445)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13459,7 +21283,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3679 (class 2606 OID 34336)
+-- TOC entry 3695 (class 2606 OID 17447)
 -- Name: users users_resetToken_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13468,7 +21292,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3681 (class 2606 OID 34338)
+-- TOC entry 3697 (class 2606 OID 17449)
 -- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13477,7 +21301,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3696 (class 2606 OID 34340)
+-- TOC entry 3712 (class 2606 OID 17451)
 -- Name: verifications verifications_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13486,7 +21310,7 @@ ALTER TABLE ONLY public.verifications
 
 
 --
--- TOC entry 3699 (class 2606 OID 34342)
+-- TOC entry 3715 (class 2606 OID 17453)
 -- Name: verifications_providers verifications_providers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13495,7 +21319,16 @@ ALTER TABLE ONLY public.verifications_providers
 
 
 --
--- TOC entry 3702 (class 2606 OID 34344)
+-- TOC entry 3717 (class 2606 OID 17455)
+-- Name: videos videos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.videos
+    ADD CONSTRAINT videos_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3720 (class 2606 OID 17457)
 -- Name: workflows workflows_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -13504,7 +21337,7 @@ ALTER TABLE ONLY public.workflows
 
 
 --
--- TOC entry 3528 (class 1259 OID 34345)
+-- TOC entry 3540 (class 1259 OID 17458)
 -- Name: attachments_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13512,7 +21345,7 @@ CREATE INDEX attachments_created_by_id ON public.attachments USING btree ("creat
 
 
 --
--- TOC entry 3531 (class 1259 OID 34346)
+-- TOC entry 3543 (class 1259 OID 17459)
 -- Name: attachments_storage_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13520,7 +21353,7 @@ CREATE INDEX attachments_storage_id ON public.attachments USING btree ("storageI
 
 
 --
--- TOC entry 3532 (class 1259 OID 34347)
+-- TOC entry 3544 (class 1259 OID 17460)
 -- Name: authenticators_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13528,7 +21361,7 @@ CREATE INDEX authenticators_created_by_id ON public.authenticators USING btree (
 
 
 --
--- TOC entry 3539 (class 1259 OID 34348)
+-- TOC entry 3551 (class 1259 OID 17461)
 -- Name: china_regions_parent_code; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13536,7 +21369,7 @@ CREATE INDEX china_regions_parent_code ON public."chinaRegions" USING btree ("pa
 
 
 --
--- TOC entry 3544 (class 1259 OID 34349)
+-- TOC entry 3556 (class 1259 OID 17462)
 -- Name: collection_category_category_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13544,7 +21377,7 @@ CREATE INDEX collection_category_category_id ON public."collectionCategory" USIN
 
 
 --
--- TOC entry 3553 (class 1259 OID 34350)
+-- TOC entry 3565 (class 1259 OID 17463)
 -- Name: custom_requests_roles_role_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13552,7 +21385,7 @@ CREATE INDEX custom_requests_roles_role_name ON public."customRequestsRoles" USI
 
 
 --
--- TOC entry 3558 (class 1259 OID 34351)
+-- TOC entry 3570 (class 1259 OID 17464)
 -- Name: data_sources_collections_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13560,7 +21393,7 @@ CREATE INDEX data_sources_collections_data_source_key ON public."dataSourcesColl
 
 
 --
--- TOC entry 3559 (class 1259 OID 34352)
+-- TOC entry 3571 (class 1259 OID 17465)
 -- Name: data_sources_collections_name_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13568,7 +21401,7 @@ CREATE UNIQUE INDEX data_sources_collections_name_data_source_key ON public."dat
 
 
 --
--- TOC entry 3562 (class 1259 OID 34353)
+-- TOC entry 3574 (class 1259 OID 17466)
 -- Name: data_sources_fields_collection_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13576,7 +21409,7 @@ CREATE INDEX data_sources_fields_collection_key ON public."dataSourcesFields" US
 
 
 --
--- TOC entry 3563 (class 1259 OID 34354)
+-- TOC entry 3575 (class 1259 OID 17467)
 -- Name: data_sources_fields_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13584,7 +21417,7 @@ CREATE INDEX data_sources_fields_data_source_key ON public."dataSourcesFields" U
 
 
 --
--- TOC entry 3564 (class 1259 OID 34355)
+-- TOC entry 3576 (class 1259 OID 17468)
 -- Name: data_sources_fields_name_collection_name_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13592,7 +21425,7 @@ CREATE UNIQUE INDEX data_sources_fields_name_collection_name_data_source_key ON 
 
 
 --
--- TOC entry 3567 (class 1259 OID 34356)
+-- TOC entry 3579 (class 1259 OID 17469)
 -- Name: data_sources_roles_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13600,7 +21433,7 @@ CREATE INDEX data_sources_roles_data_source_key ON public."dataSourcesRoles" USI
 
 
 --
--- TOC entry 3575 (class 1259 OID 34357)
+-- TOC entry 3587 (class 1259 OID 17470)
 -- Name: data_sources_roles_resources_actions_roles_resource_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13608,7 +21441,7 @@ CREATE INDEX data_sources_roles_resources_actions_roles_resource_id ON public."d
 
 
 --
--- TOC entry 3576 (class 1259 OID 34358)
+-- TOC entry 3588 (class 1259 OID 17471)
 -- Name: data_sources_roles_resources_actions_scope_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13616,7 +21449,7 @@ CREATE INDEX data_sources_roles_resources_actions_scope_id ON public."dataSource
 
 
 --
--- TOC entry 3571 (class 1259 OID 34359)
+-- TOC entry 3583 (class 1259 OID 17472)
 -- Name: data_sources_roles_resources_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13624,7 +21457,7 @@ CREATE INDEX data_sources_roles_resources_data_source_key ON public."dataSources
 
 
 --
--- TOC entry 3572 (class 1259 OID 34360)
+-- TOC entry 3584 (class 1259 OID 17473)
 -- Name: data_sources_roles_resources_role_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13632,7 +21465,7 @@ CREATE INDEX data_sources_roles_resources_role_name ON public."dataSourcesRolesR
 
 
 --
--- TOC entry 3579 (class 1259 OID 34361)
+-- TOC entry 3591 (class 1259 OID 17474)
 -- Name: data_sources_roles_resources_scopes_data_source_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13640,7 +21473,7 @@ CREATE INDEX data_sources_roles_resources_scopes_data_source_key ON public."data
 
 
 --
--- TOC entry 3568 (class 1259 OID 34362)
+-- TOC entry 3580 (class 1259 OID 17475)
 -- Name: data_sources_roles_role_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13648,7 +21481,7 @@ CREATE INDEX data_sources_roles_role_name ON public."dataSourcesRoles" USING btr
 
 
 --
--- TOC entry 3584 (class 1259 OID 34363)
+-- TOC entry 3596 (class 1259 OID 17476)
 -- Name: executions_workflow_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13656,7 +21489,7 @@ CREATE INDEX executions_workflow_id ON public.executions USING btree ("workflowI
 
 
 --
--- TOC entry 3585 (class 1259 OID 34364)
+-- TOC entry 3597 (class 1259 OID 17477)
 -- Name: fields_collection_name_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13664,7 +21497,7 @@ CREATE UNIQUE INDEX fields_collection_name_name ON public.fields USING btree ("c
 
 
 --
--- TOC entry 3586 (class 1259 OID 34365)
+-- TOC entry 3598 (class 1259 OID 17478)
 -- Name: fields_parent_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13672,7 +21505,7 @@ CREATE INDEX fields_parent_key ON public.fields USING btree ("parentKey");
 
 
 --
--- TOC entry 3589 (class 1259 OID 34366)
+-- TOC entry 3601 (class 1259 OID 17479)
 -- Name: fields_reverse_key; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13680,7 +21513,7 @@ CREATE INDEX fields_reverse_key ON public.fields USING btree ("reverseKey");
 
 
 --
--- TOC entry 3590 (class 1259 OID 34367)
+-- TOC entry 3602 (class 1259 OID 17480)
 -- Name: flow_nodes_downstream_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13688,7 +21521,7 @@ CREATE INDEX flow_nodes_downstream_id ON public.flow_nodes USING btree ("downstr
 
 
 --
--- TOC entry 3593 (class 1259 OID 34368)
+-- TOC entry 3605 (class 1259 OID 17481)
 -- Name: flow_nodes_upstream_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13696,7 +21529,7 @@ CREATE INDEX flow_nodes_upstream_id ON public.flow_nodes USING btree ("upstreamI
 
 
 --
--- TOC entry 3594 (class 1259 OID 34369)
+-- TOC entry 3606 (class 1259 OID 17482)
 -- Name: flow_nodes_workflow_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13704,7 +21537,7 @@ CREATE INDEX flow_nodes_workflow_id ON public.flow_nodes USING btree ("workflowI
 
 
 --
--- TOC entry 3595 (class 1259 OID 34370)
+-- TOC entry 3607 (class 1259 OID 17483)
 -- Name: funds_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13712,7 +21545,7 @@ CREATE INDEX funds_created_by_id ON public.funds USING btree ("createdById");
 
 
 --
--- TOC entry 3598 (class 1259 OID 34371)
+-- TOC entry 3610 (class 1259 OID 17484)
 -- Name: funds_project_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13720,7 +21553,7 @@ CREATE INDEX funds_project_id ON public.funds USING btree (project_id);
 
 
 --
--- TOC entry 3599 (class 1259 OID 34372)
+-- TOC entry 3611 (class 1259 OID 17485)
 -- Name: funds_updated_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13728,7 +21561,7 @@ CREATE INDEX funds_updated_by_id ON public.funds USING btree ("updatedById");
 
 
 --
--- TOC entry 3602 (class 1259 OID 34373)
+-- TOC entry 3614 (class 1259 OID 17486)
 -- Name: iframe_html_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13736,7 +21569,7 @@ CREATE INDEX iframe_html_created_by_id ON public."iframeHtml" USING btree ("crea
 
 
 --
--- TOC entry 3603 (class 1259 OID 34374)
+-- TOC entry 3615 (class 1259 OID 17487)
 -- Name: jobs_execution_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13744,7 +21577,7 @@ CREATE INDEX jobs_execution_id ON public.jobs USING btree ("executionId");
 
 
 --
--- TOC entry 3604 (class 1259 OID 34375)
+-- TOC entry 3616 (class 1259 OID 17488)
 -- Name: jobs_node_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13752,7 +21585,7 @@ CREATE INDEX jobs_node_id ON public.jobs USING btree ("nodeId");
 
 
 --
--- TOC entry 3607 (class 1259 OID 34376)
+-- TOC entry 3619 (class 1259 OID 17489)
 -- Name: jobs_upstream_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13760,7 +21593,7 @@ CREATE INDEX jobs_upstream_id ON public.jobs USING btree ("upstreamId");
 
 
 --
--- TOC entry 3627 (class 1259 OID 34377)
+-- TOC entry 3639 (class 1259 OID 17490)
 -- Name: roles_resources_actions_roles_resource_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13768,7 +21601,7 @@ CREATE INDEX roles_resources_actions_roles_resource_id ON public."rolesResources
 
 
 --
--- TOC entry 3628 (class 1259 OID 34378)
+-- TOC entry 3640 (class 1259 OID 17491)
 -- Name: roles_resources_actions_scope_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13776,7 +21609,7 @@ CREATE INDEX roles_resources_actions_scope_id ON public."rolesResourcesActions" 
 
 
 --
--- TOC entry 3624 (class 1259 OID 34379)
+-- TOC entry 3636 (class 1259 OID 17492)
 -- Name: roles_resources_role_name_name; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13784,7 +21617,7 @@ CREATE UNIQUE INDEX roles_resources_role_name_name ON public."rolesResources" US
 
 
 --
--- TOC entry 3633 (class 1259 OID 34380)
+-- TOC entry 3645 (class 1259 OID 17493)
 -- Name: roles_uischemas_ui_schema_x_uid; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13792,7 +21625,7 @@ CREATE INDEX roles_uischemas_ui_schema_x_uid ON public."rolesUischemas" USING bt
 
 
 --
--- TOC entry 3636 (class 1259 OID 34381)
+-- TOC entry 3648 (class 1259 OID 17494)
 -- Name: roles_users_user_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13800,7 +21633,7 @@ CREATE INDEX roles_users_user_id ON public."rolesUsers" USING btree ("userId");
 
 
 --
--- TOC entry 3645 (class 1259 OID 34382)
+-- TOC entry 3659 (class 1259 OID 17495)
 -- Name: system_settings_logo_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13808,7 +21641,7 @@ CREATE INDEX system_settings_logo_id ON public."systemSettings" USING btree ("lo
 
 
 --
--- TOC entry 3646 (class 1259 OID 34383)
+-- TOC entry 3660 (class 1259 OID 17496)
 -- Name: t_1vx9kyb7k1h_f_zvvclxyl9dz; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13816,7 +21649,7 @@ CREATE INDEX t_1vx9kyb7k1h_f_zvvclxyl9dz ON public.t_1vx9kyb7k1h USING btree (f_
 
 
 --
--- TOC entry 3649 (class 1259 OID 34384)
+-- TOC entry 3663 (class 1259 OID 17497)
 -- Name: t_54opx8rhenu_f_ra5knzz1x22; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13824,7 +21657,7 @@ CREATE INDEX t_54opx8rhenu_f_ra5knzz1x22 ON public.t_54opx8rhenu USING btree (f_
 
 
 --
--- TOC entry 3654 (class 1259 OID 34385)
+-- TOC entry 3668 (class 1259 OID 17498)
 -- Name: token_blacklist_token; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13832,7 +21665,7 @@ CREATE INDEX token_blacklist_token ON public."tokenBlacklist" USING btree (token
 
 
 --
--- TOC entry 3655 (class 1259 OID 34386)
+-- TOC entry 3669 (class 1259 OID 17499)
 -- Name: transactions_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13840,7 +21673,7 @@ CREATE INDEX transactions_created_by_id ON public.transactions USING btree ("cre
 
 
 --
--- TOC entry 3656 (class 1259 OID 34387)
+-- TOC entry 3670 (class 1259 OID 17500)
 -- Name: transactions_fund_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13848,7 +21681,7 @@ CREATE INDEX transactions_fund_id ON public.transactions USING btree (fund_id);
 
 
 --
--- TOC entry 3659 (class 1259 OID 34388)
+-- TOC entry 3673 (class 1259 OID 17501)
 -- Name: transactions_updated_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13856,7 +21689,7 @@ CREATE INDEX transactions_updated_by_id ON public.transactions USING btree ("upd
 
 
 --
--- TOC entry 3662 (class 1259 OID 34389)
+-- TOC entry 3678 (class 1259 OID 17502)
 -- Name: ui_schema_server_hooks_uid; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13864,7 +21697,7 @@ CREATE INDEX ui_schema_server_hooks_uid ON public."uiSchemaServerHooks" USING bt
 
 
 --
--- TOC entry 3665 (class 1259 OID 34390)
+-- TOC entry 3681 (class 1259 OID 17503)
 -- Name: ui_schema_templates_uid; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13872,7 +21705,7 @@ CREATE INDEX ui_schema_templates_uid ON public."uiSchemaTemplates" USING btree (
 
 
 --
--- TOC entry 3668 (class 1259 OID 34391)
+-- TOC entry 3684 (class 1259 OID 17504)
 -- Name: ui_schema_tree_path_descendant; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13880,7 +21713,7 @@ CREATE INDEX ui_schema_tree_path_descendant ON public."uiSchemaTreePath" USING b
 
 
 --
--- TOC entry 3684 (class 1259 OID 34392)
+-- TOC entry 3700 (class 1259 OID 17505)
 -- Name: users_authenticators_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13888,7 +21721,7 @@ CREATE INDEX users_authenticators_created_by_id ON public."usersAuthenticators" 
 
 
 --
--- TOC entry 3685 (class 1259 OID 34393)
+-- TOC entry 3701 (class 1259 OID 17506)
 -- Name: users_authenticators_user_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13896,7 +21729,7 @@ CREATE INDEX users_authenticators_user_id ON public."usersAuthenticators" USING 
 
 
 --
--- TOC entry 3671 (class 1259 OID 34394)
+-- TOC entry 3687 (class 1259 OID 17507)
 -- Name: users_created_by_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13904,7 +21737,7 @@ CREATE INDEX users_created_by_id ON public.users USING btree ("createdById");
 
 
 --
--- TOC entry 3686 (class 1259 OID 34395)
+-- TOC entry 3702 (class 1259 OID 17508)
 -- Name: users_jobs_execution_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13912,7 +21745,7 @@ CREATE INDEX users_jobs_execution_id ON public.users_jobs USING btree ("executio
 
 
 --
--- TOC entry 3689 (class 1259 OID 34396)
+-- TOC entry 3705 (class 1259 OID 17509)
 -- Name: users_jobs_job_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13920,7 +21753,7 @@ CREATE INDEX users_jobs_job_id ON public.users_jobs USING btree ("jobId");
 
 
 --
--- TOC entry 3690 (class 1259 OID 34397)
+-- TOC entry 3706 (class 1259 OID 17510)
 -- Name: users_jobs_node_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13928,7 +21761,7 @@ CREATE INDEX users_jobs_node_id ON public.users_jobs USING btree ("nodeId");
 
 
 --
--- TOC entry 3693 (class 1259 OID 34398)
+-- TOC entry 3709 (class 1259 OID 17511)
 -- Name: users_jobs_user_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13936,7 +21769,7 @@ CREATE INDEX users_jobs_user_id ON public.users_jobs USING btree ("userId");
 
 
 --
--- TOC entry 3694 (class 1259 OID 34399)
+-- TOC entry 3710 (class 1259 OID 17512)
 -- Name: users_jobs_workflow_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13944,7 +21777,7 @@ CREATE INDEX users_jobs_workflow_id ON public.users_jobs USING btree ("workflowI
 
 
 --
--- TOC entry 3697 (class 1259 OID 34400)
+-- TOC entry 3713 (class 1259 OID 17513)
 -- Name: verifications_provider_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -13952,14 +21785,14 @@ CREATE INDEX verifications_provider_id ON public.verifications USING btree ("pro
 
 
 --
--- TOC entry 3700 (class 1259 OID 34401)
+-- TOC entry 3718 (class 1259 OID 17514)
 -- Name: workflows_key_current; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX workflows_key_current ON public.workflows USING btree (key, current);
 
 
--- Completed on 2024-12-05 11:54:03 UTC
+-- Completed on 2024-12-07 17:07:51 UTC
 
 --
 -- PostgreSQL database dump complete
