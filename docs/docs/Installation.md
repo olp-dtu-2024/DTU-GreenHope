@@ -81,7 +81,20 @@ Thư viện **@olp-dtu-2024/progress-nocobase** là một gói tích hợp Progr
 #### Yêu cầu tiên quyết 
 - NocoBase phiên bản 1.x
 ## 💡Nhà phát triển
-📧 Email: minhtuanledng@gmail.com
-📱 Hotline: 0889001505
+-  Lê Minh Tuấn
+```
+      📧 Email: minhtuanledng@gmail.com
+      📱 Hotline: 0889001505
+```
+-  Trần Nguyễn Duy Khánh
+```
+     📧 Email: duykhanhtran17062003@gmail.com
+     📱 Hotline: 0905081330
+```
+-  Trịnh Minh Son
+```
+     📧 Email: trinhminhson2004@gmail.com
+     📱 Hotline: 0357572879
+```
 Dự án này được cấp phép theo các điều khoản của giấy phép GPL V3 [License](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENCE)
 

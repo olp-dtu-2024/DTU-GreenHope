@@ -4,12 +4,24 @@
 - GreenHope (Hy vọng xanh) là một nền tảng tiên tiến phát triển dựa trên LCDP trong cuộc thi [Phần Mềm Nguồn Mở-Olympic Tin học Sinh viên Việt Nam 2024](https://www.olp.vn/procon-pmmn/ph%E1%BA%A7n-m%E1%BB%81m-ngu%E1%BB%93n-m%E1%BB%9F)
  nhằm hỗ trợ sau thiên tai, được thiết kế để kết nối cộng đồng, quản lý cứu trợ và mang lại hy vọng mới cho những vùng bị ảnh hưởng bởi thiên tai.
 - Cung cấp một hệ thống toàn diện nhằm đảm bảo sự minh bạch, hiệu quả, là một giải phá p dài hạn cho cộng đồng, không ngừng cải tiến các công nghệ để góp phần ủng hộ cộng đồng vượt qua những vấn nạn về thiên tai trong cuộc sống hiện nay.
-## Các chức năng chính của dự án
-- 🔍Tìm kiếm và cứu nạn
-- ❤️‍🩹Đánh giá thiệt hại và hỗ trợ tái thiết sau thảm họa
-- 🫶Kết nối giữa các tổ chức cứu trợ, cộng đồng
 
-![s](../resources/Main-Function.png)
+## Các chức năng chính của dự án
+### ❤️‍🩹 Hỗ trợ tìm kiếm và cứu nạn 
+  - Định vị và đánh giá tình hình 
+  - Theo dõi đội cứu hộ
+  - Thông báo tình trạng khẩn cấp
+###  🫶 Nền tảng hỗ trợ tái thiết sau thảm họa
+  - Quản lý dự án tái thiết
+  - Phục hồi và phát triển cộng đồng
+###  🌪️ Đánh giá thiệt hại sau thảm họa
+  - Thu thập dữ liệu sau thảm họa
+  - Phân tích thiệt hại
+  - Báo cáo và cảnh báo
+###  💰 Hệ thống quyên góp minh bạch
+  - Quyên góp trực tuyến
+  - Quản lý và theo dõi quỹ
+  - Công khai chi tiêu
+  - Thông báo và báo cáo tài chính
 
 
 ## Tổng quan hệ thống
@@ -46,7 +58,6 @@
 - Nền tảng tình nguyện viên
 - Hệ thống điều phối cứu trợ
 - Mạng lưới hỗ trợ địa phương
-- Dự báo nhu cầu về vật tư và dịch vụ cứu trợ
 ### 🔬 Các lĩnh vực nghiên cứu
 #### 🧠Trí tuệ nhân tạo trong cứu trợ
 - Tăng cường độ chính xác và tốc độ đánh giá thiệt hại
@@ -64,19 +75,26 @@
 
 Nhờ vào việc ứng dụng các công nghệ hiện đại, hệ thống này không chỉ cải thiện công tác cứu trợ mà còn tạo điều kiện cho việc tái thiết bền vững, đồng thời hỗ trợ sự phát triển ổn định của các cộng đồng sau thảm họa.
 
+
 ## 💡Nhà phát triển
-- ### Lê Minh Tuấn
-    -  📧 Email: minhtuanledng@gmail.com
-    -  📱 Hotline: 0889001505
 
-- ### Trần Nguyễn Duy Khánh
-    -  📧 Email: duykhanhtran17062003@gmail.com
-    -  📱 Hotline: 0905081330
+- Lê Minh Tuấn
+```
+    📧 Email: minhtuanledng@gmail.com
+    📱 Hotline: 0889001505
+```
+- Trần Nguyễn Duy Khánh
 
-- ### Trịnh Minh Son
-    -  📧 Email: trinhminhson2004@gmail.com
-    -  📱 Hotline: 0357572879
+```
+    📧 Email: duykhanhtran17062003@gmail.com
+    📱 Hotline: 0905081330
+```
+- Trịnh Minh Son
 
+```
+    📧 Email: trinhminhson2004@gmail.com
+    📱 Hotline: 0357572879
+```
 
 ## 📝 License
 Dự án này được cấp phép theo các điều khoản của giấy phép [GPL V3 License](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENCE)
