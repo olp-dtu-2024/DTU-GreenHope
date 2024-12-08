@@ -2,6 +2,7 @@
   "name": "@dtu-olp-2024/video-player-nocobase",
   "version": "1.0.0",
   "license": "GPL-3.0",
+  "private": false,
   "main": "dist/server/index.js",
   "dependencies": {},
   "peerDependencies": {
