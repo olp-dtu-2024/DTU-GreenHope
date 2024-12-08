@@ -193,6 +193,32 @@ export const SolidityEditor = withDynamicSchemaProps(
       }
     };
 
+    const handleCheckTransaction = async () => {
+      const response = await api.request({
+        url: 'transactions:checkTransaction',
+        method: 'post',
+      });
+      console.log(response);
+
+      if (response.data.data.status === true) {
+        message.success('Giao dịch khớp');
+      } else {
+        const mismatches = response.data.data.mismatches;
+        const customMessages = mismatches.map((mismatch, index) => {
+          const transactionCode = mismatch.transaction_code;
+          const differences = mismatch.differences.amount;
+          const correctData = differences.blockchain;
+          const incorrectData = differences.database;
+          return `${index + 1}. Giao dịch với mã ${transactionCode} có amount không khớp. Dữ liệu đúng là ${correctData}, dữ liệu sai là ${incorrectData}.`;
+        });
+        const singleStringMessage = customMessages.join('<br>');
+
+        message.error(
+          <span dangerouslySetInnerHTML={{ __html: singleStringMessage }} />
+        );
+      }
+    };
+
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         <div
@@ -252,6 +278,9 @@ export const SolidityEditor = withDynamicSchemaProps(
             </Button>
             <Button type='primary' onClick={() => handleCompile()}>
               Biên dịch hợp đồng
+            </Button>
+            <Button type='primary' onClick={() => handleCheckTransaction()}>
+              So sánh giao dịch
             </Button>
           </div>
         </div>
