@@ -11,16 +11,45 @@ Plugin được phát triển như một phần của cuộc thi Mã Nguồn M�
 - 🔧 Tùy chỉnh thông tin thanh toán linh hoạt
 - 📄 Xuất mã QR dưới nhiều định dạng (PNG, SVG)
 
-## 🚀 Cài Đặt
-Sử Dụng npm:
+### 🔧 **Sử dụng yarn:**
+```bash 
+    yarn add @olp-dtu-2024/vietqr-nocobase 
+```
 
-```
-npm install @olp-dtu-2024/vietqr-nocobase
-```
-Sử Dụng yarn:
-```
-yarn add @olp-dtu-2024/vietqr-nocobase
-```
+### 🛠️ **Thêm trực tiếp với plugin manager:**
+
+Từ trên menu, bạn chọn biểu tượng **Plugin manager** để truy cập vào Plugin manager
+
+![Truy cập plugin manager page](image-3.png) 
+
+Tiếp theo, bạn ấn nút **`Add new`** để mở hộp thoại thêm plugin.
+
+![Mở hộp thoại thêm mới plugin](image-4.png)
+
+  ✏️ **Sử dụng tên plugin**: 
+  - Nhập tên plugin _**[@dtu-olp-2024/vietqr-nocobase](https://www.npmjs.com/package/@dtu-olp-2024/vietqr-nocobase)**_ vào ô nhập **`Npm package name`**.
+
+![Điền tên plugin vào Npm package name](image-33.png)
+
+  ✅ **Kích hoạt plugin**:
+
+Sau khi thêm plugin thành công, bạn phải **`enable`** plugin này để sử dụng:
+
+![Kích hoạt plugin](image-34.png)
+
+## 💡 **Hướng dẫn sử dụng**
+
+  _**@dtu-olp-2024/vietqr-nocobase**_ là một plugin server. Vì thế, để sử dụng bạn sử dụng nó bằng cách gọi API. 
+  
+  Ví dụ với _`WorkFlow`_:
+
+  ![alt text](image-35.png)
+  Bao gồm các thành phần:
+  - **Methods**: POST
+  - **Path**: '/api/qr-donate'
+  - **Body**: Dữ liệu bạn muốn dùng để tạo nội dung chuyển khoản
+  
+
 ## 📋 Yêu Cầu Tiên Quyết
 - Node.js version 18.x trở lên
 - NocoBase phiên bản 1.x
