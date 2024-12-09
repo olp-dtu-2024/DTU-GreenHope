@@ -1,7 +1,8 @@
 # Solidity Editor NocoBase Plugin
 
 ## 🌟 Giới Thiệu
-_**@olp-dtu-2024/solidity-editor-nocobase**_ là một **plugin mạnh mẽ** cung cấp môi trường phát triển hợp đồng thông minh **Solidity** với giao diện khách hàng **Etherjs tích hợp**, giúp người dùng dễ dàng soạn thảo, triển khai và tương tác với các hợp đồng Blockchain. Plugin này được thiết kế dành cho các nhà phát triển muốn xây dựng và triển khai các hợp đồng thông minh trên nền tảng Blockchain một cách đơn giản và hiệu quả.
+
+_**[@dtu-olp-2024/solidity-editor-nocobase](https://www.npmjs.com/package/@dtu-olp-2024/solidity-editor-nocobase)**_ là một **plugin mạnh mẽ** cung cấp môi trường phát triển hợp đồng thông minh **Solidity** với giao diện khách hàng **Etherjs tích hợp**, giúp người dùng dễ dàng soạn thảo, triển khai và tương tác với các hợp đồng Blockchain. Plugin này được thiết kế dành cho các nhà phát triển muốn xây dựng và triển khai các hợp đồng thông minh trên nền tảng Blockchain một cách đơn giản và hiệu quả.
 
 ### 🏆 Bối Cảnh
 Plugin được phát triển như một phần của cuộc thi **Mã Nguồn Mở 2024** với mục tiêu tạo ra một công cụ tiện ích giúp cộng đồng lập trình viên dễ dàng làm việc với **Solidity** và các hợp đồng Blockchain, đặc biệt là trong môi trường phát triển NocoBase.
@@ -97,13 +98,14 @@ Lần lượt các bước thực hiện như sau:
 - Chọn mạng blockchain
 
  **4. Triển khai Contract** 🚀
-- Deploy contract lên blockchain
-- Xác nhận giao dịch qua MetaMask
+
+- Deploy contract lên **Blockchain**
+- Xác nhận giao dịch qua **MetaMask**
 - Nhận về **Contract Address**
 
 ## Kết quả 🎯
-- Smart contract được triển khai thành công
-- Contract Address sẵn sàng để tương tác
+- **Smart contract** được triển khai thành công
+- **Contract Address** sẵn sàng để tương tác
 
 ## 📋 Phụ Thuộc
 
@@ -119,19 +121,29 @@ Lần lượt các bước thực hiện như sau:
 ```
 
 ## 📋 Yêu Cầu Tiên Quyết
+
 Để sử dụng plugin một cách mượt mà và hiệu quả, bạn cần đảm bảo rằng hệ thống của mình đáp ứng các yêu cầu sau:
 
 - 🖥 **Node.js phiên bản 18.x trở lên**: Cập nhật Node.js để sử dụng tính năng mới nhất và cải thiện hiệu suất.
+
 - 🌐 **Phiên bản NocoBase mới nhất**: Đảm bảo bạn đang sử dụng phiên bản NocoBase mới nhất để tận dụng các tính năng và cải tiến.
+
 - 🔑 **Metamask hoặc nhà cung cấp Web3 tương thích**: Cần có Metamask hoặc một nhà cung cấp Web3 khác để giao tiếp với Blockchain.
+
 - 🌍 **Kết nối internet ổn định**: Kết nối internet mạnh mẽ và ổn định là điều kiện tiên quyết để tương tác với Blockchain.
+
 ## 👥 Tác Giả
+
 - Lê Minh Tuấn
 - Trần Nguyễn Duy Khánh
 - Trịnh Minh Son
+
 ## 📄 Giấy Phép
+
 Dự án được phân phối dưới giấy phép [GNU General Public License v3.0 ](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENCE)
+
 ## 🤝 Đóng Góp
+
 Chúng tôi rất hoan nghênh các đóng góp từ cộng đồng! Hãy tham gia và giúp dự án này ngày càng hoàn thiện hơn. Các bước đóng góp của bạn:
 
 - 📝 **Tạo issue** để báo cáo lỗi hoặc yêu cầu tính năng mới
@@ -139,12 +151,14 @@ Chúng tôi rất hoan nghênh các đóng góp từ cộng đồng! Hãy tham g
 - 📂 **Truy cập GitHub Repository** của chúng tôi để biết thêm chi tiết
 
 ## 🆘 Hỗ Trợ@olp-dtu-2024/solidity-editor-nocobase
+
 Nếu gặp bất kỳ vấn đề nào khi sử dụng plugin hoặc cần trợ giúp, vui lòng liên hệ với chúng tôi:
 
 - **Mở issue** tại GitHub repository
 - **Liên hệ trực tiếp** với nhóm phát triển qua email hoặc các kênh hỗ trợ
 
 ## ⚠️ Lưu Ý
+
 Trước khi sử dụng plugin, hãy lưu ý một số điểm quan trọng:
 
 - ✅ **Đảm bảo tương thích** với phiên bản NocoBase hiện tại của bạn

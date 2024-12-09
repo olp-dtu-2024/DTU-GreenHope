@@ -1,8 +1,8 @@
 # VietQR NocoBase Plugin
 ## 🌟 Giới Thiệu
-@olp-dtu-2024/vietqr-nocobase là một plugin cho nền tảng NocoBase, tích hợp VietQR API, giúp dễ dàng sinh mã QR thanh toán
+_**[@dtu-olp-2024/vietqr-nocobase](https://www.npmjs.com/package/@dtu-olp-2024/vietqr-nocobase)**_ là một plugin cho nền tảng NocoBase, tích hợp VietQR API, giúp dễ dàng sinh mã QR thanh toán
 ### 🏆 Bối Cảnh
-Plugin được phát triển như một phần của cuộc thi Mã Nguồn Mở năm 2024.
+Plugin được phát triển như một phần của cuộc thi **Mã Nguồn Mở năm 2024**.
 
 ## ✨ Tính Năng
 - 🏦 Tích hợp trực tiếp với VietQR API
@@ -12,7 +12,8 @@ Plugin được phát triển như một phần của cuộc thi Mã Nguồn M�
 - 📄 Xuất mã QR dưới nhiều định dạng (PNG, SVG)
 
 ### 🔧 **Sử dụng yarn:**
-```bash 
+
+```bash
     yarn add @olp-dtu-2024/vietqr-nocobase 
 ```
 
@@ -20,13 +21,14 @@ Plugin được phát triển như một phần của cuộc thi Mã Nguồn M�
 
 Từ trên menu, bạn chọn biểu tượng **Plugin manager** để truy cập vào Plugin manager
 
-![Truy cập plugin manager page](image-3.png) 
+![Truy cập plugin manager page](image-3.png)
 
 Tiếp theo, bạn ấn nút **`Add new`** để mở hộp thoại thêm plugin.
 
 ![Mở hộp thoại thêm mới plugin](image-4.png)
 
-  ✏️ **Sử dụng tên plugin**: 
+  ✏️ **Sử dụng tên plugin**:
+
   - Nhập tên plugin _**[@dtu-olp-2024/vietqr-nocobase](https://www.npmjs.com/package/@dtu-olp-2024/vietqr-nocobase)**_ vào ô nhập **`Npm package name`**.
 
 ![Điền tên plugin vào Npm package name](image-33.png)

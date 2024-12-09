@@ -1,10 +1,10 @@
 # Progress NocoBase Plugin
 
 ## 🌟 Giới Thiệu
-_**@olp-dtu-2024/progress-nocobase**_ là một plugin dành cho nền tảng **NocoBase**, tích hợp **Progress Bar** từ **Ant Design**, giúp đơn giản hóa việc hiển thị tiến độ dưới dạng thanh tiến trình trong ứng dụng của bạn. Plugin này giúp bạn dễ dàng theo dõi và hiển thị tiến độ công việc, tải dữ liệu, hoặc bất kỳ quá trình nào trong ứng dụng NocoBase.
+_**[@dtu-olp-2024/progress-nocobase](https://www.npmjs.com/package/@dtu-olp-2024/progress-nocobase)**_ là một plugin dành cho nền tảng **NocoBase**, tích hợp **Progress Bar** từ **Ant Design**, giúp đơn giản hóa việc hiển thị tiến độ dưới dạng thanh tiến trình trong ứng dụng của bạn. Plugin này giúp bạn dễ dàng theo dõi và hiển thị tiến độ công việc, tải dữ liệu, hoặc bất kỳ quá trình nào trong ứng dụng NocoBase.
 
 ### 🏆 Bối Cảnh
-Plugin được phát triển như một phần của **cuộc thi Mã Nguồn Mở 2024**, với mục tiêu cải thiện trải nghiệm người dùng và tối ưu hóa các giao diện hiển thị tiến độ trong các ứng dụng NocoBase.
+Plugin được phát triển như một phần của cuộc thi **Mã Nguồn Mở 2024**, với mục tiêu cải thiện trải nghiệm người dùng và tối ưu hóa các giao diện hiển thị tiến độ trong các ứng dụng NocoBase.
 
 ## ✨ Tính Năng
 - 🔗 **Tích hợp dễ dàng Ant Design Progress với NocoBase**: Bạn có thể nhanh chóng thêm thanh tiến trình vào ứng dụng của mình mà không cần cấu hình phức tạp.
