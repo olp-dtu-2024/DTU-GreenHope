@@ -7,12 +7,19 @@ interface Difference {
   database?: string | number;
 }
 
-interface Mismatch {
+interface MismatchWithDifferences {
   transaction_code: string;
   differences: {
     [key: string]: Difference;
   };
 }
+
+interface MismatchWithError {
+  transaction_code: string;
+  error: string;
+}
+
+type Mismatch = MismatchWithDifferences | MismatchWithError;
 
 const formatDifferences = (differences: { [key: string]: Difference }) => {
   return Object.entries(differences)
@@ -21,6 +28,14 @@ const formatDifferences = (differences: { [key: string]: Difference }) => {
       return `   - ${type} không khớp: Blockchain: ${diff.blockchain}${dbValue}`;
     })
     .join('\n');
+};
+
+const formatMismatch = (mismatch: Mismatch) => {
+  if ('error' in mismatch) {
+    return `   - ${mismatch.error}`;
+  }
+
+  return formatDifferences(mismatch.differences);
 };
 
 export const CompareButton = () => {
@@ -68,13 +83,13 @@ export const CompareButton = () => {
 
       const alertMessage = mismatches
         .map((mismatch, index) => {
-          if (!mismatch?.transaction_code || !mismatch?.differences) {
+          if (!mismatch?.transaction_code) {
             return null;
           }
 
           return (
             `${index + 1}. Giao dịch: ${mismatch.transaction_code}\n` +
-            formatDifferences(mismatch.differences)
+            formatMismatch(mismatch)
           );
         })
         .filter(Boolean)
@@ -95,12 +110,19 @@ export const CompareButton = () => {
               {mismatches.map((mismatch, index) => (
                 <div key={index}>
                   <strong>{`${index + 1}. Giao dịch: ${mismatch.transaction_code}`}</strong>
-                  {Object.entries(mismatch.differences).map(
-                    ([type, diff]: [string, Difference], i) => (
-                      <div key={i} style={{ marginLeft: 20 }}>
-                        • {type}: Blockchain = {diff.blockchain}
-                        {diff.database && `, Database = ${diff.database}`}
-                      </div>
+                  {'error' in mismatch ? (
+                    <div style={{ marginLeft: 20 }}>• {mismatch.error}</div>
+                  ) : (
+                    Object.entries(mismatch.differences).map(
+                      ([type, diff], i) => {
+                        const typedDiff = diff as Difference;
+                        return (
+                          <div key={i} style={{ marginLeft: 20 }}>
+                            • {type}: Blockchain = {typedDiff.blockchain}
+                            {typedDiff.database && `, Database = ${typedDiff.database}`}
+                          </div>
+                        );
+                      }
                     )
                   )}
                 </div>
@@ -112,6 +134,7 @@ export const CompareButton = () => {
         });
       }
     } catch (error) {
+      message.destroy();
       message.error({
         content: `Có lỗi xảy ra khi kiểm tra giao dịch: ${error.message}`,
         key: messageKey,
