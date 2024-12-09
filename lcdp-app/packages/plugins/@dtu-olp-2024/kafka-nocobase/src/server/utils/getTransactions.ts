@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-
 interface Transaction {
   transaction_code: string;
   amount: number;
@@ -18,31 +17,48 @@ export const getTransaction = async (config: {
     const ethersProvider = new ethers.JsonRpcProvider(provider);
     const contract = new ethers.Contract(contractAddress, abi, ethersProvider);
 
-    // First check if method exists
     if (!contract.getAllTransactions) {
       throw new Error('Contract does not have getAllTransactions method');
     }
 
-    const transactions = await contract.getAllTransactions();
+    const [txCodes, amounts, directions, datetimes] =
+      await contract.getAllTransactions();
 
-    if (!transactions || transactions === '0x') {
-      console.warn('No transactions found');
+    if (
+      !Array.isArray(txCodes) ||
+      !Array.isArray(amounts) ||
+      !Array.isArray(directions) ||
+      !Array.isArray(datetimes)
+    ) {
+      console.warn('Invalid response format from contract');
       return [];
     }
 
-    if (!Array.isArray(transactions)) {
-      console.warn('Invalid response format:', transactions);
+    const length = txCodes.length;
+    if (
+      length !== amounts.length ||
+      length !== directions.length ||
+      length !== datetimes.length
+    ) {
+      console.warn('Mismatched array lengths in response');
       return [];
     }
 
-    const mappedTransactions = transactions.map((tx) => ({
-      transaction_code: tx[0] || '',
-      amount:
-        typeof tx[1] === 'bigint' ? Number(tx[1]) : parseInt(tx[1] || '0'),
-      direction: tx[2] || '',
-      datetime:
-        typeof tx[3] === 'bigint' ? Number(tx[3]) : parseInt(tx[3] || '0'),
-    }));
+    const mappedTransactions: Transaction[] = Array.from(
+      { length },
+      (_, i) => ({
+        transaction_code: txCodes[i]?.toString() || '',
+        amount:
+          typeof amounts[i] === 'bigint'
+            ? Number(amounts[i])
+            : parseInt(amounts[i]?.toString() || '0'),
+        direction: directions[i]?.toString() || '',
+        datetime:
+          typeof datetimes[i] === 'bigint'
+            ? Number(datetimes[i])
+            : parseInt(datetimes[i]?.toString() || '0'),
+      })
+    );
 
     return mappedTransactions;
   } catch (error) {
