@@ -60,11 +60,134 @@ Hệ thống kết hợp các công nghệ hiện đại để đảm bảo minh
    - Giải pháp năng lượng xanh
    - Mô hình kinh tế tuần hoàn
 
+## 🔧 Hướng dẫn cài đặt
+
+### 🛠 Công cụ cần thiết
+
+- [Docker](https://www.docker.com/products/docker-desktop/) - Công cụ đóng gói phần mềm
+
+## 📥 Tải mã nguồn về máy
+
+  Mở terminal (bash) và thực hiện một trong hai lệnh sau:
+
+  ```bash
+    git clone https://github.com/olp-dtu-2024/DTU-GreenHope.git
+    # hoặc
+    git clone git@github.com:olp-dtu-2024/DTU-GreenHope.git
+  ```
+
+### 💁 Cho production
+
+#### 1️⃣ Cài đặt môi trường Docker cho dự án
+
+  Mở terminal tại thư mục tổng của dự án
+  
+  ```bash
+    yarn docker:release
+```
+
+  > ***⚠️ Lưu ý***: kiểm tra tất cả các tác vụ trong **_Container_** đã chạy được hết như hình sau:
+
+  ![Docker release](image-1.png)
+
+#### 2️⃣ Khởi chạy dự án
+
+Tại Container của dự án, bạn chọn và mở **`lcdp-dtu-2024`**
+
+### 💻 Cho development
+
+#### 1️⃣ Cài đặt môi trường Docker cho dự án
+
+Mở terminal tại thư mục tổng của dự án
+  
+  ```bash
+    yarn docker:build
+```
+
+  > ***⚠️ Lưu ý***: kiểm tra tất cả các tác vụ trong **_Container_** đã chạy được hết như hình sau:
+
+  <!-- ![Docker release](image-1.png) -->
+
+#### 2️⃣ Cài đặt thư viện
+
+**Bước 1: Cài đặt thư viện cho dự án**:
+
+- Mở terminal ở thư mục tổng chạy lệnh sau:
+  
+```bash
+    yarn install
+```
+
+**Bước 2: Cài đặt thư viện nocobase**:
+
+- Mở terminal ở thư mục tổng chạy lệnh sau:
+  
+```bash
+    cd lcdp-app
+    yarn install
+```
+
+**Bước 3: Cài đặt thư viện cho transaction service**:
+
+- Mở terminal ở thư mục tổng chạy lệnh sau:
+  
+```bash
+    cd transaction-service
+    yarn install
+```
+
+**Bước 4: Cài đặt thư viện cho solidity service**:
+
+- Mở terminal ở thư mục tổng chạy lệnh sau:
+  
+```bash
+    cd solidity-service
+    yarn install
+```
+
+#### 3️⃣ Cài dữ liệu dự án
+
+- Mở terminal ở thư mục tổng chạy lệnh sau:
+  
+```bash
+    cd lcdp-app
+    yarn lcdp:restore
+```
+
+#### 4️⃣ Khởi chạy dự án
+
+**Bước 1: Khởi chạy nocobase**:
+
+- Mở terminal ở thư mục tổng chạy lệnh sau:
+  
+```bash
+    cd lcdp-app
+    yarn dev
+```
+
+**Bước 2: Khởi chạy transaction service**:
+
+- Mở terminal ở thư mục tổng chạy lệnh sau:
+  
+```bash
+    cd transaction-service
+    yarn dev
+```
+
+**Bước 3: Khởi chạy solidity service**:
+
+- Mở terminal ở thư mục tổng chạy lệnh sau:
+  
+```bash
+    cd solidity-service
+    yarn dev
+```
+
+## 🎠 Hướng dẫn sử dụng
+
 ## 🌿 Kỳ vọng tương lai
 
 Chúng tôi hướng đến việc kết hợp thêm các công nghệ bền vững, hỗ trợ AI để tối ưu cứu trợ và giúp đỡ cộng đồng trong thời gian thực. Cùng nhau, chúng ta xây dựng một thế giới tốt đẹp hơn!
-
-
 
 ## 👩‍🏫 Giảng viên hướng dẫn
 
