@@ -1,3 +1,8 @@
+## 12/09/2024 - 15h24
+* **Cập nhật Giấy phép (License)** cho tất cả các gói phần mềm trong dự án.
+* **Cập nhật tài liệu (docs)**, bao gồm các hướng dẫn và thông tin liên quan đến cấu hình và sử dụng dự án.
+* **Cập nhật hình ảnh kiến trúc (architecture image)**, làm rõ cấu trúc hệ thống và các thành phần trong dự án.
+* **Fix**: Đồng bộ hóa cơ sở dữ liệu từ dịch vụ phát hành vào dịch vụ phát triển.
 
 ## 12/09/2024 - 14h49
 * Fix: Đồng bộ hóa cơ sở dữ liệu từ dịch vụ phát hành vào dịch vụ phát triển bởi @auroraphtgrp01 trong [Pull Request #33](https://github.com/olp-dtu-2024/DTU-GreenHope/pull/33)
