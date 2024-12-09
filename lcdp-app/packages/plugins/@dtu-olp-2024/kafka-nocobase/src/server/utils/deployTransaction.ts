@@ -10,7 +10,12 @@ export const deployTransaction = async (
     provider: string;
     private_key: string;
   },
-  data?: any[]
+  data?: {
+    transaction_id: string,
+    direction: string,
+    receiveAmount: number,
+    transferAmount: number,
+  }[]
 ) => {
   const { abi, contractAddress, private_key, provider } = config;
   console.warn(provider);
