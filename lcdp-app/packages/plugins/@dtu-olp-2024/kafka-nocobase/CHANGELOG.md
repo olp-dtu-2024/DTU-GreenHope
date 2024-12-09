@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.6] - 2024-12-07
+### Fixed
+- Handle event check transaction
+
 All notable changes to this project will be documented in this file.
 
 ## [1.2.6] - 2024-12-07
