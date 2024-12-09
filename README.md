@@ -1,8 +1,29 @@
-# 🌱 Hi Vọng Xanh: Nền Tảng Hỗ Trợ Sau Thiên Tai
+<div align="center">
+  <img src="docs/resources/logo.png" alt="Hi Vọng Xanh Logo" width="200"/>
+  
+  # Hi Vọng Xanh 🌱 
+  ### Nền Tảng Hỗ Trợ Sau Thiên Tai
 
-> *"🤝 Kết nối yêu thương, kiến tạo tương lai bền vững 🌿"*
+  > *"🤝 Kết nối yêu thương, kiến tạo tương lai bền vững 🌿"*
 
-[![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)](LICENSE)
+  [![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)](LICENSE)
+
+  <a href="https://dz.minhtuandng.id.vn">
+    <img src="https://img.shields.io/badge/🚀_Demo-Hi_Vọng_Xanh-00C853?style=for-the-badge" alt="Demo System"/>
+  </a>
+  
+  <a href="http://green-hope.minhtuandng.id.vn/docs/intro">
+    <img src="https://img.shields.io/badge/📚_Docs-Hi_Vọng_Xanh-1976D2?style=for-the-badge" alt="Documentation"/>
+  </a>
+     <a href="https://www.youtube.com/watch?v=3wavVUV8V9M">
+    <img src="https://img.shields.io/badge/📚_Video-Demo-1976D2?style=for-the-badge" alt="Documentation"/>
+  </a>
+
+  [📖 Tài Liệu](http://green-hope.minhtuandng.id.vn/docs/intro) • 
+  [🚀 Demo](https://dz.minhtuandng.id.vn) • 
+  [🤝 Đóng Góp](CONTRIBUTING.md) • 
+  [📜 Changelog](CHANGELOG.md)
+</div>
 
 ## 📋 Tổng Quan
 
@@ -53,7 +74,8 @@ Dự án tập trung vào việc xây dựng một nền tảng toàn diện, k�
 - 🧶 Yarn phiên bản 1.2.1 (Yêu cầu bởi Nocobase)
 - 🌳 Git
 
-## ℹ️ Ghi Chú Quan Trọng
+
+## 📝 Ghi Chú Quan Trọng
 
 > **Lưu ý về NocoBase và Yarn Workspace:**
 >
@@ -65,9 +87,10 @@ Dự án tập trung vào việc xây dựng một nền tảng toàn diện, k�
 >   - Thay đổi trường `private` từ `false` thành `true`
 >   - Sau đó có thể tiếp tục phát triển bình thường
 
-### 📥 Hướng Dẫn Cài Đặt Chi Tiết
+## 📥 Hướng Dẫn Cài Đặt Chi Tiết
 
 #### 🏭 Môi Trường Production
+#### [Hướng dẫn sử dụng bằng video](https://www.youtube.com/watch?v=eQz5lOKj9n0)
 ```bash
 # Tải mã nguồn về
 git clone https://github.com/olp-dtu-2024/DTU-GreenHope.git
@@ -85,6 +108,7 @@ yarn docker:release
 **🔐 Thông tin đăng nhập mặc định:**
 - 👤 Tài khoản: `admin@nocobase.com`
 - 🔑 Mật khẩu: `admin123`
+
 
 ### 💻 Môi Trường Development
 
@@ -135,6 +159,27 @@ cd DTU-GreenHope/captcha-service
 pip install -r requirements.txt
 python app.py
 ```
+
+## 🔐 Kết nối metamask với provider Ganache:**
+### Mở metamask và tạo mới mạng local với thông tin
+- Network name: Ganache Local
+- Default RPC URL: http://localhost:8545
+- Chain Id: 1337
+- Currency symbol: ETH
+  
+**🔐 Thông tin các địa chỉ ví trên Ganache:**
+| Account Address                                         | Private Key                                                                                       |
+|---------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| 0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1             | 0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d                         |
+| 0xFFcf8FDEE72ac11b5c542428B35EEF5769C409f0             | 0x6cbed15c793ce57650b9877cf6fa156fbef513c4e6134f022a85b1ffdd59b2a1                         |
+| 0x22d491Bde2303f2f43325b2108D26f1eAbA1e32b             | 0x6370fd033278c143179d81c5526140625662b8daa446c22ee2d73db3707e620c                         |
+| 0xE11BA2b4D45Eaed5996Cd0823791E0C93114882d             | 0x646f1ce2fdad0e6deeeb5c7e8e5543bdde65e86029e2fd9fc169899c440a7913                         |
+| 0xd03ea8624C8C5987235048901fB614fDcA89b117             | 0xadd53f9a7e588d003326d1cbf9e4a43c061aadd9bc938c843a79e7b4fd2ad743                         |
+| 0x95cED938F7991cd0dFcb48F0a06a40FA1aF46EBC             | 0x395df67f0c2d2d9fe1ad08d1bc8b6627011959b79c53d7dd6a3536a33ab8a4fd                         |
+| 0x3E5e9111Ae8eB78Fe1CC3bb8915d5D461F3Ef9A9             | 0xe485d098507f54e7733a205420dfddbe58db035fa577fc294ebd14db90767a52                         |
+| 0x28a8746e75304c0780E011BEd21C72cD78cd535E             | 0xa453611d9419d0e56f499079478fd72c37b251a94bfde4d19872c44cf65386e3                         |
+| 0xACa94ef8bD5ffEE41947b4585a84BdA5a3d3DA6E             | **0x829e924fdf021ba3dbbc4225edfece9aca04b929d6e75613329ca6f1d31c0bb4**                         |
+| 0x1dF62f291b2E969fB0849d99D9Ce41e2F137006e             | 0xb0057716d5917badaf911b193b12b910811c1497b5bada8d7711f758981c3773                         |
 ## 🔌 Phát Triển Plugin Mới
 ```bash
 # Tạo plugin mới
