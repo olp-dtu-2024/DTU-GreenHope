@@ -2,204 +2,244 @@
 
 > *"🤝 Kết nối yêu thương, kiến tạo tương lai bền vững 🌿"*
 
-## 📋 Tổng quan
+[![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)](LICENSE)
 
-Hi Vọng Xanh là một nền tảng tiên tiến hỗ trợ sau thiên tai, được thiết kế để kết nối cộng đồng, quản lý cứu trợ và mang lại hy vọng mới cho những vùng bị ảnh hưởng bởi thiên tai.
-Hệ thống kết hợp các công nghệ hiện đại để đảm bảo minh bạch, hiệu quả, và tốc độ trong việc triển khai cứu trợ.
+## 📋 Tổng Quan
 
-## 💫 Giá trị cốt lõi
+**Hi Vọng Xanh** là một *mã nguồn mở*, được phát triển bởi đội **DTU_DZ1** đến từ Đại học Duy Tân để tham gia cuộc thi Olympic Tin học Sinh viên - Mã nguồn mở năm 2024. Dự án được thiết kế trong lĩnh vực hỗ trợ sau thiên tai, với các mục tiêu:
 
-1. **🔍 Minh bạch** - Hỗ trợ sao kê giao dịch
-2. **⚡ Hiệu quả** - Tối ưu hóa quy trình phân phối cứu trợ bằng AI
-3. **🌱 Bền vững** - Phát triển các giải pháp dài hạn cho cộng đồng
-4. **🚀 Đổi mới** - Không ngừng cải tiến công nghệ và phương pháp tiếp cận
+- 🔗 **Kết nối** cộng đồng một cách hiệu quả
+- 📊 **Quản lý** nguồn lực cứu trợ một cách chuyên nghiệp
+- 💡 **Mang lại hy vọng** cho những vùng bị ảnh hưởng
+- 📝 **Minh bạch** dữ liệu giao dịch trong ủng hộ
+
+Dự án tập trung vào việc xây dựng một nền tảng toàn diện, kết hợp công nghệ hiện đại như Blockchain, AI và xử lý dữ liệu thời gian thực để tạo ra một hệ sinh thái hỗ trợ thiên tai minh bạch và hiệu quả.
 
 ## 🏗️ Kiến trúc hệ thống
 
 ![s](docs/resources/LCDP-Architecture.png)
 
-### 💻 Công nghệ nền tảng
+### 💻 Công Nghệ Nền Tảng
 
-| Công nghệ | Chức năng | Ưu điểm |
-|-----------|-----------|----------|
-| 📱 TypeScript & NestJS | Phát triển backend | Độ tin cậy cao, khả năng mở rộng linh hoạt |
-| 🤖 Python & TensorFlow | Xử lý AI/ML | Nhận diện nhanh vùng thiên tai qua ảnh vệ tinh |
-| 📊 PostgreSQL & TimescaleDB | Quản lý dữ liệu thời gian thực | Hiệu suất cao, phân tích dữ liệu chuyên sâu |
-| 🔗 NocoBase |	Triển khai hệ thống LCDP để quản lý cấu hình và hỗ trợ phát triển nhanh. | Phát triển ứng dụng nhanh, hiệu năng vượt trội
-| 📡 Apache Kafka | Message Queue | Xử lý realtime, khả năng chịu tải cao |
-| 🔄 Redis | Cache & Queue | Tối ưu hiệu năng, giảm tải database |
+| 🛠️ Công Nghệ | 🎯 Chức Năng | 🌟 Ưu Điểm |
+|--------------|--------------|-------------|
+| TypeScript & NestJS | Phát triển backend | Độ tin cậy cao, khả năng mở rộng linh hoạt | Xử lý AI/ML | Nhận diện nhanh vùng thiên tai qua ảnh vệ tinh |
+| PostgreSQL & TimescaleDB | Quản lý dữ liệu thời gian thực | Hiệu suất cao, phân tích chuyên s��u |
+| NocoBase | Quản lý cấu hình và hỗ trợ phát triển | Phát triển ứng dụng nhanh, hiệu năng vượt trội |
+| Apache Kafka | Message Queue | Xử lý realtime, khả năng chịu tải cao |
+| Redis | Cache & Queue | Tối ưu hiệu năng, giảm tải database |
+| Ganache | Local Ethereum Blockchain | Phát triển và kiểm thử smart contract |
 
-### 🔧 Các module chính
+## 🔧 Các Module Chính
 
-1. **🎯 Module Nhận diện thiên tai**
-   - Phân tích ảnh vệ tinh theo thời gian thực
-   - Đánh giá mức độ thiệt hại tự động
-   - Dự báo nhu cầu cứu trợ
+#### 1. 🎯 Module Nhận Diện Thiên Tai
+- 🔍 Phân tích ảnh theo thời gian thực
+- 🚁 Tìm kiếm người gặp nạn trong thiên tai
+- 🤖 Nhận diện kịp thời con người và động vật
 
-2. **💰 Module Quản lý nguồn lực**
-   - Theo dõi phân phối hàng cứu trợ
-   - Báo cáo tác động theo thời gian thực
-   - Quản lý nguồn lực cộng đồng
+#### 2. 💰 Module Sao Kê Giao Dịch
+- 📊 Theo dõi các giao dịch cứu trợ
+- 🕒 Báo cáo theo thời gian thực
+- 🏗️ Quản lý nguồn lực xây dựng cứu trợ
 
-3. **🤝 Module Kết nối cộng đồng**
-   - Nền tảng tình nguyện viên
-   - Hệ thống điều phối cứu trợ
-   - Mạng lưới hỗ trợ địa phương
+#### 3. 🤝 Module Blockchain
+- ⛓️ Mạng lưới blockchain để lưu trữ dữ liệu giao dịch
+- 🔄 Sao kê, so sánh dữ liệu giữa database với blockchain
 
-## 📊 Nghiên cứu & Phát triển
+## 🔧 Yêu Cầu Hệ Thống
 
-### 🔬 Các lĩnh vực nghiên cứu
+### 🛠️ Phần Mềm Bắt Buộc
+- 🐳 Docker Desktop - [Tải tại đây](https://www.docker.com/products/docker-desktop/)
+- 🧶 Yarn phiên bản 1.2.1 (Yêu cầu bởi Nocobase)
+- 🌳 Git
 
-1. **🧠 Trí tuệ nhân tạo trong cứu trợ**
-   - Dự đoán nhu cầu cứu trợ
-   - Tối ưu hóa lộ trình phân phối
-   - Phân tích dữ liệu cộng đồng
+## ℹ️ Ghi Chú Quan Trọng
 
-2. **🌍 Phát triển bền vững**
-   - Đánh giá tác động môi trường
-   - Giải pháp năng lượng xanh
-   - Mô hình kinh tế tuần hoàn
+> **Lưu ý về NocoBase và Yarn Workspace:**
+>
+> - Nocobase ([Tài liệu chính thức](https://docs.nocobase.com/welcome/getting-started/installation/create-nocobase-app)) yêu cầu Yarn phiên bản 1.22.x
+> - Yarn 1.22.x không hỗ trợ workspace public
+> - Vì đây là dự án mã nguồn mở, chúng tôi đã để `private = false` trong `lcdp-app/package.json`
+> - Để phát triển tiếp dự án, bạn cần:
+>   - Mở file `lcdp-app/package.json`
+>   - Thay đổi trường `private` từ `false` thành `true`
+>   - Sau đó có thể tiếp tục phát triển bình thường
 
-## 🔧 Hướng dẫn cài đặt
+### 📥 Hướng Dẫn Cài Đặt Chi Tiết
 
-### 🛠 Công cụ cần thiết
+#### 🏭 Môi Trường Production
+```bash
+# Tải mã nguồn về
+git clone https://github.com/olp-dtu-2024/DTU-GreenHope.git
 
-- [Docker](https://www.docker.com/products/docker-desktop/) - Công cụ đóng gói phần mềm
+# Di chuyển vào thư mục dự án
+cd DTU-GreenHope
 
-## 📥 Tải mã nguồn về máy
+# Cài đặt các gói phụ thuộc
+yarn install
 
-  Mở terminal (bash) và thực hiện một trong hai lệnh sau:
+# Khởi chạy docker cho môi trường production
+yarn docker:release
+```
 
+**🔐 Thông tin đăng nhập mặc định:**
+- 👤 Tài khoản: `admin@nocobase.com`
+- 🔑 Mật khẩu: `admin123`
+
+### 💻 Môi Trường Development
+
+#### Bước 1: Cài đặt dự án
+```bash
+# Tải mã nguồn về
+cd DTU-GreenHope
+yarn install
+yarn docker:build
+```
+
+#### Bước 2: Cài Đặt LCDP App (NocoBase)
+```bash
+# Cài đặt và cấu hình NocoBase
+cd DTU-GreenHope/lcdp-app
+# Mở file package.json và thay đổi trường private từ false thành true
+yarn install
+yarn nocobase install --lang=en-US
+yarn lcdp:restore
+yarn dev
+```
+Máy chủ phát triển sẽ chạy tại: http://localhost:13000
+#### Bước 3: Cài đặt transaction service
+```bash
+# Cài đặt dự án
+cd DTU-GreenHope/transaction-service
+yarn install
+yarn dev
+```
+#### Bước 4: Cài đặt solidity service
+```bash
+# Cài đặt dự án
+cd DTU-GreenHope/solidity-service
+yarn install
+yarn dev
+```
+#### Bước 5: Cài đặt recognition service
+```bash
+# Cài đặt dự án
+cd DTU-GreenHope/recognition-service
+pip install -r requirements.txt
+python app.py
+```
+#### Bước 6: Cài đặt captcha service
+```bash
+# Cài đặt dự án
+cd DTU-GreenHope/captcha-service
+pip install -r requirements.txt
+python app.py
+```
+## 🔌 Phát Triển Plugin Mới
+```bash
+# Tạo plugin mới
+yarn pm create @<tên-namespace>/<tên-package>
+
+# Ví dụ
+yarn pm create @greenhope/theo-doi-thien-tai
+```
+
+## 🔗 Cấu Hình Ports
+
+| 🚦 Dịch Vụ | 🏭 Ports Production | 💻 Ports Development | 📝 Mô Tả |
+|------------|:-------------------:|:-------------------:|-----------|
+| 📦 LCDP NOCOBASE | `12000:12000` | `13000` | Nền tảng ứng dụng chính |
+| 🤖 Recognition Service | `8001:8001` | `8001` | Dịch vụ nhận diện |
+| 💱 Transaction Service | `3027:3027` | `3027` | Trung tâm xử lý giao dịch |
+| 🔗 Solidity Service | `3029:3029` | `3029` | Tương tác hợp đồng blockchain |
+| 🛡️ Captcha Service | `1234:1234` | `1234` | Hệ thống xác minh giải mã |
+| 📡 Kafka | `9092:9092` <br> `9093:9093` | `9092` <br> `9093` | Nền tảng streaming phân tán |
+| 💾 Redis | `6444:6379` | `6444` | Kho dữ liệu trong bộ nhớ |
+| 🗃️ PostgreSQL | `5439:5432` | `5439` | Hệ quản trị cơ sở dữ liệu |
+| ⛓️ Ganache | `8545:8545` | `8545` | Blockchain Ethereum cục bộ |
+| 🌳 Zookeeper | `2181:2181` | `2181` | Quản lý tin nhắn Kafka |
+
+## 📦 Các Package Phát Triển Trong Nền Tảng
+- [@dtu-olp-2024/carousel-nocobase](https://www.npmjs.com/package/@dtu-olp-2024/carousel-nocobase)
+- [@dtu-olp-2024/kafka-nocobase](https://www.npmjs.com/package/@dtu-olp-2024/kafka-nocobase)
+- [@dtu-olp-2024/progress-nocobase](https://www.npmjs.com/package/@dtu-olp-2024/progress-nocobase)
+- [@dtu-olp-2024/rich-block-nocobase](https://www.npmjs.com/package/@dtu-olp-2024/rich-block-nocobase)
+- [@dtu-olp-2024/vietqr-nocobase](https://www.npmjs.com/package/@dtu-olp-2024/vietqr-nocobase)
+- [@dtu-olp-2024/landing-page](https://www.npmjs.com/package/@dtu-olp-2024/landing-page)
+- [@dtu-olp-2024/solidity-editor-nocobase](https://www.npmjs.com/package/@dtu-olp-2024/solidity-editor-nocobase)
+- [@dtu-olp-2024/video-player-nocobase](https://www.npmjs.com/package/@dtu-olp-2024/video-player-nocobase)
+## 🤝 Đóng Góp Cho Dự Án
+
+### 🌱 Quy Trình Đóng Góp
+
+1. **Fork Repository**
+```bash
+# Fork repository trên GitHub
+# Clone về máy local
+git clone https://github.com/<your-username>/DTU-GreenHope.git
+cd DTU-GreenHope
+```
+2. Tạo Branch Mới
+```bash
+# Tạo và chuyển sang branch mới
+git checkout -b feat/<new-feature>
+
+# Ví dụ
+git checkout -b feat/disaster-tracking
+```
+3. Commit Thay Đổi
+```bash
+# Thêm file đã thay đổi
+git add .
+
+# Commit với message rõ ràng
+git commit -m "feat: add disaster tracking module"
+```
+4. Push Branch
   ```bash
-    git clone https://github.com/olp-dtu-2024/DTU-GreenHope.git
-    # hoặc
-    git clone git@github.com:olp-dtu-2024/DTU-GreenHope.git
-  ```
-
-### 💁 Cho production
-
-#### 1️⃣ Cài đặt môi trường Docker cho dự án
-
-  Mở terminal tại thư mục tổng của dự án
-  
-  ```bash
-    yarn docker:release
+  # Push lên repository của bạn
+git push -u origin feat/<new-feature>
 ```
+5. Tạo Pull Request
+- Truy cập repository gốc tại GitHub
+- Chọn "New Pull Request"
+- Chọn branch của bạn để merge
+- Điền thông tin mô tả chi tiết
 
-  > ***⚠️ Lưu ý***: kiểm tra tất cả các tác vụ trong **_Container_** đã chạy được hết như hình sau:
+📝 Lưu ý: Vui lòng đọc kỹ [git-flow.md](git-flow.md) để hiểu rõ về quy trình làm việc với Git trong dự án.
+## 👥 Người Hướng Dẫn
 
-  ![Docker release](image-1.png)
 
-#### 2️⃣ Khởi chạy dự án
+| 👨‍🏫 Vai Trò | 📧 Thông Tin |
+|------------|--------------|
+| Giảng Viên | Nguyễn Quốc Long |
+| Email | quoclongdng@gmail.com |
 
-Tại Container của dự án, bạn chọn và mở **`lcdp-dtu-2024`**
+## 📞 Liên Hệ
 
-### 💻 Cho development
+| 📬 Phương Thức | 📱 Chi Tiết |
+|---------------|-------------|
+| Email | minhtuanledng@gmail.com |
+| Hotline | +84 889 001 505 |
 
-#### 1️⃣ Cài đặt môi trường Docker cho dự án
+## 📜 Changelog
+Xem [CHANGELOG.md](CHANGELOG.md) để biết lịch sử thay đổi.
 
-Mở terminal tại thư mục tổng của dự án
-  
-  ```bash
-    yarn docker:build
-```
+## ⚖️ Quy Tắc Ứng Xử
 
-  > ***⚠️ Lưu ý***: kiểm tra tất cả các tác vụ trong **_Container_** đã chạy được hết như hình sau:
+Dự án này tuân theo bộ quy tắc ứng xử cho cộng đồng. Xem file [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) để biết thêm chi tiết về các quy tắc và hành vi được chấp nhận.
 
-  <!-- ![Docker release](image-1.png) -->
+## 🐛 Báo Cáo Lỗi & Góp Ý
 
-#### 2️⃣ Cài đặt thư viện
+### 📝 Issues
+- Báo cáo lỗi và đề xuất tính năng mới tại [GitHub Issues](https://github.com/olp-dtu-2024/DTU-GreenHope/issues)
 
-**Bước 1: Cài đặt thư viện cho dự án**:
+### 🔒 Bảo Mật
+- Đối với các vấn đề bảo mật nhạy cảm, vui lòng liên hệ trực tiếp qua email: minhtuanledng@gmail.com
 
-- Mở terminal ở thư mục tổng chạy lệnh sau:
-  
-```bash
-    yarn install
-```
+## 📄 Giấy Phép
 
-**Bước 2: Cài đặt thư viện nocobase**:
-
-- Mở terminal ở thư mục tổng chạy lệnh sau:
-  
-```bash
-    cd lcdp-app
-    yarn install
-```
-
-**Bước 3: Cài đặt thư viện cho transaction service**:
-
-- Mở terminal ở thư mục tổng chạy lệnh sau:
-  
-```bash
-    cd transaction-service
-    yarn install
-```
-
-**Bước 4: Cài đặt thư viện cho solidity service**:
-
-- Mở terminal ở thư mục tổng chạy lệnh sau:
-  
-```bash
-    cd solidity-service
-    yarn install
-```
-
-#### 3️⃣ Cài dữ liệu dự án
-
-- Mở terminal ở thư mục tổng chạy lệnh sau:
-  
-```bash
-    cd lcdp-app
-    yarn lcdp:restore
-```
-
-#### 4️⃣ Khởi chạy dự án
-
-**Bước 1: Khởi chạy nocobase**:
-
-- Mở terminal ở thư mục tổng chạy lệnh sau:
-  
-```bash
-    cd lcdp-app
-    yarn dev
-```
-
-**Bước 2: Khởi chạy transaction service**:
-
-- Mở terminal ở thư mục tổng chạy lệnh sau:
-  
-```bash
-    cd transaction-service
-    yarn dev
-```
-
-**Bước 3: Khởi chạy solidity service**:
-
-- Mở terminal ở thư mục tổng chạy lệnh sau:
-  
-```bash
-    cd solidity-service
-    yarn dev
-```
-
-## 🎠 Hướng dẫn sử dụng
-
-## 🌿 Kỳ vọng tương lai
-
-Chúng tôi hướng đến việc kết hợp thêm các công nghệ bền vững, hỗ trợ AI để tối ưu cứu trợ và giúp đỡ cộng đồng trong thời gian thực. Cùng nhau, chúng ta xây dựng một thế giới tốt đẹp hơn!
-
-## 👩‍🏫 Giảng viên hướng dẫn
-
-- 📝 **Name**: Nguyễn Quốc Long
-- 📧 **Email**: quoclongdng@gmail.com
-
----
-
-## 📞 Liên hệ & Kết nối
-
-- 📧 **Email**: minhtuanledng@gmail.com
-- 📱 **Hotline**: +84 889 001 505
+Dự án này được phân phối dưới [GNU General Public License v3.0](LICENSE). Xem file `LICENSE` để biết thêm chi tiết.
 
 ---
 
