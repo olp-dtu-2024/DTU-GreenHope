@@ -1,4 +1,11 @@
-## 12/09/2024
+
+## 12/09/2024 - 14h49
+* Fix: Đồng bộ hóa cơ sở dữ liệu từ dịch vụ phát hành vào dịch vụ phát triển bởi @auroraphtgrp01 trong [Pull Request #33](https://github.com/olp-dtu-2024/DTU-GreenHope/pull/33)
+* Fix: Đồng bộ hóa cơ sở dữ liệu từ dịch vụ phát hành vào dịch vụ phát triển bởi @auroraphtgrp01 trong [Pull Request #34](https://github.com/olp-dtu-2024/DTU-GreenHope/pull/34)
+
+**Changelog đầy đủ**: [https://github.com/olp-dtu-2024/DTU-GreenHope/compare/v1.0.0...v1.0.1](https://github.com/olp-dtu-2024/DTU-GreenHope/compare/v1.0.0...v1.0.1)
+
+## 12/09/2024 - 14h30
 * Cấu hình và thiết lập Plugin bởi @auroraphtgrp01 trong [Pull Request #1](https://github.com/olp-dtu-2024/DTU-GreenHope/pull/1)
 * Thiết lập và cấu hình Plugin bởi @auroraphtgrp01 trong [Pull Request #2](https://github.com/olp-dtu-2024/DTU-GreenHope/pull/2)
 * Cập nhật gói `lcdp-app` và `transaction-service` bởi @auroraphtgrp01 trong [Pull Request #3](https://github.com/olp-dtu-2024/DTU-GreenHope/pull/3)
