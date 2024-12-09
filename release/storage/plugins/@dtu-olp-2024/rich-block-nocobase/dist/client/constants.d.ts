@@ -1,2 +1,2 @@
-export declare const BlockName = "Header Picker";
+export declare const BlockName = "Rich";
 export declare const BlockNameLowercase: string;

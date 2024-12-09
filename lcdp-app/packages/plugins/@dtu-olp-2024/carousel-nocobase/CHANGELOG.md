@@ -2,19 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.2] - 2024-03-20
+## [1.0.3] - 2024-12-08
+
+### Fixed
+- Add button action to list component
+
+## [1.0.2] - 2024-11-28
 
 ### Fixed
 - Plugin registration error from npm registry
 
-## [1.0.1] - 2024-03-20
+## [1.0.1] - 2024-11-28
 
 ### Fixed
 - Installation hook for plugin initialization
 - Plugin registration sequence during install phase
 - ACL permissions setup during installation
 
-## [1.0.0] - 2024-03-15
+## [1.0.0] - 2024-11-26
 
 ### Added
 - Initial Kafka core implementation
