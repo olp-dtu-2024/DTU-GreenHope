@@ -1,6 +1,6 @@
 # Giới thiệu về dự án 🚀
 
-![s](../resources/GreenHope.png)
+![s](../resources/greenhope.png)
 
 > *"🤝 Kết nối yêu thương, kiến tạo tương lai bền vững 🌿"*
 
