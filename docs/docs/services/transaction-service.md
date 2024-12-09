@@ -1,22 +1,85 @@
-# 💱 Transaction service
-**`Transaction service` service gửi thông báo giao dịch: Đây là service chịu trách nhiệm thu thập thông tin giao dịch từ hệ thống ngân hàng (có thể từ cơ sở dữ liệu, API, hoặc các hệ thống giao dịch khác) và gửi dữ liệu vào Kafka topic. Dữ liệu có thể là thông tin đơn giản như số tài khoản, số tiền, thời gian giao dịch, hoặc dữ liệu phức tạp hơn tùy vào yêu cầu.**
-## Quản lý Giao Dịch trong Hệ Thống Phân Tán
-Transaction service giúp điều phối các giao dịch trên nhiều hệ thống, đồng thời đảm bảo các đặc tính ACID (Atomicity, Consistency, Isolation, Durability) của giao dịch. Điều này có thể được thực hiện qua các công nghệ như:
-- Two-phase commit (2PC): Một giao thức để đảm bảo tính nhất quán của giao dịch giữa các hệ thống phân tán.
-- Distributed Transaction Protocols: Các giao thức phức tạp hơn được sử dụng trong các hệ thống phân tán lớn.
+# 💱 Dịch Vụ Giao Dịch (Transaction Service)
 
-## Các Thành Phần Chính Của Transaction Service
-Một dịch vụ giao dịch có thể bao gồm các thành phần sau:
+## 📝 Tổng Quan
+Dịch vụ Giao dịch (Transaction Service) là thành phần cốt lõi trong hệ thống Hi Vọng Xanh, chịu trách nhiệm xử lý các giao dịch cứu trợ và quản lý dòng tiền. Được xây dựng trên nền tảng TypeScript và NestJS, dịch vụ này tích hợp nhiều công nghệ hiện đại nhằm đảm bảo tính minh bạch, hiệu quả và an toàn cho tất cả các giao dịch.
 
-- Transaction Manager: Quản lý quá trình giao dịch, đảm bảo tất cả các bước trong giao dịch được thực hiện chính xác và hoàn tất.
-- Transactional Resources: Các tài nguyên như cơ sở dữ liệu, hệ thống file, dịch vụ web mà giao dịch có thể tác động đến.
-- Logging/Recovery System: Một hệ thống để ghi lại tất cả các thay đổi trong giao dịch, giúp khôi phục trạng thái của hệ thống nếu có sự cố xảy ra.
-## Các Kiểu Giao Dịch
-- Giao dịch đơn: Một giao dịch đơn giản, bao gồm các thao tác trên một hệ thống duy nhất.
-- Giao dịch liên hệ (Chained transactions): Một loạt các giao dịch phụ thuộc vào nhau, ví dụ, một giao dịch đầu tiên phải thành công để các giao dịch tiếp theo có thể được thực hiện.
-- Giao dịch phân tán: Các giao dịch yêu cầu thực hiện trên nhiều hệ thống hoặc dịch vụ khác nhau.
-## Sử Dụng trong Microservices
-Trong kiến trúc microservices, nơi ứng dụng được chia thành nhiều dịch vụ nhỏ độc lập, mỗi dịch vụ có thể thực hiện giao dịch của riêng mình.  Một số phương pháp để xử lý giao dịch trong microservices bao gồm:
+## 🏗️ Kiến Trúc Chi Tiết
 
-- Event-driven architecture: Thay vì thực hiện một giao dịch toàn cục, hệ thống có thể sử dụng các sự kiện (events) để thông báo về các thay đổi trạng thái giữa các dịch vụ. Mỗi dịch vụ sẽ xử lý sự kiện và thay đổi trạng thái tương ứng.
-- SAGA pattern: Một phương pháp để quản lý giao dịch dài trong các hệ thống phân tán, thông qua việc chia nhỏ giao dịch thành nhiều giao dịch con (subtransactions), mỗi giao dịch con sẽ có thể hoàn tất hoặc hủy bỏ tùy vào tình huống.
+### 1. Các Thành Phần Chính
+- **Transaction Controller**: Xử lý các yêu cầu HTTP liên quan đến giao dịch, đảm bảo tính chính xác và nhanh chóng.
+- **Transaction Service Layer**: Chứa logic nghiệp vụ chính, thực hiện các quy trình giao dịch phức tạp.
+- **Repository Layer**: Tương tác với cơ sở dữ liệu để lưu trữ và truy xuất thông tin.
+- **Event Handlers**: Xử lý các sự kiện từ Kafka, đảm bảo thông tin được truyền tải một cách hiệu quả.
+
+### 2. Sơ Đồ Cơ Sở Dữ Liệu
+- **Transactions**: Lưu trữ thông tin chi tiết về các giao dịch.
+- **Transaction_Logs**: Ghi lại nhật ký giao dịch để theo dõi và kiểm tra.
+- **Relief_Funds**: Quản lý quỹ cứu trợ, đảm bảo nguồn lực được phân bổ hợp lý.
+- **Beneficiaries**: Lưu trữ thông tin về những người nhận cứu trợ.
+
+### 3. Tích Hợp Kafka
+- **Topics**:
+  - `transaction-events`: Chứa các sự kiện liên quan đến giao dịch.
+  - `relief-distribution`: Quản lý quá trình phân phối cứu trợ.
+  - `notification-events`: Thông báo về trạng thái giao dịch và phân phối.
+
+## 🔄 Quy Trình Xử Lý Giao Dịch
+
+### 1. Khởi Tạo Giao Dịch
+- **API Endpoint**: `POST /transactions`
+- Thực hiện xác thực dữ liệu đầu vào và kiểm tra captcha qua Captcha Service để ngăn chặn giao dịch tự động.
+- Tạo bản ghi giao dịch mới trong cơ sở dữ liệu.
+
+### 2. Xử Lý SAGA Pattern   
+1. **Khởi Đầu Giao Dịch**
+   - Khởi tạo một instance của saga để theo dõi tiến trình giao dịch.
+   - Ghi log để theo dõi thời điểm bắt đầu.
+
+2. **Các Bước Thực Hiện**
+   - Kiểm tra số dư tài khoản.
+   - Xác thực danh tính người dùng.
+   - Thực hiện giao dịch và cập nhật trạng thái tương ứng.
+
+3. **Xử Lý Rollback**
+   - Tự động thực hiện rollback khi phát sinh lỗi trong quá trình xử lý.
+   - Ghi log chi tiết để phục vụ cho việc kiểm tra và khắc phục sự cố.
+
+## 🛠️ Tích Hợp Với Các Dịch Vụ Khác
+
+### 1. Captcha Service
+- Đảm bảo xác thực captcha trước mỗi giao dịch để ngăn chặn hoạt động của bot.
+
+### 2. Recognition Service
+- Xác thực thông tin người dùng và phân tích dữ liệu giao dịch nhằm nâng cao độ tin cậy.
+
+### 3. LCDP Service (NocoBase)
+- Quản lý cấu hình hệ thống và tạo báo cáo tự động để theo dõi hiệu suất.
+
+## 📊 Giám Sát & Ghi Nhận
+
+### 1. Metrics
+- Theo dõi thông số hiệu suất như throughput của giao dịch, thời gian phản hồi, tỷ lệ lỗi và tỷ lệ thành công.
+
+### 2. Logging
+- Ghi lại nhật ký yêu cầu/phản hồi, nhật ký lỗi và nhật ký kiểm toán để phục vụ cho việc phân tích sau này.
+
+## 🔐 Bảo Mật
+
+### 1. Xác Thực & Phân Quyền
+- Sử dụng JWT để xác thực người dùng, kết hợp với kiểm soát truy cập dựa trên vai trò (RBAC) và xác thực API key.
+
+### 2. Bảo Mật Dữ Liệu
+- Áp dụng mã hóa dữ liệu khi lưu trữ và truyền tải, đồng thời bảo vệ thông tin cá nhân (PII).
+
+## 🚀 Khả Năng Mở Rộng
+- Hỗ trợ mở rộng ngang với Kubernetes, sử dụng sharding cơ sở dữ liệu và caching với Redis để cải thiện hiệu suất.
+- Cân bằng tải (Load balancing) giúp tối ưu hóa tài nguyên hệ thống.
+
+## 📈 Tối Ưu Hiệu Suất
+- Sử dụng connection pooling, tối ưu hóa truy vấn cơ sở dữ liệu, áp dụng chiến lược caching và xử lý theo lô để nâng cao hiệu suất tổng thể.
+
+## 🔄 Khôi Phục Sau Thảm Họa
+- Thiết lập các chiến lược sao lưu, quy trình chuyển tiếp (failover) và sao chép dữ liệu để đảm bảo tính khả dụng liên tục của hệ thống.
+
+## 📈 Kết Luận
+Dịch vụ Giao dịch đóng vai trò thiết yếu trong việc quản lý và điều phối các hoạt động tài chính trong môi trường phân tán. Với việc áp dụng các công nghệ tiên tiến cùng phương pháp quản lý hiện đại, nó không chỉ đảm bảo tính nhất quán và an toàn cho dữ liệu mà còn tối ưu hóa hiệu suất của toàn bộ hệ thống, góp phần vào sự phát triển bền vững của Hi Vọng Xanh.
