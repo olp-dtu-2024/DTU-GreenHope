@@ -30,6 +30,7 @@ const sidebars: SidebarsConfig = {
         'services/lcdp-service',
         'services/reconition-service',
         'services/transaction-service',
+        'services/solidity-service',
       ],
     },
     {
