@@ -88,3 +88,6 @@ Dịch vụ Giao dịch đóng vai trò thiết yếu trong việc quản lý v�
 - Email: minhtuanledng@gmail.com 
 - Hotline: +84 889 001 505 
 - Website: green-hope.minhtuandng.id.vn
+
+### 📝 License
+Dự án này được cấp phép theo các điều khoản của giấy phép GPL V3 [GPL V3 License](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENSE)

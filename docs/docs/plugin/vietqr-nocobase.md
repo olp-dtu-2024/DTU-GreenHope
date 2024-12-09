@@ -78,6 +78,7 @@ Nếu gặp bất kỳ vấn đề nào, vui lòng:
 - Đảm bảo tương thích với phiên bản NocoBase hiện tại
 - Kiểm tra kết nối và cấu hình trước khi sử dụng
 
-
+### 📝 License
+Dự án này được cấp phép theo các điều khoản của giấy phép GPL V3 [GPL V3 License](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENSE)
 
 *"Được phát triển với ❤️ bởi Nhóm DTU_DZ1 🌟"*

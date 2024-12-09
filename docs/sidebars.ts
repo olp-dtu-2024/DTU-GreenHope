@@ -31,6 +31,7 @@ const sidebars: SidebarsConfig = {
         'services/reconition-service',
         'services/solidity-service',
         'services/transaction-service',
+        'services/solidity-service',
       ],
     },
     {

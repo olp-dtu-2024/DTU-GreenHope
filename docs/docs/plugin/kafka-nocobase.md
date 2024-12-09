@@ -100,7 +100,8 @@ Trước khi sử dụng plugin, hãy lưu ý một số điểm quan trọng:
 
 - ✅ **Đảm bảo tương thích** với phiên bản NocoBase hiện tại của bạn
 - 🔧 **Kiểm tra kết nối và cấu hình** trước khi bắt đầu sử dụng để tránh các vấn đề phát sinh
-
+### 📝 License
+Dự án này được cấp phép theo các điều khoản của giấy phép GPL V3 [GPL V3 License](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENSE)
 
 
 *"Được phát triển với ❤️ bởi Nhóm DTU_DZ1 🌟"*

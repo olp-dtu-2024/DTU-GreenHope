@@ -1,110 +1,30 @@
-# 🔐 Dịch vụ Solidity Service
+# 🔏 Solidity service 
 
-## 📝 Tổng quan
-Dịch vụ Solidity Service là một microservice trong hệ thống Hi Vọng Xanh, được phát triển để quản lý các smart contract và giao dịch blockchain. Dịch vụ này đảm bảo tính minh bạch trong hoạt động cứu trợ, giúp quản lý các giao dịch tài trợ, theo dõi và kiểm soát các smart contract.
+## 📋 Tổng Quan
+[_**Solidity service**_](https://hub.docker.com/repository/docker/auroraphtgrp/dtu-olp-solidity-service) là dịch vụ phát triển công nghệ  Blockchain ứng dụng _**Smart Contract**_ trên nền tảng Ethereum nhằm quản lý và minh bạch hóa các hoạt động đóng góp từ thiện. Hệ thống được xây dựng dựa trên 3 trụ cột: ***Tin Cậy***, ***Minh Bạch*** và ***An Toàn***.
 
-## 🛠️ Chức năng chính
+## 🏗️ Kiến Trúc Cốt Lõi
 
-### 1. Quản lý Smart Contract
-- Triển khai và quản lý các smart contract cho hoạt động cứu trợ.
-- Theo dõi và kiểm soát các giao dịch tài trợ.
-- Đảm bảo tính minh bạch của nguồn tiền cứu trợ.
+### 📜 DonationContract.sol - Trái Tim Của Hệ Thống
+Smart contract này không đơn thuần là một hợp đồng thông minh - nó là bộ não trung tâm điều phối mọi hoạt động, từ việc tiếp nhận đóng góp đến phân phối nguồn lực một cách công bằng và hiệu quả.
 
-### 2. Xử lý Giao dịch
-- Tạo và quản lý ví blockchain.
-- Xử lý giao dịch chuyển tiền cứu trợ.
-- Tạo báo cáo tài chính tự động.
+#### 🔑 Ba Trụ Cột Chính
 
-### 3. Tích hợp Hệ thống
-- Kết nối với `transaction-service` để đồng bộ dữ liệu.
-- Tích hợp với hệ thống báo cáo tổng thể.
-- Cung cấp API để tương tác với các service khác.
+1. **Quản Lý Dự Án - Nền Tảng Của Sự Minh Bạch** 
+   - 📝 Khởi tạo dự án với đầy đủ thông tin, mục tiêu và kế hoạch chi tiết
+   - 🔄 Cập nhật linh hoạt theo tiến độ thực tế
+   - 🎛️ Kiểm soát chặt chẽ trạng thái hoạt động
+   - 🔍 Công cụ tra cứu thông tin chi tiết, rõ ràng
 
-## ⚙️ Công nghệ sử dụng
-- **Solidity**: Ngôn ngữ lập trình để phát triển smart contract.
-- **Web3.js**: Thư viện giúp tương tác với blockchain.
-- **TypeScript**: Ngôn ngữ lập trình backend.
-- **NestJS**: Framework phát triển cho backend.
+2. **Quản Lý Đóng Góp - Trái Tim Của Lòng Tin**
+   - 💰 Hệ thống xử lý thông minh, tự động hóa cao
+   - 📊 Theo dõi chi tiết từng đồng góp
+   - 📱 Lưu trữ lịch sử minh bạch, không thể thay đổi
 
-## 🌱 Cấu hình môi trường
-- `NODE_ENV=development`: Chế độ môi trường phát triển.
-- `BLOCKCHAIN_NETWORK=testnet`: Mạng blockchain thử nghiệm.
-- `SMART_CONTRACT_ADDRESS=<địa_chỉ_contract>`: Địa chỉ của smart contract.
-- `WALLET_PRIVATE_KEY=<khóa_bí_mật>`: Khóa bí mật ví blockchain.
+3. **Kiểm Soát Phân Phối - Bảo Chứng Cho Sự Công Bằng**
+   - 🏦 Quy trình rút tiền chặt chẽ, nhiều lớp xác thực
+   - 🔐 Phân quyền thông minh theo vai trò
+   - 📋 Giám sát toàn diện quá trình phân phối
 
-## 🚀 API Endpoints
-
-### Smart Contract
-- **POST /contracts/deploy**: Triển khai smart contract mới.
-- **GET /contracts/:address**: Lấy thông tin smart contract.
-- **POST /contracts/:address/execute**: Thực thi một function trong contract.
-
-### Giao dịch
-- **POST /transactions**: Tạo giao dịch mới.
-- **GET /transactions/:hash**: Kiểm tra trạng thái giao dịch.
-- **GET /transactions/history**: Lấy lịch sử giao dịch.
-
-### Ví dụ sử dụng API
-
-## 🔄 Quy trình làm việc
-
-### Khởi tạo Smart Contract
-1. Triển khai contract mới.
-2. Cấu hình các tham số cần thiết.
-3. Kiểm tra tính đúng đắn của contract.
-
-### Xử lý Giao dịch
-1. Nhận yêu cầu từ `transaction-service`.
-2. Thực hiện giao dịch trên blockchain.
-3. Cập nhật trạng thái và gửi phản hồi.
-
-### Giám sát và Báo cáo
-1. Theo dõi trạng thái các giao dịch.
-2. Tạo báo cáo định kỳ.
-3. Lưu trữ lịch sử giao dịch.
-
-## 🔒 Bảo mật
-- Sử dụng mã hóa cho khóa private.
-- Kiểm tra quyền truy cập API.
-- Giới hạn số lượng request để bảo vệ hệ thống.
-- Ghi log đầy đủ các hoạt động để theo dõi và khắc phục sự cố.
-
-## ⚠️ Khắc phục sự cố
-
-### Lỗi thường gặp:
-- **Smart contract deployment failed**: Triển khai contract không thành công.
-- **Transaction timeout**: Hết thời gian chờ giao dịch.
-- **Gas estimation error**: Lỗi ước tính gas.
-
-### Giải pháp:
-- Kiểm tra kết nối mạng và cấu hình.
-- Xác nhận số dư gas đủ cho giao dịch.
-- Kiểm tra cấu hình môi trường, đảm bảo các tham số được cài đặt chính xác.
-
-## 🧪 Phát triển và Kiểm thử
-
-### Môi trường phát triển
-- Cài đặt dependencies.
-- Chạy môi trường phát triển và kiểm thử.
-
-### Unit Testing
-- Viết test cho các smart contract.
-- Kiểm tra các function quan trọng của contract.
-- Mô phỏng các trường hợp lỗi để đảm bảo tính ổn định của dịch vụ.
-
-## 📁 Cấu trúc thư mục
-
-## 📢 Events
-Service này phát ra các events sau thông qua Kafka:
-
-- `contract.deployed`: Khi một smart contract mới được triển khai
-- `transaction.created`: Khi một giao dịch mới được tạo
-- `transaction.confirmed`: Khi giao dịch được xác nhận thành công
-- `transaction.failed`: Khi giao dịch thất bại
-
-## 📞 Liên hệ hỗ trợ
-- Email: minhtuanledng@gmail.com 
-- Hotline: +84 889 001 505 
-- Website: green-hope.minhtuandng.id.vn
-## 📝 License
+### 📝 License
 Dự án này được cấp phép theo các điều khoản của giấy phép GPL V3 [GPL V3 License](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENSE)

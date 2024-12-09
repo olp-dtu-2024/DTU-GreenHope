@@ -1,64 +1,91 @@
-# 🛰️ Dịch vụ Nhận dạng (Recognition Service)
+# 🌟 Recognition Service
 
-## 📝 Tổng quan
-Dịch vụ Nhận dạng là thành phần cốt lõi của nền tảng Hi Vọng Xanh, xử lý phân tích hình ảnh vệ tinh để phát hiện thiên tai và đánh giá tác động. Dịch vụ này giúp phân tích dữ liệu vệ tinh theo thời gian thực, đánh giá mức độ thiệt hại và dự báo nhu cầu cứu trợ, từ đó hỗ trợ các hoạt động cứu trợ thiên tai hiệu quả.
+## 📘 Giới thiệu
 
-## 🛠️ Tính năng
-- **Phân tích hình ảnh vệ tinh theo thời gian thực**: Xử lý và phân tích các hình ảnh vệ tinh để phát hiện thiên tai và tình hình thiệt hại.
-- **Đánh giá thiệt hại tự động**: Xác định mức độ thiệt hại của các khu vực bị ảnh hưởng, cung cấp báo cáo chi tiết về tình hình thiên tai.
-- **Dự báo nhu cầu cứu trợ thiên tai**: Dự báo các nhu cầu cứu trợ như thực phẩm, thuốc men, nước sạch cho các vùng bị ảnh hưởng.
-- **Tích hợp với TensorFlow cho xử lý ML/AI**: Sử dụng TensorFlow để triển khai c��c mô hình học máy và trí tuệ nhân tạo phục vụ việc phân tích và nhận diện trong hình ảnh vệ tinh.
+_**[Dịch Vụ Nhận Diện (Recognition Service)](https://hub.docker.com/repository/docker/auroraphtgrp/dtu-olp-recognition-service)**_ là một giải pháp microservice tiên tiến được phát triển bằng Python, chuyên về xử lý và phân tích hình ảnh thông minh. Hệ thống này tích hợp các công nghệ AI và học máy hiện đại để cung cấp khả năng nhận diện chính xác và linh hoạt.
 
-## 📁 Cấu trúc thư mục
+### Tính năng nổi bật:
 
-## ⚙️ Công nghệ sử dụng
-- **Python**: Ngôn ngữ lập trình chính để phát triển dịch vụ.
-- **TensorFlow**: Thư viện mã nguồn mở hỗ trợ triển khai các mô hình học sâu (deep learning) cho phân tích hình ảnh.
-- **REST API endpoints**: Cung cấp các API để tích hợp và giao tiếp với các dịch vụ bên ngoài.
-- **Docker containerization**: Triển khai dịch vụ trong môi trường Docker để đảm bảo tính ổn định và dễ dàng mở rộng.
+- **Nhận diện khuôn mặt**: Phát hiện và xác định khuôn mặt với độ chính xác cao, hỗ trợ nhiều góc độ và điều kiện ánh sáng khác nhau
 
-## 🔌 API Endpoints
+- **Đối chiếu sinh trắc học**: So sánh và xác thực khuôn mặt với dữ liệu trong hệ thống một cách nhanh chóng và đáng tin cậy 
 
-### POST /api/v1/analyze
-- **Mô tả**: Phân tích hình ảnh vệ tinh để phát hiện thiên tai và đánh giá thiệt hại.
-- **Request body**: Nhận tệp hình ảnh (multipart/form-data).
-- **Response**: Cung cấp kết quả phân tích, bao gồm thông tin về mức độ thiệt hại và các khu vực bị ảnh hưởng.
+- **Nhận diện đối tượng**: Khả năng phân loại và nhận dạng đa dạng đối tượng trong hình ảnh
 
-### GET /api/v1/status
-- **Mô tả**: Truy vấn trạng thái sức khỏe của dịch vụ.
-- **Response**: Thông tin trạng thái hoạt động của dịch vụ, giúp kiểm tra liệu dịch vụ có đang hoạt động bình thường hay không.
+- **API RESTful**: Cung cấp giao diện API đơn giản và mạnh mẽ, dễ dàng tích hợp vào các hệ thống khác
 
-## 🌱 Biến môi trường
-Các biến môi trường cần thiết để cấu hình dịch vụ nhận dạng:
-- `TENSORFLOW_MODEL_PATH=./models`: Đường dẫn đến mô hình TensorFlow đã được huấn luyện.
-- `API_PORT=3000`: Cổng API mà dịch vụ sử dụng để lắng nghe các yêu cầu.
-- `KAFKA_BROKER=localhost:9092`: Địa chỉ của broker Kafka dùng cho việc xử lý tin nhắn.
-- `REDIS_URL=redis://localhost:6379`: Địa chỉ Redis cho việc lưu trữ tạm thời kết quả.
+Được thiết kế theo kiến trúc microservice hiện đại, dịch vụ đảm bảo khả năng mở rộng cao và hiệu suất ổn định, phù hợp cho các ứng dụng từ quy mô nhỏ đến hệ thống doanh nghiệp lớn.
 
-## 🚢 Triển khai Docker
+## 🏛️ Kiến trúc
+Service được thiết kế theo kiến trúc layer, bao gồm:
 
-Dịch vụ nhận dạng có thể được triển khai trong Docker để đảm bảo môi trường vận hành ổn định. Docker giúp đơn giản hóa quá trình triển khai và bảo trì, đồng thời dễ dàng mở rộng dịch vụ khi cần thiết.
+### 🚀 API Layer (`app/api/`)
+- REST API endpoints nhận request từ client
+- Route handlers cho face recognition và object detection
+- Request/response validation schemas  
+- API documentation với Swagger/OpenAPI
 
-## 🔗 Điểm tích hợp
-- **Kafka**: Hệ thống hàng đợi tin nhắn Kafka giúp xử lý dữ liệu theo thời gian thực.
-- **Redis**: Sử dụng Redis để lưu trữ các kết quả tạm thời, giúp truy xuất nhanh chóng trong quá trình xử lý.
-- **PostgreSQL/TimescaleDB**: Cơ sở dữ liệu PostgreSQL được sử dụng để lưu trữ các kết quả phân tích và dữ liệu lịch sử.
-- **NocoBase LCDP**: Dịch vụ này tích hợp với nền tảng NocoBase LCDP để hỗ trợ phát triển và quản lý ứng dụng.
+### 🧩 Core Layer (`app/core/`)
+- Cấu hình service (config)
+- Kết nối cơ sở dữ liệu
+- Thiết lập logging
+- Constants và enums
 
-## 📋 Quy tắc phát triển
-- **Tuân thủ chuẩn mã nguồn Python PEP 8**: Dịch vụ phải tuân thủ chuẩn mã hóa Python PEP 8 để đảm bảo mã nguồn sạch sẽ, dễ duy trì.
-- **Viết unit tests**: Mỗi tính năng mới cần được kiểm thử đơn vị (unit testing) để đảm bảo chất lượng mã nguồn.
-- **Cập nhật tài liệu API**: Mỗi khi có thay đổi về API, cần cập nhật tài liệu để đảm bảo các bên liên quan có thông tin chính xác.
-- **Sử dụng commit theo chuẩn convention**: Các commit nên theo một quy ước rõ ràng, dễ hiểu để người khác có thể dễ dàng theo dõi sự thay đổi trong mã nguồn.
+### 📦 Models Layer (`app/models/`)
+- Database models
+- Data transfer objects (DTOs)
+- Response schemas
 
-## 🧪 Kiểm thử
-Để đảm bảo chất lượng dịch vụ, việc kiểm thử rất quan trọng:
-- **Unit tests**: Kiểm thử các đơn vị mã nguồn riêng lẻ để đảm bảo mỗi phần của hệ thống hoạt động như mong đợi.
-- **Integration tests**: Kiểm thử sự tương tác giữa các thành phần của dịch vụ để đảm bảo tất cả các phần làm việc mượt mà khi kết hợp lại với nhau.
-## 📞 Liên hệ hỗ trợ
-- Email: minhtuanledng@gmail.com 
-- Hotline: +84 889 001 505 
-- Website: green-hope.minhtuandng.id.vn
+### 🛠️ Services Layer (`app/services/`)
+- Business logic chính
+- Engine nhận diện khuôn mặt
+- Engine phát hiện đối tượng
+- Quản lý cache
+- Tối ưu hóa hiệu suất
 
-## 📝 License
+### 🔧 Utils Layer (`app/utils/`)
+- Helpers xử lý hình ảnh
+- Định dạng dữ liệu
+- Tiện ích chung
+
+## 🔑 Tính năng chính
+
+### 👤 Nhận Diện Khuôn Mặt
+- Nhận diện khuôn mặt trong ảnh
+- So sánh khuôn mặt và scoring độ tương đồng
+- Lưu trữ và truy xuất embedding khuôn mặt
+- Quản lý cơ sở dữ liệu khuôn mặt
+
+### 📷 Phát Hiện Đối Tượng
+- Phát hiện đối tượng đa lớp
+- Dự đoán bounding box
+- Phân loại đối tượng
+- Tích hợp mô hình pre-trained
+
+### 🖼️ Xử Lý Hình Ảnh
+- Tiền xử lý hình ảnh (resize, normalize)
+- Tối ưu hóa cho suy luận mô hình
+- Caching kết quả
+- Xử lý batch
+
+## 🛠️ Công Nghệ Sử Dụng
+
+### 📚 Framework & Libraries
+- FastAPI
+- face_recognition
+- OpenCV
+- PyTorch/TensorFlow
+
+### 🏗️ Hạ Tầng
+- Redis caching
+- Cơ sở dữ liệu PostgreSQL
+- Docker containers
+- CI/CD pipeline
+
+### 📈 Khả Năng Mở Rộng
+- Horizontal scaling
+- Load balancing
+- Độ sẵn sàng cao
+
+### 📝 License
 Dự án này được cấp phép theo các điều khoản của giấy phép GPL V3 [GPL V3 License](https://github.com/olp-dtu-2024/DTU-GreenHope/blob/main/LICENSE)
