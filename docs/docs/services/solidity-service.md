@@ -44,6 +44,8 @@ Dịch vụ Solidity Service là một microservice trong hệ thống Hi Vọng
 - **GET /transactions/:hash**: Kiểm tra trạng thái giao dịch.
 - **GET /transactions/history**: Lấy lịch sử giao dịch.
 
+### Ví dụ sử dụng API
+
 ## 🔄 Quy trình làm việc
 
 ### Khởi tạo Smart Contract
@@ -89,6 +91,16 @@ Dịch vụ Solidity Service là một microservice trong hệ thống Hi Vọng
 - Viết test cho các smart contract.
 - Kiểm tra các function quan trọng của contract.
 - Mô phỏng các trường hợp lỗi để đảm bảo tính ổn định của dịch vụ.
+
+## 📁 Cấu trúc thư mục
+
+## 📢 Events
+Service này phát ra các events sau thông qua Kafka:
+
+- `contract.deployed`: Khi một smart contract mới được triển khai
+- `transaction.created`: Khi một giao dịch mới được tạo
+- `transaction.confirmed`: Khi giao dịch được xác nhận thành công
+- `transaction.failed`: Khi giao dịch thất bại
 
 ## 📞 Liên hệ hỗ trợ
 - Email: minhtuanledng@gmail.com 

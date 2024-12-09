@@ -3,7 +3,13 @@
 ## 💫 Tổng Quan
 Dịch vụ Captcha (Captcha Service) là thành phần bảo mật quan trọng trong hệ thống Hi Vọng Xanh, chịu trách nhiệm xác thực và bảo vệ các giao dịch khỏi bot tự động. Được xây dựng trên nền tảng Python và ONNX, dịch vụ này tích hợp công nghệ nhận dạng hình ảnh tiên tiến nhằm đảm bảo tính bảo mật và hiệu quả.
 
-## 🏛️ Kiến Trúc Chi Tiết
+## 🛠️ Tính Năng
+- Tạo captcha ngẫu nhiên
+- Xác thực và kiểm tra captcha
+- Xử lý hình ảnh captcha
+- Tích hợp với các dịch vụ khác
+
+## 📁 Cấu trúc thư mục
 
 ### 🔌 1. Các Thành Phần Chính
 - **Captcha Controller**: Xử lý các yêu cầu HTTP liên quan đến captcha

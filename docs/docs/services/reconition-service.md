@@ -7,7 +7,9 @@ Dịch vụ Nhận dạng là thành phần cốt lõi của nền tảng Hi V�
 - **Phân tích hình ảnh vệ tinh theo thời gian thực**: Xử lý và phân tích các hình ảnh vệ tinh để phát hiện thiên tai và tình hình thiệt hại.
 - **Đánh giá thiệt hại tự động**: Xác định mức độ thiệt hại của các khu vực bị ảnh hưởng, cung cấp báo cáo chi tiết về tình hình thiên tai.
 - **Dự báo nhu cầu cứu trợ thiên tai**: Dự báo các nhu cầu cứu trợ như thực phẩm, thuốc men, nước sạch cho các vùng bị ảnh hưởng.
-- **Tích hợp với TensorFlow cho xử lý ML/AI**: Sử dụng TensorFlow để triển khai các mô hình học máy và trí tuệ nhân tạo phục vụ việc phân tích và nhận diện trong hình ảnh vệ tinh.
+- **Tích hợp với TensorFlow cho xử lý ML/AI**: Sử dụng TensorFlow để triển khai c��c mô hình học máy và trí tuệ nhân tạo phục vụ việc phân tích và nhận diện trong hình ảnh vệ tinh.
+
+## 📁 Cấu trúc thư mục
 
 ## ⚙️ Công nghệ sử dụng
 - **Python**: Ngôn ngữ lập trình chính để phát triển dịch vụ.
