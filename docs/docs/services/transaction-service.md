@@ -1,4 +1,4 @@
-# 💱 Dịch Vụ Giao Dịch (Transaction Service)
+# 💱 Transaction Service
 
 ## 📝 Tổng Quan
 Dịch vụ Giao dịch (Transaction Service) là thành phần cốt lõi trong hệ thống Hi Vọng Xanh, chịu trách nhiệm xử lý các giao dịch cứu trợ và quản lý dòng tiền. Được xây dựng trên nền tảng TypeScript và NestJS, dịch vụ này tích hợp nhiều công nghệ hiện đại nhằm đảm bảo tính minh bạch, hiệu quả và an toàn cho tất cả các giao dịch.
