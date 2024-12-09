@@ -1,12 +1,15 @@
 # Video Player NocoBase Plugin
 
 ## 🌟 Giới Thiệu
-_**@olp-dtu-2024/video-player-nocobase**_ là một **Plugin mạnh mẽ** cung cấp trình phát video tích hợp với nhiều tính năng nâng cao, hỗ trợ đa nền tảng và định dạng video khác nhau. Với plugin này, bạn có thể dễ dàng phát các video trong ứng dụng NocoBase của mình, đồng thời tận hưởng trải nghiệm người dùng mượt mà và tùy chỉnh linh hoạt.
+
+_**[@dtu-olp-2024/video-player-nocobase](https://www.npmjs.com/package/@dtu-olp-2024/video-player-nocobase)**_ là một **Plugin mạnh mẽ** cung cấp trình phát video tích hợp với nhiều tính năng nâng cao, hỗ trợ đa nền tảng và định dạng video khác nhau. Với plugin này, bạn có thể dễ dàng phát các video trong ứng dụng NocoBase của mình, đồng thời tận hưởng trải nghiệm người dùng mượt mà và tùy chỉnh linh hoạt.
 
 ### 🏆 Bối Cảnh
+
 Plugin được phát triển như một phần của cuộc thi **Mã Nguồn Mở 2024**. Mục tiêu của dự án này là mang lại giải pháp phát video dễ sử dụng và hiệu quả, giúp nâng cao trải nghiệm người dùng trong các ứng dụng xây dựng trên nền tảng NocoBase.
 
 ## ✨ Tính Năng
+
 - 🎥 **Trình phát video đa nền tảng**: Plugin này cho phép phát video trên nhiều nền tảng khác nhau, đảm bảo tính linh hoạt và tương thích với hầu hết các thiết bị và trình duyệt.
 - 🔧 **Hỗ trợ nhiều định dạng video**: Bạn có thể phát video với nhiều định dạng phổ biến như MP4, WebM, và OGG mà không gặp bất kỳ vấn đề nào.
 - 🔌 **Tích hợp mượt mà với NocoBase**: Plugin dễ dàng tích hợp vào bất kỳ ứng dụng NocoBase nào, cho phép bạn phát video trực tiếp từ các nguồn khác nhau mà không cần cấu hình phức tạp.

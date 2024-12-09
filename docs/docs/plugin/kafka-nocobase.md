@@ -1,10 +1,10 @@
 # Kafka NocoBase Plugin
 
 ## 🌟 Giới Thiệu
-_**@olp-dtu-2024/kafka-nocobase**_ là một plugin mạnh mẽ dành cho nền tảng NocoBase, tích hợp **KafkaJS** giúp đơn giản hóa việc xử lý các sự kiện và giao tiếp message trong ứng dụng NocoBase của bạn. Với plugin này, bạn có thể dễ dàng gửi, nhận và quản lý message từ các Kafka topic.
+_**[@dtu-olp-2024/kafka-nocobase](https://www.npmjs.com/package/@dtu-olp-2024/kafka-nocobase)**_ là một plugin mạnh mẽ dành cho nền tảng NocoBase, tích hợp **KafkaJS** giúp đơn giản hóa việc xử lý các sự kiện và giao tiếp message trong ứng dụng NocoBase của bạn. Với plugin này, bạn có thể dễ dàng gửi, nhận và quản lý message từ các Kafka topic.
 
 ### 🏆 Bối Cảnh
-Plugin được phát triển như một phần của cuộc thi **Mã Nguồn Mở 2024** với mục tiêu nâng cao khả năng giao tiếp và xử lý sự kiện giữa các **MicroService** trong các ứng dụng NocoBase. Chúng tôi hy vọng dự án này sẽ giúp cộng đồng mở rộng khả năng tương tác và tận dụng sức mạnh của Kafka trong các hệ thống phân tán.
+Plugin được phát triển như một phần của cuộc thi **Mã Nguồn Mở 2024** với mục tiêu nâng cao khả năng giao tiếp và xử lý sự kiện giữa các **Microservice** trong các ứng dụng NocoBase. Chúng tôi hy vọng dự án này sẽ giúp cộng đồng mở rộng khả năng tương tác và tận dụng sức mạnh của Kafka trong các hệ thống phân tán.
 
 ## ✨ Tính Năng
 - 🔗 **Tích hợp dễ dàng KafkaJS với NocoBase**: Plugin này giúp bạn dễ dàng kết nối Kafka với nền tảng NocoBase mà không cần cấu hình phức tạp.
