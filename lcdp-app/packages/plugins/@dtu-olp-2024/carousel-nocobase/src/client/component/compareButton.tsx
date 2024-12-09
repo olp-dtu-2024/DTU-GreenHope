@@ -2,6 +2,27 @@ import React from 'react';
 import { Button, App } from 'antd';
 import { useAPIClient } from '@nocobase/client';
 
+interface Difference {
+  blockchain: string | number;
+  database?: string | number;
+}
+
+interface Mismatch {
+  transaction_code: string;
+  differences: {
+    [key: string]: Difference;
+  };
+}
+
+const formatDifferences = (differences: { [key: string]: Difference }) => {
+  return Object.entries(differences)
+    .map(([type, diff]) => {
+      const dbValue = diff.database ? `, Database: ${diff.database}` : '';
+      return `   - ${type} không khớp: Blockchain: ${diff.blockchain}${dbValue}`;
+    })
+    .join('\n');
+};
+
 export const CompareButton = () => {
   const { message } = App.useApp();
   const api = useAPIClient();
@@ -20,49 +41,70 @@ export const CompareButton = () => {
         method: 'post',
       });
 
-      if (response.data.data.status === true) {
+      if (!response?.data?.data) {
+        throw new Error('Invalid response format');
+      }
+
+      const {
+        status,
+        mismatches = [],
+        totalChecked = 0,
+        totalMismatches = 0,
+      } = response.data.data;
+
+      if (status === true) {
         message.success({
           content: 'Giao dịch khớp',
           key: messageKey,
           duration: 3,
         });
         alert('Tất cả giao dịch đều khớp!');
-      } else {
-        const mismatches = response.data.data.mismatches;
+        return;
+      }
 
-        const alertMessage = mismatches
-          .map((mismatch, index) => {
-            const transactionCode = mismatch.transaction_code;
-            const differenceType = Object.keys(mismatch.differences)[0];
-            const differences = mismatch.differences[differenceType];
+      if (!Array.isArray(mismatches) || mismatches.length === 0) {
+        throw new Error('No mismatch data available');
+      }
 
-            return (
-              `${index + 1}. Giao dịch: ${transactionCode}\n` +
-              `   - ${differenceType} không khớp\n` +
-              `   - Blockchain: ${differences.blockchain}\n` +
-              `   - Database: ${differences.database}\n`
-            );
-          })
-          .join('\n');
+      const alertMessage = mismatches
+        .map((mismatch, index) => {
+          if (!mismatch?.transaction_code || !mismatch?.differences) {
+            return null;
+          }
 
-        alert('Phát hiện giao dịch không khớp!\n\n' + alertMessage);
+          return (
+            `${index + 1}. Giao dịch: ${mismatch.transaction_code}\n` +
+            formatDifferences(mismatch.differences)
+          );
+        })
+        .filter(Boolean)
+        .join('\n\n');
+
+      if (alertMessage) {
+        alert(
+          `Phát hiện ${totalMismatches}/${totalChecked} giao dịch không khớp!\n\n` +
+            alertMessage
+        );
 
         message.error({
           content: (
             <div>
-              {mismatches.map((mismatch, index) => {
-                const transactionCode = mismatch.transaction_code;
-                const differenceType = Object.keys(mismatch.differences)[0];
-                const differences = mismatch.differences[differenceType];
-
-                return (
-                  <div key={index}>
-                    {`${index + 1}. Giao dịch với mã ${transactionCode} có ${differenceType} không khớp.`}
-                    <br />
-                    {`Dữ liệu đúng là ${differences.blockchain}, dữ liệu sai là ${differences.database}`}
-                  </div>
-                );
-              })}
+              <div>
+                Có {totalMismatches}/{totalChecked} giao dịch không khớp:
+              </div>
+              {mismatches.map((mismatch, index) => (
+                <div key={index}>
+                  <strong>{`${index + 1}. Giao dịch: ${mismatch.transaction_code}`}</strong>
+                  {Object.entries(mismatch.differences).map(
+                    ([type, diff]: [string, Difference], i) => (
+                      <div key={i} style={{ marginLeft: 20 }}>
+                        • {type}: Blockchain = {diff.blockchain}
+                        {diff.database && `, Database = ${diff.database}`}
+                      </div>
+                    )
+                  )}
+                </div>
+              ))}
             </div>
           ),
           key: messageKey,
@@ -71,20 +113,15 @@ export const CompareButton = () => {
       }
     } catch (error) {
       message.error({
-        content: 'Có lỗi xảy ra khi kiểm tra giao dịch',
+        content: `Có lỗi xảy ra khi kiểm tra giao dịch: ${error.message}`,
         key: messageKey,
         duration: 3,
       });
-      alert('Lỗi: ' + error.message);
       console.error('Error checking transactions:', error);
     }
   };
 
-  return (
-    <App>
-      <Button onClick={handleCheckTransaction}>So sánh giao dịch</Button>
-    </App>
-  );
+  return <Button onClick={handleCheckTransaction}>So sánh giao dịch</Button>;
 };
 
 export const CompareButtonInitializer = {
