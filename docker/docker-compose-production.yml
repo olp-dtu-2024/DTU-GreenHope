@@ -214,9 +214,6 @@ services:
     command:
       - --wallet.deterministic
       - --accounts=10
-      - --db=/data
-    volumes:
-      - ../release/ganache-data:/data
     networks:
       - olp-dtu-2024-network
 
