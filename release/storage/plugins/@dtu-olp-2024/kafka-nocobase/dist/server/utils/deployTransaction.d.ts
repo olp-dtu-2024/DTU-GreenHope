@@ -3,4 +3,9 @@ export declare const deployTransaction: (config: {
     contractAddress: string;
     provider: string;
     private_key: string;
-}, data?: any[]) => Promise<any>;
+}, data?: {
+    transaction_id: string;
+    direction: string;
+    receiveAmount: number;
+    transferAmount: number;
+}[]) => Promise<any>;

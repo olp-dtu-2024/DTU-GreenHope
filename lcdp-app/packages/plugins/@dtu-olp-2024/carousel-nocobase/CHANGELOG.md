@@ -2,7 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.3] - 2024-12-08
+
+## [1.0.6] - 2024-12-08
+
+### Fixed
+- Button Compare Data v3
+
+## [1.0.5] - 2024-12-08
+
+### Fixed
+- Button Compare Data v2
+
+## [1.0.4] - 2024-12-08
 
 ### Fixed
 - Button Compare Data
