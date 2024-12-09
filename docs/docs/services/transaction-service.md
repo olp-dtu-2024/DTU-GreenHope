@@ -83,3 +83,8 @@ Dịch vụ Giao dịch (Transaction Service) là thành phần cốt lõi trong
 
 ## ✅ Kết Luận
 Dịch vụ Giao dịch đóng vai trò thiết yếu trong việc quản lý và điều phối các hoạt động tài chính trong môi trường phân tán. Với việc áp dụng các công nghệ tiên tiến cùng phương pháp quản lý hiện đại, nó không chỉ đảm bảo tính nhất quán và an toàn cho dữ liệu mà còn tối ưu hóa hiệu suất của toàn bộ hệ thống, góp phần vào sự phát triển bền vững của Hi Vọng Xanh.
+
+## 📞 Liên hệ hỗ trợ
+- Email: minhtuanledng@gmail.com 
+- Hotline: +84 889 001 505 
+- Website: green-hope.minhtuandng.id.vn
