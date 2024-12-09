@@ -1,3 +1,6 @@
+## 12/09/2024 - 16h43
+* ** Cập nhật video hướng dẫn và document
+
 ## 12/09/2024 - 15h24
 * **Cập nhật Giấy phép (License)** cho tất cả các gói phần mềm trong dự án.
 * **Cập nhật tài liệu (docs)**, bao gồm các hướng dẫn và thông tin liên quan đến cấu hình và sử dụng dự án.
