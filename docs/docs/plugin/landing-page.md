@@ -1,8 +1,8 @@
 # Langding Page Plugin
 ## 🌟 Giới Thiệu
-**@olp-dtu-2024/landing-page-nocobase** là một plugin chuyên biệt được phát triển cho nền tảng NocoBase, tập trung vào việc tạo trải nghiệm hiển thị hình ảnh động và chuyên nghiệp dành cho người dùng vừa vào ứng dụng với những component của Ant Design.
+_**[@olp-dtu-2024/landing-page-nocobase](https://www.npmjs.com/package/@dtu-olp-2024/landing-page)**_ là một plugin chuyên biệt được phát triển cho nền tảng NocoBase, tập trung vào việc tạo trải nghiệm hiển thị hình ảnh động và chuyên nghiệp dành cho người dùng vừa vào ứng dụng với những component của Ant Design.
 ### 🏆 Bối Cảnh
-Plugin được phát triển như một phần của cuộc thi Mã Nguồn Mở năm 2024.
+Plugin được phát triển như một phần của cuộc thi **Mã Nguồn Mở năm 2024**. Landing Page Plugin giúp người dùng NocoBase dễ dàng tạo trang đích chuyên nghiệp mà không cần kiến thức code. Với khả năng tùy biến cao và các mẫu có sẵn, plugin hướng đến việc đơn giản hóa quy trình xây dựng trang web marketing. Chúng tôi kỳ vọng đây sẽ là giải pháp hiệu quả cho doanh nghiệp trong việc tạo các chiến dịch marketing trực tuyến.
 
 
 ## 📋 Yêu Cầu Tiên Quyết
