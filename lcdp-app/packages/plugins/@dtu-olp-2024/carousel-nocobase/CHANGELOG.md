@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 ## [1.0.3] - 2024-12-08
 
 ### Fixed
+- Button Compare Data
+
+## [1.0.3] - 2024-12-08
+
+### Fixed
 - Add button action to list component
 
 ## [1.0.2] - 2024-11-28
