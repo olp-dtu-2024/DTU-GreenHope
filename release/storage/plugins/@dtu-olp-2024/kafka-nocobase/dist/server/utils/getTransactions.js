@@ -32,24 +32,31 @@ module.exports = __toCommonJS(getTransactions_exports);
 var import_ethers = require("ethers");
 const getTransaction = async (config) => {
   const { abi, contractAddress, provider } = config;
-  const ethersProvider = new import_ethers.ethers.JsonRpcProvider(provider);
-  const contract = new import_ethers.ethers.Contract(contractAddress, abi, ethersProvider);
   try {
+    const ethersProvider = new import_ethers.ethers.JsonRpcProvider(provider);
+    const contract = new import_ethers.ethers.Contract(contractAddress, abi, ethersProvider);
+    if (!contract.getAllTransactions) {
+      throw new Error("Contract does not have getAllTransactions method");
+    }
     const transactions = await contract.getAllTransactions();
-    console.log("Transactions:", transactions);
-    if (!transactions || !Array.isArray(transactions)) {
-      throw new Error("Invalid transactions data");
+    if (!transactions || transactions === "0x") {
+      console.warn("No transactions found");
+      return [];
+    }
+    if (!Array.isArray(transactions)) {
+      console.warn("Invalid response format:", transactions);
+      return [];
     }
     const mappedTransactions = transactions.map((tx) => ({
-      transaction_code: tx[0],
-      amount: parseInt(tx[1]),
-      direction: tx[2],
-      datetime: parseInt(tx[3])
+      transaction_code: tx[0] || "",
+      amount: typeof tx[1] === "bigint" ? Number(tx[1]) : parseInt(tx[1] || "0"),
+      direction: tx[2] || "",
+      datetime: typeof tx[3] === "bigint" ? Number(tx[3]) : parseInt(tx[3] || "0")
     }));
-    console.warn(mappedTransactions, "<<");
     return mappedTransactions;
   } catch (error) {
     console.error("Error fetching transactions:", error);
+    return [];
   }
 };
 // Annotate the CommonJS export names for ESM import in node:

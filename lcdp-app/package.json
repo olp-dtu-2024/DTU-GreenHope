@@ -1,7 +1,7 @@
 {
   "name": "lcdp-app",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "license": "GPL-3.0",
   "workspaces": [
     "packages/*/*",

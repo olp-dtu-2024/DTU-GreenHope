@@ -75,8 +75,6 @@ services:
     container_name: 'zookeeper-olp-dtu-2024'
     ports:
       - 2181:2181
-    volumes:
-      - zookeeper-data:/var/lib/zookeeper
     networks:
       - olp-dtu-2024-network
     environment:
@@ -97,8 +95,6 @@ services:
       - 9093:9093
     networks:
       - olp-dtu-2024-network
-    volumes:
-      - kafka-data:/bitnami/kafka
     depends_on:
       - zookeeper
     environment:
@@ -218,11 +214,12 @@ services:
     command:
       - --wallet.deterministic
       - --accounts=10
+      - --db=/data
+    volumes:
+      - ../release/ganache-data:/data
     networks:
       - olp-dtu-2024-network
 
 volumes:
   postgres-data-be:
   redis-data:
-  zookeeper-data:
-  kafka-data:

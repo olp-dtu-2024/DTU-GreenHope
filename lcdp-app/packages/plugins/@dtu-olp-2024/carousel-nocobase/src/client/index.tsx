@@ -3,6 +3,8 @@ import { useBlockScopeDecoratorProps, useCarouselBlockProps } from './schema';
 import { Carousel } from './component';
 import { carouselSettings } from './settings';
 import { carouselInitializerItem } from './initializer';
+import { CompareButton } from './component/compareButton';
+import { CompareButtonInitializer } from './initializer/compareButtonInitializer';
 
 export class CarouselNocobaseClient extends Plugin {
   /**
@@ -25,6 +27,8 @@ export class CarouselNocobaseClient extends Plugin {
     });
     this.app.addComponents({
       Carousel,
+      CompareButton,
+      CompareButtonInitializer,
     });
     this.app.schemaSettingsManager.add(carouselSettings);
     this.app.schemaInitializerManager.addItem(
@@ -50,6 +54,16 @@ export class CarouselNocobaseClient extends Plugin {
         name: 'customRequest',
         title: '{{t("Custom request")}}',
         Component: 'CustomRequestInitializer',
+      }
+    );
+    this.app.schemaInitializerManager.addItem(
+      'list:configureActions',
+      'enableActions.compareButton',
+      {
+        type: 'item',
+        name: 'compareButton',
+        title: '{{t("Compare Transaction")}}',
+        Component: 'CompareButtonInitializer',
       }
     );
   }

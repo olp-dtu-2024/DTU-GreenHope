@@ -10,15 +10,16 @@ export declare function useBlockScopeDecoratorProps(props: any): {
     parseVariableLoading: boolean;
 };
 export declare function useHeaderPickerProps(): HeaderPickerProps;
+export declare function useRichBlockProps(): any;
 export declare function useFieldOptions(): SelectProps['options'];
-export declare function getHeaderPickerSchema({ dataSource, collection }: {
+export declare function getRichSchema({ dataSource, collection }: {
     dataSource?: string;
     collection: any;
 }): {
     type: string;
     'x-decorator': string;
     'x-decorator-props': {
-        myHeaderPicker: {};
+        [x: string]: any;
         dataSource: string;
         collection: any;
         action: string;
@@ -26,15 +27,16 @@ export declare function getHeaderPickerSchema({ dataSource, collection }: {
     'x-component': string;
     'x-toolbar': string;
     'x-settings': string;
-    'x-designer': string;
     'x-component-props': {
         useConfigureFields: boolean;
     };
     'x-use-decorator-props': string;
+    'x-use-component-props': string;
     properties: {
         [x: string]: {
             type: string;
             'x-component': string;
+            'x-use-component-props': string;
             properties: {
                 fields: {
                     type: string;
