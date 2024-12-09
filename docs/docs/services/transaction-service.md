@@ -5,19 +5,19 @@ Dịch vụ Giao dịch (Transaction Service) là thành phần cốt lõi trong
 
 ## 🏗️ Kiến Trúc Chi Tiết
 
-### 1. Các Thành Phần Chính
+### ⚓️ 1. Các Thành Phần Chính
 - **Transaction Controller**: Xử lý các yêu cầu HTTP liên quan đến giao dịch, đảm bảo tính chính xác và nhanh chóng.
 - **Transaction Service Layer**: Chứa logic nghiệp vụ chính, thực hiện các quy trình giao dịch phức tạp.
 - **Repository Layer**: Tương tác với cơ sở dữ liệu để lưu trữ và truy xuất thông tin.
 - **Event Handlers**: Xử lý các sự kiện từ Kafka, đảm bảo thông tin được truyền tải một cách hiệu quả.
 
-### 2. Sơ Đồ Cơ Sở Dữ Liệu
+### 📈 2. Sơ Đồ Cơ Sở Dữ Liệu
 - **Transactions**: Lưu trữ thông tin chi tiết về các giao dịch.
 - **Transaction_Logs**: Ghi lại nhật ký giao dịch để theo dõi và kiểm tra.
 - **Relief_Funds**: Quản lý quỹ cứu trợ, đảm bảo nguồn lực được phân bổ hợp lý.
 - **Beneficiaries**: Lưu trữ thông tin về những người nhận cứu trợ.
 
-### 3. Tích Hợp Kafka
+### 🧬 3. Tích Hợp Kafka
 - **Topics**:
   - `transaction-events`: Chứa các sự kiện liên quan đến giao dịch.
   - `relief-distribution`: Quản lý quá trình phân phối cứu trợ.
@@ -25,12 +25,12 @@ Dịch vụ Giao dịch (Transaction Service) là thành phần cốt lõi trong
 
 ## 🔄 Quy Trình Xử Lý Giao Dịch
 
-### 1. Khởi Tạo Giao Dịch
+### ⚖️ 1. Khởi Tạo Giao Dịch
 - **API Endpoint**: `POST /transactions`
 - Thực hiện xác thực dữ liệu đầu vào và kiểm tra captcha qua Captcha Service để ngăn chặn giao dịch tự động.
 - Tạo bản ghi giao dịch mới trong cơ sở dữ liệu.
 
-### 2. Xử Lý SAGA Pattern   
+### 🔧 2. Xử Lý SAGA Pattern   
 1. **Khởi Đầu Giao Dịch**
    - Khởi tạo một instance của saga để theo dõi tiến trình giao dịch.
    - Ghi log để theo dõi thời điểm bắt đầu.
@@ -46,13 +46,13 @@ Dịch vụ Giao dịch (Transaction Service) là thành phần cốt lõi trong
 
 ## 🛠️ Tích Hợp Với Các Dịch Vụ Khác
 
-### 1. Captcha Service
+###  1. Captcha Service
 - Đảm bảo xác thực captcha trước mỗi giao dịch để ngăn chặn hoạt động của bot.
 
-### 2. Recognition Service
+###  2. Recognition Service
 - Xác thực thông tin người dùng và phân tích dữ liệu giao dịch nhằm nâng cao độ tin cậy.
 
-### 3. LCDP Service (NocoBase)
+###  3. LCDP Service (NocoBase)
 - Quản lý cấu hình hệ thống và tạo báo cáo tự động để theo dõi hiệu suất.
 
 ## 📊 Giám Sát & Ghi Nhận
@@ -81,5 +81,5 @@ Dịch vụ Giao dịch (Transaction Service) là thành phần cốt lõi trong
 ## 🔄 Khôi Phục Sau Thảm Họa
 - Thiết lập các chiến lược sao lưu, quy trình chuyển tiếp (failover) và sao chép dữ liệu để đảm bảo tính khả dụng liên tục của hệ thống.
 
-## 📈 Kết Luận
+## ✅ Kết Luận
 Dịch vụ Giao dịch đóng vai trò thiết yếu trong việc quản lý và điều phối các hoạt động tài chính trong môi trường phân tán. Với việc áp dụng các công nghệ tiên tiến cùng phương pháp quản lý hiện đại, nó không chỉ đảm bảo tính nhất quán và an toàn cho dữ liệu mà còn tối ưu hóa hiệu suất của toàn bộ hệ thống, góp phần vào sự phát triển bền vững của Hi Vọng Xanh.
