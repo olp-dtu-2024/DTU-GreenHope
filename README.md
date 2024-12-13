@@ -50,6 +50,8 @@ Dự án tập trung vào việc xây dựng một nền tảng toàn diện, k�
 | Apache Kafka | Message Queue | Xử lý realtime, khả năng chịu tải cao |
 | Redis | Cache & Queue | Tối ưu hiệu năng, giảm tải database |
 | Ganache | Local Ethereum Blockchain | Phát triển và kiểm thử smart contract |
+| Etherium | Ethereum Network | Nền tảng blockchain tân tiến nhất hiện nay |
+| Solidity | Smart Contract | Ngôn ngữ phát triển hợp đồng thông minh |
 
 ## 🔧 Các Module Chính
 
